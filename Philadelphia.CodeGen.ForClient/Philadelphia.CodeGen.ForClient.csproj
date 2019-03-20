@@ -1,0 +1,15 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.1</TargetFramework>
+    <Company>TODO IT Sp. z o.o.</Company>
+    <Copyright>Copyright © TODO IT Spółka z o.o. 2018</Copyright>
+    <Authors>Dominik Pytlewski and Tomasz Sztokinier</Authors>
+    <Version>0.19.3.1</Version>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Philadelphia.Common\Philadelphia.Common.csproj" />
+  </ItemGroup>
+
+</Project>
