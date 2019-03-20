@@ -1,0 +1,48 @@
+[
+    {
+        "Url": "/",
+        "FileSystemPath": "../Philadelphia.Tests.Client/index-min.html",
+        "MimeType": "text/html"
+    },
+    {
+        "Url": "/full",
+        "FileSystemPath": "../Philadelphia.Tests.Client/index-full.html",
+        "MimeType": "text/html"
+    },
+    {
+        "Url": "/{0}",
+        "Dir": "../Philadelphia.Tests.Client/Bridge/output",
+        "FilePattern": "(?i)\\.js$",
+        "MimeType": "application/javascript"
+    },
+    {
+        "Url": "/{0}",
+        "Dir": "../Philadelphia.StaticResources",
+        "FilePattern": "(?i)\\.css$",
+        "MimeType": "text/css"
+    },
+    {
+        "Url": "/{0}",
+        "Dir": "../Philadelphia.StaticResources",
+        "FilePattern": "(?i)\\.js$",
+        "MimeType": "application/javascript"
+    },
+    {
+        "Url": "/{0}",
+        "Dir": "../Philadelphia.StaticResources",
+        "FilePattern": "(?i)\\.png$",
+        "MimeType": "image/png"
+    },
+    {
+        "Url": "/{0}",
+        "Dir": "../Philadelphia.StaticResources",
+        "FilePattern": "(?i)\\.gif$",
+        "MimeType": "image/gif"
+    },
+    {
+        "Url": "/{0}",
+        "Dir": "../Philadelphia.StaticResources",
+        "FilePattern": "(?i)\\.woff$",
+        "MimeType": "application/x-font-woff"
+    }
+]

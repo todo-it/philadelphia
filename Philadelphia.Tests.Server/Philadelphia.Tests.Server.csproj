@@ -1,0 +1,21 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.1</TargetFramework>
+    <RuntimeFrameworkVersion>2.1.1</RuntimeFrameworkVersion>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.App" Version="2.1.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Philadelphia.Common\Philadelphia.Common.csproj" />
+    <ProjectReference Include="..\Philadelphia.Server.Common\Philadelphia.Server.Common.fsproj" />
+    <ProjectReference Include="..\Philadelphia.Server.ForAspNetCore\Philadelphia.Server.ForAspNetCore.fsproj" />
+    <ProjectReference Include="..\Philadelphia.ServerSideUtils\Philadelphia.ServerSideUtils.fsproj" />
+    <ProjectReference Include="..\Philadelphia.Tests.Domain\Philadelphia.Tests.Domain.csproj" />
+    <ProjectReference Include="..\Philadelphia.Tests.Services\Philadelphia.Tests.Services.csproj" />
+  </ItemGroup>
+
+</Project>
