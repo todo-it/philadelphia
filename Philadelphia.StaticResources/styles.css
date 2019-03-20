@@ -1,0 +1,2333 @@
+﻿/* try to not use margin at all as one cannot measure it efficiently in runtime */
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+/*disable non portable X button within nonempty input in IE10&IE11 */
+input::-ms-clear {
+    display: none;
+}
+
+textarea[readonly] {
+    background-color: #f1f1f1;
+}
+
+html * {
+    /*default font*/
+    font-size: 12px;
+    color: #000;
+    font-family: Helvetica, Arial;
+}
+
+ul.Philadelphia\.Web\.HorizontalMenuBarView {
+    margin-top: 0;
+    margin-bottom: 0;
+}
+
+.Philadelphia\.Web\.HorizontalMenuBarView > ul {
+    background: linear-gradient(to bottom, #ffffff 0%, #e5eaff 30%, #eee8ff 65%, #dadfff 100%);
+    margin-bottom: 0;
+}
+
+/*for hiding of top shadow of second level menu popup */
+nav.Philadelphia\.Web\.HorizontalMenuBarView {
+    z-index: 2;
+}
+
+/* for indent of the first 2nd level menu popup to be natural */
+nav.Philadelphia\.Web\.HorizontalMenuBarView > ul > li:first-child {
+    margin-left: 15px;
+}
+
+nav.Philadelphia\.Web\.HorizontalMenuBarView a:hover {
+    background-color: #ccc;
+}
+
+.Philadelphia\.Web\.HorizontalMenuBarView * {
+    font-size: 16px;
+}
+
+nav.Philadelphia\.Web\.HorizontalMenuBarView a {
+    display: inline-block;
+    width: 100%;
+}
+
+nav.Philadelphia\.Web\.HorizontalMenuBarView li:focus {
+    outline: none;
+}
+
+nav.Philadelphia\.Web\.HorizontalMenuBarView > ul {
+    /*keep it aligned*/
+    display: flex;
+    padding: 0;
+    margin-top: 0;
+    position: relative;
+}
+
+nav.Philadelphia\.Web\.HorizontalMenuBarView > ul > li {
+    display: flex;
+    position: relative;
+    flex-direction: column;
+    padding-right: 10px;
+}
+
+nav.Philadelphia\.Web\.HorizontalMenuBarView a {
+    text-decoration: none;
+    padding-right: 10px;
+    white-space: nowrap;
+}
+
+nav.Philadelphia\.Web\.HorizontalMenuBarView li {
+    /* get rid of bullet points */
+    display: inline;
+}
+
+/* 2nd level menu*/
+nav.Philadelphia\.Web\.HorizontalMenuBarView > ul > li > ul {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background-color: white;
+    display: flex;
+    flex-direction: column;
+    padding: 0 10px 0 0;
+    z-index: -1;
+    box-shadow: 0 0 22px 8px rgba(0, 0, 0, 0.25);
+    border: 1px solid black;
+}
+
+/* 2nd level menu items*/
+nav.Philadelphia\.Web\.HorizontalMenuBarView > ul > li > ul > li {
+    padding-top: 2px;
+    padding-bottom: 2px;
+    padding-left: 2px;
+}
+
+nav.Philadelphia\.Web\.HorizontalMenuBarView > ul > li.inactive > ul {
+    visibility: hidden;
+}
+
+nav.Philadelphia\.Web\.HorizontalMenuBarView > ul > li.active > ul {
+    visibility: visible;
+}
+
+.Philadelphia\.Web\.ElementWrapperFormCanvas {
+    display: grid;
+    margin: 0;
+}
+
+.Philadelphia\.Web\.ElementWrapperFormCanvas > .title {
+    align-self: center;
+    justify-self: center;
+}
+
+.Philadelphia\.Web\.ElementWrapperFormCanvas > .title:empty {
+    display: none;
+}
+
+.Philadelphia\.Web\.ElementWrapperFormCanvas > .title:not(:empty) > div {
+    font-weight: bold;
+    font-variant: small-caps;
+    letter-spacing: 1px;
+    padding-bottom: 10px;
+    padding-top: 10px;
+    padding-left: 15px;
+    padding-right: 15px;
+    font-size: 26px;
+    color: #eee;
+    
+    text-shadow: -1px 0 1px #555, 0 1px 1px #555, -1px 1px 1px #555;
+}
+
+.Philadelphia\.Web\.ElementWrapperFormCanvas > .body {
+    flex-grow: 1;
+    overflow-y: auto;
+}
+
+.Philadelphia\.Web\.ElementWrapperFormCanvas > .actions {
+    display: flex;
+    /*overflow-x: hidden; otherwise it leaks content when in two panels*/
+}
+
+.Philadelphia\.Web\.ElementWrapperFormCanvas > .extraElement:empty {
+    display: none;
+}
+
+.Philadelphia\.Web\.ElementWrapperFormCanvas > .actions:not(:empty) {
+    padding: 5px 5px 5px 5px;
+    flex-shrink: 0; /*so that buttons content doesn't leak outside of borders'*/
+}
+
+.Philadelphia\.Web\.ElementWrapperFormCanvas > .actions:empty {
+    padding: 0;
+    flex-shrink: 1;
+    display: none;
+}
+
+.Philadelphia\.Web\.ElementWrapperFormCanvas > .actions > .flexSpacer {
+    visibility: hidden;
+    flex-grow: 1;
+}
+
+
+
+
+
+ 
+
+.Philadelphia\.Web\.ElementWrapperFormCanvas.LayoutModeType_TitleExtra_Actions_Body {
+    grid-template-rows: auto auto 1fr;
+    grid-template-columns: 1fr auto;
+}
+
+.LayoutModeType_TitleExtra_Actions_Body > .title:not(:empty) {
+    grid-row: 1;
+    grid-column: 1;
+    justify-self: center;
+    align-self: center;
+}
+
+.LayoutModeType_TitleExtra_Actions_Body > .extraElement:not(:empty) {
+    grid-row: 1;
+    grid-column: 2;
+    justify-self: start;
+    align-self: start;
+}
+
+.LayoutModeType_TitleExtra_Actions_Body > .body {
+    grid-row: 3;
+    grid-column: 1 / span 2;
+}
+
+.LayoutModeType_TitleExtra_Actions_Body > .actions:not(:empty) {
+    grid-row: 2;
+    grid-column: 1 / span 2;
+}
+
+
+
+
+
+
+
+
+.Philadelphia\.Web\.ElementWrapperFormCanvas.LayoutModeType_ActionsTitleExtra_Body {
+    grid-template-rows: auto 1fr;
+    grid-template-columns: auto 1fr auto;
+}
+
+.LayoutModeType_ActionsTitleExtra_Body > .title:not(:empty) {
+    grid-row: 1;
+    grid-column: 2;
+    justify-self: center;
+    align-self: center;
+}
+
+.LayoutModeType_ActionsTitleExtra_Body > .extraElement:not(:empty) {
+    grid-row: 1;
+    grid-column: 3;
+    justify-self: start;
+    align-self: start;
+}
+
+.LayoutModeType_ActionsTitleExtra_Body > .body {
+    grid-row: 2;
+    grid-column: 1 / span 3;
+}
+
+.LayoutModeType_ActionsTitleExtra_Body > .actions:not(:empty) {
+    grid-row: 1;
+    grid-column: 1;
+    align-self: center;
+}
+
+
+
+
+
+
+
+
+.Philadelphia\.Web\.ElementWrapperFormCanvas.LayoutModeType_ExtraActionsTitle_Body {
+    grid-template-rows: auto 1fr;
+    grid-template-columns: auto auto 1fr;
+}
+
+.LayoutModeType_ExtraActionsTitle_Body > .title:not(:empty) {
+    grid-row: 1;
+    grid-column: 3;
+    justify-self: center;
+    align-self: center;
+}
+
+.LayoutModeType_ExtraActionsTitle_Body > .extraElement:not(:empty) {
+    grid-row: 1;
+    grid-column: 1;
+    justify-self: start;
+    align-self: start;
+}
+
+.LayoutModeType_ExtraActionsTitle_Body > .body {
+    grid-row: 2;
+    grid-column: 1 / span 3;
+}
+
+.LayoutModeType_ExtraActionsTitle_Body > .actions:not(:empty) {
+    grid-row: 1;
+    grid-column: 2;
+    align-self: center; /*so that buttons don't grow*/
+}
+
+
+
+
+
+
+
+
+.Philadelphia\.Web\.ElementWrapperFormCanvas.LayoutModeType_ExtraTitle_Body_Actions {
+    grid-template-rows: auto 1fr auto;
+    grid-template-columns:  auto 1fr;
+}
+
+.LayoutModeType_ExtraTitle_Body_Actions > .title:not(:empty) {
+    grid-row: 1;
+    grid-column: 2;
+    justify-self: center;
+    align-self: center;
+}
+
+.LayoutModeType_ExtraTitle_Body_Actions > .extraElement:not(:empty) {
+    grid-row: 1;
+    grid-column: 1;
+    justify-self: start;
+    align-self: start;
+}
+
+.LayoutModeType_ExtraTitle_Body_Actions > .body {
+    grid-row: 2;
+    grid-column: 1 / span 2;
+}
+
+.LayoutModeType_ExtraTitle_Body_Actions > .actions:not(:empty) {
+    grid-row: 3;
+    grid-column: 1 / span 2;
+}
+
+
+
+
+
+
+
+.Philadelphia\.Web\.ElementWrapperFormCanvas.LayoutModeType_TitleExtra_Body_Actions {
+    grid-template-rows: auto 1fr auto;
+    grid-template-columns: 1fr auto;
+}
+
+.LayoutModeType_TitleExtra_Body_Actions > .title:not(:empty) {
+    grid-row: 1;
+    grid-column: 1;
+}
+
+.LayoutModeType_TitleExtra_Body_Actions > .extraElement:not(:empty) {
+    grid-row: 1;
+    grid-column: 2;
+    align-self: center;
+    justify-self: end;   
+}
+
+.LayoutModeType_TitleExtra_Body_Actions > .body {
+    grid-row: 2;
+    grid-column: 1 / span 2;
+}
+
+.LayoutModeType_TitleExtra_Body_Actions > .actions:not(:empty) {
+    grid-row: 3;
+    grid-column: 1 / span 2;
+}
+
+
+
+
+
+
+.Philadelphia\.Web\.ElementWrapperFormCanvas.LayoutModeType_Title_Body_ActionsExtra {
+    grid-template-rows: auto 1fr auto;
+    grid-template-columns: 1fr auto;
+}
+
+.LayoutModeType_Title_Body_ActionsExtra > .title:not(:empty) {
+    grid-row: 1;
+    grid-column: 1 / span 2;
+}
+
+.LayoutModeType_Title_Body_ActionsExtra > .extraElement:not(:empty) {
+    grid-row: 3;
+    grid-column: 2;
+    align-self: center;
+    justify-self: end;   
+}
+
+.LayoutModeType_Title_Body_ActionsExtra > .body {
+    grid-row: 2;
+    grid-column: 1 / span 2;
+}
+
+.LayoutModeType_Title_Body_ActionsExtra > .actions:not(:empty) {
+    grid-row: 3;
+    grid-column: 1;
+    align-self: center; /*so that buttons don't grow*/
+}
+
+
+
+
+
+
+
+.Philadelphia\.Web\.InputTypeButtonActionView.datagridAction,
+.Philadelphia\.Web\.InputTypeButtonActionView.enabled.datagridAction {
+    padding: 0 8px 0 8px;
+
+    vertical-align: middle;
+    display: flex;
+    justify-content: center;
+    height: 26px;
+}
+
+.datagridAction img {
+    width: 18px;
+    height: 18px;
+    max-width: 18px;
+    max-height: 18px;
+    vertical-align: middle;
+    align-self: center;
+}
+
+.Philadelphia\.Web\.ModalDialogFromCanvas > div {
+    box-shadow: 0 0 22px 8px rgba(0, 0, 0, 0.25);
+}
+
+div.Philadelphia\.Web\.ModalDialogFromCanvas {
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    position: fixed;
+    z-index: 2;
+    justify-content: center;
+    background-color: rgba(1, 1, 1, 0.1);
+}
+
+div.Philadelphia\.Web\.ModalDialogFromCanvas > div {
+    flex-direction: column;
+    align-self: center;
+    display: flex;
+    border: 1px solid black;
+    background-color: #fff;
+}
+
+div.Philadelphia\.Web\.ModalDialogFromCanvas div.header {
+    display: flex;
+    flex-direction: row;
+    background-color: #9999ff;
+
+    user-select: none;
+    -moz-user-select: none;
+    -o-user-select: none;
+    -webkit-user-select: none;
+}
+
+div.Philadelphia\.Web\.ModalDialogFromCanvas div.headerTitle {
+    flex-grow: 1;
+    align-self: center;
+    font-weight: bold;
+    font-size: 16px;
+    padding-left: 2px;
+    color: black;
+    position: relative;
+}
+
+.Philadelphia\.Web\.ModalDialogFromCanvas .flexSpacer {
+    visibility: hidden;
+    flex-grow: 1;
+}
+
+/* grab cursor in FF */
+div.Philadelphia\.Web\.ModalDialogFromCanvas .headerTitle:hover {
+    cursor: grab;
+}
+
+/* grab cursor in Chrome */
+@media screen and (-webkit-min-device-pixel-ratio: 0) {
+    div.Philadelphia\.Web\.ModalDialogFromCanvas .headerTitle:hover {
+        cursor: -webkit-grab;
+    }
+}
+
+/*for inset shadow like effect */
+div.Philadelphia\.Web\.ModalDialogFromCanvas .headerTitle:before, .headerTitle:after {
+    content: attr(data-innerText);
+    color: rgba(255, 255, 255, .1);
+    position: absolute;
+
+}
+
+div.Philadelphia\.Web\.ModalDialogFromCanvas .headerTitle:before {top: 1px;left: 3px }
+div.Philadelphia\.Web\.ModalDialogFromCanvas .headerTitle:after {top: 2px;left: 4px }
+
+div.Philadelphia\.Web\.ModalDialogFromCanvas .headerClose:not(.enabled) {
+    display: none;
+}
+
+div.Philadelphia\.Web\.ModalDialogFromCanvas .headerClose.enabled {
+    min-width: 24px;
+    max-width: 24px;
+    min-height: 24px;
+    padding-top: 4px;
+    
+    align-self: flex-end;
+    flex: 1;
+    font-family: FontAwesome;
+    font-size: 18px;
+    background-color: rgba(0, 0, 0, .1);
+
+    justify-content: center;
+    flex-direction: column;
+    text-align: center;
+    
+    border-left: 1px solid rgba(0, 0, 0, 0.2);
+    cursor: pointer;
+}
+
+div.Philadelphia\.Web\.ModalDialogFromCanvas .headerClose.enabled:hover {
+    background-color: rgba(0, 0, 0, 0.3);
+    font-size: 22px;
+    padding-top: 2px;
+    padding-bottom: 2px;
+}
+
+div.Philadelphia\.Web\.ModalDialogFromCanvas > div[data-formView] > div.body {
+    padding: 20px;
+}
+
+div.Philadelphia\.Web\.ModalDialogFromCanvas > div[data-formView] > div.actions {
+    padding: 0 0 9px 4px;
+}
+
+div.Philadelphia\.Web\.HtmlTableBasedTableView {
+    position: relative;
+}
+
+table.Philadelphia\.Web\.HtmlTableBasedTableView {
+    border-spacing: 0;
+    height: auto;
+}
+
+div.Philadelphia\.Web\.HtmlTableBasedTableView.popup .settingsAction {
+    display: none;
+}
+
+div.Philadelphia\.Web\.HtmlTableBasedTableView:not(.popup) .settingsAction {
+    position: absolute;
+    background-color: #cccccc;
+    border: 0.5px solid #a1a1a1;
+    display: inline;
+    top: 2px;
+    z-index: 2;
+    left: 2px;
+    font-family: FontAwesome;
+    font-size: 23px;
+    border-radius: 30px;
+    padding: 3px 5px 3px 5px;
+    color: #0000d4;
+    text-align: center;
+    vertical-align: middle;
+    box-shadow: 2px 2px 13px #a1a1a1;
+    cursor: pointer;
+    margin-top: 1px;
+    text-shadow: 0 -1px 1px black;
+    text-decoration: none;    
+}
+
+div.Philadelphia\.Web\.HtmlTableBasedTableView:not(.active) .settingsAction {
+    opacity: 0;
+    transition: opacity 0.2s;
+}
+
+div.Philadelphia\.Web\.HtmlTableBasedTableView.active .settingsAction {
+    opacity: 0.85;
+    transition: opacity 0.2s;
+}
+
+table.Philadelphia\.Web\.HtmlTableBasedTableView thead {
+    background-color: #f0f0f0;
+    border-spacing: 0;
+}
+
+/* needed to be able to set dimensions */
+table.Philadelphia\.Web\.HtmlTableBasedTableView thead tr {
+    display: block;
+}
+
+/* filter row: visible style; cannot transition height and max-height is a good workaround */
+table.Philadelphia\.Web\.HtmlTableBasedTableView thead:not(.inactive) tr:nth-child(2) {
+    display: initial;
+}
+
+table.Philadelphia\.Web\.HtmlTableBasedTableView > tbody.firstRowIsOdd > tr:nth-child(even),
+table.Philadelphia\.Web\.HtmlTableBasedTableView > tbody:not(.firstRowIsOdd) > tr:nth-child(odd){
+    background-color: #fff;
+}
+
+table.Philadelphia\.Web\.HtmlTableBasedTableView > tbody.firstRowIsOdd > tr:nth-child(odd),
+table.Philadelphia\.Web\.HtmlTableBasedTableView > tbody:not(.firstRowIsOdd) > tr:nth-child(even){
+    background-color: #f7f8ff;
+}
+
+/*below firstRowIsOdd is needed to make selector as specific as it is for even/odd coloring*/
+table.Philadelphia\.Web\.HtmlTableBasedTableView > tbody.firstRowIsOdd > tr:hover,
+table.Philadelphia\.Web\.HtmlTableBasedTableView > tbody:not(.firstRowIsOdd) > tr:hover{
+    background-color: #eee;
+}
+
+/*below firstRowIsOdd is needed to make selector as specific as it is for even/odd coloring*/
+table.Philadelphia\.Web\.HtmlTableBasedTableView tbody.firstRowIsOdd tr.selectedRow,
+table.Philadelphia\.Web\.HtmlTableBasedTableView tbody:not(.firstRowIsOdd) tr.selectedRow {
+    background-color: #fcffb2;
+}
+
+/*below firstRowIsOdd is needed to make selector as specific as it is for even/odd coloring*/ 
+/* disabled because there's no easy unactivate so row stays activated
+table.Philadelphia\.Web\.HtmlTableBasedTableView tbody.firstRowIsOdd tr.activatedRow,
+table.Philadelphia\.Web\.HtmlTableBasedTableView tbody:not(.firstRowIsOdd) tr.activatedRow {
+    background-color: #fcffb2;
+}
+*/
+
+/* filter row: hidden style */
+table.Philadelphia\.Web\.HtmlTableBasedTableView thead.inactive tr:nth-child(2) {
+    display: none;
+}
+
+table.Philadelphia\.Web\.HtmlTableBasedTableView tbody {
+    height: 200px; /*temporarily hardcoded*/
+    display: block;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+table.Philadelphia\.Web\.HtmlTableBasedTableView > tbody > tr {
+    cursor: pointer; /*hint that rows are clickable/selectable*/
+}
+
+/* make borders in header thin without right border ... */
+table.Philadelphia\.Web\.HtmlTableBasedTableView th {
+    border-top: 1px solid #ddd;
+    border-left: 1px solid #ddd;
+    border-bottom: 1px solid #ddd;
+    white-space: nowrap;
+}
+
+table.Philadelphia\.Web\.HtmlTableBasedTableView > tbody > tr > td > .Philadelphia\.Web\.InputView.selectionHndlr {
+    text-align: center; /*select row checkbox in row selector column*/
+}
+
+table.Philadelphia\.Web\.HtmlTableBasedTableView > thead > tr > th.filter[data-selecthndlr] > div > a {
+    /*links have to look like links in selector column*/
+    color: #0000ee;
+    text-decoration: underline;
+}
+
+table.Philadelphia\.Web\.HtmlTableBasedTableView > thead > tr > th > div.columnLabel {
+    overflow: hidden;
+    display: flex;
+    text-align: center;
+    justify-content: center;
+}
+
+table.Philadelphia\.Web\.HtmlTableBasedTableView > thead > tr > th > div.columnLabel > * {
+    padding-right: 3px;
+}
+
+/* ...and last cell border  */
+table.Philadelphia\.Web\.HtmlTableBasedTableView th:last-child {
+    border-right: 1px solid #ddd;
+}
+
+/* filter controls should be shrinked when column is thin */
+table.Philadelphia\.Web\.HtmlTableBasedTableView th select,
+table.Philadelphia\.Web\.HtmlTableBasedTableView th input[type='text']  {
+    max-width: 100%;
+    min-width: 100%;
+    text-align: center; /*ff*/
+    text-align-last: center; /*chrome*/
+    overflow: hidden;
+}
+
+/* filter controls should be shrinked when column is thin */
+table.Philadelphia\.Web\.HtmlTableBasedTableView th label:not(:empty)  {
+    max-width: 100%;
+    min-width: 100%;
+    overflow: hidden;
+    display: block; /*labels are inline thus widths change is ignored*/
+    justify-self: self-start;
+}
+
+table.Philadelphia\.Web\.HtmlTableBasedTableView th input[type='radio'] {
+    margin-left: 0;
+    margin-right: 0;
+}
+
+.Philadelphia\.Web\.HtmlTableBasedTableView th,
+.Philadelphia\.Web\.HtmlTableBasedTableView td {
+    max-width: 75vw; /*so that column doesn't span multiple screens*/
+}
+
+
+.Philadelphia\.Web\.HtmlTableBasedTableView thead tr:nth-child(1) th:not(.withFilter) .filterIndicator {
+    display: none;
+}
+
+.Philadelphia\.Web\.HtmlTableBasedTableView thead tr:nth-child(1) th.withFilter .filterIndicator {
+    opacity: 1;
+    font-family: FontAwesome;
+    padding-right: 3px;
+}
+
+.Philadelphia\.Web\.HtmlTableBasedTableView thead th:not(.withAggregation) > span > .aggregateFunc {
+    display: none;
+}
+
+.Philadelphia\.Web\.HtmlTableBasedTableView thead th:not(.withGrouping) > span > .groupFunc {
+    display: none;
+}
+
+.Philadelphia\.Web\.HtmlTableBasedTableView thead tr:nth-child(1) th:not(.withGrouping) .groupIndicator {
+    display: none;
+}
+
+.Philadelphia\.Web\.HtmlTableBasedTableView thead tr:nth-child(1) th.withGrouping .groupIndicator {
+    opacity: 1;
+    font-family: FontAwesome;
+    padding-right: 3px;
+}
+
+.Philadelphia\.Web\.HtmlTableBasedTableView thead tr:nth-child(1) th:not(.withAggregation) .aggregationIndicator {
+    display: none;
+}
+
+.Philadelphia\.Web\.HtmlTableBasedTableView thead tr:nth-child(1) th.withAggregation .aggregationIndicator {
+    opacity: 1;
+    padding-right: 3px;
+}
+
+.Philadelphia\.Web\.HtmlTableBasedTableView thead tr:nth-child(2) th select {
+    border: 1px solid #aaa;
+}
+
+.Philadelphia\.Web\.HtmlTableBasedTableView thead tr:nth-child(2) th:not(:hover):not(.active) {
+    opacity: 0.3;
+}
+
+.Philadelphia\.Web\.HtmlTableBasedTableView thead tr:nth-child(2) th:hover,
+.Philadelphia\.Web\.HtmlTableBasedTableView thead tr:nth-child(2) th.active {
+    opacity: 1;
+}
+
+.Philadelphia\.Web\.HtmlTableBasedTableView thead tr:nth-child(2) th .filterMainContainer {
+    min-height: 94px; /*appearing grouping/aggregation/filter items change height of table header causing scroll*/
+}
+
+table.Philadelphia\.Web\.HtmlTableBasedTableView td {
+    border-left: 1px solid #ddd;
+    border-bottom: 1px solid #ddd;
+    white-space: nowrap;
+
+    overflow: hidden; /*those two are needed to nicely truncate with three dots*/
+    text-overflow: ellipsis;
+}
+
+table.Philadelphia\.Web\.HtmlTableBasedTableView td:last-child {
+    border-right: 1px solid #ddd;
+}
+
+.Philadelphia\.Web\.InputView > .inputContainer > input {
+    background-repeat: no-repeat;
+    background-position-y: 100%;
+    background-size: contain;
+    box-sizing: border-box; /* otherwise width 100% overflows table's cell*/
+
+    border-style: solid; /* style that matches textarea */
+    border-width: 1px;
+    border-color: #949494;
+}
+
+.Philadelphia\.Web\.InputView:not(.isClearable):not(.searchBox) > .inputContainer > input,
+.Philadelphia\.Web\.InputView.isClearable.isEmpty:not(.searchBox) > .inputContainer > input {
+    background-position-x: 100%; /*no need to account for clear action*/
+}
+
+.Philadelphia\.Web\.InputView.searchBox > .inputContainer > input,
+.Philadelphia\.Web\.InputView.searchBox > .inputContainer > input {
+    background-position-x: 0; /*no need to account for clear action*/
+}
+
+.Philadelphia\.Web\.InputView.isClearable:not(.isEmpty):not(.searchBox) > .inputContainer > input {
+    background-position-x: calc(100% - 14px); /*needs to account for clear action*/
+} 
+
+.Philadelphia\.Web\.InputView > .inputContainer > input[readonly] {
+    background-color: #d4d0c8;
+}
+
+/*input[number] in chrome has focus/active only spinner (with different size than FF)*/
+@media screen and (-webkit-min-device-pixel-ratio: 0) {
+    .Philadelphia\.Web\.InputView > .inputContainer > input[type=number]:focus,
+    .Philadelphia\.Web\.InputView > .inputContainer > input[type=number]:hover {
+        background-position-x: calc(100% - 10px);
+    }
+}
+
+/*for spinner*/
+*:not(.Philadelphia\.Web\.DateTimeInputView) > input[type=number] {
+    min-height: 30px;
+    font-size: 20px;
+}
+
+/*input[number] in FF has always active spinner with different size than Chrome*/
+@-moz-document url-prefix() {
+    .Philadelphia\.Web\.InputView > .inputContainer > input[type=number] {
+        background-position-x: calc(100% - 18px);
+    }
+}
+
+/*input[number] in Chrome&FF has spinner*/
+
+.Philadelphia\.Web\.InputView.userSuccess > .inputContainer > input {
+    background-image: url('Success.png');
+}
+.Philadelphia\.Web\.InputView.userError > .inputContainer > input {
+    background-image: url('Error.png');
+}
+.Philadelphia\.Web\.InputView.programmaticSuccess {
+}
+.Philadelphia\.Web\.InputView.programmaticError > .inputContainer > input {
+    background-image: url('Error.png');
+}
+
+.Philadelphia\.Web\.InputView.validating > .inputContainer > input {
+    background-image: url('spin32.gif');
+}
+
+
+
+
+.Philadelphia\.Web\.TextAreaView > .inputContainer > textarea {
+    background-repeat: no-repeat;
+    background-position-x: 100%;
+    background-position-y: 50%;
+    background-size: 18px; /* should be 'contain' if smaller than image and 'auto' otherwise BUT other inputsare smaller*/
+    min-height: 32px; /*so that 'contain' is not needed*/
+    box-sizing: border-box; /* otherwise width 100% overflows table's cell*/
+}
+
+.Philadelphia\.Web\.TextAreaView.userSuccess > .inputContainer > textarea {
+    background-image: url('Success.png');
+}
+.Philadelphia\.Web\.TextAreaView.userError > .inputContainer > textarea {
+    background-image: url('Error.png');
+}
+.Philadelphia\.Web\.TextAreaView.programmaticSuccess {
+}
+.Philadelphia\.Web\.TextAreaView.programmaticError > .inputContainer > textarea {
+    background-image: url('Error.png');
+}
+
+.Philadelphia\.Web\.TextAreaView.validating > .inputContainer > textarea {
+    background-image: url('spin32.gif');
+}
+
+.Philadelphia\.Web\.DropDownSelectBox > .inputContainer > select {
+    background-repeat: no-repeat;
+    background-position-x: calc(100% - 18px);
+    background-position-y: 100%;
+    background-size: contain;
+    box-sizing: border-box; /* otherwise width 100% overflows table's cell*/
+    padding-right: 18px; /*so that background image doesn't overlap with select's value*/
+}
+
+.Philadelphia\.Web\.DropDownSelectBox.userSuccess > .inputContainer > select {
+    background-image: url('Success.png');
+}
+
+.Philadelphia\.Web\.DropDownSelectBox.programmaticError > .inputContainer > select {
+    background-image: url('Error.png');
+}
+
+.Philadelphia\.Web\.DropDownSelectBox.userError > .inputContainer > select {
+    background-image: url('Error.png');
+}
+
+.Philadelphia\.Web\.InputView > .inputContainer,
+.Philadelphia\.Web\.TextAreaView > .inputContainer,
+.Philadelphia\.Web\.DropDownSelectBox > .inputContainer {
+    position: relative; /*otherwise tableLike popup formats itself against beginning of table instead of input or textversion*/
+}
+
+.Philadelphia\.Web\.InputView.clickToEditable.viewing > .inputContainer > input,
+.Philadelphia\.Web\.TextAreaView.clickToEditable.viewing > .inputContainer > textarea,
+.Philadelphia\.Web\.DropDownSelectBox.clickToEditable.viewing > .inputContainer > select {
+    display: none;
+}
+
+.Philadelphia\.Web\.InputView.clickToEditable.viewing > .inputContainer > .textVersion,
+.Philadelphia\.Web\.TextAreaView.clickToEditable.viewing > .inputContainer > .textVersion,
+.Philadelphia\.Web\.DropDownSelectBox.clickToEditable.viewing > .inputContainer > .textVersion {
+    display: inline-block; /*so that empty text version still respects min-width*/
+    min-width: 120px;
+    text-align: center;
+    cursor: pointer;
+    border-bottom: dashed 1px #08c;
+}
+
+.Philadelphia\.Web\.InputView.clickToEditable.viewing > .inputContainer > .textVersion:empty:before,
+.Philadelphia\.Web\.TextAreaView.clickToEditable.viewing > .inputContainer > .textVersion:empty:before,
+.Philadelphia\.Web\.DropDownSelectBox.clickToEditable.viewing > .inputContainer > .textVersion:empty:before {
+    content: "\200b"; /*=NBSP with zero width so that empty span preserves height; thanks http://stackoverflow.com/questions/14217902/how-to-set-empty-span-height-equal-to-default-line-height */
+}
+
+.Philadelphia\.Web\.InputView.clickToEditable.editing > .inputContainer > .textVersion,
+.Philadelphia\.Web\.TextAreaView.clickToEditable.editing > .inputContainer > .textVersion,
+.Philadelphia\.Web\.DropDownSelectBox.clickToEditable.editing > .inputContainer > .textVersion {
+    display: none;
+}
+
+.Philadelphia\.Web\.InputTypeButtonActionView {
+    user-select: none;
+    -moz-user-select: none;
+    -o-user-select: none;
+    -webkit-user-select: none;
+    white-space: nowrap; /* so that buttons are not wrapped when there's not enough space'*/
+    display: inline-block;
+    border-radius: 5px;
+}
+
+.Philadelphia\.Web\.InputTypeButtonActionView > span {
+    font-size: 13px;
+    display: inline-block;    
+}
+
+.Philadelphia\.Web\.InputTypeButtonActionView.usesFontBtn > span:nth-child(1)  {
+    vertical-align: middle;
+    padding-left: 6px;
+    font-family: FontAwesome;
+}
+
+.Philadelphia\.Web\.InputTypeButtonActionView.usesFontBtn > span:nth-child(2) {
+    padding: 5px 15px 6px 15px;
+}
+
+.Philadelphia\.Web\.InputTypeButtonActionView.usesFontBtnLabelLess > span:nth-child(1) {
+    font-family: FontAwesome;
+    padding: 7px 10px 7px 10px;
+}
+
+.Philadelphia\.Web\.InputTypeButtonActionView:not(.running):not(.usesFontBtn) > span:nth-child(2):not(:empty) {
+    padding: 5px 15px 3px 15px;
+}
+
+.Philadelphia\.Web\.InputTypeButtonActionView.running > span:nth-child(2):not(:empty) {
+    padding: 5px 15px 3px 0;
+    text-align: center;
+    vertical-align: middle;
+    min-height: 18px;
+}
+
+.Philadelphia\.Web\.InputTypeButtonActionView.enabled {
+    background: #fff;
+    background-image: linear-gradient(to bottom, #fff, #ddd);
+    box-shadow: 0 1px 3px #666666;
+    color: #000000;
+    border: 0.5px solid #d4d4d4;
+    cursor: pointer;
+}
+
+.Philadelphia\.Web\.InputTypeButtonActionView.refreshButton {
+    display: flex;
+    align-items: center;
+}
+
+.Philadelphia\.Web\.InputTypeButtonActionView.refreshButton >  span:nth-child(1) {
+    padding-left: 8px;
+}
+
+.Philadelphia\.Web\.InputTypeButtonActionView.refreshButton >  span:nth-child(2) {
+    padding-right: 6px;
+}
+
+/*emphasise default form button*/
+.Philadelphia\.Web\.InputTypeButtonActionView.enabled[data-defaultaction] {
+    border-width: 1px;
+}
+
+.Philadelphia\.Web\.InputTypeButtonActionView.enabled:focus,
+.Philadelphia\.Web\.InputTypeButtonActionView:not(.enabled):focus {
+    outline: none;
+    border-color: black;
+}
+
+
+.Philadelphia\.Web\.InputTypeButtonActionView.enabled:hover {
+    background: #ededed;
+    background-image: linear-gradient(to bottom, #ededed, #9e9e9e);
+    text-decoration: none;
+}
+
+.Philadelphia\.Web\.InputTypeButtonActionView:not(.enabled) {
+    background: #ebebeb;
+    background-image: linear-gradient(to bottom, #ebebeb, #d1d1d1);
+    text-shadow: 1px 1px 0px #d6d6d6;
+    color: #8f8f8f;
+    border: solid #4d4d4d 0.5px;
+    cursor: not-allowed;
+}
+
+.Philadelphia\.Web\.InputTypeButtonActionView:not(.enabled) > span {
+    text-shadow: 1px 1px 0px #d6d6d6;
+    color: #8f8f8f;
+}
+
+.Philadelphia\.Web\.InputTypeButtonActionView:not(.enabled):hover {
+    text-decoration: none;
+}
+
+.Philadelphia\.Web\.InputTypeButtonActionView:before {
+    display: inline-block;
+}
+
+.Philadelphia\.Web\.InputTypeButtonActionView.failed::before {
+    font-family: FontAwesome;
+    content: "";
+    color: #f00000;
+}
+
+.Philadelphia\.Web\.InputTypeButtonActionView.enabled.pressed {
+    background-image: linear-gradient(to bottom, #d1d1d1, #ebebeb);
+    color: #f7f7f7;
+    box-shadow: inset 1px 1px 1px #000;
+}
+
+@keyframes throbberSpin { 100% { transform: rotate(360deg); } }
+
+.Philadelphia\.Web\.InputTypeButtonActionView.running::before {
+    font-family: FontAwesome;
+    content: "";
+    animation: throbberSpin 1.0s linear infinite;
+    color: #000;
+
+    /*following properties are to avoid rotation around 'something' that is not a center of the glyph */
+    font-size: 14px;
+    display: inline-block;
+    width: 15px;
+    height: 15px;
+    text-align: center;
+    vertical-align: middle;
+    padding-top: 2px;
+    padding-left: 0px;
+    padding-right: 0;
+}
+
+.tooltipContainer {
+    position: relative;
+}
+
+.tooltip {
+    position: absolute;
+    left: 0;
+    top: 0;
+    display: table-cell;
+
+    white-space: pre;
+    margin-left: 5px;
+    padding: 3px;
+    background-color: #fff;
+    border: 1px solid #f00;
+    border-radius: 8px;
+    box-shadow: 0 0 4px 2px rgba(130, 0, 0, 0.5);
+    color: #f00;
+    z-index: 2;
+}
+
+.tooltip.active {
+    opacity: 1;
+    transition: opacity 300ms;
+}
+
+.tooltip.inactive {
+    opacity: 0;
+    transition: opacity 1000ms;
+}
+
+.tooltip.disabled {
+    display: none;
+}
+
+@font-face {
+    font-family: FontAwesome;
+    src: url('fontawesome-webfont.woff');
+}
+
+/* default pointer cursor instead of (disabled anyway) text select */
+table.Philadelphia\.Web\.HtmlTableBasedTableView th[data-sort="4"] {
+    cursor: default;
+}
+
+/* hint that one can click on TH to sort */
+table.Philadelphia\.Web\.HtmlTableBasedTableView th:not([data-sort="4"]) {
+    cursor: pointer;
+}
+
+/* no matter the sorting order keep same width*/
+table.Philadelphia\.Web\.HtmlTableBasedTableView th > span[data-sort] {
+    display: inline-block;
+    min-width: 20px;
+    max-width: 20px;
+    width: 20px;
+}
+
+
+
+
+
+
+table.Philadelphia\.Web\.HtmlTableBasedTableView > thead > tr > th:not(.withGrouping) > .filterMainContainer .groupRemove {
+    display: none;
+}
+
+table.Philadelphia\.Web\.HtmlTableBasedTableView > thead > tr > th:not(.withAggregation) > .filterMainContainer .aggregationRemove {
+    display: none;
+}
+
+table.Philadelphia\.Web\.HtmlTableBasedTableView > thead > tr > th.withGrouping > .filterMainContainer .groupRemove {
+    font-family: FontAwesome;
+    font-size: 20px;
+    overflow: hidden;
+}
+
+table.Philadelphia\.Web\.HtmlTableBasedTableView > thead > tr > th.withGrouping > .filterMainContainer .groupRemove:after {
+    content: "";
+    color: red;
+    font-size: 15px;
+    margin-left: -10px;
+}
+
+table.Philadelphia\.Web\.HtmlTableBasedTableView > thead > tr > th.withAggregation > .filterMainContainer .aggregationRemove {
+    font-size: 23px;
+    margin-top: -1px;
+    margin-bottom: -2px;
+}
+
+table.Philadelphia\.Web\.HtmlTableBasedTableView > thead > tr > th.withAggregation > .filterMainContainer .aggregationRemove:after {
+    font-family: FontAwesome;
+    content: "";
+    color: red;
+    font-size: 15px;
+    margin-left: -10px;
+}
+
+table.Philadelphia\.Web\.HtmlTableBasedTableView > thead > tr > th.withGrouping > .filterMainContainer > .groupOrAggregate,
+table.Philadelphia\.Web\.HtmlTableBasedTableView > thead > tr > th.withAggregation > .filterMainContainer > .groupOrAggregate {
+    display: none;
+}
+
+table.Philadelphia\.Web\.HtmlTableBasedTableView > thead > tr > th:not(.withGrouping):not(.withAggregation) > .filterMainContainer > .groupOrAggregate {
+    display: grid;
+    grid-template-columns: auto auto;
+    align-items: center;
+    font-weight: normal;
+    text-align: left;
+    overflow: hidden;
+}
+
+table.Philadelphia\.Web\.HtmlTableBasedTableView > thead > tr > th > .filterMainContainer > .groupOrAggregate > input[type='radio'] {
+    justify-self: self-end;
+}
+
+table.Philadelphia\.Web\.HtmlTableBasedTableView > thead > tr > th > .filterMainContainer > .groupOrAggregate > input {
+    height: 10px;
+}
+
+table.Philadelphia\.Web\.HtmlTableBasedTableView > thead > tr > th > .filterMainContainer > .aggregateFunc > label {
+    font-weight: normal; /*in Chrome by default it is bold*/
+}
+
+table.Philadelphia\.Web\.HtmlTableBasedTableView > thead > tr > th > .filterMainContainer > .aggregateFunc select {
+    background: white; /*disable success or error*/
+}
+
+table.Philadelphia\.Web\.HtmlTableBasedTableView > thead > tr > th > .filterMainContainer > .groupFunc select {
+    background: white; /*disable success or error*/
+}
+
+table.Philadelphia\.Web\.HtmlTableBasedTableView > thead > tr > th:not(.withAggregation) > .filterMainContainer > .aggregateFunc,
+table.Philadelphia\.Web\.HtmlTableBasedTableView > thead > tr > th.withGrouping > .filterMainContainer > .aggregateFunc {
+    display: none;
+}
+
+table.Philadelphia\.Web\.HtmlTableBasedTableView > thead > tr > th {
+    position: relative;
+}
+
+.Philadelphia\.Web\.HtmlTableBasedTableView.active > table.Philadelphia\.Web\.HtmlTableBasedTableView > thead.active > tr > th > div.resizeHandle,
+table.Philadelphia\.Web\.HtmlTableBasedTableView.isResizing > thead.active > tr > th > div.resizeHandle {
+    background: linear-gradient(to right, rgb(162, 162, 162) 0%, rgb(255, 255, 255) 50%, rgb(162, 162, 162) 100%);
+    border-radius: 4px;
+    width: 10px;
+    height: 125%;
+    position: absolute;
+    right: calc(0% - 5px);
+    top: -1px;
+    cursor: ew-resize;
+    z-index: 100;
+    border: 0.5px solid #909090;
+}
+
+
+
+
+
+
+
+
+
+/* unspecified sorting order more subtle */
+table.Philadelphia\.Web\.HtmlTableBasedTableView th span[data-sort="1"] {
+    opacity: 0.15;
+}
+
+table.Philadelphia\.Web\.HtmlTableBasedTableView thead tr th.filter {
+    vertical-align: top;
+}
+
+table.Philadelphia\.Web\.HtmlTableBasedTableView:not(.filterable) thead tr th.filter {
+    display: none;
+}
+
+.Philadelphia\.Web\.HtmlTableBasedTableView.filterable thead th.filter:not(.withFilter) .filterRemove {
+    display: none;
+}
+
+.Philadelphia\.Web\.HtmlTableBasedTableView.filterable thead th.filter.withFilter .filterable {
+    display: none;
+}
+
+.Philadelphia\.Web\.HtmlTableBasedTableView.filterable thead th.filter:not(.withFilter) .filterable {
+    width: 16px;
+    height: auto;
+    align-self: center;
+}
+
+.Philadelphia\.Web\.HtmlTableBasedTableView.filterable thead th.filter .filterMainContainer {
+    display: flex;
+    flex-direction: column;
+}
+
+.Philadelphia\.Web\.HtmlTableBasedTableView.filterable thead th.filter .filterActionContainer {
+    display: flex;
+    justify-content: center;
+}
+
+.Philadelphia\.Web\.HtmlTableBasedTableView.filterable thead th.filter a.filterRemove {
+    display: inline-block;
+    font-family: FontAwesome;
+    font-size: 20px;
+    padding-right: 15px;    
+}
+
+.Philadelphia\.Web\.HtmlTableBasedTableView.filterable thead th.filter a.filterRemove:after {
+    font-family: FontAwesome;
+    font-size: 15px;
+    content: ""; /*times*/
+    color: red;
+    margin-left: -10px;
+}
+
+/* don't show success image in filter parameter ' */
+.filterMainContainer .Philadelphia\.Web\.InputView.userSuccess > .inputContainer > input {
+    background-image: none;
+}
+
+table.Philadelphia\.Web\.HtmlTableBasedTableView th {
+    user-select: none;
+    -moz-user-select: none;
+    -o-user-select: none;
+    -webkit-user-select: none;
+}
+
+/* hover percentage in center of throbber */
+.remoteActionsCallerPercentage {
+    position: absolute;
+    text-align: center;
+    width: 100%;
+    left: 0;
+    top: 37px;
+}
+
+/* hover percentage in center of throbber */
+.remoteActionsParentContainer {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+}
+
+/* shrink container to fit content */
+.remoteActionsDirectContainer {
+    position: relative; 
+    float: left;
+}
+
+.remoteActionsCallerError {
+    max-height: 150px;
+    max-width: 350px;
+    overflow: auto;
+}
+
+.Philadelphia\.Web\.TwoHorizontalPanelsWithResizer,
+.Philadelphia\.Web\.TwoVerticalPanelsWithResizer {
+    display: flex; 
+    align-items: stretch;
+}
+
+.Philadelphia\.Web\.TwoHorizontalPanelsWithResizer {
+    flex-direction: row;
+    overflow-x: hidden;
+}
+
+.Philadelphia\.Web\.TwoVerticalPanelsWithResizer {
+    flex-direction: column;
+    overflow-y: hidden;
+}
+
+.Philadelphia\.Web\.TwoHorizontalPanelsWithResizer .splitter,
+.Philadelphia\.Web\.TwoVerticalPanelsWithResizer .splitter {
+    flex: 0 0 18px;
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-color: #eee;
+    border: solid 1px #ccc;    
+}
+
+.Philadelphia\.Web\.TwoHorizontalPanelsWithResizer .splitter {
+    cursor: e-resize;
+    background-image: url('drag64rotated.png');
+    background-position-y: 50%;
+}
+
+.Philadelphia\.Web\.TwoVerticalPanelsWithResizer .splitter {
+    cursor: n-resize;
+    background-image: url('drag64.png');
+    background-position-x: 50%;
+}
+
+.Philadelphia\.Web\.TwoHorizontalPanelsWithResizer.active > *:nth-child(1),
+.Philadelphia\.Web\.TwoVerticalPanelsWithResizer.active > *:nth-child(1) {
+    flex-grow: 0;
+    flex-shrink: 0;
+}
+
+.Philadelphia\.Web\.TwoHorizontalPanelsWithResizer.active > *:nth-child(1) {
+    overflow-x: auto;
+}
+
+.Philadelphia\.Web\.TwoVerticalPanelsWithResizer.active > *:nth-child(1) {
+    overflow-y: auto;
+}
+
+.Philadelphia\.Web\.TwoHorizontalPanelsWithResizer.active > *:nth-child(3),
+.Philadelphia\.Web\.TwoVerticalPanelsWithResizer.active > *:nth-child(3) {
+    flex-grow: 0;
+    flex-shrink: 0;    
+}
+
+.Philadelphia\.Web\.TwoHorizontalPanelsWithResizer.active > *:nth-child(3) {
+    overflow-x: auto;
+}
+
+.Philadelphia\.Web\.TwoVerticalPanelsWithResizer.active > *:nth-child(3) {
+    overflow-y: auto;
+}
+
+.anchorWithFontIcon:not(.headerClose) {
+    font-family: FontAwesome;
+    color: #fff;
+    font-size: 15px;
+    padding-left: 4px;
+    width: 16px;
+    height: 16px;    
+    max-height: 20px;
+}
+
+.anchorWithFontIcon.enabled:not(.headerClose):not(.running) {
+    cursor: pointer;
+}
+
+.anchorWithFontIcon:not(.headerClose):not(.running):not(.failed) {
+    color: white;
+}
+
+.anchorWithFontIcon:not(.headerClose):not(.running):not(.enabled) {
+    color: #a2a2a2;
+}
+
+.anchorWithFontIcon.enabled:not(.headerClose):not(.running) {
+    text-shadow: 1px 1px 1px #e8ebff, -1px -1px 1px #e8ebff, -1px 1px 1px #e8ebff, 1px -1px 1px #e8ebff;
+    color: #001dff;
+}
+
+.anchorWithFontIcon.running:not(.headerClose)::before {
+    animation: throbberSpin 1.0s linear infinite;
+    content: "";
+    display: inline-block;
+    color: black;
+    visibility: visible;
+}
+
+.anchorWithFontIcon.running:not(.headerClose) {
+    visibility: hidden; /*otherwise original icon is beneath the spinner*/
+}
+
+.anchorWithFontIcon[data-errors-tooltip]:not(.headerClose):not(.running) {
+    text-shadow: 1px 1px 1px #ffa0a0, -1px -1px 1px #ffa0a0, -1px 1px 1px #ffa0a0, 1px -1px 1px #ffa0a0;
+}
+.anchorWithFontIcon.enabled:not(.headerClose):not(.running):hover {
+    text-shadow: 2px 2px 3px #e8ebff, -2px -2px 3px #e8ebff, -2px 2px 3px #e8ebff, 2px -2px 3px #e8ebff;
+    font-weight: bolder;
+}
+.anchorWithFontIcon[data-errors-tooltip]:not(.headerClose):not(.running):hover {
+    text-shadow: 2px 2px 3px #ffa0a0, -2px -2px 3px #ffa0a0, -2px 2px 3px #ffa0a0, 2px -2px 3px #ffa0a0;
+    font-weight: bolder;
+}
+
+
+.Philadelphia\.Web\.InputView.searchBox > .inputContainer > input {
+    background-position-x: 0;
+    padding-left: 25px;
+    background-image: url('Search.png');
+    height: 27px;
+    background-color: #ffffcc;
+    transition: background-color 0.5s;
+}
+
+.Philadelphia\.Web\.InputView.searchBox > .inputContainer > input:focus {
+    background-color: #ffff4d;
+    transition: background-color 0.5s;
+}
+
+.Philadelphia\.Web\.InputView.isClearable > .inputContainer > .clearContainer {
+    position: relative;
+}
+
+.Philadelphia\.Web\.InputView.isEmpty > .inputContainer > .clearContainer, 
+.Philadelphia\.Web\.InputView.clickToEditable.viewing > .inputContainer > .clearContainer {
+    display: none;
+}
+        
+.Philadelphia\.Web\.InputView > .inputContainer > .clearContainer:after {
+    position: absolute;
+    content: "";
+    font-family: FontAwesome;
+    top: 1px;
+    left: -14px;
+    cursor: pointer;
+}
+
+.Philadelphia\.Web\.InputView > .inputContainer > .clearContainer:hover:after {
+    font-size: 18px;
+    left: -16px;
+    top: -2px;
+}
+
+.Philadelphia\.Web\.SingleChoiceDropDown .popup {
+    box-shadow: 30px 8px 20px -20px rgba(0, 0, 0, 0.25), 
+                -30px 8px 20px -20px rgba(0, 0, 0, 0.25), 
+                0 20px 20px 0 rgba(0, 0, 0, 0.25);   
+    z-index: 2;
+    position: absolute;
+    background-color: #ffffff; /*so that popup is not semi transparent*/
+    top: 20px; /*put it directly under input*/
+}
+
+.Philadelphia\.Web\.HorizontalTabbedView {
+    display: flex;
+    flex-direction: column;
+}
+
+.Philadelphia\.Web\.HorizontalTabbedView > .tabHandleContainer {
+    display: flex;
+	
+    -moz-user-select: none;
+    user-select: none;
+}
+
+.Philadelphia\.Web\.HorizontalTabbedView > .tabHandleContainer > .tabHandle { 	
+    flex: 1;
+    flex-grow: 0;
+    display: flex;
+    align-items: stretch;	
+	
+    border-top: 1px solid black;
+    border-left: 1px solid black;
+    border-right: 1px solid black;
+    border-radius: 8px 8px 0px 0px; 
+    
+    z-index: 1; /*so that top border below active pad is not drawn*/
+    border-bottom: 1px solid black;
+    margin: -1px;
+
+    text-align: center;
+    white-space: nowrap;
+	
+    cursor: pointer;
+	
+    padding-left: 10px;
+    padding-right: 10px;
+	
+    background-color: #f5f5f5;
+}
+
+.Philadelphia\.Web\.HorizontalTabbedView > .tabHandleContainer > .tabHandle > .tabLabel {
+    color: #aaa;
+    font-size: 15px;
+}
+
+.Philadelphia\.Web\.HorizontalTabbedView > .tabHandleContainer > .tabHandle.active > .tabLabel {
+    color: #000;
+}
+
+.Philadelphia\.Web\.HorizontalTabbedView > .tabHandleContainer > .tabHandle > .Philadelphia\.Web\.ValidationIndicatorView.failed:after { 
+    color: #e90000;
+    font-size: 15px;
+    opacity: 0.25;
+}
+
+.Philadelphia\.Web\.HorizontalTabbedView > .tabHandleContainer > .tabHandle.active > .Philadelphia\.Web\.ValidationIndicatorView.failed:after { 
+    color: #e90000;
+    font-size: 15px;
+    opacity: 1;
+}
+
+.Philadelphia\.Web\.HorizontalTabbedView > .tabHandleContainer > .tabHandle.active > .tabLabel {
+    font-weight: bold; /*label only, without icon otherwise exclamation mark becomes too slim*/
+}
+
+.Philadelphia\.Web\.HorizontalTabbedView > .tabHandleContainer > .tabHandle.active {
+    box-shadow: -4px -4px 5px -4px #aaa, 4px -4px 5px -4px #aaa;
+    background-color: #fff;
+    
+    border-bottom: 1px solid white;
+    margin-left: 0;
+}
+
+.Philadelphia\.Web\.HorizontalTabbedView > .tabContentContainer {
+    border-width: 0.5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: -1px;
+    border-style: solid;
+    border-color: #bbbbbb;
+    min-height: 15vh;
+}
+
+.Philadelphia\.Web\.HorizontalTabbedView > .tabContentContainer > .tabContent {
+    /*overflow: auto; disabled because popups in tabs are truncated*/
+}
+
+.Philadelphia\.Web\.ValidationIndicatorView {
+    font-family: FontAwesome;
+    width: 13px;
+}
+
+.Philadelphia\.Web\.ValidationIndicatorView.failed:after {
+    content: ""; /*exclamation mark in circle*/
+}
+
+.tableLike {
+    display: table;
+}
+
+.tableLike > * {
+    display: table-row;
+}
+
+.tableLike > * > *{
+    display: table-cell;
+}
+
+.tableLike > * > *:nth-child(1) {
+    text-align: right;
+    vertical-align: middle;
+    padding-right: 5px; /*needed for second col (padding 2nd col causes overflow with width 100% )*/
+}
+
+.tableLike > * > *:nth-child(2) {
+    max-width: 50vw;
+    white-space: nowrap;    
+}
+
+.tableLike > * > *:nth-child(2) select  ,
+.tableLike > * > *:nth-child(2) textarea ,
+.tableLike > * > *:nth-child(2) input[type='text'],
+.tableLike > * > *:nth-child(2) input[type='password'] {
+    min-width: 100%; /*so that dots are in full line*/
+}
+
+.tableLike > * > *:nth-child(2) .textVersion {
+    overflow: hidden; 
+    width: 100%; /*so that dots are in full line*/
+    box-sizing: border-box; /* otherwise width 100% overflows table's cell*/
+
+    text-overflow: ellipsis; /*those two are needed to nicely truncate with three dots*/
+    white-space: nowrap;
+}
+
+label {
+    white-space: nowrap; /*so that it is not wrapped by space calculating horizontal splitter*/
+}
+
+.Philadelphia\.Web\.MultipleChoiceDropDown > .valueContainer {
+    border: 1px solid black;
+    background-color: #fcfcfc;
+    cursor: pointer;
+}
+
+.Philadelphia\.Web\.MultipleChoiceDropDown[data-readonly='yes'] > .valueContainer {
+    background-color: #d2d2d2;
+}
+
+.Philadelphia\.Web\.MultipleChoiceDropDown > .valueContainer > .value > a {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: inline-block;
+    width: 200px; /*default width so that control doesn't grow with when its value changes*/
+    font-style: italic;
+    padding-left: 5px;
+    padding-top: 3px;
+    white-space: pre; /*so that overflowing text doesn't cause multi lines'*/
+}
+
+.Philadelphia\.Web\.MultipleChoiceDropDown > .valueContainer > .value > .icon:after {
+    content: "";
+    font-family: FontAwesome;
+    padding-right: 5px;
+}
+
+.Philadelphia\.Web\.MultipleChoiceDropDown[data-readonly='yes'] > .valueContainer > .value > .icon:after {
+    color: #919191;
+}
+
+.Philadelphia\.Web\.MultipleChoiceDropDown > .valueContainer > .Philadelphia\.Web\.HtmlTableBasedTableView {
+    box-shadow: 30px 8px 20px -20px rgba(0, 0, 0, 0.25), 
+                -30px 8px 20px -20px rgba(0, 0, 0, 0.25), 
+                0 20px 20px 0 rgba(0, 0, 0, 0.25);   
+    z-index: 2;
+    position: absolute;
+    background-color: #ffffff; /*so that popup is not semi transparent*/
+}
+
+.Philadelphia\.Web\.MultipleChoiceDropDown .valueContainer {
+    background-repeat: no-repeat;
+    background-position-y: 100%;
+    background-position-x: 100%;
+    background-size: contain;
+    box-sizing: border-box; /* otherwise width 100% overflows table's cell*/
+    padding-right: 20px;
+}
+
+.Philadelphia\.Web\.MultipleChoiceDropDown.userSuccess .valueContainer {
+    background-image: url('Success.png');
+}
+
+.Philadelphia\.Web\.MultipleChoiceDropDown.userError .valueContainer {
+    background-image: url('Error.png');
+}
+
+.Philadelphia\.Web\.MultipleChoiceDropDown.programmaticSuccess .valueContainer {
+}
+
+.Philadelphia\.Web\.MultipleChoiceDropDown.programmaticError .valueContainer {
+    background-image: url('Error.png');
+}
+
+.Philadelphia\.Web\.MultipleChoiceDropDown.validating .valueContainer {
+    background-image: url('spin32.gif');
+}
+
+.Philadelphia\.Web\.ActionButtonsMenuBarView {
+    padding-top: 8px;
+    padding-bottom: 8px;
+}
+
+.Philadelphia\.Web\.ActionButtonsMenuBarView > div.body > .Philadelphia\.Web\.InputTypeButtonActionView {
+    font-size: 20px;
+}
+
+.Philadelphia\.Web\.ActionsBarMenuFormView {
+    display: flex;
+    flex-direction: column;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+body[data-dragging] .Philadelphia\.Web\.UploadView {
+    position: relative; /*otherwise tableLike causes dropzone to be relative to whole screen*/
+    display: inline-block;
+}
+
+/*drop zone inactive*/
+body:not([data-dragging]) .Philadelphia\.Web\.UploadView > div:nth-child(1) {
+    display: none;
+}
+
+@keyframes dashedBorderAnim {
+    0% { border-color: #5a5a5a;}
+    50% { border-color: #a5a5a5; }
+    100% { border-color: #5a5a5a; }
+}
+
+/*drop zone active*/
+body[data-dragging] .Philadelphia\.Web\.UploadView > div:nth-child(1) {
+    background-color: rgba(250, 250, 250, 0.97);
+    position: absolute;
+    border: 4px dashed #777;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 2;
+    text-align: center;
+    padding: 5px;
+    vertical-align: middle;
+    font-size: 20px;
+    font-style: italic;
+    color: #777;
+    animation: dashedBorderAnim 1.0s linear infinite;
+}
+
+/*label items*/
+.Philadelphia\.Web\.UploadView[data-nonMutable] > div:nth-child(1) {
+    display: none;
+}
+
+/* add button + drop files here */
+.Philadelphia\.Web\.UploadView > div:nth-child(2) > div:nth-child(1) {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+}
+
+.Philadelphia\.Web\.UploadView > div:nth-child(2) > div:nth-child(1) > div:nth-child(3) {
+    font-style: italic;
+    color: #929292;
+    padding-top: 10px;
+    padding-right: 10px;
+}
+
+/*nonmutable*/
+.Philadelphia\.Web\.UploadView[data-nonMutable] > div:nth-child(2) > div:nth-child(1) > *:nth-child(3) {
+    display: none;
+}
+
+/*nonmutable*/
+.Philadelphia\.Web\.UploadView[data-nonMutable] > div:nth-child(2) > div:nth-child(1) > *:nth-child(4) {
+    display: none;
+}
+
+.Philadelphia\.Web\.UploadView > div:nth-child(2) > div[data-errors-tooltip]:nth-child(1):after {
+    content: url(Error.png);
+}
+
+.Philadelphia\.Web\.UploadView > div:nth-child(3) {
+    min-width: 230px; /*for default 30char length*/
+    padding: 3px;
+}
+
+.Philadelphia\.Web\.UploadView[mode='TextRow'] > div:nth-child(3) > div.items {
+    display: flex;
+    flex-direction: column;
+    border: 0.5px dashed #bbb;
+}
+
+.Philadelphia\.Web\.UploadView[mode='ThumbnailGrid'] > div:nth-child(3) > div.items {
+    display: grid;
+    border: 0.5px dashed #bbb;
+}
+
+.Philadelphia\.Web\.UploadView > div:nth-child(3) > *:first-child:empty:after {
+    content: attr(data-emptyCaption);
+    text-align: center;
+    font-style: italic;
+    color: #888;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+/*files items*/
+.Philadelphia\.Web\.UploadView > div:nth-child(3) > div.items > *:not(.tooltipContainer) {
+    margin-top: 3px;
+    margin-bottom: 3px;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    /*space for sticks above effect - start*/
+    border: 0.5px solid #ababab;
+    border-radius: 5px;
+    padding: 2px;
+    /*space for sticks above effect - stop*/
+}
+
+/*sticks above effect*/
+.Philadelphia\.Web\.UploadView > div:nth-child(3) > div.items > *:not(.tooltipContainer):hover {
+    box-shadow: 1px 1px 4px #666, -1px -1px 4px #666;
+}
+
+/* in image mode each item is: 1st row image 2nd row filename with actions */
+.Philadelphia\.Web\.UploadView[mode='ThumbnailGrid'] > div:nth-child(3) > div.items > * {
+    display: flex;
+    flex-direction: column;
+}
+
+.Philadelphia\.Web\.UploadView[mode='ThumbnailGrid'] > div:nth-child(3) > div.items > div > div.actions {
+    display: flex;
+    width: 100%; /*otherwise it overflows...*/
+    justify-content: center;
+}
+
+.Philadelphia\.Web\.UploadView[mode='ThumbnailGrid'] > div:nth-child(3) > div.items > div > div.actions > * {
+    flex: 0;
+}
+
+.Philadelphia\.Web\.UploadView[mode='ThumbnailGrid'] > div:nth-child(3) > div.items > div > div.actions > *:nth-child(1) {
+    flex-grow: 1;
+}
+
+/* don't grow anything except for filename [1] */
+.Philadelphia\.Web\.UploadView[mode='TextRow'] > div:nth-child(3) > div.items > * > * {
+    flex-grow: 0;
+}
+
+/* don't grow anything except for filename [2] */
+.Philadelphia\.Web\.UploadView[mode='TextRow'] > div:nth-child(3) > div.items > * > *:nth-child(1) {
+    flex-grow: 1;
+    flex-basis: 500%;
+}
+
+.Philadelphia\.Web\.UploadView[mode='TextRow'] > div:nth-child(3) > div.items > *[data-status='Running']::after {
+    font-family: FontAwesome;
+    content: "";
+    animation: throbberSpin 1.0s linear infinite;
+    color: #000;
+    font-size: 16px;
+    /*following properties are to avoid rotation around 'something' that is not a center of the glyph */
+    width: 16px;
+    height: 16px;
+    display: inline-block;
+}
+
+.Philadelphia\.Web\.UploadView[mode='TextRow'] > div:nth-child(3) > div.items > *[data-status='Failed'] {
+    border-color: red;
+}
+
+.Philadelphia\.Web\.UploadView[mode='ThumbnailGrid'] > div:nth-child(3) > div.items > *[data-status='Failed'] > a > img, 
+.Philadelphia\.Web\.UploadView[mode='ThumbnailGrid'] > div:nth-child(3) > div.items > *[data-status='Failed'] > a > *:not(img) {
+    border: 1px solid red;
+
+}
+
+.glass {
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    position: fixed;
+    z-index: 2;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(1, 1, 1, 0.1);
+}
+
+.lightBox {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #f3f3f3;
+    position: relative;
+}
+
+.lightBox.loading > .throbber {
+    animation: throbberSpin 1.0s linear infinite;
+    font-size: 30px;
+}
+
+.lightBox.loaded > .throbber {
+    display: none;
+}
+
+.lightBox > .close {
+    font-size: 20px;
+    position: absolute;
+    top: 0;
+    right: 0;
+    padding: 3px 5px 5px 5px;    
+    background-color: #e4e4e4;
+    transition: 0.2s background-color,0.2s color;
+    cursor: pointer;
+}
+
+.lightBox > .close:hover {
+    font-size: 25px;
+    padding: 0px 3px 3px 3px;
+    background-color: #c3c3c3;
+}
+
+.lightBox > .openInNewTab {
+    display: none;
+    color:  black;
+    background-color: white;
+    padding: 5px;
+    cursor: pointer;
+}
+
+.lightBox.loaded:hover > .openInNewTab {
+    position: absolute;
+    display: inline-block;
+    font-size: 25px;
+}
+
+
+
+
+.Philadelphia\.Web\.RadioBasedSingleChoice.tableLike {
+    display: grid;
+    grid-template-columns: auto auto;
+    user-select: none;
+}
+
+.Philadelphia\.Web\.RadioBasedSingleChoice.tableLike > * {
+    cursor: pointer;
+}
+
+.Philadelphia\.Web\.RadioBasedSingleChoice.tableLike > *:nth-child(2n+1) {
+    justify-self: end;
+}
+
+.Philadelphia\.Web\.DateTimePickerView > .PopupLocation_Bottom {
+    display: flex;
+    flex-direction: column;
+}
+
+.Philadelphia\.Web\.DateTimePickerView > .PopupLocation_Right {
+    display: flex;
+    flex-direction: row;
+}
+
+.Philadelphia\.Web\.DateTimePickerView > div > .popupContainer > div {
+    box-shadow: 0 0 25px 7px #9d9d9d;
+}
+
+.Philadelphia\.Web\.DateTimePickerView > div > .popupContainer > .daysOfMonth.DateTimePickerMode_Sole {
+    position: absolute;
+}
+
+.Philadelphia\.Web\.DateTimeRangeView > div > div.popupContainer {
+    position: relative;
+}
+
+.Philadelphia\.Web\.DateTimeRangeView.PopupLocation_Bottom > div {
+    display: grid;
+    grid-template-columns: auto auto;
+}
+
+.Philadelphia\.Web\.DateTimeRangeView.PopupLocation_Right > div {
+    display: grid;
+    grid-template-columns: auto auto 1fr;
+}
+
+.Philadelphia\.Web\.DateTimeRangeView > div > label {
+    align-self:center;
+}
+
+.Philadelphia\.Web\.DateTimeRangeView > div > div.popupContainer > .popups {
+    position: absolute;
+    display: flex;
+}
+
+.Philadelphia\.Web\.DateTimeRangeView >div > div.popupContainer > .popups {
+    box-shadow: 0 0 25px 7px #9d9d9d;
+}
+
+.Philadelphia\.Web\.DateTimePickerView > div > .popupContainer > .daysOfMonth > .yearAndMonthChoice > div:first-child,
+.Philadelphia\.Web\.DateTimeRangeView > div > .popupContainer > .popups > .daysOfMonth > .yearAndMonthChoice > div:first-child {
+    font-weight: bold;
+    display: block;
+    align-self: flex-start;
+    padding: 0;
+    font-size: 15px;
+    color: black;
+    background-color: #d8faff;
+    border-radius: 4px;
+    padding: 3px;
+}
+
+.Philadelphia\.Web\.DateTimePickerView > div > .popupContainer > .daysOfMonth,
+.Philadelphia\.Web\.DateTimeRangeView > div > .popupContainer > .popups > .daysOfMonth {
+    background-color: white; /*otherwise it is transparent*/
+    text-align: center;
+    display: grid;
+    grid-template-columns: repeat(7,31px);
+    border:0.5px solid black;    
+    z-index: 2;
+}
+
+.Philadelphia\.Web\.DateTimePickerView > div > .popupContainer > .daysOfMonth > *,
+.Philadelphia\.Web\.DateTimeRangeView > div > .popupContainer > .popups > .daysOfMonth > * {
+    display: block;
+    padding: 3px;
+    align-self: center;
+}
+
+.Philadelphia\.Web\.DateTimePickerView > div > .popupContainer > .daysOfMonth > a:not(.choosen):hover, 
+.Philadelphia\.Web\.DateTimeRangeView > div > .popupContainer > .popups > .daysOfMonth > a:not(.choosen):hover{
+    background-color: #e9f4ff;
+}
+
+.Philadelphia\.Web\.DateTimePickerView > div > .popupContainer > .daysOfMonth > .yearAndMonthChoice, 
+.Philadelphia\.Web\.DateTimeRangeView > div > .popupContainer > .popups > .daysOfMonth > .yearAndMonthChoice {
+    display: flex;
+    grid-row: 1;
+    grid-column: span 7;
+    justify-content: space-around;
+    text-align: center;
+}
+
+.Philadelphia\.Web\.DateTimePickerView > div > .popupContainer > .daysOfMonth > .yearAndMonthChoice > .yearAndMonthName, 
+.Philadelphia\.Web\.DateTimeRangeView > div > .popupContainer > .popups > .daysOfMonth > .yearAndMonthChoice > .yearAndMonthName {
+    white-space: nowrap;
+}
+
+.Philadelphia\.Web\.DateTimePickerView > div > .popupContainer > .daysOfMonth > .yearAndMonthChoice > .yearAndMonthName:not(.current),
+.Philadelphia\.Web\.DateTimeRangeView > div > .popupContainer > .popups > .daysOfMonth > .yearAndMonthChoice > .yearAndMonthName:not(.current) {
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+.Philadelphia\.Web\.DateTimePickerView > div > .popupContainer > .daysOfMonth > .yearAndMonthChoice > *,
+.Philadelphia\.Web\.DateTimeRangeView > div > .popupContainer > .popups > .daysOfMonth > .yearAndMonthChoice > * {
+    padding: 5px;
+}
+
+.Philadelphia\.Web\.DateTimePickerView > div > .popupContainer > .daysOfMonth > .validDay,
+.Philadelphia\.Web\.DateTimeRangeView > div > .popupContainer > .popups > .daysOfMonth > .validDay {
+    text-decoration: none;
+    color: #0000b1;
+}
+
+.Philadelphia\.Web\.DateTimePickerView > div > .popupContainer > .daysOfMonth > .invalidDay,
+.Philadelphia\.Web\.DateTimeRangeView > div > .popupContainer > .popups > .daysOfMonth > .invalidDay {
+    color: #d2d2d2;
+    cursor: not-allowed;
+    text-decoration: none;
+}
+
+.Philadelphia\.Web\.DateTimePickerView > div > .popupContainer > .daysOfMonth > .thisMonthDay,
+.Philadelphia\.Web\.DateTimeRangeView > div > .popupContainer > .popups > .daysOfMonth > .thisMonthDay {
+    font-weight: bold;
+}
+
+.Philadelphia\.Web\.DateTimePickerView > div > .popupContainer > .daysOfMonth > .today.invalidDay,
+.Philadelphia\.Web\.DateTimeRangeView > div > .popupContainer > .popups > .daysOfMonth > .today.invalidDay {
+    text-shadow: -1px 0 1px #000;
+}
+
+.Philadelphia\.Web\.DateTimePickerView > div > .popupContainer > .daysOfMonth > .today:not(.invalidDay),
+.Philadelphia\.Web\.DateTimeRangeView > div > .popupContainer > .popups > .daysOfMonth > .today:not(.invalidDay) {
+    text-shadow: 0 0 9px #616161;
+}
+
+.Philadelphia\.Web\.DateTimePickerView > div > .popupContainer > .daysOfMonth:not(.precision_YM) > a.choosen,
+.Philadelphia\.Web\.DateTimeRangeView > div > .popupContainer > .popups > .daysOfMonth > a.choosen {
+    border: 1px solid #83ebe2;
+    border-radius: 20px 20px 20px 20px;
+    text-align: center;
+    background-color: #f5fffe;
+}
+
+.Philadelphia\.Web\.DateTimePickerView > div > .popupContainer > .daysOfMonth > a.since,
+.Philadelphia\.Web\.DateTimeRangeView > div > .popupContainer > .popups > .daysOfMonth > a.since {
+    border-left: 1px solid #83ebe2;
+    border-top: 1px solid #83ebe2;
+    border-bottom: 1px solid #83ebe2;
+    border-radius: 20px 0 0 20px;
+    text-align: center;
+    background-color: #f5fffe;
+}
+
+.Philadelphia\.Web\.DateTimePickerView > div > .popupContainer > .daysOfMonth > a.until,
+.Philadelphia\.Web\.DateTimeRangeView > div > .popupContainer > .popups > .daysOfMonth > a.until {
+    border-top: 1px solid #83ebe2;
+    border-bottom: 1px solid #83ebe2;
+    border-radius: 0 20px 20px 0;
+    text-align: center;
+    background-color: #f5fffe;
+}
+
+.Philadelphia\.Web\.DateTimePickerView > div > .popupContainer > .daysOfMonth > a.inRange,
+.Philadelphia\.Web\.DateTimeRangeView > div > .popupContainer > .popups > .daysOfMonth > a.inRange {
+    border-top: 1px solid #83ebe2;
+    border-bottom: 1px solid #83ebe2;
+    text-align: center;
+    background-color: #f5fffe;
+}
+
+.Philadelphia\.Web\.DateTimePickerView > div > .popupContainer > .daysOfMonth.precision_YM.activeFormerMonth .formerMonthDay,
+.Philadelphia\.Web\.DateTimeRangeView > div > .popupContainer > .popups > .daysOfMonth.precision_YM.activeFormerMonth .formerMonthDay {
+    background-color: #f5fffe;
+}
+
+.Philadelphia\.Web\.DateTimePickerView > div > .popupContainer > .daysOfMonth.precision_YM.activeThisMonth .thisMonthDay,
+.Philadelphia\.Web\.DateTimeRangeView > div > .popupContainer > .popups > .daysOfMonth.activeThisMonth .thisMonthDay {
+    background-color: #f5fffe;
+}
+
+.Philadelphia\.Web\.DateTimePickerView > div > .popupContainer > .daysOfMonth.precision_YM.activeNextMonth .nextMonthDay,
+.Philadelphia\.Web\.DateTimeRangeView > div > .popupContainer > .popups > .daysOfMonth.precision_YM.activeNextMonth .nextMonthDay {
+    background-color: #f5fffe;
+}
+
+.Philadelphia\.Web\.DateTimeInputView {
+    align-items: center;
+    display: inline-flex; /*so that inpout doesn't grow if is a cell inside tableLike*/
+}
+
+.Philadelphia\.Web\.DateTimeInputView {
+    border-style: solid;
+    border-width: 1px;
+    border-color: #949494;
+    padding-left: 1px;
+}
+
+.Philadelphia\.Web\.DateTimePickerView > .PopupLocation_Right > .tooltipContainer > .tooltip {
+    margin-left: -200px;
+    margin-top: 30px;
+}
+
+.Philadelphia\.Web\.DateTimeInputView input { 
+    border: 0;
+    height: 9px;
+    text-align: center;
+}
+
+.Philadelphia\.Web\.DateTimeInputView input:focus {
+    outline: none; /*hide individual inputs*/
+}
+
+.Philadelphia\.Web\.DateTimeInputView > .clearContainer {
+    content: ""; /*times*/
+    font-family: FontAwesome;
+    cursor: pointer;
+    width: 16px;
+    padding-left:4px;
+}
+
+.Philadelphia\.Web\.DateTimeInputView > .clearContainer:hover {
+    font-size: 20px;
+    width: 16px;
+    padding-left: 0;
+    padding-right: 4px;
+}
+
+/*calendar icon*/
+.Philadelphia\.Web\.DateTimeInputView > a.anchorWithFontIcon {
+    text-align: center;
+    padding-top: 4px;
+}
+
+.Philadelphia\.Web\.DateTimeInputView > .fixedText {
+    min-width: 3px;
+    font-weight: bold;
+    font-size: 12px;
+    text-align: center;
+}
+
+.Philadelphia\.Web\.MaskedNumberInputView .upArrow {
+    height: 7px;
+    display: flex;
+    cursor: pointer;
+}
+
+.Philadelphia\.Web\.MaskedNumberInputView .downArrow {
+    height: 7px;
+    display: flex;
+    cursor: pointer;
+}
+
+.Philadelphia\.Web\.MaskedNumberInputView .upArrow:before {
+    content: attr(data-icon);
+    transform: rotate(90deg);
+    font-family: FontAwesome;
+    font-size: 10px;
+    display: inline-block;
+    align-self: center;    
+    color: #e5e5e5;
+}
+
+.Philadelphia\.Web\.MaskedNumberInputView .downArrow:before {
+    content: attr(data-icon);
+    transform: rotate(90deg);
+    font-family: FontAwesome;
+    font-size: 10px;
+    display: inline-block;    
+    align-self: center;
+    color: #e5e5e5;
+}
+
+.Philadelphia\.Web\.MaskedNumberInputView.active .downArrow:before,
+.Philadelphia\.Web\.MaskedNumberInputView.active .upArrow:before {    
+    color: #767676;
+}
+
+.Philadelphia\.Web\.MaskedNumberInputView {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.Philadelphia\.Web\.MaskedNumberInputView input {
+    font-family: monospace; /*to make input[size] work*/
+}
+
+.Philadelphia\.Web\.MaskedNumberInputView input.wrong {
+    background-color: #ffff8c;
+}
+
+.Philadelphia\.Web\.DateTimeInputView > .validationState {
+    width: 18px;
+    height: 18px;
+    background-size: contain;
+}
+
+.Philadelphia\.Web\.DateTimeInputView.userError > .validationState,
+.Philadelphia\.Web\.DateTimeInputView.programmaticError > .validationState,
+.Philadelphia\.Web\.DateTimeRangeView.programmaticError > div > .Philadelphia\.Web\.DateTimeInputView > .validationState,
+.Philadelphia\.Web\.DateTimeRangeView.userError > div > .Philadelphia\.Web\.DateTimeInputView > .validationState {
+    background-image: url('Error.png');
+}
+
+.Philadelphia\.Web\.DateTimeInputView.userSuccess > .validationState,
+.Philadelphia\.Web\.DateTimeRangeView.userSuccess > div > .Philadelphia\.Web\.DateTimeInputView > .validationState {
+    background-image: url('Success.png');
+}
+
+.Philadelphia\.Web\.FramelessPopupProvider {
+    position: relative;
+}
+
+.Philadelphia\.Web\.FramelessPopupProvider > .popupContainer > .popup {
+    position: absolute;
+    background-color: #ffffff;
+    left: 0;
+    top: 100%;
+    z-index: 2;
+    border: 0.5px solid #cccccc;
+    box-shadow: 0 10px 22px 3px rgba(0, 0, 0, 0.25);
+}
+
+.notRendered {
+    display: none;
+}
+
+.usesFontAwesome {
+    font-family: FontAwesome;
+}
+
+.positionRelative {
+    position: relative;
+}
+
+.hideAction:not(.enabled) {
+    display: none;
+}
+
+.hideAction.enabled {
+    font-family: FontAwesome;
+    font-size: 30px;
+    text-shadow: 3px 3px 3px #ccc;
+    color: #050062;
+    width: 40px;
+    height: 40px;
+    padding-top: 2px;
+    padding-left: 2px;
+    box-sizing: border-box; /*so that padding is included in width&height */
+}
+
+.hideAction:hover {
+    font-size: 37px; 
+    cursor: pointer;    
+    padding-top: 0;
+    padding-left: 0;
+}
+
+.showAction:not(.enabled) {
+    display: none;
+}
+
+.showAction.enabled {
+    font-family: FontAwesome;
+    font-size: 30px;
+    text-shadow: 3px 3px 3px #ccc;
+    color: #050062;
+    width: 40px;
+    height: 40px;
+    padding-top: 2px;
+    padding-left: 2px;
+    box-sizing: border-box; /*so that padding is included in width&height */
+}
+
+.showAction:hover {
+    font-size: 36px;    
+    cursor: pointer;
+    padding-top: 0;
+    padding-left: 0;
+}
+
+.preserveNewlines {
+    white-space: pre;
+}
+
+.link {
+    /*links have to look like links in selector column*/
+    color: #0000ee;
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+.scratched {
+    text-decoration: line-through;
+    color: #9f9f9f;
+    font-style: italic;
+}
