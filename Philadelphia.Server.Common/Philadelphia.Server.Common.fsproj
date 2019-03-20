@@ -1,0 +1,45 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.1</TargetFramework>
+    <Version>0.19.3.1</Version>
+    <Company>TODO IT Sp. z o.o.</Company>
+    <Copyright>Copyright © TODO IT Spółka z o.o. 2019</Copyright>
+    <Authors>Dominik Pytlewski and Tomasz Sztokinier</Authors>    
+    <Description>integrated aspnet core and Bridge.NET crossplatform toolkit for building typesafe web applications in C#</Description>
+    <PackageLicenseUrl>https://github.com/todoit/philadelphia/blob/master/LICENSE</PackageLicenseUrl>
+    <PackageProjectUrl>https://github.com/todoit/philadelphia</PackageProjectUrl>
+    <AllowedOutputExtensionsInPackageBuildOutputFolder>$(AllowedOutputExtensionsInPackageBuildOutputFolder);.pdb</AllowedOutputExtensionsInPackageBuildOutputFolder>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <WarningsAsErrors>FS0025</WarningsAsErrors>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include="AssemblyInfo.fs" />
+    <Compile Include="StdLibExtensions.fs" />
+    <Compile Include="AutoMapperConfiguration.fs" />
+    <Compile Include="Model.fs" />
+    <Compile Include="ContractToImpl.fs" />
+    <Compile Include="Services.fs" />
+    <Compile Include="StaticResources.fs" />
+    <Compile Include="ServerSettings.fs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="7.0.1" />
+    <PackageReference Include="Newtonsoft.Json" Version="11.0.2" />
+    <PackageReference Include="FSharp.Core" Version="4.5.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Philadelphia.Common\Philadelphia.Common.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Update="FSharp.Core" Version="4.5.2" />
+  </ItemGroup>
+
+</Project>
