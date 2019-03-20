@@ -8,8 +8,8 @@
     <Copyright>Copyright © TODO IT Spółka z o.o. 2019</Copyright>
     <Authors>Dominik Pytlewski and Tomasz Sztokinier</Authors>    
     <Description>integrated aspnet core and Bridge.NET crossplatform toolkit for building typesafe web applications in C#</Description>
-    <PackageLicenseUrl>https://github.com/todoit/philadelphia/blob/master/LICENSE</PackageLicenseUrl>
-    <PackageProjectUrl>https://github.com/todoit/philadelphia</PackageProjectUrl>
+    <PackageLicenseUrl>https://github.com/todo-it/philadelphia/blob/master/LICENSE</PackageLicenseUrl>
+    <PackageProjectUrl>https://github.com/todo-it/philadelphia/</PackageProjectUrl>
     <AllowedOutputExtensionsInPackageBuildOutputFolder>$(AllowedOutputExtensionsInPackageBuildOutputFolder);.pdb</AllowedOutputExtensionsInPackageBuildOutputFolder>
   </PropertyGroup>
 
