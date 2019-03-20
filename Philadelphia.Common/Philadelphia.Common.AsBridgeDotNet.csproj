@@ -1,0 +1,196 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{9C31D343-8D00-4520-8D74-AFBE7E69555D}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Philadelphia.Common.AsBridgeDotNet</RootNamespace>
+    <AssemblyName>Philadelphia.Common.AsBridgeDotNet</AssemblyName>
+    <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <NoStdLib>true</NoStdLib>
+  </PropertyGroup>
+  <PropertyGroup>
+    <!-- Needed due to old project and new project in same directory: https://github.com/NuGet/Home/issues/5126 
+  thanks to https://stackoverflow.com/questions/36190601/your-project-is-not-referencing-the-netframework-version-v4-5-framework#41154960 -->
+    <BaseIntermediateOutputPath>obj_netfx\</BaseIntermediateOutputPath>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <NoStdLib>true</NoStdLib>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="Collections\FilterableSortableObservableCollection.cs" />
+    <Compile Include="Collections\IFilterableCollection.cs" />
+    <Compile Include="Collections\IObservableCollection.cs" />
+    <Compile Include="Collections\IOrderByCollector.cs" />
+    <Compile Include="Collections\IRandomAccessCollection.cs" />
+    <Compile Include="Collections\ISortableCollection.cs" />
+    <Compile Include="Collections\IWhereCollector.cs" />
+    <Compile Include="Collections\LinkedList.cs" />
+    <Compile Include="Collections\ObservableCollectionExtensions.cs" />
+    <Compile Include="Collections\PassToLinqOrderByCollector.cs" />
+    <Compile Include="Collections\PassToLinqWhereCollector.cs" />
+    <Compile Include="DependencyInjection\IDiContainer.cs" />
+    <Compile Include="DependencyInjection\IDiInstaller.cs" />
+    <Compile Include="DependencyInjection\IDiRegisterOnlyContainer.cs" />
+    <Compile Include="DependencyInjection\IDiResolveReleaseOnlyContainer.cs" />
+    <Compile Include="DependencyInjection\LifeStyle.cs" />
+    <Compile Include="Extensions\ArrayExtensions.cs" />
+    <Compile Include="Extensions\DateTimeExtensions.cs" />
+    <Compile Include="Extensions\DictionaryExtensions.cs" />
+    <Compile Include="Extensions\DoubleExtensions.cs" />
+    <Compile Include="Extensions\EnumerableExtensions.cs" />
+    <Compile Include="Extensions\EnumeratorExtensions.cs" />
+    <Compile Include="Extensions\EnumExtensions.cs" />
+    <Compile Include="Extensions\ListExtensions.cs" />
+    <Compile Include="Extensions\ObjectExtensions.cs" />
+    <Compile Include="Extensions\SetExtensions.cs" />
+    <Compile Include="Extensions\StringExtensions.cs" />
+    <Compile Include="Extensions\TypeExtensions.cs" />
+    <Compile Include="I18n\BoolFormat.cs" />
+    <Compile Include="I18n\DateTimeFormat.cs" />
+    <Compile Include="I18n\DateTimeFormatExtensions.cs" />
+    <Compile Include="I18n\DecimalFormat.cs" />
+    <Compile Include="I18n\I18n.cs" />
+    <Compile Include="I18n\I18nImpl.cs" />
+    <Compile Include="I18n\ICurrentCultureSwitchedListener.cs" />
+    <Compile Include="I18n\ILocalizationImpl.cs" />
+    <Compile Include="I18n\ITranslationProvider.cs" />
+    <Compile Include="I18n\LocalizationUtil.cs" />
+    <Compile Include="I18n\NoTranslationI18n.cs" />
+    <Compile Include="I18n\ToStringLocalization.cs" />
+    <Compile Include="I18n\TranslationItem.cs" />
+    <Compile Include="I18n\TranslationRoot.cs" />
+    <Compile Include="I18n\TranslationWithFallbackI18n.cs" />
+    <Compile Include="IdGeneration\DefaultUniqueIdGenerator.cs" />
+    <Compile Include="IdGeneration\IUniqueIdGenerator.cs" />
+    <Compile Include="IdGeneration\IUniqueIdGeneratorImplementation.cs" />
+    <Compile Include="Logging\ConsoleWritelineLoggerImplementation.cs" />
+    <Compile Include="Logging\ILoggerImplementation.cs" />
+    <Compile Include="Logging\Logger.cs" />
+    <Compile Include="Logging\NullLoggerImplementation.cs" />
+    <Compile Include="Model\ClientConnectionInfo.cs" />
+    <Compile Include="Model\CompletedOrCanceled.cs" />
+    <Compile Include="Model\Cookie.cs" />
+    <Compile Include="Model\DateTimeElement.cs" />
+    <Compile Include="Model\DecimalWithPrecision.cs" />
+    <Compile Include="Model\FactoryMethodProvider.cs" />
+    <Compile Include="Model\FileModel.cs" />
+    <Compile Include="Model\FileUploadOperation.cs" />
+    <Compile Include="Model\IProvider.cs" />
+    <Compile Include="Model\Magics.cs" />
+    <Compile Include="Model\Optional.cs" />
+    <Compile Include="Model\RemoteFileId.cs" />
+    <Compile Include="Model\Unit.cs" />
+    <Compile Include="Model\UploadInfo.cs" />
+    <Compile Include="Mvp\ActionViewState.cs" />
+    <Compile Include="Mvp\ActionViewStateType.cs" />
+    <Compile Include="Mvp\DataGrid\DatagridCell.cs" />
+    <Compile Include="Mvp\DataGrid\DatagridContent.cs" />
+    <Compile Include="Mvp\ExecOnUiThread.cs" />
+    <Compile Include="Mvp\Extensions\ActionModelExtensions.cs" />
+    <Compile Include="Mvp\Extensions\ActionViewExtensions.cs" />
+    <Compile Include="Mvp\Extensions\ReadWriteValueExtensions.cs" />
+    <Compile Include="Mvp\Extensions\ValueViewExtensions.cs" />
+    <Compile Include="Mvp\ExternalEventsHandlers.cs" />
+    <Compile Include="Mvp\IActionModel.cs" />
+    <Compile Include="Mvp\IActionView.cs" />
+    <Compile Include="Mvp\IBareForm.cs" />
+    <Compile Include="Mvp\IBeforeChangeCapableValueView.cs" />
+    <Compile Include="Mvp\IByKeyValueAccessor.cs" />
+    <Compile Include="Mvp\IFlow.cs" />
+    <Compile Include="Mvp\IForm.cs" />
+    <Compile Include="Mvp\IFormCanvas.cs" />
+    <Compile Include="Mvp\IFormRenderer.cs" />
+    <Compile Include="Mvp\IFormView.cs" />
+    <Compile Include="Mvp\IHasFixedPermittedValues.cs" />
+    <Compile Include="Mvp\IOnShownNeedingForm.cs" />
+    <Compile Include="Mvp\IReadOnlyValue.cs" />
+    <Compile Include="Mvp\IReadOnlyValueView.cs" />
+    <Compile Include="Mvp\IReadWriteValue.cs" />
+    <Compile Include="Mvp\IReadWriteValueView.cs" />
+    <Compile Include="Mvp\IRestrictedMultipleReadWriteValueView.cs" />
+    <Compile Include="Mvp\IRestrictedSingleReadWriteValueView.cs" />
+    <Compile Include="Mvp\IToggleableEnablement.cs" />
+    <Compile Include="Mvp\IView.cs" />
+    <Compile Include="Mvp\PlatformAgnostic\AdaptedLocalValue.cs" />
+    <Compile Include="Mvp\PlatformAgnostic\AdaptedRemoteValueMutator.cs" />
+    <Compile Include="Mvp\PlatformAgnostic\AggregatedErrorsValue.cs" />
+    <Compile Include="Mvp\PlatformAgnostic\ClassFieldRemoteMutator.cs" />
+    <Compile Include="Mvp\PlatformAgnostic\ComputedValueOnDependancyChanged.cs" />
+    <Compile Include="Mvp\PlatformAgnostic\DerivedValue.cs" />
+    <Compile Include="Mvp\PlatformAgnostic\LocalActionBuilder.cs" />
+    <Compile Include="Mvp\PlatformAgnostic\LocalActionModel.cs" />
+    <Compile Include="Mvp\PlatformAgnostic\LocalValue.cs" />
+    <Compile Include="Mvp\PlatformAgnostic\Menu\MenuItemModel.cs" />
+    <Compile Include="Mvp\PlatformAgnostic\Menu\MenuItemUserModel.cs" />
+    <Compile Include="Mvp\PlatformAgnostic\Menu\MenuModel.cs" />
+    <Compile Include="Mvp\PlatformAgnostic\OperationBatchBuilder.cs" />
+    <Compile Include="Mvp\PlatformAgnostic\RemoteActionBuilder.cs" />
+    <Compile Include="Mvp\PlatformAgnostic\RemoteActionModel.cs" />
+    <Compile Include="Mvp\PlatformAgnostic\RemoteValue.cs" />
+    <Compile Include="Mvp\PlatformAgnostic\RemoteValueAccessor.cs" />
+    <Compile Include="Mvp\PlatformAgnostic\Validator.cs" />
+    <Compile Include="Mvp\RenderElem.cs" />
+    <Compile Include="Mvp\ResultHolder.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ServiceCalling\HttpService.cs" />
+    <Compile Include="Subscribeable\IHasSubscribeable.cs" />
+    <Compile Include="Subscribeable\ISubscribeable.cs" />
+    <Compile Include="Subscribeable\ITypedSubscribeable.cs" />
+    <Compile Include="Subscribeable\Subscribeable.cs" />
+    <Compile Include="Utils\Base64Util.cs" />
+    <Compile Include="Utils\LambdaUtil.cs" />
+    <Compile Include="Utils\MimeUtil.cs" />
+    <Compile Include="Utils\NameOfUtil.cs" />
+    <Compile Include="Utils\ObjectUtil.cs" />
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <Reference Include="Bridge, Version=17.4.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Bridge.Core.17.4.0\lib\net40\Bridge.dll</HintPath>
+    </Reference>
+    <Reference Include="Bridge.Html5, Version=17.4.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Bridge.Html5.17.4.0\lib\net40\Bridge.Html5.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Bridge\bridge.json" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="..\packages\Bridge.Min.17.4.0\build\Bridge.Min.targets" Condition="Exists('..\packages\Bridge.Min.17.4.0\build\Bridge.Min.targets')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\packages\Bridge.Min.17.4.0\build\Bridge.Min.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Bridge.Min.17.4.0\build\Bridge.Min.targets'))" />
+  </Target>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

@@ -1,0 +1,32 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.1</TargetFramework>
+    <Version>0.19.3.1</Version>
+    <Company>TODO IT Sp. z o.o.</Company>
+    <Copyright>Copyright © TODO IT Spółka z o.o. 2019</Copyright>
+    <Authors>Dominik Pytlewski and Tomasz Sztokinier</Authors>    
+    <Description>integrated aspnet core and Bridge.NET crossplatform toolkit for building typesafe web applications in C#</Description>
+    <PackageLicenseUrl>https://github.com/todoit/philadelphia/blob/master/LICENSE</PackageLicenseUrl>
+    <PackageProjectUrl>https://github.com/todoit/philadelphia</PackageProjectUrl>
+    <AllowedOutputExtensionsInPackageBuildOutputFolder>$(AllowedOutputExtensionsInPackageBuildOutputFolder);.pdb</AllowedOutputExtensionsInPackageBuildOutputFolder>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Bridge\output\**" />
+    <Compile Remove="obj_netfx\**" />
+    <EmbeddedResource Remove="Bridge\output\**" />
+    <EmbeddedResource Remove="obj_netfx\**" />
+    <None Remove="Bridge\output\**" />
+    <None Remove="obj_netfx\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Remove="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Properties\" />
+  </ItemGroup>
+
+</Project>
