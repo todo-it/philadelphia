@@ -1,0 +1,15 @@
+{
+  "$schema": "http://json.schemastore.org/template",
+  "author": "Dominik Pytlewski and Tomasz Sztokinier",
+  "classifications": [ "Web" ], 
+  "name": "Philadelphia Toolkit Powered Web Solution",
+  "identity": "Philadelphia.Powered.App",         
+  "groupIdentity":"Philadelphia.Powered.App",
+  "shortName": "phillyapp",
+  "tags": {
+    "language": "C#",
+    "type":"project"
+  },
+  "sourceName": "PhiladelphiaPowered",
+  "preferNameDirectory": true
+}

@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>Philadelphia.Template</id>
+    <title>Philadelphia project templates for 'dotnet new'</title>
+    <version>0.19.3.1</version>
+    <authors>Dominik Pytlewski and Tomasz Sztokinier</authors>
+    <licenseUrl>https://github.com/todoit/philadelphia/blob/master/LICENSE</licenseUrl>
+    <projectUrl>https://github.com/todoit/philadelphia</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>integrated aspnet core and Bridge.NET crossplatform toolkit for building typesafe web applications in C#</description>
+    <copyright>Copyright © TODO IT Spółka z o.o. 2019</copyright>
+    <tags>philadelphia phillytk dotnet core C# strongly typed web framework type safe</tags>
+    <packageTypes>
+        <packageType name="Template" />
+    </packageTypes>
+  </metadata>
+</package>

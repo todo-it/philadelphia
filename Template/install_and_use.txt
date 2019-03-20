@@ -1,0 +1,5 @@
+to install:
+    dotnet new --install ForCSharp
+    
+to use:
+    dotnet new phillyapp -n PutYourProjectNameHere
