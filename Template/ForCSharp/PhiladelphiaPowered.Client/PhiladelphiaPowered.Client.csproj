@@ -35,7 +35,7 @@
     <NoStdLib>true</NoStdLib>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="..\PhiladelphiaPowered.domain\IHelloWorldService.cs">
+    <Compile Include="..\PhiladelphiaPowered.Domain\IHelloWorldService.cs">
       <Link>Domain\IHelloWorldService.cs</Link>
     </Compile>
     <Compile Include="Program.cs" />
