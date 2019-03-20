@@ -1,0 +1,275 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{04AA0E1E-E264-495B-A057-A56634D885EC}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Philadelphia.Web</RootNamespace>
+    <AssemblyName>Philadelphia.Web</AssemblyName>
+    <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <NoStdLib>true</NoStdLib>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <NoStdLib>true</NoStdLib>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="DependencyInjection\DiContainer.cs" />
+    <Compile Include="Logging\ForwardErrorsToConsoleLogLoggerImplementation.cs" />
+    <Compile Include="Logging\ForwardEverythingToConsoleLogLoggerImplementation.cs" />
+    <Compile Include="Logging\ForwardMatchingToConsoleLogLoggerImplementation.cs" />
+    <Compile Include="Magics.cs" />
+    <Compile Include="Model\Dimensions2D.cs" />
+    <Compile Include="Model\MutableHolder.cs" />
+    <Compile Include="Model\Range.cs" />
+    <Compile Include="Model\Sorting\CompareImpl.cs" />
+    <Compile Include="Model\Sorting\ComparerExtensions.cs" />
+    <Compile Include="Model\Sorting\InvertingAdapterComparer.cs" />
+    <Compile Include="Model\Sorting\SortOrder.cs" />
+    <Compile Include="Model\Sorting\SortOrderExtensions.cs" />
+    <Compile Include="Model\Sorting\StringCompareBasedComparer.cs" />
+    <Compile Include="Model\WeakDictionary.cs" />
+    <Compile Include="Mvp\ActionsBuilder.cs" />
+    <Compile Include="Mvp\BaseFormRenderer.cs" />
+    <Compile Include="Mvp\ElementWrapperFormCanvas.cs" />
+    <Compile Include="Mvp\Extensions\AdaptAsIview.cs" />
+    <Compile Include="Mvp\Extensions\ElementExtensions.cs" />
+    <Compile Include="Mvp\Extensions\EventExtensions.cs" />
+    <Compile Include="Mvp\Extensions\HTMLTableElementExtensions.cs" />
+    <Compile Include="Mvp\Extensions\NodeExtensions.cs" />
+    <Compile Include="Mvp\Views\MultipleChoiceDropDown.cs" />
+    <Compile Include="Mvp\Views\RadioBasedSingleChoice.cs" />
+    <Compile Include="Util\BridgeObjectUtil.cs" />
+    <Compile Include="Mvp\Flows\AuthenticationThenMainMenuFlow.cs" />
+    <Compile Include="Mvp\Flows\ShowMessageFlow.cs" />
+    <Compile Include="Mvp\FormCanvasExtensions.cs" />
+    <Compile Include="Mvp\Forms\ConfirmMessageForm.cs" />
+    <Compile Include="Mvp\Forms\ConfirmMessageFormView.cs" />
+    <Compile Include="Mvp\Forms\ConfirmOperationForm.cs" />
+    <Compile Include="Mvp\Forms\ConfirmOperationFormOutcome.cs" />
+    <Compile Include="Mvp\Forms\ConfirmOperationFormView.cs" />
+    <Compile Include="Mvp\Forms\DatagridFormView.cs" />
+    <Compile Include="Mvp\Forms\EnumChoiceForm.cs" />
+    <Compile Include="Mvp\Forms\EnumChoiceFormOutcome.cs" />
+    <Compile Include="Mvp\Forms\EnumChoiceFormView.cs" />
+    <Compile Include="Mvp\Forms\HorizontalLinksMenuFormView.cs" />
+    <Compile Include="Mvp\Forms\IMenuFormView.cs" />
+    <Compile Include="Mvp\Forms\InformationalMessageForm.cs" />
+    <Compile Include="Mvp\Forms\InformationalMessageFormView.cs" />
+    <Compile Include="Mvp\Forms\LoginForm.cs" />
+    <Compile Include="Mvp\Forms\LoginFormView.cs" />
+    <Compile Include="Mvp\Forms\MenuForm.cs" />
+    <Compile Include="Mvp\Forms\RemoteActionsCallerForm.cs" />
+    <Compile Include="Mvp\Forms\RemoteActionsCallerFormView.cs" />
+    <Compile Include="Mvp\Forms\RemoteValueChangeByChoiceForm.cs" />
+    <Compile Include="Mvp\Forms\RemoteValueChangeByChoiceFormView.cs" />
+    <Compile Include="Mvp\Forms\RemoteValueChangeByEntryForm.cs" />
+    <Compile Include="Mvp\Forms\RemoteValueChangeByEntryFormView.cs" />
+    <Compile Include="Mvp\Forms\TextInputForm.cs" />
+    <Compile Include="Mvp\Forms\TextInputFormView.cs" />
+    <Compile Include="Mvp\LocalValueFieldBuilder.cs" />
+    <Compile Include="Mvp\MenuModelExtensions.cs" />
+    <Compile Include="Mvp\ModalDialogFromCanvas.cs" />
+    <Compile Include="Mvp\PopupDelegatingFormRenderer.cs" />
+    <Compile Include="Mvp\RemoteFieldBuilder.cs" />
+    <Compile Include="Mvp\RemoteValueBuilder.cs" />
+    <Compile Include="Mvp\ViewExtensions.cs" />
+    <Compile Include="Mvp\Views\ActionViewExtensions.cs" />
+    <Compile Include="Mvp\Views\BaseInputView.cs" />
+    <Compile Include="Mvp\Views\AnchorBasedActionView.cs" />
+    <Compile Include="Mvp\Views\ConditionalView.cs" />
+    <Compile Include="Mvp\Views\ControlWithValueLogic.cs" />
+    <Compile Include="Mvp\Views\DataGrid\ActionModelExtensions.cs" />
+    <Compile Include="Mvp\Views\DataGrid\AggregatorDef.cs" />
+    <Compile Include="Mvp\Views\DataGrid\CellValueExporter.cs" />
+    <Compile Include="Mvp\Views\DataGrid\ChangeOrRemove.cs" />
+    <Compile Include="Mvp\Views\DataGrid\DataGridColumn.cs" />
+    <Compile Include="Mvp\Views\DataGrid\DataGridColumnController.cs" />
+    <Compile Include="Mvp\Views\DataGrid\DataGridColumnControllerResult.cs" />
+    <Compile Include="Mvp\Views\DataGrid\DataGridControllerDerivedGrouping.cs" />
+    <Compile Include="Mvp\Views\DataGrid\DataGridModel.cs" />
+    <Compile Include="Mvp\Views\DataGrid\DataGridModelExtensions.cs" />
+    <Compile Include="Mvp\Views\DataGrid\DataGridModelPresenter.cs" />
+    <Compile Include="Mvp\Views\DataGrid\DataGridSettings.cs" />
+    <Compile Include="Mvp\Views\DataGrid\DataOrGroup.cs" />
+    <Compile Include="Mvp\Views\DataGrid\FilterDef.cs" />
+    <Compile Include="Mvp\Views\DataGrid\FilterRowsAction.cs" />
+    <Compile Include="Mvp\Views\DataGrid\GroupDescr.cs" />
+    <Compile Include="Mvp\Views\DataGrid\GrouperDef.cs" />
+    <Compile Include="Mvp\Views\DataGrid\GroupOrAggregate.cs" />
+    <Compile Include="Mvp\Views\DataGrid\HeaderColumnDescr.cs" />
+    <Compile Include="Mvp\Views\DataGrid\HtmlTableBasedTableView.cs" />
+    <Compile Include="Mvp\Views\DataGrid\ICellValueExporter.cs" />
+    <Compile Include="Mvp\Views\DataGrid\IDataGridColumn.cs" />
+    <Compile Include="Mvp\Views\DataGrid\IRecordGrouping.cs" />
+    <Compile Include="Mvp\Views\DataGrid\ITableView.cs" />
+    <Compile Include="Mvp\Views\DataGrid\ItemPropertyChangedListener.cs" />
+    <Compile Include="Mvp\Views\DataGrid\ITransformationMediator.cs" />
+    <Compile Include="Mvp\Views\DataGrid\Overlap.cs" />
+    <Compile Include="Mvp\Views\DataGrid\RebuildGroupsReason.cs" />
+    <Compile Include="Mvp\Views\DataGrid\RecordGroupingUtil.cs" />
+    <Compile Include="Mvp\Views\DataGrid\RerenderReason.cs" />
+    <Compile Include="Mvp\Views\DataGrid\RowFilter.cs" />
+    <Compile Include="Mvp\Views\DataGrid\RowSelectionMode.cs" />
+    <Compile Include="Mvp\Views\DataGrid\SelectedItemsListener.cs" />
+    <Compile Include="Mvp\Views\DataGrid\SelectionManager.cs" />
+    <Compile Include="Mvp\Views\DataGrid\SelectionNeeded.cs" />
+    <Compile Include="Mvp\Views\DataGrid\SingleRowSelectionMode.cs" />
+    <Compile Include="Mvp\Views\DataGrid\TransformationMediator.cs" />
+    <Compile Include="Mvp\Views\DataGrid\Unbound\BaseUnboundColumnBuilder.cs" />
+    <Compile Include="Mvp\Views\DataGrid\Unbound\BaseUnboundColumnBuilderExtensions.cs" />
+    <Compile Include="Mvp\Views\DataGrid\Unbound\BuildableUnboundColumn.cs" />
+    <Compile Include="Mvp\Views\DataGrid\Unbound\EditableUnboundColumn.cs" />
+    <Compile Include="Mvp\Views\DataGrid\Unbound\GrouperDefOrAggregatorDef.cs" />
+    <Compile Include="Mvp\Views\DataGrid\Unbound\PersistedRemotelyUnboundColumn.cs" />
+    <Compile Include="Mvp\Views\DataGrid\Unbound\SelectionColumnBuilder.cs" />
+    <Compile Include="Mvp\Views\DataGrid\Unbound\TransformableUnboundColumnBuilder.cs" />
+    <Compile Include="Mvp\Views\DataGrid\Unbound\TransformableUnboundColumnBuilderExtensions.cs" />
+    <Compile Include="Mvp\Views\DataGrid\Unbound\UnboundDataGridColumnBuilder.cs" />
+    <Compile Include="Mvp\Views\DataGrid\Unbound\ValueContainingUnboundColumnBuilder.cs" />
+    <Compile Include="Mvp\Views\DataGrid\Unbound\ValueContainingUnboundColumnBuilderExtensions.cs" />
+    <Compile Include="Mvp\Views\DataGrid\ViewPortState.cs" />
+    <Compile Include="Mvp\Views\DataGrid\VisibleRows.cs" />
+    <Compile Include="Mvp\Views\DateTimePicker\CalendarState.cs" />
+    <Compile Include="Mvp\Views\DateTimePicker\DateTimeInputView.cs" />
+    <Compile Include="Mvp\Views\DateTimePicker\DateTimePickerMode.cs" />
+    <Compile Include="Mvp\Views\DateTimePicker\DateTimePickerView.cs" />
+    <Compile Include="Mvp\Views\DateTimePicker\DateTimeRangeView.cs" />
+    <Compile Include="Mvp\Views\DateTimePicker\DayOfWeekExtensions.cs" />
+    <Compile Include="Mvp\Views\DateTimePicker\Direction.cs" />
+    <Compile Include="Mvp\Views\DateTimePicker\MaskedNumberInputView.cs" />
+    <Compile Include="Mvp\Views\DateTimePicker\ProcessingOutcome.cs" />
+    <Compile Include="Mvp\Views\DateTimePicker\YearMonthMaybeDay.cs" />
+    <Compile Include="Mvp\Views\DefaultInputLogic.cs" />
+    <Compile Include="Mvp\Views\DropDownSelectBox.cs" />
+    <Compile Include="Mvp\Views\ErrorObserver.cs" />
+    <Compile Include="Mvp\Views\FramelessPopupProvider.cs" />
+    <Compile Include="Mvp\Views\HorizontalMenuBarView.cs" />
+    <Compile Include="Mvp\Views\HorizontalTabbedView.cs" />
+    <Compile Include="Mvp\Views\IMenuBarView.cs" />
+    <Compile Include="Mvp\Views\InputCheckboxView.cs" />
+    <Compile Include="Mvp\Views\InputTypeButtonActionView.cs" />
+    <Compile Include="Mvp\Views\InputView.cs" />
+    <Compile Include="Mvp\Views\ITabContent.cs" />
+    <Compile Include="Mvp\Views\LabeledReadOnlyView.cs" />
+    <Compile Include="Mvp\Views\LabellessReadOnlyView.cs" />
+    <Compile Include="Mvp\Views\Menu\ActionButtonsMenuBarView.cs" />
+    <Compile Include="Mvp\Views\Menu\ActionsBarMenuFormView.cs" />
+    <Compile Include="Mvp\Views\MultiPanels\BuiltPanels.cs" />
+    <Compile Include="Mvp\Views\MultiPanels\Hideability.cs" />
+    <Compile Include="Mvp\Views\MultiPanels\ShowActionVisibility.cs" />
+    <Compile Include="Mvp\Views\MultiPanels\SpacingPolicy.cs" />
+    <Compile Include="Mvp\Views\MultiPanels\TwoHorizontalPanelsWithResizer.cs" />
+    <Compile Include="Mvp\Views\MultiPanels\TwoPanelsWithResizer.cs" />
+    <Compile Include="Mvp\Views\MultiPanels\TwoPanelsWithResizerBuilder.cs" />
+    <Compile Include="Mvp\Views\MultiPanels\TwoVerticalPanelsWithResizer.cs" />
+    <Compile Include="Mvp\Views\MultiPanels\VisibilityAction.cs" />
+    <Compile Include="Mvp\Views\Uploader\IUploadViewAction.cs" />
+    <Compile Include="Mvp\Views\Uploader\LightBoxManager.cs" />
+    <Compile Include="Mvp\Views\RadioBasedSingleChoiceUtilExtensions.cs" />
+    <Compile Include="Mvp\Views\SingleChoiceDropDown.cs" />
+    <Compile Include="Mvp\Views\TabContentAccumulator.cs" />
+    <Compile Include="Mvp\Views\TabData.cs" />
+    <Compile Include="Mvp\Views\TextAreaView.cs" />
+    <Compile Include="Mvp\Views\TextType.cs" />
+    <Compile Include="Mvp\Views\Uploader\RemoteFileDescr.cs" />
+    <Compile Include="Mvp\Views\Uploader\UploadStatus.cs" />
+    <Compile Include="Mvp\Views\Uploader\UploadView.cs" />
+    <Compile Include="Mvp\Views\ValidationIndicatorView.cs" />
+    <Compile Include="Observers\GeneralAttrChangedObserver.cs" />
+    <Compile Include="Observers\GeneralChildListChangedObserver.cs" />
+    <Compile Include="Observers\MouseObserver.cs" />
+    <Compile Include="Observers\SpecificChildListChangedObserver.cs" />
+    <Compile Include="Observers\SpecificResizeObserver.cs" />
+    <Compile Include="OpenSourceLicensesText.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ServerSentEvents\IServerSentEventsSubscriber.cs" />
+    <Compile Include="ServiceCalling\BaseDownloadUploadHandler.cs" />
+    <Compile Include="ServiceCalling\FixedIdUpdateServiceMethodCaller.cs" />
+    <Compile Include="ServiceCalling\FixedPropertyUpdateServiceMethodCaller.cs" />
+    <Compile Include="ServiceCalling\HttpRequester.cs" />
+    <Compile Include="ServiceCalling\MethodCaller.cs" />
+    <Compile Include="ServiceCalling\XMLHttpRequestImplementingIPromise.cs" />
+    <Compile Include="ServiceCalling\XMLHttpRequestUtils.cs" />
+    <Compile Include="ToBeUpstreamed\ConnectionReadyState.cs" />
+    <Compile Include="ToBeUpstreamed\EventSource.cs" />
+    <Compile Include="ToBeUpstreamed\EventSourceExtensions.cs" />
+    <Compile Include="ToBeUpstreamed\IIterable.cs" />
+    <Compile Include="ToBeUpstreamed\IterableExtensions.cs" />
+    <Compile Include="ToBeUpstreamed\IterableIEnumerator.cs" />
+    <Compile Include="ToBeUpstreamed\URL.cs" />
+    <Compile Include="ToBeUpstreamed\URLSearchParams.cs" />
+    <Compile Include="ToBeUpstreamed\ValueAndDone.cs" />
+    <Compile Include="Tooltips\TooltipManager.cs" />
+    <Compile Include="Tooltips\TooltipMode.cs" />
+    <Compile Include="Tooltips\TooltipOper.cs" />
+    <Compile Include="Tooltips\TooltipState.cs" />
+    <Compile Include="Util\DimensionsUtil.cs" />
+    <Compile Include="Util\DocumentUtil.cs" />
+    <Compile Include="Util\KeyboardEventUtil.cs" />
+    <Compile Include="Util\Toolkit.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Philadelphia.Common\Philadelphia.Common.AsBridgeDotNet.csproj">
+      <Project>{9c31d343-8d00-4520-8d74-afbe7e69555d}</Project>
+      <Name>Philadelphia.Common.AsBridgeDotNet</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="ToBeUpstreamed\readme.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="Bridge, Version=17.4.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Bridge.Core.17.4.0\lib\net40\Bridge.dll</HintPath>
+    </Reference>
+    <Reference Include="Bridge.Html5, Version=17.4.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Bridge.Html5.17.4.0\lib\net40\Bridge.Html5.dll</HintPath>
+    </Reference>
+    <Reference Include="Bridge.jQuery2, Version=2.18.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Bridge.jQuery.2.18.0\lib\net40\Bridge.jQuery2.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=1.11.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Bridge.Newtonsoft.Json.1.11.0\lib\net40\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Bridge\bridge.json" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="..\packages\Bridge.Min.17.4.0\build\Bridge.Min.targets" Condition="Exists('..\packages\Bridge.Min.17.4.0\build\Bridge.Min.targets')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\packages\Bridge.Min.17.4.0\build\Bridge.Min.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Bridge.Min.17.4.0\build\Bridge.Min.targets'))" />
+  </Target>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
