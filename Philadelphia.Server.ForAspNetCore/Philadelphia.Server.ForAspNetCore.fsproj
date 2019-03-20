@@ -1,0 +1,44 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.1</TargetFramework>
+    <OutputType>Library</OutputType>
+    <Version>0.19.3.1</Version>
+    <Company>TODO IT Sp. z o.o.</Company>
+    <Copyright>Copyright © TODO IT Spółka z o.o. 2019</Copyright>
+    <Authors>Dominik Pytlewski and Tomasz Sztokinier</Authors>    
+    <Description>integrated aspnet core and Bridge.NET crossplatform toolkit for building typesafe web applications in C#</Description>
+    <PackageLicenseUrl>https://github.com/todoit/philadelphia/blob/master/LICENSE</PackageLicenseUrl>
+    <PackageProjectUrl>https://github.com/todoit/philadelphia</PackageProjectUrl>
+    <AllowedOutputExtensionsInPackageBuildOutputFolder>$(AllowedOutputExtensionsInPackageBuildOutputFolder);.pdb</AllowedOutputExtensionsInPackageBuildOutputFolder>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <WarningsAsErrors>FS0025</WarningsAsErrors>
+    <NoWarn>FS0760</NoWarn>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include="ServiceProviderAdapterAsDiContainer.fs" />
+    <Compile Include="ServiceCollectionAdapterAsDiContainer.fs" />
+    <Compile Include="BaseStartup.fs" />
+    <Compile Include="ForwardingLogger.fs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.App" Version="2.1.1" />
+    <PackageReference Include="Newtonsoft.Json" Version="11.0.2" />
+    <PackageReference Include="FSharp.Core" Version="4.5.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Philadelphia.Server.Common\Philadelphia.Server.Common.fsproj" />
+    <ProjectReference Include="..\Philadelphia.ServerSideUtils\Philadelphia.ServerSideUtils.fsproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Update="FSharp.Core" Version="4.5.2" />
+  </ItemGroup>
+
+</Project>
