@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json" Version="11.0.2" />
+    <PackageReference Include="Philadelphia.Common" Version="0.19.3.1" />
+    <PackageReference Include="Philadelphia.Server.Common" Version="0.19.3.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\HelloWorld.Domain\HelloWorld.Domain.csproj" />
+  </ItemGroup>
+
+</Project>

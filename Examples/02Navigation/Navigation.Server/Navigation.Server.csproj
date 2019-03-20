@@ -1,0 +1,21 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.1</TargetFramework>
+    <RuntimeFrameworkVersion>2.1.1</RuntimeFrameworkVersion>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.App"  Version="2.1.1" />
+    <PackageReference Include="Philadelphia.Common" Version="0.19.3.1" />
+    <PackageReference Include="Philadelphia.Server.Common" Version="0.19.3.1" />
+    <PackageReference Include="Philadelphia.ServerSideUtils" Version="0.19.3.1" />
+    <PackageReference Include="Philadelphia.Server.ForAspNetCore" Version="0.19.3.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Navigation.Domain\Navigation.Domain.csproj" />
+    <ProjectReference Include="..\Navigation.Services\Navigation.Services.csproj" />
+  </ItemGroup>
+
+</Project>
