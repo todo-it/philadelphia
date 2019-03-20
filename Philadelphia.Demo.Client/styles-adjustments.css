@@ -1,0 +1,24 @@
+.centered {
+    text-align:center;            
+}
+
+.grayedOut, .grayedOut * {
+    font-style: italic;
+    color: gray;
+}
+
+div.horizontalOrVerticalChoice {
+    display: flex;
+    align-items: center;
+}
+
+div.horizontalOrVerticalChoice > *:nth-child(2) {
+    padding-right: 30px; /*some space between 1st and 2nd item*/
+}
+
+tr.testOutcomeFailure {
+    background-color: aquamarine;
+}
+tr.testOutcomeSuccess {
+    background-color: darksalmon;
+}

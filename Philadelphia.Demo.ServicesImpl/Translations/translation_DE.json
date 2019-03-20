@@ -1,0 +1,12 @@
+﻿{
+    "items": [
+        {
+            "m": "Welcome",
+            "t": "Herzlich willkommen"
+        },
+        {
+            "m": "Localized greeting",
+            "t": "Lokalisierte Begrüßung"
+        }
+    ]
+}

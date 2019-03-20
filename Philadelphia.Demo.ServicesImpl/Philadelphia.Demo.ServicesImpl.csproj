@@ -1,0 +1,35 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json" Version="11.0.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Philadelphia.Demo.SharedModel\Philadelphia.Demo.SharedModel.csproj" />
+    <ProjectReference Include="..\Philadelphia.Server.Common\Philadelphia.Server.Common.fsproj" />
+    <ProjectReference Include="..\Philadelphia.ServerSideUtils\Philadelphia.ServerSideUtils.fsproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="template.xlsx">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Translations\translation_DE.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Translations\translation_FR.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Translations\translation_PL.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="xl_sharedStrings.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+</Project>

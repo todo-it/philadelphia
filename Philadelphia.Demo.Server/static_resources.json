@@ -1,0 +1,64 @@
+[
+    {
+        "Url": "/favicon.ico",
+        "FileSystemPath": "../Philadelphia.Demo.Client/favicon.ico",
+        "MimeType": "image/x-icon"
+    },
+    {
+        "Url": "/",
+        "FileSystemPath": "../Philadelphia.Demo.Client/index-min.html",
+        "MimeType": "text/html"
+    },
+    {
+        "Url": "/full",
+        "FileSystemPath": "../Philadelphia.Demo.Client/index-full.html",
+        "MimeType": "text/html"
+    },
+    {
+        "Url": "/styles-adjustments.css",
+        "FileSystemPath": "../Philadelphia.Demo.Client/styles-adjustments.css",
+        "MimeType": "text/css"
+    },
+    {
+        "Url": "/{0}",
+        "Dir": ".",
+        "FilePattern": "(?i)\\.html$",
+        "MimeType": "text/html"
+    },
+    {
+        "Url": "/{0}",
+        "Dir": "../Philadelphia.StaticResources",
+        "FilePattern": "(?i)\\.css$",
+        "MimeType": "text/css"
+    },
+    {
+        "Url": "/{0}",
+        "Dir": "../Philadelphia.Demo.Client/Bridge/output",
+        "FilePattern": "(?i)\\.js$",
+        "MimeType": "application/javascript"
+    },
+    {
+        "Url": "/{0}",
+        "Dir": "../Philadelphia.StaticResources",
+        "FilePattern": "(?i)\\.js$",
+        "MimeType": "application/javascript"
+    },
+    {
+        "Url": "/{0}",
+        "Dir": "../Philadelphia.StaticResources",
+        "FilePattern": "(?i)\\.png$",
+        "MimeType": "image/png"
+    },
+    {
+        "Url": "/{0}",
+        "Dir": "../Philadelphia.StaticResources",
+        "FilePattern": "(?i)\\.gif$",
+        "MimeType": "image/gif"
+    },
+    {
+        "Url": "/{0}",
+        "Dir": "../Philadelphia.StaticResources",
+        "FilePattern": "(?i)\\.woff$",
+        "MimeType": "application/x-font-woff"
+    }
+]
