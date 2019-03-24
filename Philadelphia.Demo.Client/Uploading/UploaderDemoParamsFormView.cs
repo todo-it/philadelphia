@@ -31,14 +31,14 @@ namespace Philadelphia.Demo.Client {
 
             _tabs = HorizontalTabbedView.CreateGeneric(
                 Tuple.Create<string,Action<HTMLElement>>(
-                    "Text row based", cnt => {
-                        cnt.AppendChild(CreateRowBased.Widget);
-                    }),
-                Tuple.Create<string,Action<HTMLElement>>(
                     "Thumbnail grid based", cnt => {
                         cnt.AppendChild(GridColumnsCount.Widget);
                         cnt.AppendChild(CreateGridBased.Widget);
-                    }));
+                    }),
+                Tuple.Create<string,Action<HTMLElement>>(
+                    "Text row based", cnt => {
+                        cnt.AppendChild(CreateRowBased.Widget);
+                    }) );
         }
 
         public RenderElem<HTMLElement>[] Render(HTMLElement parentContainer) {
