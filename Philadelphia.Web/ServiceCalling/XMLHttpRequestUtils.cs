@@ -9,8 +9,8 @@ using Philadelphia.Common;
 namespace Philadelphia.Web {
     public static class XMLHttpRequestUtils {
         public static Task<ResultHolder<XMLHttpRequest>> Upload(
-            string interfaceName, string methodName, IEnumerable<Bridge.Html5.File> uploaded, 
-            FileUploadOperation operation, RemoteFileId toReplaceOrRemoveId, string jsonizedInput) {
+                string interfaceName, string methodName, IEnumerable<Bridge.Html5.File> uploaded, 
+                FileUploadOperation operation, RemoteFileId toReplaceOrRemoveId, string jsonizedInput) {
 
             //for FormData upload see https://stackoverflow.com/questions/6133800/html5-file-api-readasbinarystring-reads-files-as-much-larger-different-than-fil/6142797#6142797
             
