@@ -40,12 +40,6 @@
     {
         "Url": "/{0}",
         "Dir": "../Philadelphia.StaticResources",
-        "FilePattern": "(?i)\\.js$",
-        "MimeType": "application/javascript"
-    },
-    {
-        "Url": "/{0}",
-        "Dir": "../Philadelphia.StaticResources",
         "FilePattern": "(?i)\\.png$",
         "MimeType": "image/png"
     },
