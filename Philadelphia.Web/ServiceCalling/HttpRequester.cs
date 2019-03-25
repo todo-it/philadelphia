@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
 using Bridge.Html5;
-using Bridge.jQuery2;
 using Philadelphia.Common;
 using Bridge;
 using Newtonsoft.Json;
@@ -37,63 +36,32 @@ namespace Philadelphia.Web {
             return RunHttpRequest(interfaceName, methodName, deserialize, Tuple.Create(inp1, inp2));
         }
 
-        public static async Task<OutpT> RunHttpRequest<InpT,OutpT>(string interfaceName, string methodName, Func<string,OutpT> deserialize, InpT inp) {
+        public static async Task<OutpT> RunHttpRequest<InpT,OutpT>(
+                string interfaceName, string methodName, Func<string,OutpT> deserialize, InpT inp) {
+
             var inputAsJson = JSON.Stringify(inp);
             var requestId = Guid.NewGuid().ToString();
 
             var url = string.Format("/{0}/{1}", interfaceName, methodName);
 			Logger.Debug(typeof(HttpRequester), "Request id={0} to={1} starting", requestId, url);
-			ResultHolder<OutpT> result = null;
+			var result = await Task.FromPromise<ResultHolder<XMLHttpRequest>>(
+                new XMLHttpRequestImplementingIPromise("POST", url, inputAsJson),
+                (Func<ResultHolder<XMLHttpRequest>, ResultHolder<XMLHttpRequest>>)(x => x));
 
-			try {
-				await Task.FromPromise<OutpT>(
-					jQuery.Ajax(
-						new AjaxOptions {
-							Type = "POST",
-							Url = url,
-							Cache = false,
-							Data = inputAsJson,
-                            BeforeSend = (xhr,ajaxOptions) => {
-                                if (CsrfToken != null) {
-                                    xhr.SetRequestHeader(Philadelphia.Common.Model.Magics.CsrfTokenFieldName, CsrfToken);
-                                }
-                                return true; //no cancellation
-						    },
-							Success = (data, status, request) => {
-							    Logger.Debug(typeof(HttpRequester), "Request id={0} Success now will deserialize", requestId);
-								var bsd = deserialize(BridgeObjectUtil.NoOpCast<string>(data));
-							    Logger.Debug(typeof(HttpRequester), "Success ok deserialized");
+            if (result.Success) {
+                Logger.Debug(typeof(HttpRequester), "Request id={0} Success now will deserialize", requestId);
+                var bsd = deserialize(BridgeObjectUtil.NoOpCast<string>(result.Result.ResponseText));
+                Logger.Debug(typeof(HttpRequester), "Success ok deserialized");
 								
-								result = ResultHolder<OutpT>.CreateSuccess(bsd);
-							},
-							Error = (request, status, exception) => {
-								var answer = request.ResponseText;
-								var msg = string.Format("Failed request id={0} while calling server. Got status={1} exception={2} Response={3}", 
-								    requestId, request.Status, exception, answer);
-								Logger.Error(typeof(HttpRequester), msg);
-								result = ResultHolder<OutpT>.CreateFailure(request.Status == 400 ? 
-                                        answer.TillFirstNewLineOrEverything() 
-                                    : 
-                                        exception + " " + request.ResponseText);
-							}
-						}
-					),
-					(Func<string,OutpT>)( x => {
-						Logger.Debug(typeof(HttpRequester), "Returning result from HttpRequester id={0}", requestId);
-						return default(OutpT);
-					})
-				);
+                return bsd;
+            } 
 
-				if (result != null && result.Success) {
-					Logger.Debug(typeof(HttpRequester), "NETWORK HttpRequester happy path result for url {0}", url);
-					return result.Result;
-				}
-			} catch (Exception ex) {
-				Logger.Error(typeof(HttpRequester), "HttpRequester catched exception {0} result is {1}", ex, result);
-			}
-
-			Logger.Error(typeof(HttpRequester), "HttpRequester ending with exception having message {0}", result.ErrorMessage);
-			throw new Exception(result.ErrorMessage, result.Error);
+            var answer = result.Result.ResponseText;
+            Logger.Error(
+                typeof(HttpRequester), 
+                $"Failed request id={requestId} while calling server. Got status={result.Result.Status} Response={answer}");
+            var errMsg = result.Result.Status == 400 ? answer.TillFirstNewLineOrEverything() : answer;
+            throw new Exception(errMsg);
         }
 
         //RunHttpRequestReturningArray: params 5 to 0

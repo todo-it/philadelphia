@@ -14,7 +14,8 @@ namespace Philadelphia.Web {
         private readonly string _method;
         private readonly string _url;
         private readonly FormData _frmData;
-        
+        private readonly string _dataToPost;
+
         public static string CsrfToken { get; set; }
 
         //for another example see https://forums.bridge.net/forum/bridge-net-pro/bugs/296-closed-372-1-7-exception-in-callback-within-promise-breaks-error-handling-in-task-frompromise
@@ -24,8 +25,16 @@ namespace Philadelphia.Web {
             _url = url;
             _frmData = frmData;
         }
-        
-        public void Then(Delegate fulfilledHandler, Delegate errorHandler = null, Delegate progressHandler = null) {
+
+        public XMLHttpRequestImplementingIPromise(string method, string url, string dataToPost) {
+            _method = method;
+            _url = url;
+            _dataToPost = dataToPost;
+        }
+
+        public void Then(
+                Delegate fulfilledHandler, Delegate errorHandler = null, Delegate progressHandler = null) {
+
             var req = new XMLHttpRequest();
             
             req.OnReadyStateChange = () => {
@@ -40,15 +49,23 @@ namespace Philadelphia.Web {
                 }
                 
                 Logger.Debug(GetType(), "upload error");
-                fulfilledHandler?.Call(null, ResultHolder<XMLHttpRequest>.CreateFailure("", null, req));
+                fulfilledHandler?.Call(
+                    null, ResultHolder<XMLHttpRequest>.CreateFailure(req.ResponseText, null, req));
             };
             req.Open(_method, _url, true);
-            
+                        
+            req.SetRequestHeader("Cache-Control", "no-cache");
+            req.SetRequestHeader("Pragma", "no-cache");
+
             if (CsrfToken != null) {
                 req.SetRequestHeader(Philadelphia.Common.Model.Magics.CsrfTokenFieldName, CsrfToken);
             }
 
-            req.Send(_frmData);
+            if (_frmData != null) {
+                req.Send(_frmData);
+            } else {
+                req.Send(_dataToPost);
+            }
         }
     }
 }
