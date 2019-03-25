@@ -18,7 +18,6 @@
       <dependency id="Bridge.Html5" version="17.4.0" exclude="Build,Analyzers" />
       <dependency id="Bridge.Min" version="17.4.0" exclude="Build,Analyzers" />
       <dependency id="Philadelphia.Common.AsBridgeDotNet" version="0.19.3.2" exclude="Build,Analyzers" />
-      <dependency id="Bridge.jQuery" version="2.18.0" exclude="Build,Analyzers" />
       <dependency id="Bridge.Newtonsoft.Json" version="1.11.0" exclude="Build,Analyzers" />      
     </group>
     </dependencies>
