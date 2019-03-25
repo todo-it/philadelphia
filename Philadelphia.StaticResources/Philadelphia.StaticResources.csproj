@@ -54,7 +54,6 @@
     <Content Include="Success.png" />
     <Content Include="Xlsx.png" />
     <None Include="fontawesome-webfont.woff" />
-    <None Include="jquery-2.2.3.min.js" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
