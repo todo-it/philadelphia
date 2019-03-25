@@ -3,7 +3,7 @@
   <metadata>
     <id>Philadelphia.Template</id>
     <title>Philadelphia project templates for 'dotnet new'</title>
-    <version>0.19.3.2</version>
+    <version>0.19.3.3</version>
     <authors>Dominik Pytlewski and Tomasz Sztokinier</authors>
     <licenseUrl>https://github.com/todo-it/philadelphia/blob/master/LICENSE</licenseUrl>
     <projectUrl>https://github.com/todo-it/philadelphia/</projectUrl>

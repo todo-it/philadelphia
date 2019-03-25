@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.1</TargetFramework>
-    <Version>0.19.3.2</Version>
+    <Version>0.19.3.3</Version>
     <Company>TODO IT Sp. z o.o.</Company>
     <Copyright>Copyright © TODO IT Spółka z o.o. 2019</Copyright>
     <Authors>Dominik Pytlewski and Tomasz Sztokinier</Authors>
