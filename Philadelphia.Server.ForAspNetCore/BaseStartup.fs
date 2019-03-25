@@ -307,26 +307,11 @@ type BaseStartup(
                         |_ ->
                             textBasedError ("expected FileModel but received something else")
                     |_, Some(Result.Ok(serviceResponse)), false ->
-                        let encodeForJsJsonParse x =
-                            //escape primitives as otherwise javascript JSON.parse will fail
-                            match serviceResponse with
-                            | :? System.Boolean 
-                            | :? System.Char| :? System.String
-                            | :? System.DateTime
-                            | :? System.Decimal                            
-                            | :? System.Byte | :? System.SByte
-                            | :? System.Int16 | :? System.Int32 | :? System.Int64 
-                            | :? System.UInt16 | :? System.UInt32 | :? System.UInt64
-                            | :? System.Single | :? System.Double ->
-                                System.Web.HttpUtility.JavaScriptStringEncode(x, true)
-                            |_ -> x
-
                         Result.Ok(
                             successHttpStatus,
                             "application/json; charset=utf-8",
                             serviceResponse 
-                            |> JsonConvert.SerializeObject 
-                            |> encodeForJsJsonParse
+                            |> JsonConvert.SerializeObject
                             |> Encoding.UTF8.GetBytes, 
                             None)
                     |_, Some(Result.Error(ex)), _ ->
