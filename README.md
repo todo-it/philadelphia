@@ -843,7 +843,6 @@ NOTE: paths are relative to that json file location. Static resource json file(s
 
 ## Remarks
 * Several releases ago Bridge.NET created as many ```js``` files as there were unique namespaces. In current version it is possible to create one ```js``` per project (this is what we use). That is why all classes per project are in the same namespace (as otherwise we would need to frequently edit index.html file). That is a legacy and to be considered if it is worth changing. If yes it also requires changes to CSS selectors in ```styles.css``` as by convention they are in form ```.Full\.Namespace\.Of\.Widget\.WidgetClassName {}```
-* internally in some places for HTTP requests we use ```Bridge.jQuery```. We started replacing it with direct use of ```XMLHttpRequest``` but it is not yet finished.
 * I18n  
 We don't force on you particular internationalization tool but we ourselves are happy using our other project [Oldschool.I18n](https://github.com/d-p-y/oldschool-i18n)
 
