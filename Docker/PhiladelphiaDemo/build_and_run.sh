@@ -22,7 +22,6 @@ if [ -d "../../packages" ]; then
     cp ../../Philadelphia.StaticResources/*.png binaries/Philadelphia.StaticResources/ || exit 1
     cp ../../Philadelphia.StaticResources/*.gif binaries/Philadelphia.StaticResources/ || exit 1
     cp ../../Philadelphia.StaticResources/*.css binaries/Philadelphia.StaticResources/ || exit 1
-    cp ../../Philadelphia.StaticResources/*.js binaries/Philadelphia.StaticResources/ || exit 1
     cp ../../Philadelphia.StaticResources/*.woff binaries/Philadelphia.StaticResources/ || exit 1
 
     mkdir -p binaries/Philadelphia.Demo.Client/Bridge/output || exit 1
@@ -37,7 +36,6 @@ if [ -d "../../packages" ]; then
     mkdir -p binaries/Philadelphia.Demo.Client/ImagesForUploadDemo/Thumb || exit 1
     cp ../../Philadelphia.Demo.Client/ImagesForUploadDemo/Thumb/* binaries/Philadelphia.Demo.Client/ImagesForUploadDemo/Thumb/ || exit 1
         
-#    cp ../../*.json binaries/ || exit 1
 fi
 
 if [ "$1" == "buildonly" ]; then
