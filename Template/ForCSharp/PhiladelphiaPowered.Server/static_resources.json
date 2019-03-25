@@ -24,12 +24,6 @@
     {
         "Url": "/{0}",
         "Dir": "../packages/Philadelphia.StaticResources.*/content",
-        "FilePattern": "(?i)\\.js$",
-        "MimeType": "application/javascript"
-    },
-    {
-        "Url": "/{0}",
-        "Dir": "../packages/Philadelphia.StaticResources.*/content",
         "FilePattern": "(?i)\\.png$",
         "MimeType": "image/png"
     },
