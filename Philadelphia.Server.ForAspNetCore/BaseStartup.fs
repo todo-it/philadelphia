@@ -314,6 +314,8 @@ type BaseStartup(
                             |> JsonConvert.SerializeObject
                             |> Encoding.UTF8.GetBytes, 
                             None)
+                    |_, Some(Result.Error(:? TargetInvocationException as ex)), _ ->
+                        textBasedError (ex.InnerException.Message+"\n"+ex.InnerException.ToString())
                     |_, Some(Result.Error(ex)), _ ->
                         textBasedError (ex.Message+"\n"+ex.ToString())
                     |_ ->
