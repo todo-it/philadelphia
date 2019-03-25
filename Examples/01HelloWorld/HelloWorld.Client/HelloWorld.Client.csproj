@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
@@ -57,9 +57,6 @@
     </Reference>
     <Reference Include="Bridge.Html5, Version=17.4.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Bridge.Html5.17.4.0\lib\net40\Bridge.Html5.dll</HintPath>
-    </Reference>
-    <Reference Include="Bridge.jQuery2, Version=2.18.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Bridge.jQuery.2.18.0\lib\net40\Bridge.jQuery2.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=1.11.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Bridge.Newtonsoft.Json.1.11.0\lib\net40\Newtonsoft.Json.dll</HintPath>
