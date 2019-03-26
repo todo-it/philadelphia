@@ -1,5 +1,7 @@
 #!/bin/bash
 
+# it builds and runs Docker container from already built binaries
+
 CURDIR=`pwd`
 
 ISWINDOWS=`uname -o`

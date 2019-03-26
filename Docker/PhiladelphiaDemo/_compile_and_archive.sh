@@ -11,6 +11,8 @@ CURDIR=`pwd`
 
 cd ../..
 
+nuget restore Philadelphia.Toolkit.And.Demo.sln || exit 1
+
 cd Philadelphia.Demo.Server 
 dotnet publish || exit 1
 
