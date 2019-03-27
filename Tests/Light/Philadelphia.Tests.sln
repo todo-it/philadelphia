@@ -23,17 +23,17 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "BridgeDotNet", "BridgeDotNe
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DotNetCore", "DotNetCore", "{FFC0F9FF-7334-4439-8764-5BF38B97BD8B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Philadelphia.Common.AsBridgeDotNet", "Philadelphia.Common\Philadelphia.Common.AsBridgeDotNet.csproj", "{9C31D343-8D00-4520-8D74-AFBE7E69555D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Philadelphia.Common.AsBridgeDotNet", "..\..\Philadelphia.Common\Philadelphia.Common.AsBridgeDotNet.csproj", "{9C31D343-8D00-4520-8D74-AFBE7E69555D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Philadelphia.Web", "Philadelphia.Web\Philadelphia.Web.csproj", "{04AA0E1E-E264-495B-A057-A56634D885EC}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Philadelphia.Web", "..\..\Philadelphia.Web\Philadelphia.Web.csproj", "{04AA0E1E-E264-495B-A057-A56634D885EC}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Philadelphia.Common", "Philadelphia.Common\Philadelphia.Common.csproj", "{E16F556C-EFA5-4FA2-A07C-DB4F06A3AE5A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Philadelphia.Common", "..\..\Philadelphia.Common\Philadelphia.Common.csproj", "{E16F556C-EFA5-4FA2-A07C-DB4F06A3AE5A}"
 EndProject
-Project("{6EC3EE1D-3C4E-46DD-8F32-0CC8E7565705}") = "Philadelphia.Server.Common", "Philadelphia.Server.Common\Philadelphia.Server.Common.fsproj", "{4FE511E2-EEAF-437D-89D4-4675D3ED27F9}"
+Project("{6EC3EE1D-3C4E-46DD-8F32-0CC8E7565705}") = "Philadelphia.Server.Common", "..\..\Philadelphia.Server.Common\Philadelphia.Server.Common.fsproj", "{4FE511E2-EEAF-437D-89D4-4675D3ED27F9}"
 EndProject
-Project("{6EC3EE1D-3C4E-46DD-8F32-0CC8E7565705}") = "Philadelphia.ServerSideUtils", "Philadelphia.ServerSideUtils\Philadelphia.ServerSideUtils.fsproj", "{3A42EAA3-0CE9-4F67-9AC6-0C1380D4C317}"
+Project("{6EC3EE1D-3C4E-46DD-8F32-0CC8E7565705}") = "Philadelphia.ServerSideUtils", "..\..\Philadelphia.ServerSideUtils\Philadelphia.ServerSideUtils.fsproj", "{3A42EAA3-0CE9-4F67-9AC6-0C1380D4C317}"
 EndProject
-Project("{6EC3EE1D-3C4E-46DD-8F32-0CC8E7565705}") = "Philadelphia.Server.ForAspNetCore", "Philadelphia.Server.ForAspNetCore\Philadelphia.Server.ForAspNetCore.fsproj", "{1AF993AF-E678-481A-B8B1-FCDF5C75D63E}"
+Project("{6EC3EE1D-3C4E-46DD-8F32-0CC8E7565705}") = "Philadelphia.Server.ForAspNetCore", "..\..\Philadelphia.Server.ForAspNetCore\Philadelphia.Server.ForAspNetCore.fsproj", "{1AF993AF-E678-481A-B8B1-FCDF5C75D63E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -9,8 +9,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Philadelphia.Common\Philadelphia.Common.csproj" />
-    <ProjectReference Include="..\Philadelphia.Server.Common\Philadelphia.Server.Common.fsproj" />
+    <ProjectReference Include="..\..\..\Philadelphia.Common\Philadelphia.Common.csproj" />
+    <ProjectReference Include="..\..\..\Philadelphia.Server.Common\Philadelphia.Server.Common.fsproj" />
     <ProjectReference Include="..\Philadelphia.Tests.Domain\Philadelphia.Tests.Domain.csproj" />
   </ItemGroup>
 

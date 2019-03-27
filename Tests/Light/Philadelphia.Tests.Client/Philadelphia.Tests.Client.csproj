@@ -76,11 +76,11 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Philadelphia.Common\Philadelphia.Common.AsBridgeDotNet.csproj">
+    <ProjectReference Include="..\..\..\Philadelphia.Common\Philadelphia.Common.AsBridgeDotNet.csproj">
       <Project>{9c31d343-8d00-4520-8d74-afbe7e69555d}</Project>
       <Name>Philadelphia.Common.AsBridgeDotNet</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Philadelphia.Web\Philadelphia.Web.csproj">
+    <ProjectReference Include="..\..\..\Philadelphia.Web\Philadelphia.Web.csproj">
       <Project>{04aa0e1e-e264-495b-a057-a56634d885ec}</Project>
       <Name>Philadelphia.Web</Name>
     </ProjectReference>
