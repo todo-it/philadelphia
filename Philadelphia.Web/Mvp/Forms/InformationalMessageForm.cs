@@ -26,7 +26,7 @@ namespace Philadelphia.Web {
         }
         
         public async Task Init(string message, string title = null) {
-            Title = title ?? I18n.Translate("Untitled");
+            Title = title ?? Title ?? I18n.Translate("Untitled");
             await _message.DoChange(message, false, this, false);
         }
 
