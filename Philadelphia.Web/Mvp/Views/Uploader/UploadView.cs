@@ -24,6 +24,9 @@ namespace Philadelphia.Web {
             private readonly IDictionary<RemoteFileDescr,AnchorBasedActionView> _known 
                 = new Dictionary<RemoteFileDescr, AnchorBasedActionView>();
             
+            //assumption: file is downloadable(readable) even if control is disabled.
+            //To avoid race conditions file is not downloadable during running operation(s)
+
             public ThumbnailUploadViewAction(UploadView parent) {
                 _parent = parent;
             }
@@ -57,7 +60,6 @@ namespace Philadelphia.Web {
                 
                 var enabledVal = 
                     _parent.Downloadable &&
-                    _parent.Enabled &&
                     forFile.Status != UploadStatus.Running &&
                     forFile.FileId != null &&
                     !isOperationRunning;
@@ -206,6 +208,9 @@ namespace Philadelphia.Web {
             private readonly UploadView _parent;
             private readonly IDictionary<RemoteFileDescr,AnchorBasedActionView> _known 
                 = new Dictionary<RemoteFileDescr, AnchorBasedActionView>();
+             
+            //assumption: file is downloadable(readable) even if control is disabled.
+            //To avoid race conditions file is not downloadable during running operation(s)
 
             public FileNameUploadViewAction(UploadView parent) {
                 _parent = parent;
@@ -226,7 +231,7 @@ namespace Philadelphia.Web {
                 switch(effectiveMethod) {
                     case OpenImagesMethod.DownloadAsAttachment:
                         widget.Triggered += () => {    
-                            if (!_parent.Downloadable || !_parent.Enabled) {
+                            if (!_parent.Downloadable) {
                                 return;
                             }
                             _parent.RunDownloadOperation(forFile, DownloadMethod.Attachment);
@@ -266,7 +271,6 @@ namespace Philadelphia.Web {
                 
                 var value = forFile.FileId != null && 
                             _parent.Downloadable && 
-                            _parent.Enabled && 
                             forFile.Status == UploadStatus.Succeeded &&
                             !isOperationRunning;
                 
