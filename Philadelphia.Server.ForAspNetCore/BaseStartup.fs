@@ -19,6 +19,7 @@ open System.Text.RegularExpressions
 open Microsoft.Net.Http.Headers
 open Microsoft.AspNetCore.WebUtilities
 open System.Runtime.InteropServices
+open Philadelphia.Common.Model
 
 type ContDispFile =
 |NonFileField of name:string
@@ -124,12 +125,21 @@ type BaseStartup(
     let services = Dictionary<HttpMethodAndUrl, Func<HttpContext, Task>>()
         
     let populateIpAndCookies (target:ClientConnectionInfo) (ctx:HttpContext) =
+        let tzCode =
+            match ctx.Request.Headers.TryGetValue Magics.TimeZoneCodeFieldName with 
+            |true, v -> v.Item 0
+            |_ -> null
+
+        let tzOffset =
+            match ctx.Request.Headers.TryGetValue Magics.TimeZoneOffsetFieldName with
+            |true, v -> v.Item 0 |> int |> Nullable
+            |_ -> Nullable()
+
         target.Initialize(
-            ctx.Connection.RemoteIpAddress.ToString(), 
             (fun x -> 
                 match ctx.Request.Cookies.TryGetValue x with
                 |true, v -> v
-                |false, _ -> null),
+                |_ -> null),
             (fun x -> 
                 if Object.ReferenceEquals(null, x.Value) 
                 then ctx.Response.Cookies.Delete(x.Name)
@@ -142,7 +152,10 @@ type BaseStartup(
                             Path = x.Path,
                             Expires = x.Expires)
                     
-                    ctx.Response.Cookies.Append(x.Name, x.Value, o)))
+                    ctx.Response.Cookies.Append(x.Name, x.Value, o)),
+            ctx.Connection.RemoteIpAddress.ToString(), 
+            tzCode,
+            tzOffset)
 
     let populateCsrfMaybe (target:ClientConnectionInfo) provider =
         match provider () with
@@ -218,7 +231,7 @@ type BaseStartup(
                             let nonfiles = Map.ofList nonfiles
 
                             populateCsrfMaybe (di.Resolve<_>()) (fun () ->
-                                let name = Philadelphia.Common.Model.Magics.CsrfTokenFieldName
+                                let name = Magics.CsrfTokenFieldName
                                 match Map.tryFind name nonfiles with
                                 |Some x -> 
                                     log "found CSRF token in POST fields(in upload)"
@@ -246,7 +259,7 @@ type BaseStartup(
                     |{ImmediateReturnPostService.ReturnsFile=true} ->
                         //FormPost into iframe - doesn't contain request header field
                         populateCsrfMaybe (di.Resolve<_>()) (fun () ->
-                            let name = Philadelphia.Common.Model.Magics.CsrfTokenFieldName
+                            let name = Magics.CsrfTokenFieldName
                             match reqParamTryGet name with
                             |true, x when x.Count > 0 -> 
                                 log "found CSRF token in POST fields(in download)"
@@ -488,7 +501,7 @@ type BaseStartup(
 
         populateIpAndCookies (di.Resolve<_>()) ctx
         populateCsrfMaybe (di.Resolve<_>()) (fun () ->
-            let name = Philadelphia.Common.Model.Magics.CsrfTokenFieldName
+            let name = Magics.CsrfTokenFieldName
             match ctx.Request.Headers.MaybeGetValue name, maybeGetQueryItem name with
             |Some x, _ when x.Count > 0 -> 
                 log "found CSRF token in request headers"

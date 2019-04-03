@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Bridge;
 using Philadelphia.Common;
 
 namespace Philadelphia.Web {
@@ -56,6 +57,19 @@ namespace Philadelphia.Web {
                         
             req.SetRequestHeader("Cache-Control", "no-cache");
             req.SetRequestHeader("Pragma", "no-cache");
+            
+            var tzOffset = Script.Eval<string>("new Date().getTimezoneOffset() + \"\"");
+            req.SetRequestHeader(Philadelphia.Common.Model.Magics.TimeZoneOffsetFieldName, tzOffset);
+
+            try {
+                var tzCode = Script.Eval<object>("Intl.DateTimeFormat().resolvedOptions().timeZone");
+                if (Script.IsDefined(tzCode)) {
+                    req.SetRequestHeader(Philadelphia.Common.Model.Magics.TimeZoneCodeFieldName, tzCode.ToString());
+                }
+            } catch(Exception) {
+                //most likely it is unsupported
+                Logger.Error(GetType(), "could not determine timeZone");
+            }
 
             if (CsrfToken != null) {
                 req.SetRequestHeader(Philadelphia.Common.Model.Magics.CsrfTokenFieldName, CsrfToken);

@@ -7,22 +7,32 @@ namespace Philadelphia.Common {
         private Action<Cookie> _setCookie;
 
         public string ClientIpAddress { get; private set; }
-        public string CsrfToken { get; private set; }
+        
+        public string ClientTimeZoneCodeOrNull { get; private set; }
+        public int? ClientTimeZoneOffset { get; private set; }
+        
+        public string CsrfTokenOrNull { get; private set; }
 
         // REVIEW: Which value is provided?
         /// <summary>
         /// value is provided later by DI
         /// </summary>
         public void Initialize(
-                string clientIpAddress, Func<string,string> getCookieOrNull, Action<Cookie> setCookie) {
-
-            ClientIpAddress = clientIpAddress;
+                Func<string,string> getCookieOrNull, 
+                Action<Cookie> setCookie,
+                string clientIpAddress, 
+                string clientTimeZoneCodeOrNull = null,
+                int? clientTimeZoneOffset = null) {
+            
             _getCookieOrNull = getCookieOrNull;
             _setCookie = setCookie;
+            ClientIpAddress = clientIpAddress;
+            ClientTimeZoneCodeOrNull = clientTimeZoneCodeOrNull;
+            ClientTimeZoneOffset = clientTimeZoneOffset;
         }
 
         public void InitializeCsrfToken(string token) {
-            CsrfToken = token;
+            CsrfTokenOrNull = token;
         }
         
         public string GetCookieOrNull(string inp) {
