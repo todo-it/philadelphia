@@ -133,6 +133,31 @@ namespace ControlledByTests.Client {
                     Document.Body.AppendChild(isDone);
                     break;
                 }
+                    
+                case ClientSideFlows.SerDeser_DateTimeLocal: {
+                    var iv = new InputView(testOrNull);
+                    var inp = LocalValueFieldBuilder.Build(DateTime.Now, iv,
+                        dt => dt.ToStringYyyyMmDdHhMm(),
+                        str => Convert.ToDateTime(str));
+                    var isDone = new HTMLSpanElement {Id = MagicsForTests.ResultSpanId};
+
+                    inp.Changed += async (_, __, newValue, errors, isUserChange) => {
+                        if (!isUserChange) {
+                            return;
+                        }
+
+                        newValue = DateTime.SpecifyKind(newValue, DateTimeKind.Local);
+                        var result = await di.Resolve<ISerDeserService>().ProcessDateTime(newValue, false);
+
+                        //add to make sure that value is of usable type
+                        await inp.DoChange(result.AddDays(MagicsForTests.SerDeser_DateTime_ClientAddDays), false); 
+                        isDone.TextContent = MagicsForTests.ResultSpanReadyValue;
+                    };
+
+                    Document.Body.AppendChild(iv.Widget);
+                    Document.Body.AppendChild(isDone);
+                    break;
+                }
 
                 default:
                     Document.Body.AppendChild(new HTMLSpanElement {TextContent = "unsupported test selected"});
