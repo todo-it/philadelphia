@@ -110,6 +110,7 @@ type BaseStartup(
                 assemblies:IEnumerable<Assembly>, sett:ServerSettings) =
 
     let log x = Logger.Debug(typeof<BaseStartup>, x)
+    let logf msg = Printf.kprintf log msg
     let serverSideEventSubscribentMaxLifeSeconds = 
         sett.ServerSideEventSubscribentMaxLifeSeconds |> Option.ofNullable |> Option.defaultValue (30*60)
     let maxContentLengthChars = 
@@ -449,25 +450,23 @@ type BaseStartup(
     let registerStaticFiles (resources:StaticResourceDef seq) =            
         resources
         |> Seq.collect(fun ress ->
-            let buildRootedPath = buildRootedPath ress.RelativeToPath
             sprintf "registering static resources from %s" ress.DefinedBy |> log
-            
+            let buildRootedPath = buildRootedPath ress.RelativeToPath
             let urlToResource =
                 ress.Items
                 |> Seq.collect(fun res ->                    
                     match res.FilePattern with
                     | null -> //single file
+                        logf "singlemode static resource registering %s as %s" res.FileSystemPath res.Url
                         let itm =
                             res.Url, 
                             StaticFileResource(
                                 FileSystemPath = buildRootedPath res.FileSystemPath,
                                 MimeType = res.MimeType)
-                        sprintf "singlemore static resource registering %s as %s" res.FileSystemPath res.Url |> log
-    
                         [ itm ] |> Seq.ofList
                     | patt -> //many files
                         let re = Regex(patt)
-        
+                        logf "multimode static resource registering, dir %s, pattern %s" res.Dir patt 
                         res.Dir
                         |> getFullPathResolvingAsterisks ress.RelativeToPath
                         |> Directory.EnumerateFiles
@@ -478,7 +477,7 @@ type BaseStartup(
                                 StaticFileResource(
                                     FileSystemPath = filePth,
                                     MimeType = res.MimeType)
-                            sprintf "multimode static resource registering %s as %s" filePth url |> log
+                            logf "file %s <=> URL %s" filePth url 
                             url, statRes)                          
                           )
             urlToResource)
