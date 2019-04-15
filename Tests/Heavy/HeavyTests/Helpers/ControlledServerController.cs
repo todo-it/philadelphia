@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -15,8 +16,6 @@ namespace HeavyTests.Helpers {
         private object _writeLck = new object();
         private List<string> _readLines = new List<string>();
         private readonly AutoResetEvent _lineReceived = new AutoResetEvent(false);
-        private volatile bool _exitExpected = false;
-        private volatile bool _exited = false;
 
         public ControlledServerController(
                 Action<string> logger, ICodec codec, Process proc, TimeSpan defaultReadTimeout) {
@@ -26,14 +25,11 @@ namespace HeavyTests.Helpers {
             _proc = proc;
             _defaultReadTimeout = defaultReadTimeout;
 
-            _proc.Exited += (sender, args) => {
-                _exited = true;
+            _proc.Exited += (sender, args) => _logger("process ended");
 
-                if (!_exitExpected) {
-                    throw new Exception("process ended unexpectedly");
-                }
-                _logger("process ended as expected");
-            };
+            _proc.ErrorDataReceived += (_, args) => _logger("received error: " + args.Data);
+            
+
             _proc.OutputDataReceived += (_, args) => {
                 lock (_readLck) {
                     _readLines.Add(args.Data);
@@ -46,6 +42,7 @@ namespace HeavyTests.Helpers {
 
             proc.Start();
             proc.BeginOutputReadLine();
+            proc.BeginErrorReadLine();
         }
 
         public void WriteRequest(CommandRequest req) {
@@ -138,8 +135,8 @@ namespace HeavyTests.Helpers {
             var hasLine = _lineReceived.WaitOne(timeout ?? _defaultReadTimeout);
 
             if (!hasLine) {                
-                if (_exited) {
-                    throw new Exception($"process exited so cannot read from its stdout (expected?={_exitExpected})");
+                if (_proc.HasExited) {
+                    throw new Exception($"process exited so cannot read from its stdout");
                 }
 
                 return null; //timeout reached and still no line received
@@ -158,14 +155,21 @@ namespace HeavyTests.Helpers {
         }
 
         public void Dispose() {
-            try {
-                _proc.Kill();
-                _logger("process killed");
-            } catch (Exception ex) {
-                _logger($"killing process failed due to {ex}");
+            _logger("disposing process");
+
+            using (_proc) { 
+                if (_proc.HasExited) {
+                    throw new Exception($"process ended unexpectedly");
+                }
+
+                try {
+                    _proc.Kill();
+                    _logger("process killed");
+                }
+                catch (Exception ex) {
+                    _logger($"killing process failed due to {ex}");
+                }
             }
-            
-            _proc.Dispose();
         }
     }
 }

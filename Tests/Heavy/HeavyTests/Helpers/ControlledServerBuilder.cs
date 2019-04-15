@@ -17,12 +17,14 @@ namespace HeavyTests.Helpers {
                     FileName = program,
                     Arguments = args,
                     RedirectStandardOutput = true,
-                    RedirectStandardInput = true
+                    RedirectStandardInput = true,
+                    RedirectStandardError = true,
                 },
-                EnableRaisingEvents = true
+                EnableRaisingEvents = true,
             };
 
             if (startDirOrNull != null) {
+                logger($"custom start dir: {startDirOrNull}");
                 proc.StartInfo.WorkingDirectory = startDirOrNull;
             }
             
