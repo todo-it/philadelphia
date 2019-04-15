@@ -17,25 +17,25 @@
     },
     {
         "Url": "/{0}",
-        "Dir": "../packages/Philadelphia.StaticResources.*/content",
+        "Dir": "../../../Philadelphia.StaticResources",
         "FilePattern": "(?i)\\.css$",
         "MimeType": "text/css"
     },
     {
         "Url": "/{0}",
-        "Dir": "../packages/Philadelphia.StaticResources.*/content",
+      "Dir": "../../../Philadelphia.StaticResources",
         "FilePattern": "(?i)\\.png$",
         "MimeType": "image/png"
     },
     {
         "Url": "/{0}",
-        "Dir": "../packages/Philadelphia.StaticResources.*/content",
+      "Dir": "../../../Philadelphia.StaticResources",
         "FilePattern": "(?i)\\.gif$",
         "MimeType": "image/gif"
     },
     {
         "Url": "/{0}",
-        "Dir": "../packages/Philadelphia.StaticResources.*/content",
+        "Dir": "../../../Philadelphia.StaticResources",
         "FilePattern": "(?i)\\.woff$",
         "MimeType": "application/x-font-woff"
     }
