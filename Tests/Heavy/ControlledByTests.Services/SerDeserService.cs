@@ -24,5 +24,12 @@ namespace ControlledByTests.Services {
             //adds to make sure that server's value was actually seen by client
             return Task.FromResult(v.AddDays(MagicsForTests.SerDeser_DateTime_ServerAddDays));
         }
+
+        public Task<string> ProcessString(string v) {
+            _trace.RegisterServiceInvocation(typeof(ISerDeserService), nameof(ProcessString), v);
+
+            //adds to make sure that server's value was actually seen by client
+            return Task.FromResult(v + MagicsForTests.SerDeser_String_ServerAddSuffix);
+        }
     }
 }

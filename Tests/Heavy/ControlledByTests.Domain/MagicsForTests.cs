@@ -15,5 +15,9 @@ namespace ControlledByTests.Domain {
         public static string SerDeser_DateTime_ClientTypedVal = "2001-02-03 04:05:06";
         public const int SerDeser_DateTime_ClientAddDays = 3;
         public const int SerDeser_DateTime_ServerAddDays = 5;
+
+        public const string SerDeser_String_TypedVal = "Boom";
+        public const string SerDeser_String_ServerAddSuffix = "Abracadabra";
+        public const string SerDeser_String_ClientAddSuffix = "HocusPocus";
     }
 }

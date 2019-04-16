@@ -103,5 +103,31 @@ namespace HeavyTests.Tests {
                     );
                 });
         }
+
+        [Fact]
+        public void TestString() {
+            new HeavyTestRunner(_logger).RunServerAndBrowserAndExecute(
+                ClientSideFlows.SerDeser_String, (assertX, server, browser) => {
+                    browser
+                        .FindElementByXPath(XPathBuilder.Custom("//input"))
+                        .ClearFluent()
+                        .SendKeys(MagicsForTests.SerDeser_String_TypedVal +"\t");
+                    
+                    Thread.Sleep(Philadelphia.Web.Magics.ValidationTriggerDelayMilisec*2);
+
+                    assertX.ServiceCallsMadeOnServerAre(
+                        ServiceCall.OfMethod((ISerDeserService x) => x.ProcessString(MagicsForTests.SerDeser_String_TypedVal)));
+
+                    assertX.MatchesXPathInBrowser(
+                        XPathBuilder.Custom($"//span[@id='{MagicsForTests.ResultSpanId}' and text() = '{MagicsForTests.ResultSpanReadyValue}']"));
+
+                    assertX.InputHasValue(
+                        XPathBuilder.Custom("//input"),
+                        (
+                            MagicsForTests.SerDeser_String_TypedVal +
+                            MagicsForTests.SerDeser_String_ServerAddSuffix+
+                            MagicsForTests.SerDeser_String_ClientAddSuffix) +"");
+                });
+        }
     }
 }

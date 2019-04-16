@@ -20,6 +20,11 @@ using Philadelphia.Common;
                     typeof(ControlledByTests.Domain.ISerDeserService).FullName,
                     "ProcessInt", p0);
             }
+            public async System.Threading.Tasks.Task<System.String>ProcessString(System.String p0){
+                return await HttpRequester.RunHttpRequestReturningPlain<System.String, System.String>(
+                    typeof(ControlledByTests.Domain.ISerDeserService).FullName,
+                    "ProcessString", p0);
+            }
         }
 
 

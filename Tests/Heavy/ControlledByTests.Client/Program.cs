@@ -87,6 +87,29 @@ namespace ControlledByTests.Client {
                     di.Resolve<HelloWorldFlow>().Run(renderer);
                     break;
 
+                case ClientSideFlows.SerDeser_String: {
+                    var iv = new InputView(testOrNull);
+                    var inp = LocalValueFieldBuilder.Build("", iv);
+
+                    var isDone = new HTMLSpanElement {Id = MagicsForTests.ResultSpanId};
+
+                    inp.Changed += async (_, __, newValue, errors, isUserChange) => {
+                        if (!isUserChange) {
+                            return;
+                        }
+
+                        var result = await di.Resolve<ISerDeserService>().ProcessString(newValue);
+
+                        //add to make sure that value is of usable type
+                        await inp.DoChange(result+MagicsForTests.SerDeser_String_ClientAddSuffix, false); 
+                        isDone.TextContent = MagicsForTests.ResultSpanReadyValue;
+                    };
+
+                    Document.Body.AppendChild(iv.Widget);
+                    Document.Body.AppendChild(isDone);
+                    break;
+                }
+
                 case ClientSideFlows.SerDeser_Int: {
                     var iv = new InputView(testOrNull);
                     var inp = LocalValueFieldBuilder.BuildInt(0, iv);
