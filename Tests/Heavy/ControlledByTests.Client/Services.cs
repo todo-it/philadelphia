@@ -20,6 +20,11 @@ using Philadelphia.Common;
                     typeof(ControlledByTests.Domain.ISerDeserService).FullName,
                     "ProcessInt", p0);
             }
+            public async System.Threading.Tasks.Task<System.Int64>ProcessLong(System.Int64 p0){
+                return await HttpRequester.RunHttpRequestReturningPlain<System.Int64, System.Int64>(
+                    typeof(ControlledByTests.Domain.ISerDeserService).FullName,
+                    "ProcessLong", p0);
+            }
             public async System.Threading.Tasks.Task<System.String>ProcessString(System.String p0){
                 return await HttpRequester.RunHttpRequestReturningPlain<System.String, System.String>(
                     typeof(ControlledByTests.Domain.ISerDeserService).FullName,

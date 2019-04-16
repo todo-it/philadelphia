@@ -43,6 +43,7 @@ namespace ControlledByTests.Domain {
             public static class Long {
                 public const ClientSideFlows Flow = ClientSideFlows.SerDeser_Long;
                 public const string TypedVal = "366";
+                public const long ClientVal = 366L;
                 public const long ServerAdd = 112L;
                 public const long ClientAdd = 501L;
             }

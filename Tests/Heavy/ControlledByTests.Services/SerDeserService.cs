@@ -31,5 +31,12 @@ namespace ControlledByTests.Services {
             //adds to make sure that server's value was actually seen by client
             return Task.FromResult(v + MagicsForTests.Serialization.String.ServerAddSuffix);
         }
+
+        public Task<long> ProcessLong(long v) {
+            _trace.RegisterServiceInvocation(typeof(ISerDeserService), nameof(ProcessLong), v);
+
+            //adds to make sure that server's value was actually seen by client
+            return Task.FromResult(v + MagicsForTests.Serialization.Long.ServerAdd);
+        }
     }
 }

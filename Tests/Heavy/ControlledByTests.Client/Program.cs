@@ -182,6 +182,32 @@ namespace ControlledByTests.Client {
                     break;
                 }
 
+                case MagicsForTests.Serialization.Long.Flow: {
+                    var iv = new InputView(testOrNull);
+                    var inp = LocalValueFieldBuilder.BuildNonTrivial(
+                        0L, 
+                        iv, 
+                        long.Parse, 
+                        l => l.ToString(), 
+                        "not a proper long value");
+                    var isDone = new HTMLSpanElement {Id = MagicsForTests.ResultSpanId};
+
+                    inp.Changed += async (_, __, newValue, errors, isUserChange) => {
+                        if (!isUserChange) {
+                            return;
+                        }
+
+                        var result = await di.Resolve<ISerDeserService>().ProcessLong(newValue);
+
+                        //add to make sure that value is of usable type
+                        await inp.DoChange(result + MagicsForTests.Serialization.Long.ClientAdd, false);
+                        isDone.TextContent = MagicsForTests.ResultSpanReadyValue;
+                    };
+
+                    Document.Body.AppendChild(iv.Widget);
+                    Document.Body.AppendChild(isDone);
+                    break;
+                }
                 default:
                     Document.Body.AppendChild(new HTMLSpanElement {TextContent = "unsupported test selected"});
                     break;

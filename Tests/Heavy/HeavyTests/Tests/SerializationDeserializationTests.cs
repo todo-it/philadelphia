@@ -129,5 +129,31 @@ namespace HeavyTests.Tests {
                             MagicsForTests.Serialization.String.ClientAddSuffix) +"");
                 });
         }
+
+        [Fact]
+        public void TestLong() {
+            new HeavyTestRunner(_logger).RunServerAndBrowserAndExecute(
+                MagicsForTests.Serialization.Long.Flow, (assertX, server, browser) => {
+                    browser
+                        .FindElementByXPath(XPathBuilder.Custom("//input"))
+                        .ClearFluent()
+                        .SendKeys(MagicsForTests.Serialization.Long.TypedVal +"\t");
+                    
+                    Thread.Sleep(Philadelphia.Web.Magics.ValidationTriggerDelayMilisec*2);
+
+                    assertX.ServiceCallsMadeOnServerAre(
+                        ServiceCall.OfMethod((ISerDeserService x) => x.ProcessLong(MagicsForTests.Serialization.Long.ClientVal)));
+
+                    assertX.MatchesXPathInBrowser(
+                        XPathBuilder.Custom($"//span[@id='{MagicsForTests.ResultSpanId}' and text() = '{MagicsForTests.ResultSpanReadyValue}']"));
+
+                    assertX.InputHasValue(
+                        XPathBuilder.Custom("//input"),
+                        (
+                            MagicsForTests.Serialization.Long.ClientVal +
+                            MagicsForTests.Serialization.Long.ServerAdd+
+                            MagicsForTests.Serialization.Long.ClientAdd) +"");
+                });
+        }
     }
 }

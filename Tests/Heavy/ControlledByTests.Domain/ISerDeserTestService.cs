@@ -9,6 +9,7 @@ namespace ControlledByTests.Domain {
     public interface ISerDeserService {
         Task<int> ProcessInt(int v);
         Task<DateTime> ProcessDateTime(DateTime v, bool isUtc);
-        Task<string> ProcessString(string str);
+        Task<string> ProcessString(string v);
+        Task<long> ProcessLong(long v);
     }
 }
