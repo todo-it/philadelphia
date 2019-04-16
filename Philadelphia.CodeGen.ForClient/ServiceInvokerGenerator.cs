@@ -13,6 +13,8 @@ namespace Philadelphia.CodeGen.ForClient {
         public MethodInfo setter;
     }
 
+    public delegate void Trace(string msg);
+
     public static class ServiceInvokerGenerator {
         private static string GenerateDependencyInjection<T>(System.Reflection.Assembly assembly) {
             var result = new StringBuilder();
@@ -219,9 +221,9 @@ namespace Philadelphia.CodeGen.ForClient {
             return result.ToString();
         }
 
-        private static string GenerateRegularProxies<AttrT,FileT>(Assembly assembly) {
+        private static string GenerateRegularProxies<AttrT,FileT>(Assembly assembly, Trace trace) {
             var result = new StringBuilder();
-
+            trace("Looking for services");
             var services = 
                 assembly
                     .GetTypes()
@@ -231,10 +233,13 @@ namespace Philadelphia.CodeGen.ForClient {
                     .OrderBy(x => x.FullName);
 
             foreach (var srv in services) {
+                trace($"Handling service {srv.FullName}");
                 // REVIEW: string interpolation
                 result.Append(string.Format("    public class WebClient{0} : {1} {{\r\n",srv.Name.TrimStart('I'), srv.FullName));
 
-                foreach (var method in srv.GetMethods().OrderBy(x => x.Name)) {				
+                foreach (var method in srv.GetMethods().OrderBy(x => x.Name)) {
+                    //trace($"Checking method: {method.Name}, return type {method.ReturnType}");
+                    trace($"Checking method: {method}");
                     var isUpload = (method.GetParameters().Any() && method.GetParameters().First().ParameterType == typeof(Philadelphia.Common.UploadInfo));
                     var isFilter = method.ReturnType.GetGenericTypeDefinition() == typeof(Func<object,object>).GetGenericTypeDefinition();
 
@@ -283,6 +288,7 @@ namespace Philadelphia.CodeGen.ForClient {
                     var i = 0;
                     var comma = false;
                     foreach (var param in method.GetParameters()) {
+                        trace($"Handling parameter {param.Name} of type {param.ParameterType}");
                         if (comma) {
                             result.Append(", ");
                         }
@@ -357,9 +363,9 @@ namespace Philadelphia.CodeGen.ForClient {
             return result.ToString();
         }
         
-        private static string GenerateProxies<AttrT,FileT>(Assembly assembly) {
+        private static string GenerateProxies<AttrT,FileT>(Assembly assembly, Trace trace) {
             return 
-                GenerateRegularProxies<AttrT,FileT>(assembly) + 
+                GenerateRegularProxies<AttrT,FileT>(assembly, trace) + 
                 "\n" +
                 GenerateUploadDownloadProxies<AttrT,FileT>(assembly);
         }
@@ -395,13 +401,18 @@ namespace Philadelphia.CodeGen.ForClient {
             return result.ToString();
         }
 
-        public static void GenerateCode(string outputCsFilePath, Assembly serviceDeclarationAssembly, string generatedClassesNamespace) {
+        public static void GenerateCode(
+            string outputCsFilePath, 
+            Assembly serviceDeclarationAssembly, 
+            string generatedClassesNamespace,
+            Trace trace = null) {
+            trace = trace ?? (x => { });
             File.WriteAllText(outputCsFilePath, 
                 $@"using Philadelphia.Common;
     using Philadelphia.Web;
 
     namespace {generatedClassesNamespace} {{
-    {GenerateProxies<Philadelphia.Common.HttpService,Philadelphia.Common.FileModel>(serviceDeclarationAssembly)}
+    {GenerateProxies<Philadelphia.Common.HttpService,Philadelphia.Common.FileModel>(serviceDeclarationAssembly, trace)}
     {GenerateServerSideEventsSubscribents<Philadelphia.Common.HttpService>(serviceDeclarationAssembly)}
     {GenerateDependencyInjection<Philadelphia.Common.HttpService>(serviceDeclarationAssembly)}
     }}

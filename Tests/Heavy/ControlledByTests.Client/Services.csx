@@ -19,5 +19,6 @@
 Philadelphia.CodeGen.ForClient.ServiceInvokerGenerator.GenerateCode(
     "Services.cs",
     typeof(ControlledByTests.Domain.Dummy).Assembly,
-    "ControlledByTests.Client");
+    "ControlledByTests.Client", 
+    Console.WriteLine);
 Console.WriteLine("ok");
