@@ -18,7 +18,7 @@ namespace HeavyTests.Tests {
         [Fact]
         public void HelloWorldTest_CyclesThroughWholeProgram() {
             new HeavyTestRunner(_logger).RunServerAndBrowserAndExecute(
-                    ClientSideFlows.HelloWorld, (assertX, server, browser) => {
+                MagicsForTests.ClientSideFlows.HelloWorld, (assertX, server, browser) => {
                 
                 assertX.DialogIsVisibleInBrowser("Hello there");
                 

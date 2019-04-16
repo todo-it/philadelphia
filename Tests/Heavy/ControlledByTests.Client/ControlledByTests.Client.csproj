@@ -35,9 +35,6 @@
     <NoStdLib>true</NoStdLib>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="..\ControlledByTests.Domain\ClientSideFlows.cs">
-      <Link>Domain\ClientSideFlows.cs</Link>
-    </Compile>
     <Compile Include="..\ControlledByTests.Domain\IHelloWorldService.cs">
       <Link>Domain\IHelloWorldService.cs</Link>
     </Compile>

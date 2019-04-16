@@ -18,16 +18,16 @@ namespace HeavyTests.Tests {
         [Fact]
         public void TestInt() {
             new HeavyTestRunner(_logger).RunServerAndBrowserAndExecute(
-                ClientSideFlows.SerDeser_Int, (assertX, server, browser) => {
+                MagicsForTests.Serialization.Int.Flow, (assertX, server, browser) => {
                     browser
                         .FindElementByXPath(XPathBuilder.Custom("//input"))
                         .ClearFluent()
-                        .SendKeys(MagicsForTests.SerDeser_Int_TypedVal +"\t");
+                        .SendKeys(MagicsForTests.Serialization.Int.TypedVal +"\t");
                     
                     Thread.Sleep(Philadelphia.Web.Magics.ValidationTriggerDelayMilisec*2);
 
                     assertX.ServiceCallsMadeOnServerAre(
-                        ServiceCall.OfMethod((ISerDeserService x) => x.ProcessInt(MagicsForTests.SerDeser_Int_TypedVal)));
+                        ServiceCall.OfMethod((ISerDeserService x) => x.ProcessInt(MagicsForTests.Serialization.Int.TypedVal)));
 
                     assertX.MatchesXPathInBrowser(
                         XPathBuilder.Custom($"//span[@id='{MagicsForTests.ResultSpanId}' and text() = '{MagicsForTests.ResultSpanReadyValue}']"));
@@ -35,35 +35,35 @@ namespace HeavyTests.Tests {
                     assertX.InputHasValue(
                         XPathBuilder.Custom("//input"),
                         (
-                            MagicsForTests.SerDeser_Int_TypedVal +
-                            MagicsForTests.SerDeser_Int_ServerAddVal+
-                            MagicsForTests.SerDeser_Int_ClientAddVal) +"");
+                            MagicsForTests.Serialization.Int.TypedVal +
+                            MagicsForTests.Serialization.Int.ServerAddVal+
+                            MagicsForTests.Serialization.Int.ClientAddVal) +"");
                 });
         }
 
         [Fact]
         public void TestDateTimeUtc() {
             new HeavyTestRunner(_logger).RunServerAndBrowserAndExecute(
-                ClientSideFlows.SerDeser_DateTimeUtc, (assertX, server, browser) => {
+                MagicsForTests.Serialization.DateTime.FlowUtc, (assertX, server, browser) => {
                     browser
                         .FindElementByXPath(XPathBuilder.Custom("//input"))
                         .ClearFluent()
-                        .SendKeys(MagicsForTests.SerDeser_DateTime_ClientTypedVal +"\t");
+                        .SendKeys(MagicsForTests.Serialization.DateTime.ClientTypedVal +"\t");
                     
                     Thread.Sleep(Philadelphia.Web.Magics.ValidationTriggerDelayMilisec*2);
 
                     assertX.ServiceCallsMadeOnServerAre(
                         ServiceCall.OfMethod((ISerDeserService x) => 
-                            x.ProcessDateTime(MagicsForTests.SerDeser_DateTime_ClientVal, true)));
+                            x.ProcessDateTime(MagicsForTests.Serialization.DateTime.ClientVal, true)));
 
                     assertX.MatchesXPathInBrowser(
                         XPathBuilder.Custom($"//span[@id='{MagicsForTests.ResultSpanId}' and text() = '{MagicsForTests.ResultSpanReadyValue}']"));
 
                     assertX.InputHasValue(
                         XPathBuilder.Custom("//input"),
-                        MagicsForTests.SerDeser_DateTime_ClientVal
-                            .AddDays(MagicsForTests.SerDeser_DateTime_ServerAddDays)
-                            .AddDays(MagicsForTests.SerDeser_DateTime_ClientAddDays)
+                        MagicsForTests.Serialization.DateTime.ClientVal
+                            .AddDays(MagicsForTests.Serialization.DateTime.ServerAddDays)
+                            .AddDays(MagicsForTests.Serialization.DateTime.ClientAddDays)
                             .ToStringYyyyMmDdHhMm()
                         );
                 });
@@ -72,20 +72,20 @@ namespace HeavyTests.Tests {
         [Fact]
         public void TestDateTimeLocal() {
             new HeavyTestRunner(_logger).RunServerAndBrowserAndExecute(
-                ClientSideFlows.SerDeser_DateTimeLocal, (assertX, server, browser) => {
+                MagicsForTests.Serialization.DateTime.FlowLocal, (assertX, server, browser) => {
                     var tzOffset = Convert.ToInt32(
                         browser.ExecuteScript(
-                            $"return new Date(new Date('{MagicsForTests.SerDeser_DateTime_ClientTypedVal}').toUTCString()).getTimezoneOffset() + ''"));
+                            $"return new Date(new Date('{MagicsForTests.Serialization.DateTime.ClientTypedVal}').toUTCString()).getTimezoneOffset() + ''"));
 
                     browser
                         .FindElementByXPath(XPathBuilder.Custom("//input"))
                         .ClearFluent()
-                        .SendKeys(MagicsForTests.SerDeser_DateTime_ClientTypedVal +"\t");
+                        .SendKeys(MagicsForTests.Serialization.DateTime.ClientTypedVal +"\t");
                     
                     Thread.Sleep(Philadelphia.Web.Magics.ValidationTriggerDelayMilisec*2);
 
                     var serversExpectedParamVal 
-                        = MagicsForTests.SerDeser_DateTime_ClientVal.AddMinutes(tzOffset);
+                        = MagicsForTests.Serialization.DateTime.ClientVal.AddMinutes(tzOffset);
                     assertX.ServiceCallsMadeOnServerAre(
                         ServiceCall.OfMethod((ISerDeserService x) => 
                             x.ProcessDateTime(serversExpectedParamVal, false)));
@@ -95,10 +95,10 @@ namespace HeavyTests.Tests {
 
                     assertX.InputHasValue(
                         XPathBuilder.Custom("//input"),
-                        MagicsForTests.SerDeser_DateTime_ClientVal
+                        MagicsForTests.Serialization.DateTime.ClientVal
                             .AddMinutes(tzOffset)
-                            .AddDays(MagicsForTests.SerDeser_DateTime_ServerAddDays)
-                            .AddDays(MagicsForTests.SerDeser_DateTime_ClientAddDays)
+                            .AddDays(MagicsForTests.Serialization.DateTime.ServerAddDays)
+                            .AddDays(MagicsForTests.Serialization.DateTime.ClientAddDays)
                             .ToStringYyyyMmDdHhMm()
                     );
                 });
@@ -107,16 +107,16 @@ namespace HeavyTests.Tests {
         [Fact]
         public void TestString() {
             new HeavyTestRunner(_logger).RunServerAndBrowserAndExecute(
-                ClientSideFlows.SerDeser_String, (assertX, server, browser) => {
+                MagicsForTests.Serialization.String.Flow, (assertX, server, browser) => {
                     browser
                         .FindElementByXPath(XPathBuilder.Custom("//input"))
                         .ClearFluent()
-                        .SendKeys(MagicsForTests.SerDeser_String_TypedVal +"\t");
+                        .SendKeys(MagicsForTests.Serialization.String.TypedVal +"\t");
                     
                     Thread.Sleep(Philadelphia.Web.Magics.ValidationTriggerDelayMilisec*2);
 
                     assertX.ServiceCallsMadeOnServerAre(
-                        ServiceCall.OfMethod((ISerDeserService x) => x.ProcessString(MagicsForTests.SerDeser_String_TypedVal)));
+                        ServiceCall.OfMethod((ISerDeserService x) => x.ProcessString(MagicsForTests.Serialization.String.TypedVal)));
 
                     assertX.MatchesXPathInBrowser(
                         XPathBuilder.Custom($"//span[@id='{MagicsForTests.ResultSpanId}' and text() = '{MagicsForTests.ResultSpanReadyValue}']"));
@@ -124,9 +124,9 @@ namespace HeavyTests.Tests {
                     assertX.InputHasValue(
                         XPathBuilder.Custom("//input"),
                         (
-                            MagicsForTests.SerDeser_String_TypedVal +
-                            MagicsForTests.SerDeser_String_ServerAddSuffix+
-                            MagicsForTests.SerDeser_String_ClientAddSuffix) +"");
+                            MagicsForTests.Serialization.String.TypedVal +
+                            MagicsForTests.Serialization.String.ServerAddSuffix+
+                            MagicsForTests.Serialization.String.ClientAddSuffix) +"");
                 });
         }
     }

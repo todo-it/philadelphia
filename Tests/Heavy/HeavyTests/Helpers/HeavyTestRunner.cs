@@ -82,7 +82,7 @@ namespace HeavyTests.Helpers {
         }
 
         public void RunServerAndBrowserAndExecute(
-            ClientSideFlows testFlow, 
+            MagicsForTests.ClientSideFlows testFlow, 
             Action<AssertX,ControlledServerController,RemoteWebDriver> testBody) {
 
             RunServerAndBrowserAndExecute(

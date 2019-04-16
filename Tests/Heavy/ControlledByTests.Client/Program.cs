@@ -82,12 +82,12 @@ namespace ControlledByTests.Client {
                 Document.Body.AppendChild(new HTMLSpanElement {TextContent = "no test selected"});
             }
 
-            switch (EnumExtensions.GetEnumByLabel<ClientSideFlows>(testOrNull)) {
-                case ClientSideFlows.HelloWorld:
+            switch (EnumExtensions.GetEnumByLabel<MagicsForTests.ClientSideFlows>(testOrNull)) {
+                case MagicsForTests.ClientSideFlows.HelloWorld:
                     di.Resolve<HelloWorldFlow>().Run(renderer);
                     break;
 
-                case ClientSideFlows.SerDeser_String: {
+                case MagicsForTests.Serialization.String.Flow: {
                     var iv = new InputView(testOrNull);
                     var inp = LocalValueFieldBuilder.Build("", iv);
 
@@ -101,7 +101,7 @@ namespace ControlledByTests.Client {
                         var result = await di.Resolve<ISerDeserService>().ProcessString(newValue);
 
                         //add to make sure that value is of usable type
-                        await inp.DoChange(result+MagicsForTests.SerDeser_String_ClientAddSuffix, false); 
+                        await inp.DoChange(result+MagicsForTests.Serialization.String.ClientAddSuffix, false); 
                         isDone.TextContent = MagicsForTests.ResultSpanReadyValue;
                     };
 
@@ -110,7 +110,7 @@ namespace ControlledByTests.Client {
                     break;
                 }
 
-                case ClientSideFlows.SerDeser_Int: {
+                case MagicsForTests.Serialization.Int.Flow: {
                     var iv = new InputView(testOrNull);
                     var inp = LocalValueFieldBuilder.BuildInt(0, iv);
                     var isDone = new HTMLSpanElement {Id = MagicsForTests.ResultSpanId};
@@ -123,7 +123,7 @@ namespace ControlledByTests.Client {
                         var result = await di.Resolve<ISerDeserService>().ProcessInt(newValue);
 
                         //add to make sure that value is of usable type
-                        await inp.DoChange(result+MagicsForTests.SerDeser_Int_ClientAddVal, false); 
+                        await inp.DoChange(result+MagicsForTests.Serialization.Int.ClientAddVal, false); 
                         isDone.TextContent = MagicsForTests.ResultSpanReadyValue;
                     };
 
@@ -132,7 +132,7 @@ namespace ControlledByTests.Client {
                     break;
                 }
 
-                case ClientSideFlows.SerDeser_DateTimeUtc: {
+                case MagicsForTests.Serialization.DateTime.FlowUtc: {
                     var iv = new InputView(testOrNull);
                     var inp = LocalValueFieldBuilder.Build(DateTime.Now, iv,
                         dt => dt.ToStringYyyyMmDdHhMm(),
@@ -148,7 +148,7 @@ namespace ControlledByTests.Client {
                         var result = await di.Resolve<ISerDeserService>().ProcessDateTime(newValue, true);
 
                         //add to make sure that value is of usable type
-                        await inp.DoChange(result.AddDays(MagicsForTests.SerDeser_DateTime_ClientAddDays), false); 
+                        await inp.DoChange(result.AddDays(MagicsForTests.Serialization.DateTime.ClientAddDays), false); 
                         isDone.TextContent = MagicsForTests.ResultSpanReadyValue;
                     };
 
@@ -157,7 +157,7 @@ namespace ControlledByTests.Client {
                     break;
                 }
                     
-                case ClientSideFlows.SerDeser_DateTimeLocal: {
+                case MagicsForTests.Serialization.DateTime.FlowLocal: {
                     var iv = new InputView(testOrNull);
                     var inp = LocalValueFieldBuilder.Build(DateTime.Now, iv,
                         dt => dt.ToStringYyyyMmDdHhMm(),
@@ -173,7 +173,7 @@ namespace ControlledByTests.Client {
                         var result = await di.Resolve<ISerDeserService>().ProcessDateTime(newValue, false);
 
                         //add to make sure that value is of usable type
-                        await inp.DoChange(result.AddDays(MagicsForTests.SerDeser_DateTime_ClientAddDays), false); 
+                        await inp.DoChange(result.AddDays(MagicsForTests.Serialization.DateTime.ClientAddDays), false); 
                         isDone.TextContent = MagicsForTests.ResultSpanReadyValue;
                     };
 
