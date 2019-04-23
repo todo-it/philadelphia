@@ -28,7 +28,12 @@ module ContractToImpl =
         match result with
         |[implType] -> Ok implType
         |[] -> Error (sprintf "no implementation found for type %O" contractType.FullName)
-        |_ -> Error (sprintf "more than one implementation found for type %O" contractType.FullName)
+        |impls -> 
+            let impls = 
+                impls
+                |> Seq.map(fun i -> sprintf "<- %s @ %s" i.AssemblyQualifiedName i.Assembly.CodeBase)
+                |> String.concat "\n"
+            Error (sprintf "more than one implementation found for type %O:\n%s" contractType.FullName impls)
 
     let findServiceImplementionOrFail assemblies x =
         match (findServiceImplemention assemblies x) with
