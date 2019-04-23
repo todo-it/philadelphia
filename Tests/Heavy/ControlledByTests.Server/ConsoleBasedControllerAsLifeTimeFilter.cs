@@ -4,11 +4,10 @@ using System.Linq;
 using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
-using ControlledByTests.Api;
-using ControlledByTests.ServerSideImpl;
 using Philadelphia.Common;
 using Philadelphia.Server.Common;
 using Philadelphia.ServerSideUtils;
+using Philadelphia.Testing.DotnetCore;
 
 namespace ControlledByTests.Server {
     public class ConsoleBasedControllerAsLifeTimeFilter : ILifetimeFilter,IRegisterServiceInvocation {

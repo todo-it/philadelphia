@@ -32,13 +32,14 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\ControlledByTests.Api\ControlledByTests.Api.csproj" />
-    <ProjectReference Include="..\ControlledByTests.ServerSideImpl\ControlledByTests.ServerSideImpl.csproj" />
+    <ProjectReference Include="..\..\..\Philadelphia.Testing.DotnetCore.Selenium\Philadelphia.Testing.DotnetCore.Selenium.csproj" />
+    <ProjectReference Include="..\..\..\Philadelphia.Testing.DotnetCore\Philadelphia.Testing.DotnetCore.csproj" />
     <ProjectReference Include="..\ControlledByTests.Server\ControlledByTests.Server.csproj" />
   </ItemGroup>
 
   <ItemGroup>
     <Folder Include="Constants\" />
+    <Folder Include="Helpers\" />
   </ItemGroup>
 
 </Project>
