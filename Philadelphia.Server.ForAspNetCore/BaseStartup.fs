@@ -109,6 +109,16 @@ type BaseStartup(
                 additionalConfigureServices:Action<IServiceCollection>, 
                 assemblies:IEnumerable<Assembly>, sett:ServerSettings) =
 
+    let assemblies = List.ofSeq assemblies
+    do
+        if assemblies.Length <> (List.distinct assemblies |> List.length)
+        then
+            let asmList = 
+                assemblies
+                |> Seq.map(fun a -> sprintf "- %s @ %s" a.FullName a.CodeBase)
+                |> String.concat "\n"
+            failwithf "Duplicated assemblies detected. Full assembly list below:\n%s" asmList
+            
     let log x = Logger.Debug(typeof<BaseStartup>, x)
     let logf msg = Printf.kprintf log msg
     let serverSideEventSubscribentMaxLifeSeconds = 
