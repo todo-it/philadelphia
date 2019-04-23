@@ -4,7 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
-using ControlledByTests.Api;
+using ControlledByTests.Server.Services;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -15,6 +15,7 @@ using Philadelphia.ServerSideUtils;
 using Philadelphia.Common;
 using Philadelphia.Server.Common;
 using Philadelphia.Server.ForAspNetCore;
+using Philadelphia.Testing.DotnetCore;
 
 namespace ControlledByTests.Server {
     public class ForwardToServerControllerLoggerImplementation : ILoggerImplementation {
@@ -51,8 +52,7 @@ namespace ControlledByTests.Server {
         public Startup() {
             var assemblies = new [] {
                 typeof(Startup).Assembly,
-                typeof(ControlledByTests.Domain.Dummy).Assembly,
-                typeof(ControlledByTests.Services.Dummy).Assembly };
+                typeof(ControlledByTests.Domain.Dummy).Assembly };
 
             var dllsLoc = Path.GetDirectoryName(typeof(Startup).Assembly.Location);
             Directory.SetCurrentDirectory(dllsLoc); //to make configuration reading from disk working

@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Threading;
-using ControlledByTests.Api;
 using ControlledByTests.Domain;
-using HeavyTests.Helpers;
 using Philadelphia.Common;
+using Philadelphia.Testing.DotnetCore;
+using Philadelphia.Testing.DotnetCore.Selenium;
 using Xunit;
 using Xunit.Abstractions;
 
