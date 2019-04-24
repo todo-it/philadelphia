@@ -15,6 +15,11 @@ using Philadelphia.Common;
                     typeof(ControlledByTests.Domain.ISerDeserService).FullName,
                     "ProcessDateTime", p0, p1);
             }
+            public async System.Threading.Tasks.Task<System.Decimal>ProcessDecimal(System.Decimal p0){
+                return await HttpRequester.RunHttpRequestReturningPlain<System.Decimal, System.Decimal>(
+                    typeof(ControlledByTests.Domain.ISerDeserService).FullName,
+                    "ProcessDecimal", p0);
+            }
             public async System.Threading.Tasks.Task<System.Int32>ProcessInt(System.Int32 p0){
                 return await HttpRequester.RunHttpRequestReturningPlain<System.Int32, System.Int32>(
                     typeof(ControlledByTests.Domain.ISerDeserService).FullName,

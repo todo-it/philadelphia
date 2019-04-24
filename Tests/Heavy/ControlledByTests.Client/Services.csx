@@ -15,7 +15,6 @@
 #r "../../../Philadelphia.CodeGen.ForClient/bin/Debug/netcoreapp2.2/Philadelphia.CodeGen.ForClient.dll"
 
 #r "../ControlledByTests.Domain/bin/Debug/netcoreapp2.2/ControlledByTests.Domain.dll"
-
 Philadelphia.CodeGen.ForClient.ServiceInvokerGenerator.GenerateCode(
     "Services.cs",
     typeof(ControlledByTests.Domain.Dummy).Assembly,

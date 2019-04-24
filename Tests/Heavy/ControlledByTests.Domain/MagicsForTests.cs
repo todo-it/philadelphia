@@ -4,9 +4,11 @@ using System.Diagnostics.CodeAnalysis;
 namespace ControlledByTests.Domain {
     public static class MagicsForTests {
         public const string TestChoiceParamName = "testName";
+        public const string ValueToSend = "valueToSend";
 
         public const string ResultSpanId = "result";
         public const string ResultSpanReadyValue = "done";
+        public const string RunClientSideTestBtnId = "runTest";
 
         [SuppressMessage("ReSharper", "InconsistentNaming")]
         public enum ClientSideFlows {
@@ -53,10 +55,9 @@ namespace ControlledByTests.Domain {
 
             public static class Decimal {
                 public const ClientSideFlows Flow = ClientSideFlows.SerializationTest_Decimal;
-                public const string TypedVal = "366";
-                public const long ClientVal = 366L;
-                public const long ServerAdd = 112L;
-                public const long ClientAdd = 501L;
+                public const string DefaultTypedVal = "13.3";
+                public const decimal DefaultClientVal = 13.3M;
+                public const decimal ServerAdd = 2.4M;
             }
         }
     }

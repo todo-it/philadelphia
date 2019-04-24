@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 using System.Threading;
 using ControlledByTests.Domain;
 using Philadelphia.Common;
@@ -9,8 +10,21 @@ using Xunit.Abstractions;
 
 namespace HeavyTests.Tests {
     public class SerializationDeserializationTests {
+        private static bool PollWait(Func<bool> condition, int polls = 5, int milliseconds = 500) {
+            var interval = milliseconds / polls;
+            for (var i = 0; i < polls; i++) {
+                if (condition()) {
+                    return true;
+                }
+
+                Thread.Sleep(interval);
+            }
+
+            return false;
+        }
+
         private readonly Action<string> _logger;
-        
+
         public SerializationDeserializationTests(ITestOutputHelper logger) {
             _logger = logger.WriteLine;
         }
@@ -68,7 +82,7 @@ namespace HeavyTests.Tests {
                         );
                 });
         }
-        
+
         [Fact]
         public void TestDateTimeLocal() {
             new HeavyTestRunner(_logger).RunServerAndBrowserAndExecute(
@@ -153,6 +167,28 @@ namespace HeavyTests.Tests {
                             MagicsForTests.Serialization.Long.ClientVal +
                             MagicsForTests.Serialization.Long.ServerAdd +
                             MagicsForTests.Serialization.Long.ClientAdd).ToString());
+                });
+        }
+
+        [Fact]
+        public void TestDecimal() {
+            new HeavyTestRunner(_logger).RunServerAndBrowserAndExecute(
+                MagicsForTests.Serialization.Decimal.Flow, (assertX, server, browser) => {
+                    browser
+                        .FindElementByXPath(XPathBuilder.Custom($"//button[@id='{MagicsForTests.RunClientSideTestBtnId}']"))
+                        .Click();
+                    
+                    Assert.True(PollWait(() => !browser.FindElementById(MagicsForTests.ResultSpanId).Text.Then(string.IsNullOrEmpty)));
+
+                    // BUG: this fails because actual registered call has Float64 (double) parameter, while decimal is expected
+                    assertX.ServiceCallsMadeOnServerAre(
+                        ServiceCall.OfMethod((ISerDeserService x) => x.ProcessDecimal(MagicsForTests.Serialization.Decimal.DefaultClientVal)));
+
+                    var expectedValue = (
+                        MagicsForTests.Serialization.Decimal.DefaultClientVal +
+                        MagicsForTests.Serialization.Decimal.ServerAdd).ToString(CultureInfo.InvariantCulture);
+
+                    Assert.Equal(expectedValue, browser.FindElementById(MagicsForTests.ResultSpanId).Text);
                 });
         }
     }

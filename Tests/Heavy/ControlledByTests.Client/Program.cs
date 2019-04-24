@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 using Bridge;
 using Bridge.Html5;
 using Philadelphia.Common;
@@ -181,12 +182,12 @@ namespace ControlledByTests.Client {
                     Document.Body.AppendChild(isDone);
                     break;
                 }
-                     
+
                 case MagicsForTests.Serialization.Long.Flow: {
                     var iv = new InputView(testOrNull);
                     var inp = LocalValueFieldBuilder.Build(
-                        0L, 
-                        iv, 
+                        0L,
+                        iv,
                         l => l.ToString(),
                         long.Parse);
                     var isDone = new HTMLSpanElement {Id = MagicsForTests.ResultSpanId};
@@ -205,6 +206,25 @@ namespace ControlledByTests.Client {
 
                     Document.Body.AppendChild(iv.Widget);
                     Document.Body.AppendChild(isDone);
+                    break;
+                }
+                case MagicsForTests.Serialization.Decimal.Flow: {
+
+                    var inputVal = 
+                        DocumentUtil.GetHashParameterOrNull(MagicsForTests.ValueToSend)
+                        ??
+                        MagicsForTests.Serialization.Decimal.DefaultTypedVal;
+
+                    var clientVal = decimal.Parse(inputVal, CultureInfo.InvariantCulture);
+                    var btn = new HTMLButtonElement { Id = MagicsForTests.RunClientSideTestBtnId };
+                    var resultSpan = new HTMLSpanElement { Id = MagicsForTests.ResultSpanId };
+
+                    btn.OnClick += async e => {
+                        var result = await di.Resolve<ISerDeserService>().ProcessDecimal(clientVal);
+                        resultSpan.TextContent = result.ToString(CultureInfo.InvariantCulture);
+                    };
+                    Document.Body.AppendChild(btn);
+                    Document.Body.AppendChild(resultSpan);
                     break;
                 }
                 default:

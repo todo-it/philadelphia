@@ -38,5 +38,10 @@ namespace ControlledByTests.Server.Services {
             //adds to make sure that server's value was actually seen by client
             return Task.FromResult(v + MagicsForTests.Serialization.Long.ServerAdd);
         }
+
+        public Task<decimal> ProcessDecimal(decimal v) {
+            _trace.RegisterServiceInvocation(typeof(ISerDeserService), nameof(ProcessDecimal), v);
+            return Task.FromResult(v + MagicsForTests.Serialization.Decimal.ServerAdd);
+        }
     }
 }

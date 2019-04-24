@@ -11,5 +11,6 @@ namespace ControlledByTests.Domain {
         Task<DateTime> ProcessDateTime(DateTime v, bool isUtc);
         Task<string> ProcessString(string v);
         Task<long> ProcessLong(long v);
+        Task<decimal> ProcessDecimal(decimal v);
     }
 }
