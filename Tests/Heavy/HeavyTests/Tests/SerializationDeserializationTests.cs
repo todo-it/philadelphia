@@ -151,8 +151,8 @@ namespace HeavyTests.Tests {
                         XPathBuilder.Custom("//input"),
                         (
                             MagicsForTests.Serialization.Long.ClientVal +
-                            MagicsForTests.Serialization.Long.ServerAdd+
-                            MagicsForTests.Serialization.Long.ClientAdd) +"");
+                            MagicsForTests.Serialization.Long.ServerAdd +
+                            MagicsForTests.Serialization.Long.ClientAdd).ToString());
                 });
         }
     }
