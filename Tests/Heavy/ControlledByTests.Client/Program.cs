@@ -181,15 +181,14 @@ namespace ControlledByTests.Client {
                     Document.Body.AppendChild(isDone);
                     break;
                 }
-
+                     
                 case MagicsForTests.Serialization.Long.Flow: {
                     var iv = new InputView(testOrNull);
-                    var inp = LocalValueFieldBuilder.BuildNonTrivial(
+                    var inp = LocalValueFieldBuilder.Build(
                         0L, 
                         iv, 
-                        long.Parse, 
-                        l => l.ToString(), 
-                        "not a proper long value");
+                        l => l.ToString(),
+                        long.Parse);
                     var isDone = new HTMLSpanElement {Id = MagicsForTests.ResultSpanId};
 
                     inp.Changed += async (_, __, newValue, errors, isUserChange) => {

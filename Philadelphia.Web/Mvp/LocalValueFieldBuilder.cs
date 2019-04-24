@@ -335,26 +335,5 @@ namespace Philadelphia.Web {
             validators.ForEach(y => result.AddValidatorAndRevalidate(y));
             return result;
         }
-
-        public static LocalValue<T> BuildNonTrivial<WidgetT, T, UiDataT>(
-            T defaultValue, 
-            IReadWriteValueView<WidgetT,UiDataT> view, 
-            Func<UiDataT, T> fromUi,
-            Func<T, UiDataT> toUi,
-            string basicValidationMsg,
-            params Validate<T>[] validators) {
-
-            var result = new LocalValue<T>(defaultValue);
-            view.BindReadWriteAndInitialize(result, toUi, x => {
-                try {
-                    return fromUi(x);
-                } catch (Exception ex) {
-                    Logger.Error(typeof(LocalValueFieldBuilder), "converter got exception {0}", ex);
-                    throw new Exception(basicValidationMsg);
-                }
-            });
-            validators.ForEach(y => result.AddValidatorAndRevalidate(y));
-            return result;
-        }
     }
 }
