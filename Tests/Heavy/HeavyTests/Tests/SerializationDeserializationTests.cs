@@ -2,8 +2,8 @@
 using System.Threading;
 using ControlledByTests.Domain;
 using Philadelphia.Common;
-using Philadelphia.Testing.DotnetCore;
-using Philadelphia.Testing.DotnetCore.Selenium;
+using Philadelphia.Testing.DotNetCore;
+using Philadelphia.Testing.DotNetCore.Selenium;
 using Xunit;
 using Xunit.Abstractions;
 

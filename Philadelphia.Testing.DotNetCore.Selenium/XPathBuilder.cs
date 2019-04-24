@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Philadelphia.Testing.DotnetCore.Selenium {
+namespace Philadelphia.Testing.DotNetCore.Selenium {
     public class XPathBuilder {
         private readonly List<string> _elems;
         private bool _dialogAsRoot;

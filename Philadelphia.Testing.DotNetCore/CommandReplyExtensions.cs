@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Philadelphia.Testing.DotnetCore {
+namespace Philadelphia.Testing.DotNetCore {
     public static class CommandReplyExtensions {
         public static ServiceCall DecodeServiceCall(this CommandReply self, ICodec codec) {
             if (self.Type != ReplyType.ServiceInvoked) {

@@ -13,7 +13,7 @@
     <ProjectReference Include="..\..\..\Philadelphia.Server.Common\Philadelphia.Server.Common.fsproj" />
     <ProjectReference Include="..\..\..\Philadelphia.Server.ForAspNetCore\Philadelphia.Server.ForAspNetCore.fsproj" />
     <ProjectReference Include="..\..\..\Philadelphia.ServerSideUtils\Philadelphia.ServerSideUtils.fsproj" />
-    <ProjectReference Include="..\..\..\Philadelphia.Testing.DotnetCore\Philadelphia.Testing.DotnetCore.csproj" />
+    <ProjectReference Include="..\..\..\Philadelphia.Testing.DotNetCore\Philadelphia.Testing.DotNetCore.csproj" />
     <ProjectReference Include="..\ControlledByTests.Domain\ControlledByTests.Domain.csproj" />
   </ItemGroup>
 

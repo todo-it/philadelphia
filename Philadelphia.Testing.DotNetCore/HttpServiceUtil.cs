@@ -5,7 +5,7 @@ using System.Linq.Expressions;
 using System.Reflection;
 using Philadelphia.Common;
 
-namespace Philadelphia.Testing.DotnetCore {
+namespace Philadelphia.Testing.DotNetCore {
     public static class HttpServiceUtil {
         public static T OfMethodCallExpression<T>(
             MethodCallExpression body, 

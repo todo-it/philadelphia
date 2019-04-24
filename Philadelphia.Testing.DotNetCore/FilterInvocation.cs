@@ -3,7 +3,7 @@ using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Philadelphia.Server.Common;
 
-namespace Philadelphia.Testing.DotnetCore {
+namespace Philadelphia.Testing.DotNetCore {
     public class FilterInvocation {
         public FilterInvocationType InvType {get; set;}
         public string FullInterfaceNameOrNull {get; set;}

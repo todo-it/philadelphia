@@ -1,6 +1,6 @@
 ﻿using System.Linq;
 
-namespace Philadelphia.Testing.DotnetCore {
+namespace Philadelphia.Testing.DotNetCore {
     public static class ArrayExtensions {
         //TODO: once bridge.net supports Linq's Zip, move it into Philadelphia.Common
         public static bool IsTheSameAs(this object[] first, object[] second) {

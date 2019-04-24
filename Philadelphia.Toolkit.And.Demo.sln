@@ -31,7 +31,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Philadelphia.Common.AsBridg
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "BridgeDotNet", "BridgeDotNet", "{F4049AF4-2F1C-461B-99E9-EC9F96D4B6B2}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DotnetCore", "DotnetCore", "{931CA310-5F23-40E5-A2E9-041ADECCF804}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DotNetCore", "DotNetCore", "{931CA310-5F23-40E5-A2E9-041ADECCF804}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "BridgeDotNet", "BridgeDotNet", "{69A9C33A-2A06-47A9-BFFE-AF915C168A0B}"
 EndProject
@@ -55,9 +55,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ControlledByTests.Client", 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HeavyTests", "Tests\Heavy\HeavyTests\HeavyTests.csproj", "{F369F859-49DC-4D3A-AF1F-662C422EE74A}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Philadelphia.Testing.DotnetCore", "Philadelphia.Testing.DotnetCore\Philadelphia.Testing.DotnetCore.csproj", "{13F1AB50-CC54-4717-B137-AE74A45EDB02}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Philadelphia.Testing.DotNetCore", "Philadelphia.Testing.DotNetCore\Philadelphia.Testing.DotNetCore.csproj", "{13F1AB50-CC54-4717-B137-AE74A45EDB02}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Philadelphia.Testing.DotnetCore.Selenium", "Philadelphia.Testing.DotnetCore.Selenium\Philadelphia.Testing.DotnetCore.Selenium.csproj", "{4774E363-6754-4BB9-8C34-E4E30FA2D6B5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Philadelphia.Testing.DotNetCore.Selenium", "Philadelphia.Testing.DotNetCore.Selenium\Philadelphia.Testing.DotNetCore.Selenium.csproj", "{4774E363-6754-4BB9-8C34-E4E30FA2D6B5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

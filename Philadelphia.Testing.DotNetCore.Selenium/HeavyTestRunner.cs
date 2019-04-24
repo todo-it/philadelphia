@@ -4,7 +4,7 @@ using System.Reflection;
 using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium.Remote;
 
-namespace Philadelphia.Testing.DotnetCore.Selenium {
+namespace Philadelphia.Testing.DotNetCore.Selenium {
     public class HeavyTestRunner {
         private readonly Action<string> _logger;
         private readonly TimeSpan MaxWaitForServerStart = TimeSpan.FromSeconds(2);

@@ -1,7 +1,7 @@
 ﻿using System;
 using Newtonsoft.Json;
 
-namespace Philadelphia.Testing.DotnetCore {
+namespace Philadelphia.Testing.DotNetCore {
     public class VerboseNewtonsoftJsonBasedCodec : ICodec {
         public T Decode<T>(string txt) {
             try {

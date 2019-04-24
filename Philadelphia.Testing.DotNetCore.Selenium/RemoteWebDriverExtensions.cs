@@ -4,7 +4,7 @@ using OpenQA.Selenium;
 using OpenQA.Selenium.Remote;
 using OpenQA.Selenium.Support.UI;
 
-namespace Philadelphia.Testing.DotnetCore.Selenium {
+namespace Philadelphia.Testing.DotNetCore.Selenium {
     public static class RemoteWebDriverExtensions {
         private static readonly TimeSpan DefaultDomTimeout = TimeSpan.FromMilliseconds(5000);
 

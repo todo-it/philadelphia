@@ -19,7 +19,7 @@
   <ItemGroup>
     <ProjectReference Include="..\Philadelphia.Common\Philadelphia.Common.csproj" />
     <ProjectReference Include="..\Philadelphia.Server.Common\Philadelphia.Server.Common.fsproj" />
-    <ProjectReference Include="..\Philadelphia.Testing.DotnetCore\Philadelphia.Testing.DotnetCore.csproj" />
+    <ProjectReference Include="..\Philadelphia.Testing.DotNetCore\Philadelphia.Testing.DotNetCore.csproj" />
   </ItemGroup>
 
 </Project>
