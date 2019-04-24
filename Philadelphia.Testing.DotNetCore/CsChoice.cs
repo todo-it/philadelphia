@@ -2,7 +2,7 @@
 using System.Linq;
 using Philadelphia.Common;
 
-namespace Philadelphia.Testing.DotnetCore {
+namespace Philadelphia.Testing.DotNetCore {
     /// <summary>simplified F#'s Choice type clone for C# - 2 params version</summary>
     public class CsChoice<F,S> {
         private readonly bool _first;

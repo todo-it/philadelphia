@@ -1,7 +1,7 @@
 ﻿using System;
 using ControlledByTests.Domain;
 using OpenQA.Selenium.Remote;
-using Philadelphia.Testing.DotnetCore.Selenium;
+using Philadelphia.Testing.DotNetCore.Selenium;
 
 namespace HeavyTests {
     public static class HeavyTestRunnerExtensions {

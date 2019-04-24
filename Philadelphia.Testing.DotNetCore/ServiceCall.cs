@@ -4,7 +4,7 @@ using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Philadelphia.Common;
 
-namespace Philadelphia.Testing.DotnetCore {
+namespace Philadelphia.Testing.DotNetCore {
     public class ServiceCall {
         public string FullInterfaceName {get; set;}
         public string MethodName {get; set;}

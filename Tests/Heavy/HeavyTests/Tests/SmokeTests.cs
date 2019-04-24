@@ -2,8 +2,8 @@
 using Xunit;
 using ControlledByTests.Domain;
 using Philadelphia.Server.Common;
-using Philadelphia.Testing.DotnetCore;
-using Philadelphia.Testing.DotnetCore.Selenium;
+using Philadelphia.Testing.DotNetCore;
+using Philadelphia.Testing.DotNetCore.Selenium;
 using Xunit.Abstractions;
 
 namespace HeavyTests.Tests {

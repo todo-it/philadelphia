@@ -1,4 +1,4 @@
-﻿namespace Philadelphia.Testing.DotnetCore {
+﻿namespace Philadelphia.Testing.DotNetCore {
     public static class CommandReplyUtil {
         public static CommandReply CreateLog(string txt) {
             return new CommandReply {

@@ -1,4 +1,4 @@
-﻿namespace Philadelphia.Testing.DotnetCore {
+﻿namespace Philadelphia.Testing.DotNetCore {
     public enum FilterInvocationType {
         ServerStarted,
         BeforeConnection,

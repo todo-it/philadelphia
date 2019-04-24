@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using ControlledByTests.Domain;
-using Philadelphia.Testing.DotnetCore;
+using Philadelphia.Testing.DotNetCore;
 
 namespace ControlledByTests.Server.Services {
     public class SerDeserService : ISerDeserService {

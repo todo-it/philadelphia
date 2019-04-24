@@ -32,8 +32,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\Philadelphia.Testing.DotnetCore.Selenium\Philadelphia.Testing.DotnetCore.Selenium.csproj" />
-    <ProjectReference Include="..\..\..\Philadelphia.Testing.DotnetCore\Philadelphia.Testing.DotnetCore.csproj" />
+    <ProjectReference Include="..\..\..\Philadelphia.Testing.DotNetCore.Selenium\Philadelphia.Testing.DotNetCore.Selenium.csproj" />
+    <ProjectReference Include="..\..\..\Philadelphia.Testing.DotNetCore\Philadelphia.Testing.DotNetCore.csproj" />
     <ProjectReference Include="..\ControlledByTests.Server\ControlledByTests.Server.csproj" />
   </ItemGroup>
 

@@ -4,7 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading;
 
-namespace Philadelphia.Testing.DotnetCore.Selenium {
+namespace Philadelphia.Testing.DotNetCore.Selenium {
     public class ControlledServerController : IDisposable {
         private readonly Action<string> _logger;
         private readonly ICodec _codec;

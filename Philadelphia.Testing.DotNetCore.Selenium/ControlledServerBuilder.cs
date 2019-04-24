@@ -2,7 +2,7 @@
 using System.Diagnostics;
 using System.Text;
 
-namespace Philadelphia.Testing.DotnetCore.Selenium {
+namespace Philadelphia.Testing.DotNetCore.Selenium {
     public class ControlledServerBuilder {
         public static ControlledServerController Start(
                 Action<string> logger, ICodec codec, TimeSpan defaultReadTimeout, 

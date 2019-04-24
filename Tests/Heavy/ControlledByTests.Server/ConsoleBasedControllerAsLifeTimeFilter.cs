@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using Philadelphia.Common;
 using Philadelphia.Server.Common;
 using Philadelphia.ServerSideUtils;
-using Philadelphia.Testing.DotnetCore;
+using Philadelphia.Testing.DotNetCore;
 
 namespace ControlledByTests.Server {
     public class ConsoleBasedControllerAsLifeTimeFilter : ILifetimeFilter,IRegisterServiceInvocation {

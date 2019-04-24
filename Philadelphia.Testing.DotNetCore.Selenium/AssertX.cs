@@ -3,7 +3,7 @@ using System.Linq;
 using OpenQA.Selenium.Remote;
 using Xunit;
 
-namespace Philadelphia.Testing.DotnetCore.Selenium {
+namespace Philadelphia.Testing.DotNetCore.Selenium {
     public class AssertX {
         ControlledServerController _server;
         private readonly RemoteWebDriver _browser;

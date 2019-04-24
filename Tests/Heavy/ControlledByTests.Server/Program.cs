@@ -15,7 +15,7 @@ using Philadelphia.ServerSideUtils;
 using Philadelphia.Common;
 using Philadelphia.Server.Common;
 using Philadelphia.Server.ForAspNetCore;
-using Philadelphia.Testing.DotnetCore;
+using Philadelphia.Testing.DotNetCore;
 
 namespace ControlledByTests.Server {
     public class ForwardToServerControllerLoggerImplementation : ILoggerImplementation {

@@ -1,4 +1,4 @@
-﻿namespace Philadelphia.Testing.DotnetCore {
+﻿namespace Philadelphia.Testing.DotNetCore {
     public static class FilterInvocationExtensions {
         public static CommandReply AsCommandReply(this FilterInvocation self, ICodec codec) {
             return new CommandReply {
