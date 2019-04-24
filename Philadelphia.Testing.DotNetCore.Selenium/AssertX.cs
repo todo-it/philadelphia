@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Linq;
 using OpenQA.Selenium.Remote;
+using Philadelphia.Common;
 using Xunit;
+using EnumerableExtensions = Philadelphia.Common.EnumerableExtensions;
 
 namespace Philadelphia.Testing.DotNetCore.Selenium {
     public class AssertX {
@@ -101,15 +103,16 @@ namespace Philadelphia.Testing.DotNetCore.Selenium {
                 throw new Exception($"collections have different size expected={expected.Length} fact={fact.Count}");
             }
             
-            var i = 0;
             expected
-                .Zip(fact, (e,f) => (i++, e, f))
+                .Indexed()
+                .Zip(fact, (e,f) => (e.Index, e.Value, f))
                 .ToList()
                 .ForEach(x => {
-                    FixParamTypes(x.Item2, x.Item3);
+                    var (i, e, f) = x;
+                    FixParamTypes(e, f);
 
-                    if (!x.Item2.Equals(x.Item3)) {
-                        throw new Exception($"item {x.Item1} is different {x.Item2} != {x.Item3}");
+                    if (!e.Equals(f)) {
+                        throw new Exception($"item {i} is different {e} != {f}");
                     }
                 });
         }
