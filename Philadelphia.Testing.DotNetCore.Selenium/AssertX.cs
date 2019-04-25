@@ -87,10 +87,6 @@ namespace Philadelphia.Testing.DotNetCore.Selenium {
                     actual.Params[i] = Convert.ToInt32(actual.Params[i]);
                 }
 
-                if (expected.Params[i] is long && actual.Params[i] is int) {
-                    expected.Params[i] = Convert.ToInt32(expected.Params[i]);
-                }
-
                 if(expected.Params[i] is decimal && actual.Params[i] is double) {
                     actual.Params[i] = Convert.ToDecimal(actual.Params[i]);
                 }
