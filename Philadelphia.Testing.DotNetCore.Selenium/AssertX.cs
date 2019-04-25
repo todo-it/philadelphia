@@ -77,42 +77,47 @@ namespace Philadelphia.Testing.DotNetCore.Selenium {
         
         //workaround for "object deserialized as long"
         //https://stackoverflow.com/questions/17918686/how-can-i-deserialize-integer-number-to-int-not-to-long
-        private void FixParamTypes(ServiceCall fst, ServiceCall snd) {
-            if (fst.Params.Length != snd.Params.Length) {
+        private void FixParamTypes(ServiceCall expected, ServiceCall actual) {
+            if (expected.Params.Length != actual.Params.Length) {
                 throw new Exception("bug: different parameter count");
             }
 
-            for (var i=0; i<fst.Params.Length; i++) {
-                if (fst.Params[i] is int && snd.Params[i] is long) {
-                    snd.Params[i] = Convert.ToInt32(snd.Params[i]);
+            for (var i=0; i<expected.Params.Length; i++) {
+                if (expected.Params[i] is int && actual.Params[i] is long) {
+                    actual.Params[i] = Convert.ToInt32(actual.Params[i]);
                 }
-                if (fst.Params[i] is long && snd.Params[i] is int) {
-                    fst.Params[i] = Convert.ToInt32(fst.Params[i]);
+
+                if (expected.Params[i] is long && actual.Params[i] is int) {
+                    expected.Params[i] = Convert.ToInt32(expected.Params[i]);
+                }
+
+                if(expected.Params[i] is decimal && actual.Params[i] is double) {
+                    actual.Params[i] = Convert.ToDecimal(actual.Params[i]);
                 }
             }
         }
 
         public void ServiceCallsMadeOnServerAre(params ServiceCall[] expected) {
-            var fact = _server
+            var actual = _server
                 .ReadAllPendingReplies()
                 .Where(x => x.Type == ReplyType.ServiceInvoked)
                 .Select(x => x.DecodeServiceCall(_codec))
                 .ToList();
 
-            if (expected.Length != fact.Count) {
-                throw new Exception($"collections have different size expected={expected.Length} fact={fact.Count}");
+            if (expected.Length != actual.Count) {
+                throw new Exception($"collections have different size expected={expected.Length} fact={actual.Count}");
             }
             
             expected
                 .Indexed()
-                .Zip(fact, (e,f) => (e.Index, e.Value, f))
+                .Zip(actual, (exp, act) => (exp.Index, exp.Value, act))
                 .ToList()
                 .ForEach(x => {
-                    var (i, e, f) = x;
-                    FixParamTypes(e, f);
+                    var (i, exp, act) = x;
+                    FixParamTypes(exp, act);
 
-                    if (!e.Equals(f)) {
-                        throw new Exception($"item {i} is different {e} != {f}");
+                    if (!exp.Equals(act)) {
+                        throw new Exception($"item {i} is different {exp} != {act}");
                     }
                 });
         }
