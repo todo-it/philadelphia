@@ -156,8 +156,6 @@ namespace Philadelphia.Common {
 
 	    public static IDictionary<K,V> ToDictionary<K,V>(this IEnumerable<Tuple<K,V>> self) {
 	        return self.ToDictionary(x => x.Item1, x => x.Item2);
-	    }
-
-        public static IEnumerable<(int Index, T Value)> Indexed<T>(this IEnumerable<T> x) => x.Select((xx, i) => (i, xx));
+	    }        
     } 
 }
