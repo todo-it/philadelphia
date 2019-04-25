@@ -5,6 +5,7 @@ using Bridge.Html5;
 using Philadelphia.Common;
 using ControlledByTests.Domain;
 using Philadelphia.Web;
+using System.Threading.Tasks;
 
 namespace ControlledByTests.Client {
     public class HelloWorldFlow : IFlow<HTMLElement> {
@@ -68,6 +69,31 @@ namespace ControlledByTests.Client {
     }
 
     public class Program {
+
+        private static void RunSerializationTestFlow<TVal>(
+            string defaultTypedVal, 
+            Converter<string, TVal> stringToTVal,
+            Converter<TVal, string> tValToString,
+            Func<TVal, Task<TVal>> send
+            ) {
+            var inputVal =
+                DocumentUtil.GetHashParameterOrNull(MagicsForTests.ValueToSend)
+                ??
+                defaultTypedVal;
+
+            var clientVal = stringToTVal(inputVal);
+            var btn = new HTMLButtonElement { Id = MagicsForTests.RunClientSideTestBtnId, TextContent = "Click to test" };
+            var resultSpan = new HTMLSpanElement { Id = MagicsForTests.ResultSpanId };
+
+            btn.OnClick += async e => {
+                var result = await send(clientVal);
+                resultSpan.TextContent = tValToString(result);
+            };
+
+            Document.Body.AppendChild(btn);
+            Document.Body.AppendChild(resultSpan);
+        }
+
         [Ready]
         public static void OnReady() {
             var di = new DiContainer();
@@ -88,145 +114,60 @@ namespace ControlledByTests.Client {
                     di.Resolve<HelloWorldFlow>().Run(renderer);
                     break;
 
-                case MagicsForTests.Serialization.String.Flow: {
-                    var iv = new InputView(testOrNull);
-                    var inp = LocalValueFieldBuilder.Build("", iv);
-
-                    var isDone = new HTMLSpanElement {Id = MagicsForTests.ResultSpanId};
-
-                    inp.Changed += async (_, __, newValue, errors, isUserChange) => {
-                        if (!isUserChange) {
-                            return;
-                        }
-
-                        var result = await di.Resolve<ISerDeserService>().ProcessString(newValue);
-
-                        //add to make sure that value is of usable type
-                        await inp.DoChange(result+MagicsForTests.Serialization.String.ClientAddSuffix, false); 
-                        isDone.TextContent = MagicsForTests.ResultSpanReadyValue;
-                    };
-
-                    Document.Body.AppendChild(iv.Widget);
-                    Document.Body.AppendChild(isDone);
+                case MagicsForTests.ClientSideFlows.SerializationTest_String:
+                    RunSerializationTestFlow(
+                        MagicsForTests.Serialization.String.DefaultTypedVal,
+                        s => s,
+                        d => d,
+                        val => di.Resolve<ISerDeserService>().ProcessString(val));
                     break;
-                }
+                
 
-                case MagicsForTests.Serialization.Int.Flow: {
-                    var iv = new InputView(testOrNull);
-                    var inp = LocalValueFieldBuilder.BuildInt(0, iv);
-                    var isDone = new HTMLSpanElement {Id = MagicsForTests.ResultSpanId};
-
-                    inp.Changed += async (_, __, newValue, errors, isUserChange) => {
-                        if (!isUserChange) {
-                            return;
-                        }
-
-                        var result = await di.Resolve<ISerDeserService>().ProcessInt(newValue);
-
-                        //add to make sure that value is of usable type
-                        await inp.DoChange(result+MagicsForTests.Serialization.Int.ClientAddVal, false); 
-                        isDone.TextContent = MagicsForTests.ResultSpanReadyValue;
-                    };
-
-                    Document.Body.AppendChild(iv.Widget);
-                    Document.Body.AppendChild(isDone);
+                case MagicsForTests.ClientSideFlows.SerializationTest_Int: 
+                    RunSerializationTestFlow(
+                        MagicsForTests.Serialization.Int.DefaultTypedVal,
+                        s => int.Parse(s),
+                        d => d.ToString(),
+                        val => di.Resolve<ISerDeserService>().ProcessInt(val));
                     break;
-                }
+                
 
-                case MagicsForTests.Serialization.DateTime.FlowUtc: {
-                    var iv = new InputView(testOrNull);
-                    var inp = LocalValueFieldBuilder.Build(DateTime.Now, iv,
-                        dt => dt.ToStringYyyyMmDdHhMm(),
-                        str => Convert.ToDateTime(str));
-                    var isDone = new HTMLSpanElement {Id = MagicsForTests.ResultSpanId};
-
-                    inp.Changed += async (_, __, newValue, errors, isUserChange) => {
-                        if (!isUserChange) {
-                            return;
-                        }
-
-                        newValue = DateTime.SpecifyKind(newValue, DateTimeKind.Utc);
-                        var result = await di.Resolve<ISerDeserService>().ProcessDateTime(newValue, true);
-
-                        //add to make sure that value is of usable type
-                        await inp.DoChange(result.AddDays(MagicsForTests.Serialization.DateTime.ClientAddDays), false); 
-                        isDone.TextContent = MagicsForTests.ResultSpanReadyValue;
-                    };
-
-                    Document.Body.AppendChild(iv.Widget);
-                    Document.Body.AppendChild(isDone);
+                case MagicsForTests.ClientSideFlows.SerializationTest_DateTimeUtc: 
+                    RunSerializationTestFlow(
+                        MagicsForTests.Serialization.DateTime.DefaultTypedVal,
+                        s => Convert.ToDateTime(s),
+                        d => d.ToStringYyyyMmDdHhMm(),
+                        val => di
+                              .Resolve<ISerDeserService>()
+                              .ProcessDateTime(DateTime.SpecifyKind(val, DateTimeKind.Utc), true));
                     break;
-                }
                     
-                case MagicsForTests.Serialization.DateTime.FlowLocal: {
-                    var iv = new InputView(testOrNull);
-                    var inp = LocalValueFieldBuilder.Build(DateTime.Now, iv,
-                        dt => dt.ToStringYyyyMmDdHhMm(),
-                        str => Convert.ToDateTime(str));
-                    var isDone = new HTMLSpanElement {Id = MagicsForTests.ResultSpanId};
-
-                    inp.Changed += async (_, __, newValue, errors, isUserChange) => {
-                        if (!isUserChange) {
-                            return;
-                        }
-
-                        newValue = DateTime.SpecifyKind(newValue, DateTimeKind.Local);
-                        var result = await di.Resolve<ISerDeserService>().ProcessDateTime(newValue, false);
-
-                        //add to make sure that value is of usable type
-                        await inp.DoChange(result.AddDays(MagicsForTests.Serialization.DateTime.ClientAddDays), false); 
-                        isDone.TextContent = MagicsForTests.ResultSpanReadyValue;
-                    };
-
-                    Document.Body.AppendChild(iv.Widget);
-                    Document.Body.AppendChild(isDone);
+                case MagicsForTests.ClientSideFlows.SerializationTest_DateTimeLocal: 
+                    RunSerializationTestFlow(
+                        MagicsForTests.Serialization.DateTime.DefaultTypedVal,
+                        s => Convert.ToDateTime(s),
+                        d => d.ToStringYyyyMmDdHhMm(),
+                        val => di
+                              .Resolve<ISerDeserService>()
+                              .ProcessDateTime(DateTime.SpecifyKind(val, DateTimeKind.Local), false));
                     break;
-                }
 
-                case MagicsForTests.Serialization.Long.Flow: {
-                    var iv = new InputView(testOrNull);
-                    var inp = LocalValueFieldBuilder.Build(
-                        0L,
-                        iv,
-                        l => l.ToString(),
-                        long.Parse);
-                    var isDone = new HTMLSpanElement {Id = MagicsForTests.ResultSpanId};
-
-                    inp.Changed += async (_, __, newValue, errors, isUserChange) => {
-                        if (!isUserChange) {
-                            return;
-                        }
-
-                        var result = await di.Resolve<ISerDeserService>().ProcessLong(newValue);
-
-                        //add to make sure that value is of usable type
-                        await inp.DoChange(result + MagicsForTests.Serialization.Long.ClientAdd, false);
-                        isDone.TextContent = MagicsForTests.ResultSpanReadyValue;
-                    };
-
-                    Document.Body.AppendChild(iv.Widget);
-                    Document.Body.AppendChild(isDone);
+                case MagicsForTests.ClientSideFlows.SerializationTest_Long: 
+                    RunSerializationTestFlow(
+                        MagicsForTests.Serialization.Long.DefaultTypedVal,
+                        s => long.Parse(s),
+                        d => d.ToString(),
+                        val => di.Resolve<ISerDeserService>().ProcessLong(val));
                     break;
-                }
-                case MagicsForTests.Serialization.Decimal.Flow: {
-
-                    var inputVal = 
-                        DocumentUtil.GetHashParameterOrNull(MagicsForTests.ValueToSend)
-                        ??
-                        MagicsForTests.Serialization.Decimal.DefaultTypedVal;
-
-                    var clientVal = decimal.Parse(inputVal, CultureInfo.InvariantCulture);
-                    var btn = new HTMLButtonElement { Id = MagicsForTests.RunClientSideTestBtnId };
-                    var resultSpan = new HTMLSpanElement { Id = MagicsForTests.ResultSpanId };
-
-                    btn.OnClick += async e => {
-                        var result = await di.Resolve<ISerDeserService>().ProcessDecimal(clientVal);
-                        resultSpan.TextContent = result.ToString(CultureInfo.InvariantCulture);
-                    };
-                    Document.Body.AppendChild(btn);
-                    Document.Body.AppendChild(resultSpan);
+                
+                case MagicsForTests.ClientSideFlows.SerializationTest_Decimal:
+                    RunSerializationTestFlow(
+                        MagicsForTests.Serialization.Decimal.DefaultTypedVal,
+                        s => decimal.Parse(s, CultureInfo.InvariantCulture),
+                        d => d.ToString(CultureInfo.InvariantCulture),
+                        val => di.Resolve<ISerDeserService>().ProcessDecimal(val));
                     break;
-                }
+                
                 default:
                     Document.Body.AppendChild(new HTMLSpanElement {TextContent = "unsupported test selected"});
                     break;

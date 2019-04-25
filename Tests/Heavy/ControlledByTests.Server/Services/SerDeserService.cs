@@ -15,21 +15,21 @@ namespace ControlledByTests.Server.Services {
             _trace.RegisterServiceInvocation(typeof(ISerDeserService), nameof(ProcessInt), v);
 
             //adds to make sure that server's value was actually seen by client
-            return Task.FromResult(v + MagicsForTests.Serialization.Int.ServerAddVal);
+            return Task.FromResult(v + MagicsForTests.Serialization.Int.ServerAdd);
         }
 
         public Task<DateTime> ProcessDateTime(DateTime v, bool isUtc) {
             _trace.RegisterServiceInvocation(typeof(ISerDeserService), nameof(ProcessDateTime), v, isUtc);
 
             //adds to make sure that server's value was actually seen by client
-            return Task.FromResult(v.AddDays(MagicsForTests.Serialization.DateTime.ServerAddDays));
+            return Task.FromResult(MagicsForTests.Serialization.MidDate(v, MagicsForTests.Serialization.DateTime.ServerAdd));
         }
 
         public Task<string> ProcessString(string v) {
             _trace.RegisterServiceInvocation(typeof(ISerDeserService), nameof(ProcessString), v);
 
             //adds to make sure that server's value was actually seen by client
-            return Task.FromResult(v + MagicsForTests.Serialization.String.ServerAddSuffix);
+            return Task.FromResult(v + MagicsForTests.Serialization.String.ServerAdd);
         }
 
         public Task<long> ProcessLong(long v) {

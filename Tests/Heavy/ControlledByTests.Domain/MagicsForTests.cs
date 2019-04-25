@@ -22,42 +22,41 @@ namespace ControlledByTests.Domain {
         }
 
         public static class Serialization {
-            public static class Int {
-                public const ClientSideFlows Flow = ClientSideFlows.SerializationTest_Int;
-                public const int TypedVal = 123;
-                public const int ClientAddVal = 3;
-                public const int ServerAddVal = 5;
+            public class Scenario<T> {
+                public readonly string DefaultTypedVal;
+                public readonly T DefaultClientVal;
+                public readonly T ServerAdd;
+
+                public Scenario(
+                    string defaultTypedVal,
+                    T defaultClientVal,
+                    T serverAdd) {
+
+                    DefaultTypedVal = defaultTypedVal;
+                    DefaultClientVal = defaultClientVal;
+                    ServerAdd = serverAdd;
+                }
             }
 
-            public static class DateTime {
-                public const ClientSideFlows FlowLocal = ClientSideFlows.SerializationTest_DateTimeLocal;
-                public const ClientSideFlows FlowUtc = ClientSideFlows.SerializationTest_DateTimeUtc;
-                public static System.DateTime ClientVal = new System.DateTime(2001,2,3, 4,5,6);
-                public static string ClientTypedVal = "2001-02-03 04:05:06";
-                public const int ClientAddDays = 3;
-                public const int ServerAddDays = 5;
-            }
+            public static readonly Scenario<int> Int = 
+                new Scenario<int>("123", 123, 5);
 
-            public static class String {
-                public const ClientSideFlows Flow = ClientSideFlows.SerializationTest_String;
-                public const string TypedVal = "Boom";
-                public const string ServerAddSuffix = "Abracadabra";
-                public const string ClientAddSuffix = "HocusPocus";
-            }
+            public static readonly Scenario<string> String = 
+                new Scenario<string>("Boom", "Boom", "Abracadabra");
 
-            public static class Long {
-                public const ClientSideFlows Flow = ClientSideFlows.SerializationTest_Long;
-                public const string TypedVal = "366";
-                public const long ClientVal = 366L;
-                public const long ServerAdd = 112L;
-                public const long ClientAdd = 501L;
-            }
+            public static readonly Scenario<long> Long = 
+                new Scenario<long>("366", 366L, 112L);
 
-            public static class Decimal {
-                public const ClientSideFlows Flow = ClientSideFlows.SerializationTest_Decimal;
-                public const string DefaultTypedVal = "13.3";
-                public const decimal DefaultClientVal = 13.3M;
-                public const decimal ServerAdd = 2.4M;
+            public static readonly Scenario<decimal> Decimal = 
+                new Scenario<decimal>("13.3", 13.3M, 2.4M);
+
+            public static readonly Scenario<DateTime> DateTime =
+                new Scenario<DateTime>("2001-02-03 04:05:06", new DateTime(2001, 2, 3, 4, 5, 6), new DateTime(2001, 1, 1, 1, 1, 1));
+
+            public static DateTime MidDate(DateTime x1, DateTime x2) {
+                var diff = x2 - x1;
+                var move = diff.TotalMilliseconds / 2;
+                return x1.AddMilliseconds(move);
             }
         }
     }
