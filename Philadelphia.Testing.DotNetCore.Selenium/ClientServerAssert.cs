@@ -1,17 +1,15 @@
 ﻿using System;
 using System.Linq;
 using OpenQA.Selenium.Remote;
-using Philadelphia.Common;
 using Xunit;
-using EnumerableExtensions = Philadelphia.Common.EnumerableExtensions;
 
 namespace Philadelphia.Testing.DotNetCore.Selenium {
-    public class AssertX {
-        ControlledServerController _server;
+    public class ClientServerAssert {
+        private readonly ControlledServerController _server;
         private readonly RemoteWebDriver _browser;
         private readonly ICodec _codec;
 
-        public AssertX(ControlledServerController server, RemoteWebDriver browser, ICodec codec) {
+        public ClientServerAssert(ControlledServerController server, RemoteWebDriver browser, ICodec codec) {
             _server = server;
             _browser = browser;
             _codec = codec;

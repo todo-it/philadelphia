@@ -23,18 +23,21 @@ namespace HeavyTests.Tests {
 
             return false;
         }
-        private void TestSerialization(
-            MagicsForTests.ClientSideFlows flow,
-            Func<AssertX, ControlledServerController, RemoteWebDriver, (ServiceCall expectedCall, string expectedClientResultValue)> getExpectations) =>
+
+        private delegate (ServiceCall expectedCall, string expectedClientResultValue) 
+            GetExpectations(
+                ClientServerAssert assert, ControlledServerController server, RemoteWebDriver browser);
+
+        private void TestSerialization(MagicsForTests.ClientSideFlows flow, GetExpectations getExpectations) =>
             new HeavyTestRunner(_logger).RunServerAndBrowserAndExecute(flow,
-                (assertX, server, browser) => {
+                (assert, server, browser) => {
                     browser
                         .FindElementById(MagicsForTests.RunClientSideTestBtnId)
                         .Click();
 
                     Assert.True(PollWait(() => !browser.FindElementById(MagicsForTests.ResultSpanId).Text.Then(string.IsNullOrEmpty)));
-                    var (expectedCall, expectedClientResultValue) = getExpectations(assertX, server, browser);
-                    assertX.ServiceCallsMadeOnServerAre(expectedCall);
+                    var (expectedCall, expectedClientResultValue) = getExpectations(assert, server, browser);
+                    assert.ServiceCallsMadeOnServerAre(expectedCall);
                     Assert.Equal(expectedClientResultValue, browser.FindElementById(MagicsForTests.ResultSpanId).Text);
                 });
 

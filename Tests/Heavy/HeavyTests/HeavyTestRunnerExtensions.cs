@@ -8,7 +8,7 @@ namespace HeavyTests {
         public static void RunServerAndBrowserAndExecute(
             this HeavyTestRunner runner,
             MagicsForTests.ClientSideFlows testFlow, 
-            Action<AssertX,ControlledServerController,RemoteWebDriver> testBody) {
+            HeavyTestRunner.Test testBody) {
 
             runner.RunServerAndBrowserAndExecute(
                 $"#{MagicsForTests.TestChoiceParamName}={testFlow.ToString()}",

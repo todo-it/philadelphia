@@ -6,12 +6,14 @@ using OpenQA.Selenium.Remote;
 
 namespace Philadelphia.Testing.DotNetCore.Selenium {
     public class HeavyTestRunner {
+        public delegate void Test(ClientServerAssert assert, ControlledServerController server, RemoteWebDriver browser);
+
         private readonly Action<string> _logger;
         private readonly TimeSpan MaxWaitForServerStart = TimeSpan.FromSeconds(2);
         private readonly TimeSpan MaxWaitForCmdReply = TimeSpan.FromSeconds(1);
         private readonly TimeSpan MaxWaitForDom = TimeSpan.FromSeconds(1);
-        private bool _useHeadlessMode = !System.Diagnostics.Debugger.IsAttached;
-        private static ICodec _codec = new VerboseNewtonsoftJsonBasedCodec();
+        private readonly bool _useHeadlessMode = !System.Diagnostics.Debugger.IsAttached;
+        private static readonly ICodec _codec = new VerboseNewtonsoftJsonBasedCodec();
         private static readonly string _chromeDriverPath = 
             Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
 
@@ -68,13 +70,13 @@ namespace Philadelphia.Testing.DotNetCore.Selenium {
 
         public void RunServerAndBrowserAndExecute(
                 string baseUrlPostfix, 
-                Action<AssertX,ControlledServerController,RemoteWebDriver> testBody) {
+                Test testBody) {
 
             RunServerAndExecute(
                 server => RunBrowserAndExecute(
                     baseUrlPostfix, 
                     browser => testBody(
-                        new AssertX(server, browser, new VerboseNewtonsoftJsonBasedCodec()), 
+                        new ClientServerAssert(server, browser, new VerboseNewtonsoftJsonBasedCodec()), 
                         server, browser)));
         }
     }
