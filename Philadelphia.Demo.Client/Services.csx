@@ -8,9 +8,9 @@
 //  dotnet script init
 //  ...that creates json files so that you can 'open folder' in VS Code
 
-#r "../Philadelphia.Common/bin/Debug/netcoreapp2.1/Philadelphia.Common.dll"
-#r "../Philadelphia.Demo.SharedModel/bin/Debug/netcoreapp2.1/Philadelphia.Demo.SharedModel.dll"
-#r "../Philadelphia.CodeGen.ForClient/bin/Debug/netcoreapp2.1/Philadelphia.CodeGen.ForClient.dll"
+#r "../Philadelphia.Common/bin/Debug/netcoreapp2.2/Philadelphia.Common.dll"
+#r "../Philadelphia.Demo.SharedModel/bin/Debug/netcoreapp2.2/Philadelphia.Demo.SharedModel.dll"
+#r "../Philadelphia.CodeGen.ForClient/bin/Debug/netcoreapp2.2/Philadelphia.CodeGen.ForClient.dll"
 
 Philadelphia.CodeGen.ForClient.ServiceInvokerGenerator.GenerateCode(
     "Services.cs",
