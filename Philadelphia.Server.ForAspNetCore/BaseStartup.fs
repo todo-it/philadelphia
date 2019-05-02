@@ -562,6 +562,7 @@ type BaseStartup(
         |_, _, Some mbox -> //server sent events listener
             let clientCtx = ctx.Request.Query.Item("i").Item(0)
             ctx.Response.Headers.Add("Content-Type", StringValues.op_Implicit "text/event-stream")
+            ctx.Response.Headers.Add("Cache-Control", StringValues.op_Implicit "no-cache")
             let cancTknFac = new CancellationTokenSource()
             ctx.RequestAborted <- cancTknFac.Token
 
@@ -579,7 +580,11 @@ type BaseStartup(
                     |None ->
                         log "client is accepted (filter is not null)"
                         let sleepingClient =
-                            async {                    
+                            async {
+                                //needs to send anything as otherwise 'onopen' won't be called in the browser
+                                let ack = Encoding.UTF8.GetBytes("irrelevant\n\n")
+                                do! ctx.Response.Body.WriteAsync(ack, 0, ack.Length) |> Async.AwaitTask
+
                                 log "starting sleeping in client async"
                                 do! 
                                     Task.Delay(serverSideEventSubscribentMaxLifeSeconds*1000, cancTknFac.Token) 
