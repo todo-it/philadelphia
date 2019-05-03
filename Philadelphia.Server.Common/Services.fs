@@ -101,7 +101,7 @@ module ServerPush =
     let writeToClient (onError:Stream->exn->unit) (cl:Stream) (msg:string) : unit = 
         let worker = 
             async {                
-                let msg = Encoding.UTF8.GetBytes("data: "+msg+"\r\r")
+                let msg = Encoding.UTF8.GetBytes("data: "+msg+"\n\n")
                 do! cl.WriteAsync(msg, 0, msg.Length) |> Async.AwaitTask
                 do! cl.FlushAsync() |> Async.AwaitTask                    
                 return ()
