@@ -40,11 +40,23 @@ namespace Philadelphia.Testing.DotNetCore {
 
             var o = (FilterInvocation)other;
 
+            var sameGuids = InvType != FilterInvocationType.AfterConnection;
+
+            if (InvType == FilterInvocationType.AfterConnection) {
+                var f = (BeginBy?.Guid ?? Guid);
+                var s = (o.BeginBy?.Guid ?? o.Guid);
+
+                if (f == null || s == null) {
+                    throw new Exception("when comparing FilterInvocation for AfterConnection GUID must be present");
+                }
+
+                sameGuids = f == s;
+            }
+
             return InvType == o.InvType &&
                    FullInterfaceNameOrNull == o.FullInterfaceNameOrNull &&
                    MethodNameOrNull == o.MethodNameOrNull && 
-                   (InvType != FilterInvocationType.AfterConnection ||
-                    (BeginBy?.Guid ?? Guid) == (o.BeginBy?.Guid ?? o.Guid) );
+                   sameGuids;
         }
 
         public override int GetHashCode() {
