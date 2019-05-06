@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Globalization;
-using System.Threading;
 using ControlledByTests.Domain;
 using OpenQA.Selenium.Remote;
 using Philadelphia.Common;
@@ -11,19 +10,6 @@ using Xunit.Abstractions;
 
 namespace HeavyTests.Tests {
     public class SerializationDeserializationTests {
-        private static bool PollWait(Func<bool> condition, int polls = 5, int milliseconds = 500) {
-            var interval = milliseconds / polls;
-            for (var i = 0; i < polls; i++) {
-                if (condition()) {
-                    return true;
-                }
-
-                Thread.Sleep(interval);
-            }
-
-            return false;
-        }
-
         private delegate (ServiceCall expectedCall, string expectedClientResultValue) 
             GetExpectations(
                 ClientServerAssert assert, ControlledServerController server, RemoteWebDriver browser);
@@ -35,7 +21,7 @@ namespace HeavyTests.Tests {
                         .FindElementById(MagicsForTests.RunClientSideTestBtnId)
                         .Click();
 
-                    Assert.True(PollWait(() => !browser.FindElementById(MagicsForTests.ResultSpanId).Text.Then(string.IsNullOrEmpty)));
+                    Assert.True(Poll.Wait(() => !browser.FindElementById(MagicsForTests.ResultSpanId).Text.Then(string.IsNullOrEmpty)));
                     var (expectedCall, expectedClientResultValue) = getExpectations(assert, server, browser);
                     assert.ServiceCallsMadeOnServerAre(expectedCall);
                     Assert.Equal(expectedClientResultValue, browser.FindElementById(MagicsForTests.ResultSpanId).Text);

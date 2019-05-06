@@ -10,9 +10,15 @@ namespace ControlledByTests.Domain {
         public const string ResultSpanReadyValue = "done";
         public const string RunClientSideTestBtnId = "runTest";
 
+        public const string RunClientSideTestLogSpanId = "log";
+        public const string RunClientSideTestConnectId = "connect";
+        public const string RunClientSideTestDisconnectId = "disconnect";
+        public const string RunClientSideTestSendBtnId = "send";
+        
         [SuppressMessage("ReSharper", "InconsistentNaming")]
         public enum ClientSideFlows {
             HelloWorld,
+            ServerSentEvents,
             SerializationTest_Int,
             SerializationTest_String,
             SerializationTest_DateTimeUtc,

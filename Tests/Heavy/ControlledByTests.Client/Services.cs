@@ -36,13 +36,28 @@ using Philadelphia.Common;
                     "ProcessString", p0);
             }
         }
+    public class WebClientServerSentEventsService : ControlledByTests.Domain.IServerSentEventsService {
+            public async System.Threading.Tasks.Task<Philadelphia.Common.Unit>Publish(ControlledByTests.Domain.SomeNotif p0){
+                return await HttpRequester.RunHttpRequestReturningPlain<ControlledByTests.Domain.SomeNotif, Philadelphia.Common.Unit>(
+                    typeof(ControlledByTests.Domain.IServerSentEventsService).FullName,
+                    "Publish", p0);
+            }
+            public System.Func<ControlledByTests.Domain.SomeNotif,System.Boolean>RegisterListener(ControlledByTests.Domain.SomeNotifFilter p0){
+                throw new System.Exception("SSE listener cannot be invoked this way");
+            }
+        }
 
 
-    
+        public class IServerSentEventsService_RegisterListener_SseSubscriber : ServerSentEventsSubscriber<ControlledByTests.Domain.SomeNotif,ControlledByTests.Domain.SomeNotifFilter> {
+        public IServerSentEventsService_RegisterListener_SseSubscriber(ControlledByTests.Domain.SomeNotifFilter ctx, bool autoConnect=true)
+            : base(autoConnect, typeof(ControlledByTests.Domain.IServerSentEventsService), "RegisterListener", ctx) {}
+    }
+
         public class Services {
             public static void Register(IDiContainer container) {
                 container.RegisterFactoryMethod<ControlledByTests.Domain.IHelloWorldService>(injector => new WebClientHelloWorldService(), Philadelphia.Common.LifeStyle.Singleton);
                 container.RegisterFactoryMethod<ControlledByTests.Domain.ISerDeserService>(injector => new WebClientSerDeserService(), Philadelphia.Common.LifeStyle.Singleton);
+                container.RegisterFactoryMethod<ControlledByTests.Domain.IServerSentEventsService>(injector => new WebClientServerSentEventsService(), Philadelphia.Common.LifeStyle.Singleton);
             }
         }
     }

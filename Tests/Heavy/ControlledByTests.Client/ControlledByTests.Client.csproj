@@ -41,8 +41,17 @@
     <Compile Include="..\ControlledByTests.Domain\ISerDeserTestService.cs">
       <Link>Domain\ISerDeserTestService.cs</Link>
     </Compile>
+    <Compile Include="..\ControlledByTests.Domain\IServerSentEventsService.cs">
+      <Link>Domain\IServerSentEventsService.cs</Link>
+    </Compile>
     <Compile Include="..\ControlledByTests.Domain\MagicsForTests.cs">
       <Link>Domain\MagicsForTests.cs</Link>
+    </Compile>
+    <Compile Include="..\ControlledByTests.Domain\SomeNotif.cs">
+      <Link>Domain\SomeNotif.cs</Link>
+    </Compile>
+    <Compile Include="..\ControlledByTests.Domain\SomeNotifFilter.cs">
+      <Link>Domain\SomeNotifFilter.cs</Link>
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

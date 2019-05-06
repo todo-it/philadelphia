@@ -77,6 +77,9 @@ namespace Philadelphia.Testing.DotNetCore {
             );
         }
 
+        /*
+         * for regular service calls
+         */
         public static FilterInvocation OfMethod<A,B,C,D,E,V>(Expression<Func<A,B,C,D,E,Task<V>>> inp) {
             if (!(inp.Body is MethodCallExpression)) {
                 throw new Exception("expected method call as expression's body");
@@ -118,6 +121,17 @@ namespace Philadelphia.Testing.DotNetCore {
         }
 
         public static FilterInvocation OfMethod<V>(Expression<Func<Task<V>>> inp) {
+            if (!(inp.Body is MethodCallExpression)) {
+                throw new Exception("expected method call as expression's body");
+            }
+            
+            return OfMethodCallExpression((MethodCallExpression)inp.Body);
+        }
+        
+        /*
+         * for server sent events calls
+         */
+        public static FilterInvocation OfMethod<CtxT,MsgT>(Expression<Func<CtxT,Func<MsgT,bool>>> inp) {
             if (!(inp.Body is MethodCallExpression)) {
                 throw new Exception("expected method call as expression's body");
             }

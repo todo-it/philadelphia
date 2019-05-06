@@ -6,6 +6,7 @@ using Philadelphia.Common;
 using ControlledByTests.Domain;
 using Philadelphia.Web;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
 
 namespace ControlledByTests.Client {
     public class HelloWorldFlow : IFlow<HTMLElement> {
@@ -69,7 +70,6 @@ namespace ControlledByTests.Client {
     }
 
     public class Program {
-
         private static void RunSerializationTestFlow<TVal>(
             string defaultTypedVal, 
             Converter<string, TVal> stringToTVal,
@@ -101,8 +101,7 @@ namespace ControlledByTests.Client {
             di.Register<HelloWorldFlow>(LifeStyle.Transient);
 
             Toolkit.InitializeToolkit();
-            var renderer = Toolkit.DefaultFormRenderer();
-
+            
             var testOrNull = DocumentUtil.GetHashParameterOrNull(MagicsForTests.TestChoiceParamName);
 
             if (testOrNull == null) {
@@ -110,7 +109,67 @@ namespace ControlledByTests.Client {
             }
 
             switch (EnumExtensions.GetEnumByLabel<MagicsForTests.ClientSideFlows>(testOrNull)) {
+                case MagicsForTests.ClientSideFlows.ServerSentEvents: {
+                        IServerSentEventsService_RegisterListener_SseSubscriber listener = null;
+                        var service = di.Resolve<IServerSentEventsService>();
+
+                        var log = new HTMLDivElement {Id = MagicsForTests.RunClientSideTestLogSpanId};
+                        log.Style.WhiteSpace = WhiteSpace.Pre;
+
+                        void LogWriteLine(string x) {
+                            Logger.Debug(typeof(Program), "adding log line: {0}", x);
+                            log.TextContent = log.TextContent + x + "\n";
+                        }
+
+                        void DoConnect() { 
+                            if (listener != null) {
+                                throw new Exception("already connected");
+                            }
+
+                            var notifScopeRaw = DocumentUtil.GetHashParameterOrNull(MagicsForTests.ValueToSend);
+                            var notifScope = JsonConvert.DeserializeObject<SomeNotifFilter>(notifScopeRaw);
+
+                            listener = new IServerSentEventsService_RegisterListener_SseSubscriber(
+                                notifScope, false);
+
+                            listener.OnConnOpen += () => LogWriteLine("connected");
+                            listener.OnError += (ev,crs) => LogWriteLine($"connection error {(int)crs}");
+                            listener.OnMessage += x => LogWriteLine($"received: {x}");
+
+                            listener.Connect();
+                        }
+
+                        var sendMsg = new HTMLButtonElement {
+                            TextContent = "send", Id = MagicsForTests.RunClientSideTestSendBtnId };
+                        sendMsg.OnClick += async _ => {
+                            var msgRaw = DocumentUtil.GetHashParameterOrNull(MagicsForTests.ValueToSend);
+                            var msg = JsonConvert.DeserializeObject<SomeNotif>(msgRaw);
+
+                            await service.Publish(msg);
+                        };
+
+                        var connectAction = new HTMLButtonElement {
+                            TextContent = "connect", Id = MagicsForTests.RunClientSideTestConnectId};
+                        connectAction.OnClick += _ => DoConnect();
+                        
+                        var disconnectAction = new HTMLButtonElement {
+                            TextContent = "disconnect", Id = MagicsForTests.RunClientSideTestDisconnectId};
+                        disconnectAction.OnClick += _ => {
+                            listener.Dispose();
+                            listener = null;
+                        };
+
+                        Document.Body.AppendChild(log);
+                        Document.Body.AppendChild(sendMsg);
+                        Document.Body.AppendChild(connectAction);
+                        Document.Body.AppendChild(disconnectAction);
+                        //TODO add disconnect
+                    }
+                    break;
+
                 case MagicsForTests.ClientSideFlows.HelloWorld:
+                    var renderer = Toolkit.DefaultFormRenderer();
+
                     di.Resolve<HelloWorldFlow>().Run(renderer);
                     break;
 
