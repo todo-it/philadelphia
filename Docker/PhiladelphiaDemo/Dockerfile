@@ -16,7 +16,7 @@ RUN chown root:root /etc/apt/trusted.gpg.d/microsoft.asc.gpg
 RUN chown root:root /etc/apt/sources.list.d/microsoft-prod.list
 RUN apt-get install apt-transport-https
 RUN apt-get update
-RUN apt-get -y install dotnet-sdk-2.1
+RUN apt-get -y install dotnet-sdk-2.2
 
 RUN apt-get clean
 ADD binaries /philadelphia/
