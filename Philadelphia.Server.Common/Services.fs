@@ -36,12 +36,12 @@ type ServerSentEventService = {
 
 type Msg<'TMsg> =
 |Publish of 'TMsg
-|Subscribe of onDispose:Async<unit> * Stream * CancellationTokenSource * Func<'TMsg,bool>
+|Subscribe of onDispose:Async<unit> * Stream * Func<'TMsg,bool>
 |Unsubscribe of Stream
 
 ///simplifies process: handles serialization, deserialization, ILifeTimeFilter updates
 type SimpleSubscription = {
-    Subscribe: IDiResolveReleaseOnlyContainer->Stream->CancellationTokenSource->string->Async<FilterReply option>
+    Subscribe: IDiResolveReleaseOnlyContainer->Stream->string->Async<FilterReply option>
     Unsubscribe: IDiResolveReleaseOnlyContainer->Stream->unit
 }
 
@@ -55,14 +55,15 @@ type LifestyleFilteredResult<'TMsg,'TClientCtx> =
 type Subscription<'TMsg,'TClientCtx> = {
     Mbox : MailboxProcessor<Msg<'TMsg>>
     Send : 'TMsg->unit
-    Subscribe: Async<unit>->Stream->CancellationTokenSource->Func<'TMsg,bool>->unit
+    Subscribe: Async<unit>->Stream->Func<'TMsg,bool>->unit
     Unsubscribe: Stream->unit
     StringToClientCtx:string->'TClientCtx
     HandleConnection: IDiResolveReleaseOnlyContainer->Async<LifestyleFilteredResult<'TMsg,'TClientCtx>>
 }
-with    
+with
+    member self.SendMessage msg = self.Send msg
     member x.SimpleSubscription : SimpleSubscription = {
-        Subscribe = fun di cl canc prms -> async {
+        Subscribe = fun di cl prms -> async {
             let! result = x.HandleConnection di
                        
             return
@@ -78,7 +79,7 @@ with
                                 "not permitted - rejected by logical filter" |> Encoding.UTF8.GetBytes }
                         |> Some 
                     else 
-                        x.Subscribe onDispose cl canc logicalFilter
+                        x.Subscribe onDispose cl logicalFilter
                         None
                 |Rejected(filteredOut) -> filteredOut |> Some }
 
@@ -86,7 +87,6 @@ with
     }
 
 type ClientState<'TMsg> = {
-    Canc : CancellationTokenSource
     Filter : Func<'TMsg,bool>
     OnDispose: Async<unit>
 }
@@ -143,14 +143,13 @@ module ServerPush =
                                     log "client is not interested - filter rejected" )
 
                             state |> Async.CreateResult
-                        |Subscribe(onDispose,stream,cancTknSrc,filterImpl) ->
+                        |Subscribe(onDispose,stream,filterImpl) ->
                             log "mbox subscribing client"
                             
                             state.Clients.Add(
                                 stream, 
                                     {
-                                        ClientState.Canc = cancTknSrc
-                                        Filter = filterImpl
+                                        ClientState.Filter = filterImpl
                                         OnDispose = onDispose
                                     })
                             state |> Async.CreateResult
@@ -159,7 +158,6 @@ module ServerPush =
                             
                             match state.Clients.TryGetValue stream with
                             |true, clState ->
-                                clState.Canc.Dispose()
                                 state.Clients.Remove(stream) |> ignore
                                     
                                 async {
@@ -220,8 +218,8 @@ module ServerPushReg =
                     x 
                     |> Publish 
                     |> mbox.Post)
-                Subscribe = (fun connCtx (cl:Stream) (cancTkn:CancellationTokenSource) filter ->
-                    (connCtx, cl, cancTkn, filter)
+                Subscribe = (fun connCtx (cl:Stream) filter ->
+                    (connCtx, cl, filter)
                     |> Subscribe
                     |> mbox.Post )
                 Unsubscribe = (fun (cl:Stream) -> 

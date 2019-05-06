@@ -563,12 +563,11 @@ type BaseStartup(
             let clientCtx = ctx.Request.Query.Item("i").Item(0)
             ctx.Response.Headers.Add("Content-Type", StringValues.op_Implicit "text/event-stream")
             ctx.Response.Headers.Add("Cache-Control", StringValues.op_Implicit "no-cache")
-            let cancTknFac = new CancellationTokenSource()
-            ctx.RequestAborted <- cancTknFac.Token
+            let cancTkn = ctx.RequestAborted
 
             async {
                 let! filterReply =
-                    mbox.Subscribe di ctx.Response.Body cancTknFac clientCtx
+                    mbox.Subscribe di ctx.Response.Body clientCtx
                        
                 return!
                     match filterReply with
@@ -586,14 +585,20 @@ type BaseStartup(
                                 do! ctx.Response.Body.WriteAsync(ack, 0, ack.Length) |> Async.AwaitTask
 
                                 log "starting sleeping in client async"
-                                do! 
-                                    Task.Delay(serverSideEventSubscribentMaxLifeSeconds*1000, cancTknFac.Token) 
+                                let! timeoutOrDisconnect =
+                                    Task.Delay(serverSideEventSubscribentMaxLifeSeconds*1000, cancTkn) 
                                     |> Async.AwaitTask
-                                log "finished sleeping in client async"
+                                    |> Async.Catch
+
+                                match timeoutOrDisconnect with
+                                |Choice1Of2(_) -> 
+                                    log "finished sleeping in client async due to timeout"
+                                |Choice2Of2(_) -> 
+                                    log "finished sleeping in client async due to client disconnect"
 
                                 mbox.Unsubscribe di ctx.Response.Body //timeout
                             }
-                        Async.StartAsTask(sleepingClient, cancellationToken = cancTknFac.Token)
+                        Async.StartAsTask(sleepingClient)
                         |> Async.AwaitTask
             }
             |> Async.StartAsTask
