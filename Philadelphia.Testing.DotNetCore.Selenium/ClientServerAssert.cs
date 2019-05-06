@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using Newtonsoft.Json;
 using OpenQA.Selenium.Remote;
 using Xunit;
 
@@ -81,13 +82,16 @@ namespace Philadelphia.Testing.DotNetCore.Selenium {
             }
 
             for (var i=0; i<expected.Params.Length; i++) {
-                if (expected.Params[i] is int && actual.Params[i] is long) {
-                    actual.Params[i] = Convert.ToInt32(actual.Params[i]);
+                if (expected.Params[i] == null ||
+                    actual.Params[i] == null ||
+                    expected.Params[i].GetType() == actual.Params[i].GetType()) {
+                    continue;
                 }
 
-                if(expected.Params[i] is decimal && actual.Params[i] is double) {
-                    actual.Params[i] = Convert.ToDecimal(actual.Params[i]);
-                }
+                var reserialized = JsonConvert.SerializeObject(actual.Params[i]);
+
+                actual.Params[i] = JsonConvert.DeserializeObject(
+                    reserialized, expected.Params[i].GetType());
             }
         }
 
