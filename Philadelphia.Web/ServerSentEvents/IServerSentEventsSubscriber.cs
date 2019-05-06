@@ -16,14 +16,28 @@ namespace Philadelphia.Web {
 
     public abstract class ServerSentEventsSubscriber<MsgT,CtxT> : IServerSentEventsSubscriber<MsgT> {
         private EventSource _evSrv;
-        private string _url;
+        private readonly string _url;
+        private bool _connectInvoked;
         public event Action<MsgT> OnMessage;
         public event Action OnConnOpen;
         public event Action<Event,ConnectionReadyState> OnError;
 
-        protected ServerSentEventsSubscriber(Type serviceDecl, string subscrMethodName, CtxT ctx) {
+        protected ServerSentEventsSubscriber(
+                bool autoConnect, Type serviceDecl, string subscrMethodName, CtxT ctx) {
+
             _url = "/" +serviceDecl.FullName + "/" + subscrMethodName+"?i="+JSON.Stringify(ctx);
             
+            if (autoConnect) {
+                _connectInvoked = true;
+                Reconnect();
+            }
+        }
+
+        public void Connect() {
+            if (_connectInvoked) {
+                throw new Exception("already attempting to connect");
+            }
+            _connectInvoked = true;
             Reconnect();
         }
 
@@ -49,7 +63,12 @@ namespace Philadelphia.Web {
         }
 
         public void Dispose() {
+            if (_evSrv == null) {
+                return;
+            }
+
             _evSrv.close();
+            _evSrv = null;
         }
     }
 }
