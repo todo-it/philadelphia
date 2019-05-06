@@ -16,8 +16,8 @@ if [ -d "../../packages" ]; then
 
     rm -rf binaries || exit 1
 
-    mkdir -p binaries/Philadelphia.Demo.Server/bin/Debug/netcoreapp2.1 || exit 1
-    cp -r ../../Philadelphia.Demo.Server/bin/Debug/netcoreapp2.1/publish/* binaries/Philadelphia.Demo.Server/bin/Debug/netcoreapp2.1/ || exit 1
+    mkdir -p binaries/Philadelphia.Demo.Server/bin/Debug/netcoreapp2.2 || exit 1
+    cp -r ../../Philadelphia.Demo.Server/bin/Debug/netcoreapp2.2/publish/* binaries/Philadelphia.Demo.Server/bin/Debug/netcoreapp2.2/ || exit 1
     cp ../../Philadelphia.Demo.Server/*.json binaries/Philadelphia.Demo.Server/ || exit 1
 
     mkdir -p binaries/Philadelphia.StaticResources || exit 1
@@ -60,7 +60,7 @@ echo "building container"
 CONTAINER_ID=$(docker create \
 	--cap-drop=all \
 	-v /tmp:/data \
-	-v ${CURDIR}/log:/philadelphia/Philadelphia.Demo.Server/bin/Debug/netcoreapp2.1/log \
+	-v ${CURDIR}/log:/philadelphia/Philadelphia.Demo.Server/bin/Debug/netcoreapp2.2/log \
 	-e TRANSLATION_FILE="../../../translation_pl-PL.json" \
 	-e LOCAL_TIMEZONE_ID="Europe/Warsaw" \
 	-e TOKENS_DIRECTORY="/data" \
