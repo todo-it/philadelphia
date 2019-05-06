@@ -2,6 +2,7 @@
 using System.Linq;
 using Newtonsoft.Json;
 using OpenQA.Selenium.Remote;
+using Philadelphia.Common;
 using Xunit;
 
 namespace Philadelphia.Testing.DotNetCore.Selenium {
@@ -46,15 +47,33 @@ namespace Philadelphia.Testing.DotNetCore.Selenium {
                 .ToList();
             
             if (expected.Length != fact.Count) {
-                throw new Exception($"collections have different size expected={expected.Length} fact={fact.Count}");
+                throw new Exception($"collections have different size expected={expected.Length} fact={fact.Count}. \nExpected={expected.PrettyToString()}\nActual={fact.PrettyToString()}");
             }
 
             for (var i = 0; i<expected.Length; i++) {
                 var rawExp = expected[i];
                 var rawFact = fact[i];
                 
-                if (!rawExp.Equals(rawFact)) {
-                    throw new Exception($"item {i} is different {rawExp} != {rawFact}");
+                if (rawExp.Is<FilterInvocation>()) {
+                    var exp = rawExp.As<FilterInvocation>();
+                    var fac = rawFact.As<FilterInvocation>();
+
+                    //FixParamTypes is not called here as FilterInvocation doesn't receive parameters (yet?)
+
+                    if (!exp.Equals(fac)) {
+                        throw new Exception($"FilterInvocation item {i} is different {rawExp} != {rawFact}");
+                    }
+                }
+
+                if (rawExp.Is<ServiceCall>()) {
+                    var exp = rawExp.As<ServiceCall>();
+                    var fac = rawFact.As<ServiceCall>();
+
+                    FixParamTypes(exp, fac);
+
+                    if (!exp.Equals(fac)) {
+                        throw new Exception($"ServiceCall item {i} is different {rawExp} != {rawFact}");
+                    }
                 }
 
                 if (rawExp.Is<FilterInvocation>()) {
