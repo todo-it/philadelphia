@@ -183,13 +183,12 @@ namespace Philadelphia.Demo.ServicesImpl {
                 SentAt = DateTime.Now, 
                 Sender = _client.ClientIpAddress.Substring(0, _client.ClientIpAddress.LastIndexOf("."))+".*"
             };
-            _subs.Send.Invoke(res);
+            _subs.SendMessage(res);
 
             return Task.FromResult(DateTime.Now);
         }
         
-        public Func<ContinentalNotification,bool> ContinentalListener(ContinentalSubscriptionRequest inp)
-        {
+        public Func<ContinentalNotification,bool> ContinentalListener(ContinentalSubscriptionRequest inp) {
             bool WhenTrueThenMayForward(ContinentalNotification x) => x.Country.GetContinent() == inp.Continent;
             return inp.Continent == Continent.Antarctica ? null : (Func<ContinentalNotification,bool>) WhenTrueThenMayForward;
         }

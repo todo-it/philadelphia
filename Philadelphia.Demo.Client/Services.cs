@@ -74,8 +74,8 @@ using Philadelphia.Common;
     }
 
         public class ISomeService_ContinentalListener_SseSubscriber : ServerSentEventsSubscriber<Philadelphia.Demo.SharedModel.ContinentalNotification,Philadelphia.Demo.SharedModel.ContinentalSubscriptionRequest> {
-        public ISomeService_ContinentalListener_SseSubscriber(Philadelphia.Demo.SharedModel.ContinentalSubscriptionRequest ctx)
-            : base(typeof(Philadelphia.Demo.SharedModel.ISomeService), "ContinentalListener", ctx) {}
+        public ISomeService_ContinentalListener_SseSubscriber(Philadelphia.Demo.SharedModel.ContinentalSubscriptionRequest ctx, bool autoConnect=true)
+            : base(autoConnect, typeof(Philadelphia.Demo.SharedModel.ISomeService), "ContinentalListener", ctx) {}
     }
 
         public class Services {
