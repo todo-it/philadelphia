@@ -4,7 +4,7 @@
     <TargetFramework>netcoreapp2.2</TargetFramework>
     <OutputType>Library</OutputType>
   </PropertyGroup>
-
+  
   <ItemGroup>
     <None Remove="Tests\xunit.runner.json" />
   </ItemGroup>
@@ -39,7 +39,6 @@
 
   <ItemGroup>
     <Folder Include="Constants\" />
-    <Folder Include="Helpers\" />
   </ItemGroup>
 
 </Project>
