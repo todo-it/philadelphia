@@ -23,11 +23,12 @@ namespace Philadelphia.Testing.DotNetCore.Selenium {
 
         public void RunServerAndExecute(Action<ControlledServerController> testBody) {
             using (var server = ControlledServerBuilder.Start(
-                _logger, 
-                _codec,
-                MaxWaitForCmdReply,
-                "../../../../ControlledByTests.Server/bin/Debug/netcoreapp2.2",
-                "dotnet", "ControlledByTests.Server.dll")) {
+                    _logger, 
+                    _codec,
+                    MaxWaitForCmdReply,
+                    "../../../../ControlledByTests.Server/bin/Debug/netcoreapp2.2",
+                    "dotnet", 
+                    "ControlledByTests.Server.dll")) {
                 
                 var deadline = DateTime.UtcNow.Add(MaxWaitForServerStart);
 
@@ -51,7 +52,7 @@ namespace Philadelphia.Testing.DotNetCore.Selenium {
             }
         }
 
-        public void RunBrowserAndExecute(string baseUrlPostfix, Action<RemoteWebDriver> testBody) {
+        public void RunBrowserAndExecute(string url, Action<RemoteWebDriver> testBody) {
             var chromeOptions = new ChromeOptions();
             
             if (_useHeadlessMode) {
@@ -60,10 +61,7 @@ namespace Philadelphia.Testing.DotNetCore.Selenium {
             
             using (RemoteWebDriver browser = new ChromeDriver(_chromeDriverPath, chromeOptions)) {
                 browser.SetDefaultDomTimeout(MaxWaitForDom);
-                browser.Url = 
-                    "http://localhost:8090" + 
-                    (System.Diagnostics.Debugger.IsAttached ? "/full" : "") + 
-                    baseUrlPostfix;
+                browser.Url = url;
                 testBody(browser);
             }
         }
