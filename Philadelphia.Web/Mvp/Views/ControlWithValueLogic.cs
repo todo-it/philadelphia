@@ -61,11 +61,13 @@ namespace Philadelphia.Web {
             }
         }
 
+        public int ValidationTriggerDelayMilisec {get; set; } = Magics.ValidationTriggerDelayMilisec;
+
         public ControlWithValueLogic(
-            Action<T,bool> OnChanged,
-            Func<T> getPhysicalValue, Action<T> setPhysicalValue,
-            Func<bool> getEnabled, Action<bool> setEnabled,
-            Func<bool> getIsValidating, Action<bool> setIsValidating) {
+                Action<T,bool> OnChanged,
+                Func<T> getPhysicalValue, Action<T> setPhysicalValue,
+                Func<bool> getEnabled, Action<bool> setEnabled,
+                Func<bool> getIsValidating, Action<bool> setIsValidating) {
             
             _onChanged = OnChanged;
             _getPhysicalValue = getPhysicalValue;
@@ -130,7 +132,7 @@ namespace Philadelphia.Web {
                     NotifyAboutUserChange(isUserGenerated);
                     _pendingValueChanges--;
                 }, 
-                Magics.ValidationTriggerDelayMilisec);
+                ValidationTriggerDelayMilisec);
         }
         
         private void NotifyAboutUserChange(bool isUserGenerated) {

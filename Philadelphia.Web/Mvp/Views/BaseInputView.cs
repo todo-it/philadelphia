@@ -75,6 +75,11 @@ namespace Philadelphia.Web {
             ErrorsChanged?.Invoke(this, errors);
         }
         
+        public int ValidationTriggerDelayMilisec {
+            get => _logic.ValidationTriggerDelayMilisec;
+            set => _logic.ValidationTriggerDelayMilisec = value;
+        }
+
         protected BaseInputView(
             ContT input, string containerClass, Func<ContT,DataT> getPhysicalValue, 
             Action<ContT,DataT> setPhysicalValue, string label) {
