@@ -7,5 +7,6 @@ namespace Philadelphia.Common.Model {
         public const string CsrfTokenFieldName = "X-CSRF-Token";
         public const string TimeZoneCodeFieldName = "X-TimeZone-Code";
         public const string TimeZoneOffsetFieldName = "X-TimeZone-Offset";
+        public const string SseStreamIdEventName = "sseStreamId";
     }
 }

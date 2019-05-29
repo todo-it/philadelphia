@@ -6,6 +6,7 @@ namespace Philadelphia.Common {
         private Func<string, string> _getCookieOrNull;
         private Action<Cookie> _setCookie;
 
+        public string StreamId { get; private set; }
         public string ClientIpAddress { get; private set; }
         
         public string ClientTimeZoneCodeOrNull { get; private set; }
@@ -20,12 +21,14 @@ namespace Philadelphia.Common {
         public void Initialize(
                 Func<string,string> getCookieOrNull, 
                 Action<Cookie> setCookie,
+                string streamId,
                 string clientIpAddress, 
                 string clientTimeZoneCodeOrNull = null,
                 int? clientTimeZoneOffset = null) {
             
             _getCookieOrNull = getCookieOrNull;
             _setCookie = setCookie;
+            StreamId = streamId;
             ClientIpAddress = clientIpAddress;
             ClientTimeZoneCodeOrNull = clientTimeZoneCodeOrNull;
             ClientTimeZoneOffset = clientTimeZoneOffset;

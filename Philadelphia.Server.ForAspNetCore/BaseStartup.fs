@@ -135,7 +135,7 @@ type BaseStartup(
         System.IO.Path.Combine(System.IO.Path.GetDirectoryName(typeof<BaseStartup>.Assembly.Location), "../../..")   
     let services = Dictionary<HttpMethodAndUrl, Func<HttpContext, Task>>()
         
-    let populateIpAndCookies (target:ClientConnectionInfo) (ctx:HttpContext) =
+    let initializeConnectionInfo (target:ClientConnectionInfo) (ctx:HttpContext) =
         let tzCode =
             match ctx.Request.Headers.TryGetValue Magics.TimeZoneCodeFieldName with 
             |true, v -> v.Item 0
@@ -145,6 +145,8 @@ type BaseStartup(
             match ctx.Request.Headers.TryGetValue Magics.TimeZoneOffsetFieldName with
             |true, v -> v.Item 0 |> int |> Nullable
             |_ -> Nullable()
+
+        let streamId = System.Guid.NewGuid().ToString()
 
         target.Initialize(
             (fun x -> 
@@ -164,6 +166,7 @@ type BaseStartup(
                             Expires = x.Expires)
                     
                     ctx.Response.Cookies.Append(x.Name, x.Value, o)),
+            streamId,
             ctx.Connection.RemoteIpAddress.ToString(), 
             tzCode,
             tzOffset)
@@ -508,7 +511,7 @@ type BaseStartup(
                 else None
             else None
 
-        populateIpAndCookies (di.Resolve<_>()) ctx
+        initializeConnectionInfo (di.Resolve<_>()) ctx
         populateCsrfMaybe (di.Resolve<_>()) (fun () ->
             let name = Magics.CsrfTokenFieldName
             match ctx.Request.Headers.MaybeGetValue name, maybeGetQueryItem name with
@@ -561,11 +564,14 @@ type BaseStartup(
             serviceImpl.Invoke ctx
         |_, _, Some mbox -> //server sent events listener
             let clientCtx = ctx.Request.Query.Item("i").Item(0)
+            let streamId = (di.Resolve<ClientConnectionInfo>()).StreamId
+            
             ctx.Response.Headers.Add("Content-Type", StringValues.op_Implicit "text/event-stream")
             ctx.Response.Headers.Add("Cache-Control", StringValues.op_Implicit "no-cache")
             let cancTkn = ctx.RequestAborted
 
             async {
+            
                 let! filterReply =
                     mbox.Subscribe di ctx.Response.Body clientCtx
                        
@@ -580,9 +586,15 @@ type BaseStartup(
                         log "client is accepted (filter is not null)"
                         let sleepingClient =
                             async {
-                                //needs to send anything as otherwise 'onopen' won't be called in the browser
-                                let ack = Encoding.UTF8.GetBytes("irrelevant\n\n")
+                                //dual purpose: announce sseStreamId and send anything so that 'onopen' will be invoked in the browser
+                                let msg = 
+                                    sprintf 
+                                        "event: %s\ndata: %s\n\n" 
+                                            Philadelphia.Common.Model.Magics.SseStreamIdEventName
+                                            streamId
+                                let ack = Encoding.UTF8.GetBytes(msg)
                                 do! ctx.Response.Body.WriteAsync(ack, 0, ack.Length) |> Async.AwaitTask
+                                do! ctx.Response.Body.FlushAsync() |> Async.AwaitTask
 
                                 log "starting sleeping in client async"
                                 let! timeoutOrDisconnect =

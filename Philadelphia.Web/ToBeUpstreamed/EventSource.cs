@@ -12,6 +12,8 @@ namespace Philadelphia.Web {
 
         public Action onopen;
         public Action<MessageEvent> onmessage;
+        public virtual extern void addEventListener(string type, Action<MessageEvent> listener);
+
         public Action<Event> onerror;
 
         /// <summary>closes connection</summary>

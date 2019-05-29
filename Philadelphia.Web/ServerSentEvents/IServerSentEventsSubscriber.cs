@@ -12,6 +12,7 @@ namespace Philadelphia.Web {
         event Action<MsgT> OnMessage;
         event Action OnConnOpen;
         event Action<Event,ConnectionReadyState> OnError;
+        string SseStreamId {get;}
     }
 
     public abstract class ServerSentEventsSubscriber<MsgT,CtxT> : IServerSentEventsSubscriber<MsgT> {
@@ -21,6 +22,7 @@ namespace Philadelphia.Web {
         public event Action<MsgT> OnMessage;
         public event Action OnConnOpen;
         public event Action<Event,ConnectionReadyState> OnError;
+        public string SseStreamId {get; private set;}
 
         protected ServerSentEventsSubscriber(
                 bool autoConnect, Type serviceDecl, string subscrMethodName, CtxT ctx) {
@@ -43,6 +45,12 @@ namespace Philadelphia.Web {
 
         private void Reconnect() {
             _evSrv = new EventSource(_url);
+
+            _evSrv.addEventListener(Common.Model.Magics.SseStreamIdEventName, ev => {
+                SseStreamId = (string)ev.Data;
+                Logger.Debug(GetType(), "SseStreamId is now {0}", SseStreamId);
+            });
+            
             _evSrv.onmessage = ev => {
                 var data = (string)ev.Data;
                 Logger.Debug(GetType(), "got message: {0}", data);
