@@ -19,7 +19,8 @@ namespace Philadelphia.Demo.Client {
 
         public string Title => "Subscriber/Listener";
         public IFormView<HTMLElement> View => _view;
-        
+        public string SseSessionId => _listener?.SseStreamId;
+
         public SseListenerForm(
             Func<ContinentalSubscriptionRequest,IServerSentEventsSubscriber<ContinentalNotification>> listenerBld) {
 
@@ -67,8 +68,9 @@ namespace Philadelphia.Demo.Client {
             SetupEnablement();
 
             _listener.OnMessage += msg => {
-                Log("Got notification from {0} at {1} about country={2}",
-                    msg.Sender, I18n.Localize(msg.SentAt, DateTimeFormat.YMDhms), msg.Country.ToString());
+                Log("Got notification from {0} ({1})at {2} about country={3}",
+                    msg.Sender, msg.SenderSseStreamId, I18n.Localize(msg.SentAt, DateTimeFormat.YMDhms), 
+                    msg.Country.ToString());
             };
             _listener.OnError += (_,rs) => {
                 if (rs == ConnectionReadyState.CLOSED) {
@@ -81,7 +83,9 @@ namespace Philadelphia.Demo.Client {
 
                 Log("Temporary connection error - reconnecting");
             };
-            _listener.OnConnOpen += () => Log("Successfully connected and subscribed");
+
+            _listener.OnConnOpen += () => Log("Connected");
+            _listener.OnStreamIdAssigned += x => Log("Subscribed as {0}", x);
 
             Log("Requested subscription to {0}", cont.Value.ToString());
         }

@@ -11,6 +11,7 @@ namespace Philadelphia.Web {
     public interface IServerSentEventsSubscriber<MsgT> : IDisposable {
         event Action<MsgT> OnMessage;
         event Action OnConnOpen;
+        event Action<string> OnStreamIdAssigned;
         event Action<Event,ConnectionReadyState> OnError;
         string SseStreamId {get;}
     }
@@ -21,6 +22,7 @@ namespace Philadelphia.Web {
         private bool _connectInvoked;
         public event Action<MsgT> OnMessage;
         public event Action OnConnOpen;
+        public event Action<string> OnStreamIdAssigned;
         public event Action<Event,ConnectionReadyState> OnError;
         public string SseStreamId {get; private set;}
 
@@ -49,6 +51,7 @@ namespace Philadelphia.Web {
             _evSrv.addEventListener(Common.Model.Magics.SseStreamIdEventName, ev => {
                 SseStreamId = (string)ev.Data;
                 Logger.Debug(GetType(), "SseStreamId is now {0}", SseStreamId);
+                OnStreamIdAssigned?.Invoke(SseStreamId);
             });
             
             _evSrv.onmessage = ev => {

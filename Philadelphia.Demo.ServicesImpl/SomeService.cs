@@ -177,11 +177,12 @@ namespace Philadelphia.Demo.ServicesImpl {
             _cfg = cfg;
         }
         
-        public Task<DateTime> PublishNotification(Country inp) {
+        public Task<DateTime> PublishNotification(string sseSessionId, Country inp) {
             var res = new ContinentalNotification {
                 Country = inp, 
                 SentAt = DateTime.Now, 
-                Sender = _client.ClientIpAddress.Substring(0, _client.ClientIpAddress.LastIndexOf("."))+".*"
+                Sender = _client.ClientIpAddress.Substring(0, _client.ClientIpAddress.LastIndexOf("."))+".*",
+                SenderSseStreamId = sseSessionId
             };
             _subs.SendMessage(res);
 
@@ -189,7 +190,17 @@ namespace Philadelphia.Demo.ServicesImpl {
         }
         
         public Func<ContinentalNotification,bool> ContinentalListener(ContinentalSubscriptionRequest inp) {
-            bool WhenTrueThenMayForward(ContinentalNotification x) => x.Country.GetContinent() == inp.Continent;
+            //there is necessary data to implement feature:
+            //   do not send message to the user session (=browser tab) that caused event to be generated
+            inp.SseStreamId = _client.StreamId;
+
+            bool WhenTrueThenMayForward(ContinentalNotification x) {
+                //here, there could be additional check to implement feature described above
+                Logger.Debug(GetType(), "checking whether to send message caused by {0} to listener {1}", 
+                    x.SenderSseStreamId, inp.SseStreamId);
+
+                return x.Country.GetContinent() == inp.Continent;
+            }
             return inp.Continent == Continent.Antarctica ? null : (Func<ContinentalNotification,bool>) WhenTrueThenMayForward;
         }
 

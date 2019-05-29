@@ -23,7 +23,7 @@ namespace Philadelphia.Demo.SharedModel {
         /// <summary>orderId and someCtxVar are given to show that 'context' may be passed to setter</summary>
         Task<RemoteFileId[]> OrderAttachmentSetter(UploadInfo info, int orderId, bool someCtxVar);
 
-        Task<DateTime> PublishNotification(Country inp);
+        Task<DateTime> PublishNotification(string sseSessionId, Country inp);
         Func<ContinentalNotification,bool> ContinentalListener(ContinentalSubscriptionRequest inp);
     }
 }

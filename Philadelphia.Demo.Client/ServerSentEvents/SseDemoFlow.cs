@@ -13,8 +13,8 @@ namespace Philadelphia.Demo.Client {
         private readonly SseListenerForm _listener;
 
         public SseDemoFlow(ISomeService someService) {
-            _sender = new SseSenderForm(someService);
             _listener = new SseListenerForm(x => new ISomeService_ContinentalListener_SseSubscriber(x));
+            _sender = new SseSenderForm(someService, () => _listener.SseSessionId);
         }
 
         public void Run(IFormRenderer<HTMLElement> renderer, Action atExit) {

@@ -49,10 +49,10 @@ using Philadelphia.Common;
             public System.Threading.Tasks.Task<Philadelphia.Common.RemoteFileId[]>OrderAttachmentSetter(Philadelphia.Common.UploadInfo p0, System.Int32 p1, System.Boolean p2){
                 throw new System.Exception("uploads cannot be called this way");
             }
-            public async System.Threading.Tasks.Task<System.DateTime>PublishNotification(Philadelphia.Demo.SharedModel.Country p0){
-                return await HttpRequester.RunHttpRequestReturningPlain<Philadelphia.Demo.SharedModel.Country, System.DateTime>(
+            public async System.Threading.Tasks.Task<System.DateTime>PublishNotification(System.String p0, Philadelphia.Demo.SharedModel.Country p1){
+                return await HttpRequester.RunHttpRequestReturningPlain<System.String, Philadelphia.Demo.SharedModel.Country, System.DateTime>(
                     typeof(Philadelphia.Demo.SharedModel.ISomeService).FullName,
-                    "PublishNotification", p0);
+                    "PublishNotification", p0, p1);
             }
         }
     public class WebClientTranslationsService : Philadelphia.Demo.SharedModel.ITranslationsService {

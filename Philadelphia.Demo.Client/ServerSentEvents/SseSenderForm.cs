@@ -5,24 +5,32 @@ using Philadelphia.Demo.SharedModel;
 
 namespace Philadelphia.Demo.Client {
     public class SseSenderForm : IForm<HTMLElement,SseSenderForm,Unit> {
+        private readonly Func<string> _sseSessionIdProvider;
         public event Action<SseSenderForm, Unit> Ended;
         private readonly SseSenderFormView _view = new SseSenderFormView();
         public string Title => "Publisher";
         public IFormView<HTMLElement> View => _view;
         
-        public SseSenderForm(ISomeService someService) {
+        public SseSenderForm(ISomeService someService, Func<string> sseSessionIdProvider) {
+            _sseSessionIdProvider = sseSessionIdProvider;
             RemoteActionBuilder.Build(_view.PublishCanada, 
-                () => someService.PublishNotification(Country.Canada), x => LogAccept(Country.Canada, x));
+                () => someService.PublishNotification(_sseSessionIdProvider(), Country.Canada), 
+                x => LogAccept(Country.Canada, x));
             RemoteActionBuilder.Build(_view.PublishUSA, 
-                () => someService.PublishNotification(Country.USA), x => LogAccept(Country.USA, x));
+                () => someService.PublishNotification(_sseSessionIdProvider(), Country.USA), 
+                x => LogAccept(Country.USA, x));
             RemoteActionBuilder.Build(_view.PublishGermany, 
-                () => someService.PublishNotification(Country.Germany), x => LogAccept(Country.Germany, x));
+                () => someService.PublishNotification(_sseSessionIdProvider(), Country.Germany), 
+                x => LogAccept(Country.Germany, x));
             RemoteActionBuilder.Build(_view.PublishFrance, 
-                () => someService.PublishNotification(Country.France), x => LogAccept(Country.France, x));
+                () => someService.PublishNotification(_sseSessionIdProvider(), Country.France), 
+                x => LogAccept(Country.France, x));
             RemoteActionBuilder.Build(_view.PublishSouthAfrica, 
-                () => someService.PublishNotification(Country.SouthAfrica), x => LogAccept(Country.SouthAfrica, x));
+                () => someService.PublishNotification(_sseSessionIdProvider(), Country.SouthAfrica), 
+                x => LogAccept(Country.SouthAfrica, x));
             RemoteActionBuilder.Build(_view.PublishTunisia, 
-                () => someService.PublishNotification(Country.Tunisia), x => LogAccept(Country.Tunisia, x));
+                () => someService.PublishNotification(_sseSessionIdProvider(), Country.Tunisia), 
+                x => LogAccept(Country.Tunisia, x));
         }
 
         public ExternalEventsHandlers ExternalEventsHandlers => ExternalEventsHandlers.Create(() => Ended?.Invoke(this, Unit.Instance));
