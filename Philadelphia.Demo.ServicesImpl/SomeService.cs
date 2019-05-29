@@ -192,7 +192,7 @@ namespace Philadelphia.Demo.ServicesImpl {
         public Func<ContinentalNotification,bool> ContinentalListener(ContinentalSubscriptionRequest inp) {
             //there is necessary data to implement feature:
             //   do not send message to the user session (=browser tab) that caused event to be generated
-            inp.SseStreamId = _client.StreamId;
+            inp.SseStreamId = _client.ConnectionId;
 
             bool WhenTrueThenMayForward(ContinentalNotification x) {
                 //here, there could be additional check to implement feature described above
