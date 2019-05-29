@@ -17,9 +17,8 @@ namespace Philadelphia.Web {
     }
 
     public abstract class ServerSentEventsSubscriber<MsgT,CtxT> : IServerSentEventsSubscriber<MsgT> {
-        private EventSource _evSrv;
+        private EventSource _evSrv = null;
         private readonly string _url;
-        private bool _connectInvoked;
         public event Action<MsgT> OnMessage;
         public event Action OnConnOpen;
         public event Action<string> OnStreamIdAssigned;
@@ -32,16 +31,23 @@ namespace Philadelphia.Web {
             _url = "/" +serviceDecl.FullName + "/" + subscrMethodName+"?i="+JSON.Stringify(ctx);
             
             if (autoConnect) {
-                _connectInvoked = true;
                 Reconnect();
             }
         }
 
+        public void Disconnect() {
+            if (_evSrv == null) {
+                throw new Exception("it wasn't connected or attempting to be connected");
+            }
+            
+            _evSrv.close();
+            _evSrv = null;
+        }
+        
         public void Connect() {
-            if (_connectInvoked) {
+            if (_evSrv != null) {
                 throw new Exception("already attempting to connect");
             }
-            _connectInvoked = true;
             Reconnect();
         }
 
