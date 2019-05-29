@@ -6,7 +6,9 @@ namespace Philadelphia.Common {
         private Func<string, string> _getCookieOrNull;
         private Action<Cookie> _setCookie;
 
-        public string StreamId { get; private set; }
+        /// <summary>user visible connection identifier. By default it is Guid.ToString().
+        /// You can override it by registering IClientConnectionInfoConnectionIdProvider in DI container</summary>
+        public string ConnectionId { get; private set; }
         public string ClientIpAddress { get; private set; }
         
         public string ClientTimeZoneCodeOrNull { get; private set; }
@@ -21,17 +23,19 @@ namespace Philadelphia.Common {
         public void Initialize(
                 Func<string,string> getCookieOrNull, 
                 Action<Cookie> setCookie,
-                string streamId,
                 string clientIpAddress, 
                 string clientTimeZoneCodeOrNull = null,
                 int? clientTimeZoneOffset = null) {
             
             _getCookieOrNull = getCookieOrNull;
             _setCookie = setCookie;
-            StreamId = streamId;
             ClientIpAddress = clientIpAddress;
             ClientTimeZoneCodeOrNull = clientTimeZoneCodeOrNull;
             ClientTimeZoneOffset = clientTimeZoneOffset;
+        }
+
+        public void InitializeConnectionId(string connId) {
+            ConnectionId = connId;
         }
 
         public void InitializeCsrfToken(string token) {

@@ -79,6 +79,9 @@ type ContractToImplementation(contract, implementation) =
     member __.Contract with get() = contract:Type
     member __.Implementation with get() = implementation:Type
 
+type IClientConnectionInfoConnectionIdProvider =
+    abstract member Provide: unit->string 
+
 type ServicesRegistry(services) =
     let servicesLst = (services:IEnumerable<ContractToImplementation>).ToList()
 

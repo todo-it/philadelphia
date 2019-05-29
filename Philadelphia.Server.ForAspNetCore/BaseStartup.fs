@@ -146,8 +146,6 @@ type BaseStartup(
             |true, v -> v.Item 0 |> int |> Nullable
             |_ -> Nullable()
 
-        let streamId = System.Guid.NewGuid().ToString()
-
         target.Initialize(
             (fun x -> 
                 match ctx.Request.Cookies.TryGetValue x with
@@ -166,7 +164,6 @@ type BaseStartup(
                             Expires = x.Expires)
                     
                     ctx.Response.Cookies.Append(x.Name, x.Value, o)),
-            streamId,
             ctx.Connection.RemoteIpAddress.ToString(), 
             tzCode,
             tzOffset)
@@ -511,17 +508,25 @@ type BaseStartup(
                 else None
             else None
 
-        initializeConnectionInfo (di.Resolve<_>()) ctx
-        populateCsrfMaybe (di.Resolve<_>()) (fun () ->
-            let name = Magics.CsrfTokenFieldName
-            match ctx.Request.Headers.MaybeGetValue name, maybeGetQueryItem name with
-            |Some x, _ when x.Count > 0 -> 
-                log "found CSRF token in request headers"
-                x.Item(0) |> Some
-            |_, Some x -> 
-                log "found CSRF token in query string"
-                Some x
-            |_ -> None)
+        do
+            let cci = di.Resolve<_>()
+            initializeConnectionInfo cci ctx
+            populateCsrfMaybe cci (fun () ->
+                let name = Magics.CsrfTokenFieldName
+                match ctx.Request.Headers.MaybeGetValue name, maybeGetQueryItem name with
+                |Some x, _ when x.Count > 0 -> 
+                    log "found CSRF token in request headers"
+                    x.Item(0) |> Some
+                |_, Some x -> 
+                    log "found CSRF token in query string"
+                    Some x
+                |_ -> None)
+
+            //optional dependency
+            match di.TryResolve<IClientConnectionInfoConnectionIdProvider>() with
+            | struct (true, provider) -> provider.Provide()
+            | struct(false, _) -> System.Guid.NewGuid().ToString()
+            |> cci.InitializeConnectionId
 
         let lifetimeFilter:ILifetimeFilter = di.Resolve()
 
@@ -564,7 +569,7 @@ type BaseStartup(
             serviceImpl.Invoke ctx
         |_, _, Some mbox -> //server sent events listener
             let clientCtx = ctx.Request.Query.Item("i").Item(0)
-            let streamId = (di.Resolve<ClientConnectionInfo>()).StreamId
+            let connIdAsStreamId = (di.Resolve<ClientConnectionInfo>()).ConnectionId
             
             ctx.Response.Headers.Add("Content-Type", StringValues.op_Implicit "text/event-stream")
             ctx.Response.Headers.Add("Cache-Control", StringValues.op_Implicit "no-cache")
@@ -591,7 +596,7 @@ type BaseStartup(
                                     sprintf 
                                         "event: %s\ndata: %s\n\n" 
                                             Philadelphia.Common.Model.Magics.SseStreamIdEventName
-                                            streamId
+                                            connIdAsStreamId
                                 let ack = Encoding.UTF8.GetBytes(msg)
                                 do! ctx.Response.Body.WriteAsync(ack, 0, ack.Length) |> Async.AwaitTask
                                 do! ctx.Response.Body.FlushAsync() |> Async.AwaitTask
