@@ -61,11 +61,11 @@
     <Reference Include="Newtonsoft.Json, Version=1.11.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Bridge.Newtonsoft.Json.1.11.0\lib\net40\Newtonsoft.Json.dll</HintPath>
     </Reference>
-    <Reference Include="Philadelphia.Common.AsBridgeDotNet, Version=0.19.5.1, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Philadelphia.Common.AsBridgeDotNet.0.19.5.1\lib\net451\Philadelphia.Common.AsBridgeDotNet.dll</HintPath>
+    <Reference Include="Philadelphia.Common.AsBridgeDotNet, Version=0.19.5.2, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Philadelphia.Common.AsBridgeDotNet.0.19.5.2\lib\net451\Philadelphia.Common.AsBridgeDotNet.dll</HintPath>
     </Reference>
-    <Reference Include="Philadelphia.Web, Version=0.19.5.1, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Philadelphia.Web.0.19.5.1\lib\net451\Philadelphia.Web.dll</HintPath>
+    <Reference Include="Philadelphia.Web, Version=0.19.5.2, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Philadelphia.Web.0.19.5.2\lib\net451\Philadelphia.Web.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>

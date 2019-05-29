@@ -3,7 +3,7 @@
   <metadata>
     <id>Philadelphia.Web</id>
     <title>Philadelphia Web - core widgets</title>
-    <version>0.19.5.1</version>
+    <version>0.19.5.2</version>
     <authors>Dominik Pytlewski and Tomasz Sztokinier</authors>
     <licenseUrl>https://github.com/todo-it/philadelphia/blob/master/LICENSE</licenseUrl>
     <projectUrl>https://github.com/todo-it/philadelphia/</projectUrl>
@@ -17,7 +17,7 @@
       <dependency id="Bridge.Core" version="17.4.0" exclude="Build,Analyzers" />
       <dependency id="Bridge.Html5" version="17.4.0" exclude="Build,Analyzers" />
       <dependency id="Bridge.Min" version="17.4.0" exclude="Build,Analyzers" />
-      <dependency id="Philadelphia.Common.AsBridgeDotNet" version="0.19.5.1" exclude="Build,Analyzers" />
+      <dependency id="Philadelphia.Common.AsBridgeDotNet" version="0.19.5.2" exclude="Build,Analyzers" />
       <dependency id="Bridge.Newtonsoft.Json" version="1.11.0" exclude="Build,Analyzers" />      
     </group>
     </dependencies>
