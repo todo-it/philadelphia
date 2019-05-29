@@ -12,6 +12,8 @@ namespace Philadelphia.Web {
         
         public event Action<VisibilityAction> PopupStateChanged;
 
+        public HTMLElement PopupHolderElement => _popup;
+
         public HTMLElement Widget => _container;
         public HTMLElement PopupRawContent {
             set {
