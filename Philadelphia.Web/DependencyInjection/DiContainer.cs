@@ -135,6 +135,15 @@ namespace Philadelphia.Web {
 
         public object Resolve(Type t) => ResolveOne(ResolvingInfo.Create(t));
 
+        public (bool success, object result) TryResolve(Type t) {
+            var resolvingInfo = ResolvingInfo.Create(t);
+            var impls = FindImplementationsFor(resolvingInfo);
+
+            return impls.Count <= 0 
+                ? (false, null) 
+                : (true, ResolveImplementation(impls.First(), resolvingInfo));
+        }
+
         public IEnumerable<object> ResolveAll(Type key) => ResolveAll(ResolvingInfo.Create(key));
 
         public void Release(object t) {

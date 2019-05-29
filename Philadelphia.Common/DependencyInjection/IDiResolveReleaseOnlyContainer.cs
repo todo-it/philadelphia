@@ -8,6 +8,9 @@ namespace Philadelphia.Common {
     public interface IDiResolveReleaseOnlyContainer : IDisposable {
         IEnumerable<object> ResolveAll(Type t);
         object Resolve(Type t);
+
+        /// <summary>returns true if success</summary>
+        (bool success, object result) TryResolve(Type t);
         void Release(object t);
 
         // Question: why not put this into separate interface? it is currently only used by server side DI
@@ -19,6 +22,11 @@ namespace Philadelphia.Common {
 
     public static class DiResolveReleaseOnlyContainerExtensions {
         public static T Resolve<T>(this IDiResolveReleaseOnlyContainer c) => (T) c.Resolve(typeof(T));
+        public static (bool,T) TryResolve<T>(this IDiResolveReleaseOnlyContainer c) {
+            var (success, result) = c.TryResolve(typeof(T));
+            return (success, (T)result);
+        }
+
         public static IEnumerable<T> ResolveAll<T>(this IDiResolveReleaseOnlyContainer c) => c.ResolveAll(typeof(T)).Cast<T>();
     }
 }
