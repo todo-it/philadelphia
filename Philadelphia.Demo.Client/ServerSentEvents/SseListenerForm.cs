@@ -67,8 +67,6 @@ namespace Philadelphia.Demo.Client {
             SetupEnablement();
 
             _listener.OnMessage += msg => {
-                msg.PostDeserializationFix();
-                
                 Log("Got notification from {0} at {1} about country={2}",
                     msg.Sender, I18n.Localize(msg.SentAt, DateTimeFormat.YMDhms), msg.Country.ToString());
             };
