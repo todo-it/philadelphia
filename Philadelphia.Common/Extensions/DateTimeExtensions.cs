@@ -5,7 +5,11 @@ namespace Philadelphia.Common {
         public static string ToStringYyyyMmDdHhMm(this DateTime inp) {
             return string.Format("{0:0000}-{1:00}-{2:00} {3:00}:{4:00}", inp.Year, inp.Month, inp.Day, inp.Hour, inp.Minute);
         }
-        
+
+        public static string ToStringYyyyMmDdHhMmSs(this DateTime inp) {
+            return string.Format("{0:0000}-{1:00}-{2:00} {3:00}:{4:00}:{5:00}", inp.Year, inp.Month, inp.Day, inp.Hour, inp.Minute, inp.Second);
+        }
+
         [Obsolete("to be inlined when bridge issue 3757 is fixed")]
         public static DateTime DateOnly(this DateTime inp) {
             return new DateTime(inp.Year, inp.Month, inp.Day);
