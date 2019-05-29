@@ -24,18 +24,21 @@ namespace Philadelphia.Web {
             
             if (customLogger != null) {
                 Logger.ConfigureImplementation(customLogger);
-            } else if (DocumentUtil.HasHashParameter("debuglight")) {
+            } else if (DocumentUtil.HasHashParameter("debug") && DocumentUtil.GetHashParameter("debug") == "lite") {
+                var toIgnoreByType = new [] {
+                    typeof(Philadelphia.Web.GeneralAttrChangedObserver),
+                    typeof(Philadelphia.Web.GeneralChildListChangedObserver),
+                    typeof(Philadelphia.Web.SpecificChildListChangedObserver),
+                    typeof(Philadelphia.Web.TooltipManager),
+                    typeof(Philadelphia.Web.MouseObserver),
+                    typeof(Philadelphia.Web.FormCanvasExtensions),
+                    typeof(Philadelphia.Web.SpecificResizeObserver) };
+
+                var toIgnoreByBaseName = new [] { 
+                    typeof(Philadelphia.Web.DataGridColumn<string,Unit>).FullNameWithoutGenerics() };
+
                 Logger.ConfigureImplementation(new ForwardMatchingToConsoleLogLoggerImplementation(
-                    x => 
-                        !x.Contains("Philadelphia.Web.GeneralAttrChangedObserver") &&
-                        !x.Contains("Philadelphia.Web.GeneralChildListChangedObserver") &&
-                        !x.Contains("Philadelphia.Web.SpecificChildListChangedObserver") &&
-                        !x.Contains("Philadelphia.Web.TooltipManager") &&
-                        !x.Contains("Philadelphia.Web.MouseObserver") &&
-                        !x.Contains("Philadelphia.Web.FormCanvasExtensions") && 
-                        !x.Contains("Philadelphia.Web.NonObservableReadOnlyDataGridColumn") &&
-                        !x.Contains("Philadelphia.Web.SpecificResizeObserver")
-                ));
+                    x => !toIgnoreByType.Contains(x) && !toIgnoreByBaseName.Contains(x.FullNameWithoutGenerics()) ));
             } else if (DocumentUtil.HasHashParameter("debug")) {
                 Logger.ConfigureImplementation(new ForwardEverythingToConsoleLogLoggerImplementation());
             } else {

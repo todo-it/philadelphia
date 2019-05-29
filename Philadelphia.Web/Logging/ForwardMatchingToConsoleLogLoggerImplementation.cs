@@ -6,17 +6,25 @@ using Philadelphia.Common;
 namespace Philadelphia.Web {
     public class ForwardMatchingToConsoleLogLoggerImplementation : ILoggerImplementation {
         // REVIEW: this delegate is not used
-        private readonly Func<string, bool> _discardMessageWhenFalse;
+        private readonly Func<Type, bool> _maybeDiscardMessageWhenFalse;
         private readonly DateTime _start = DateTime.UtcNow;
 
         [Template("console.log({msg:raw})")]
         private static extern void LogImpl(string msg);
+        
+        public ForwardMatchingToConsoleLogLoggerImplementation(
+                Func<Type,bool> discardMessageWhenFalseOrNull = null) {
 
-        public ForwardMatchingToConsoleLogLoggerImplementation(Func<string,bool> discardMessageWhenFalse) {
-            _discardMessageWhenFalse = discardMessageWhenFalse;
+            _maybeDiscardMessageWhenFalse = discardMessageWhenFalseOrNull;
         }
         
         private void Log(Type sender, string level, string message, object[] args) {
+            var ign = _maybeDiscardMessageWhenFalse?.Invoke(sender);
+
+            if (ign.HasValue && !ign.Value) {
+                return;
+            }
+
             LogImpl(
                 string.Format("{0:0000000} ", (DateTime.UtcNow - _start).TotalMilliseconds) + 
                 this.FlattenSafe(level, sender, message, args));
