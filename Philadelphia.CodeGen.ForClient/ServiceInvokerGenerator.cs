@@ -392,8 +392,8 @@ namespace Philadelphia.CodeGen.ForClient {
                     var ctxType = method.GetParameters()[0];
 
                     result.Append($"    public class {srv.Name}_{method.Name}_SseSubscriber : ServerSentEventsSubscriber<{notifType.FullName},{ctxType.ParameterType.FullName}> {{\n");
-                    result.Append($"        public {srv.Name}_{method.Name}_SseSubscriber({ctxType.ParameterType.FullName} ctx, bool autoConnect=true)\n");
-                    result.Append($"            : base(autoConnect, typeof({srv.FullName}), \"{method.Name}\", ctx) {{}}\n");
+                    result.Append($"        public {srv.Name}_{method.Name}_SseSubscriber(System.Func<{ctxType.ParameterType.FullName}> ctxProvider, bool autoConnect=true)\n");
+                    result.Append($"            : base(autoConnect, typeof({srv.FullName}), \"{method.Name}\", ctxProvider) {{}}\n");
                     result.Append("    }\n");
                 }
             }
