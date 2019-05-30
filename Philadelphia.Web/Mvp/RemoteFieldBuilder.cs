@@ -30,12 +30,36 @@ namespace Philadelphia.Web {
             }
             return member.Member.Name;
         }
+        
+        /// <summary>note: null value is represented by DateTime.MinValue.
+        /// If you want to disallow it check for it in validator</summary>
+        public ClassFieldRemoteMutator<DateTime?,DateTime,ContT> BuildDateTimePickerNotNull(
+                Expression<Func<ContT,DateTime>> getRemoteField, DateTimePickerView view,
+                params Validate<DateTime?>[] validators) {
+            
+            return new ClassFieldRemoteMutator<DateTime?,DateTime,ContT>(
+                getRemoteField,
+                x => x ?? DateTime.MinValue,
+                x => (DateTime?)x,
+                x => _caller.SaveField(GetFieldName(getRemoteField), x),
+                x => {
+                    validators.ForEach(y => x.AddValidatorAndRevalidate(y));
+                    view.BindReadWriteAndInitialize(x);
+                });;
+        }
 
-        public ClassFieldRemoteMutator<DateTime?,DateTime?,ContT> BuildDateTimePicker(
+        public ClassFieldRemoteMutator<DateTime?,DateTime?,ContT> BuildDateTimePickerNullable(
                 Expression<Func<ContT,DateTime?>> getField, DateTimePickerView view,
                 params Validate<DateTime?>[] validators) {
             
             return Build(getField, view, validators);
+        }
+        
+        public ClassFieldRemoteMutator<DateTime?,DateTime?,ContT> BuildDateTimeNullable<WidgetT>(
+            Expression<Func<ContT,DateTime?>> getField, IReadOnlyValueView<WidgetT,string> view, 
+            DateTimeFormat format) {
+            
+            return Build(getField, view, x => !x.HasValue ? "" : I18n.Localize(x.Value, format));
         }
 
         public ClassFieldRemoteMutator<decimal,decimal,ContT> BuildDecimal(
@@ -79,13 +103,6 @@ namespace Philadelphia.Web {
             return Build(getField, view, x => I18n.Localize(x), x => I18n.ParseInt(x), validators);
         }
         
-        public ClassFieldRemoteMutator<DateTime?,DateTime?,ContT> BuildNullableDateTime<WidgetT>(
-                Expression<Func<ContT,DateTime?>> getField, IReadOnlyValueView<WidgetT,string> view, 
-                DateTimeFormat format) {
-            
-            return Build(getField, view, x => !x.HasValue ? "" : I18n.Localize(x.Value, format));
-        }
-
         public ClassFieldRemoteMutator<int,int,ContT> BuildInt<WidgetT>(
                 Expression<Func<ContT,int>> getField, IReadOnlyValueView<WidgetT,string> view) {
 
