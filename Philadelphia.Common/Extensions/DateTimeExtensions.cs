@@ -48,6 +48,10 @@ namespace Philadelphia.Common {
             var result = DateTime.Now;
             return result.DateOnly().AddDays(1);
         }
+        
+        public static DateTime BuildYesterdayMidnight() {
+            return DateTime.Now.AddDays(-1).WithTime(0,0,0);
+        }
 
         public static DateTime BuildFormerMonth(DateTime? since = null) {
             var result = since ?? DateTime.Now;
