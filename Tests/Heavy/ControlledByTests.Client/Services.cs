@@ -49,8 +49,8 @@ using Philadelphia.Common;
 
 
         public class IServerSentEventsService_RegisterListener_SseSubscriber : ServerSentEventsSubscriber<ControlledByTests.Domain.SomeNotif,ControlledByTests.Domain.SomeNotifFilter> {
-        public IServerSentEventsService_RegisterListener_SseSubscriber(ControlledByTests.Domain.SomeNotifFilter ctx, bool autoConnect=true)
-            : base(autoConnect, typeof(ControlledByTests.Domain.IServerSentEventsService), "RegisterListener", ctx) {}
+        public IServerSentEventsService_RegisterListener_SseSubscriber(System.Func<ControlledByTests.Domain.SomeNotifFilter> ctxProvider, bool autoConnect=true)
+            : base(autoConnect, typeof(ControlledByTests.Domain.IServerSentEventsService), "RegisterListener", ctxProvider) {}
     }
 
         public class Services {

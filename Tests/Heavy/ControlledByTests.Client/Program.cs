@@ -130,7 +130,7 @@ namespace ControlledByTests.Client {
                             var notifScope = JsonConvert.DeserializeObject<SomeNotifFilter>(notifScopeRaw);
 
                             listener = new IServerSentEventsService_RegisterListener_SseSubscriber(
-                                notifScope, false);
+                                () => notifScope, false);
 
                             listener.OnConnOpen += () => LogWriteLine("connected");
                             listener.OnError += (ev,crs) => LogWriteLine($"connection error {(int)crs}");
