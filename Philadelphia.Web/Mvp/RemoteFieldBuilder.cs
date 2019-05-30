@@ -132,7 +132,40 @@ namespace Philadelphia.Web {
                 },
                 _postOperationConsumerOrNull);
         }
+
+        public ClassFieldRemoteMutator<ModelT,ModelT,ContT> Build<WidgetT,ModelT,ViewT>(
+            Expression<Func<ContT,ModelT>> getField, IReadOnlyValueView<WidgetT,ViewT> view,
+            Func<ModelT,ViewT> convertFromDomain,
+            params Validate<ModelT>[] validators) {
+
+            return new ClassFieldRemoteMutator<ModelT,ModelT,ContT>(
+                getField,
+                x => x,
+                x => x,
+                x => _caller.SaveField(GetFieldName(getField), x),
+                x => {
+                    validators.ForEach(y => x.AddValidatorAndRevalidate(y));
+                    view.BindReadOnlyAndInitialize(x, convertFromDomain);
+                },
+                _postOperationConsumerOrNull);
+        }
         
+        public ClassFieldRemoteMutator<ModelT,ModelT,ContT> Build<WidgetT,ModelT>(
+            Expression<Func<ContT,ModelT>> getField, IReadOnlyValueView<WidgetT,ModelT> view,
+            params Validate<ModelT>[] validators) {
+
+            return new ClassFieldRemoteMutator<ModelT,ModelT,ContT>(
+                getField,
+                x => x,
+                x => x,
+                x => _caller.SaveField(GetFieldName(getField), x),
+                x => {
+                    validators.ForEach(y => x.AddValidatorAndRevalidate(y));
+                    view.BindReadOnlyAndInitialize(x);
+                },
+                _postOperationConsumerOrNull);
+        }
+
         public ClassFieldRemoteMutator<LocalT,RemT,ContT> BuildSingleChoiceDropDown<WidgetT,LocalT,RemT>(
                 Expression<Func<ContT,RemT>> getRemoteField, IReadWriteValueView<WidgetT,LocalT> view,
                 Func<LocalT,RemT> toRemoteType, Func<RemT,LocalT> toLocalType,
