@@ -86,6 +86,24 @@ namespace Philadelphia.Web {
                 validators);
         }
 
+        public static LocalValue<T> BuildGeneralChoice<WidgetT,T>(
+                T defaultVal,
+                Func<int,T> intToItem,
+                Func<T,int> itemToInt,
+                // REVIEW: make view be of some new class or make it ValueTuple with element names
+                IReadWriteValueView<WidgetT,Tuple<string,string>> view, params Validate<T>[] validators) {
+            
+            return Build(defaultVal, view,
+                x => Tuple.Create(itemToInt(x) + "", ""), //2nd param is irrelevant
+                x => {
+                    if (string.IsNullOrEmpty(x.Item1)) {
+                        throw new Exception("cannot have null value in non nullable enum dropdown");
+                    }
+                    return intToItem(Convert.ToInt32(x.Item1));
+                },
+                validators);
+        }
+
         //T should be enum but impossible to give such constraint. Using:
         //http://stackoverflow.com/questions/79126/create-generic-method-constraining-t-to-an-enum
         //but thrown out IConvertible doesn't seem to work in bridge.net

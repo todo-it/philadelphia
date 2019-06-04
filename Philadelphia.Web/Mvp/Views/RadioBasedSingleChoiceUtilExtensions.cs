@@ -16,6 +16,47 @@ namespace Philadelphia.Web {
         int itemNo);
 
     public class RadioBasedSingleChoiceUtilExtensions {
+        public static RadioBasedSingleChoice Build<T,CtxT>(
+                T defaultValue, Func<T,string> getLabel, 
+                Func<int,T> intToItem, Func<T,int> itemToInt) {
+
+            return Build<T,CtxT>(null, defaultValue, getLabel, intToItem, itemToInt);
+        }
+        
+        public static RadioBasedSingleChoice Build<T,CtxT>(
+                string labelOrNull, T defaultValue, Func<T,string> getLabel, 
+                Func<int,T> intToItem, Func<T,int> itemToInt) {
+
+            return Build<T,CtxT>(labelOrNull, defaultValue, getLabel, intToItem, itemToInt, null, null);
+        }
+
+        public static RadioBasedSingleChoice Build<T,CtxT>(
+                string labelOrNull, T defaultValue, Func<T,string> getLabel,
+                Func<int,T> intToItem, Func<T,int> itemToInt,
+                Func<HTMLElement,int,CtxT> beforeAddItemsOrNull = null,
+                RadioBasedSingleChoiceItemAdder<CtxT,T> itemAdderOrNull = null) {
+            
+            RadioBasedSingleChoiceItemAdder itemAdder = null;
+
+            if (itemAdderOrNull != null) {
+                itemAdder = (ctx, cntnr, rawItem, itemAsEl, labelEl, itemNo) => 
+                    itemAdderOrNull(
+                        (CtxT)ctx, cntnr, intToItem(Convert.ToInt32(rawItem.Item1)), itemAsEl, labelEl, itemNo);
+            }
+            
+            var result = new RadioBasedSingleChoice(labelOrNull, itemAdder);
+            
+            if (beforeAddItemsOrNull != null) {
+                result.BeforeAddItems = (x,y) => beforeAddItemsOrNull(x, y);
+            }
+
+            var defVal = Tuple.Create(itemToInt(defaultValue) + "", getLabel(defaultValue));
+            result.PermittedValues = new [] {defVal };
+            result.Value = defVal;
+            
+            return result; 
+        }
+        
         /// <summary>EnumT must be enum. It is expected that Convert.ToInt32(x) call will succeed</summary>
         public static RadioBasedSingleChoice BuildForEnum<EnumT>(
                 EnumT defaultValue, Func<EnumT,string> getLabel) where EnumT:struct {

@@ -18,7 +18,6 @@ namespace Philadelphia.Web {
         private readonly HTMLLabelElement _genericLabelOrNull;
         private readonly HTMLDivElement _container;
         private readonly ControlWithValueLogic<Tuple<string, string>> _logic;
-        private string _value;
         private readonly Dictionary<string,HTMLInputElement> _valueToItem = new Dictionary<string, HTMLInputElement>();
         private readonly Dictionary<string,string> _valueToLabel = new Dictionary<string, string>();
 
@@ -48,6 +47,9 @@ namespace Philadelphia.Web {
         
         public IEnumerable<Tuple<string, string>> PermittedValues {
             set {
+                var valToPreserve = Value?.Item1;
+
+                Logger.Debug(GetType(), "replacing PermittedValues while preserving value={0}", valToPreserve);
                 _container.RemoveAllChildren();
                 if (_genericLabelOrNull != null) {
                     _container.AppendChild(_genericLabelOrNull);
@@ -67,9 +69,11 @@ namespace Philadelphia.Web {
                         Type = InputType.Radio,
                         Id = itemId,
                         Value = x.Item1,
-                        Name = _uniqueNumberAsName };
+                        Name = _uniqueNumberAsName,
+                        Checked = x.Item1 == valToPreserve
+                    };
                     
-                    _valueToItem[x.Item1] = item; //won't check if items are unique
+                    _valueToItem.Add(x.Item1, item);
                     _valueToLabel[x.Item1] = x.Item2;
 
                     var lbl = new HTMLLabelElement {
@@ -77,7 +81,7 @@ namespace Philadelphia.Web {
                         HtmlFor = itemId };
                     
                     item.OnChange += ev => {
-                        _value = ev.CurrentTarget.Value;
+                        Logger.Debug(GetType(), "item->OnChange()");
                         _logic.PhysicalChanged(false, ev.IsUserGenerated());
                     };
                     
@@ -129,6 +133,9 @@ namespace Philadelphia.Web {
                 v => {
                     var emptying = v == null || string.IsNullOrEmpty(v.Item1);
 
+                    Logger.Debug(GetType(), "setPhysicalValue emptying?={0} value=({1};{2})", 
+                        emptying, v?.Item1, v?.Item2);
+
                     if (emptying) {
                         foreach (var x in _valueToItem.Values) {
                             if (x.Checked) {
@@ -136,9 +143,10 @@ namespace Philadelphia.Web {
                                 break;
                             }
                         }
-                    } else {
-                        _valueToItem[v.Item1].Checked = true;
+                        return;
                     }
+
+                    _valueToItem[v.Item1].Checked = true;
                 },
                 () => _valueToItem.Any() && !_valueToItem.First().Value.Disabled,
                 v => _valueToItem.Values.ForEach(x => _valueToItem.First().Value.Disabled = !v),
