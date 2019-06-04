@@ -72,7 +72,6 @@
     <Compile Include="Mvp\Forms\ConfirmOperationFormView.cs" />
     <Compile Include="Mvp\Forms\DatagridFormView.cs" />
     <Compile Include="Mvp\Forms\EnumChoiceForm.cs" />
-    <Compile Include="Mvp\Forms\EnumChoiceFormOutcome.cs" />
     <Compile Include="Mvp\Forms\EnumChoiceFormView.cs" />
     <Compile Include="Mvp\Forms\HorizontalLinksMenuFormView.cs" />
     <Compile Include="Mvp\Forms\IMenuFormView.cs" />

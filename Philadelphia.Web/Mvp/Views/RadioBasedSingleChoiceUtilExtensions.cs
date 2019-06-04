@@ -4,26 +4,28 @@ using Bridge.Html5;
 using Philadelphia.Common;
 // ReSharper disable InconsistentNaming
 
+//unfortunately bridge.net doesn't support Enum generic constraint: https://blogs.msdn.microsoft.com/seteplia/2018/06/12/dissecting-new-generics-constraints-in-c-7-3/
+
 namespace Philadelphia.Web {
-    public delegate void RadioBasedSingleChoiceEnumItemAdder<CtxT,EnumT>(
+    public delegate void RadioBasedSingleChoiceItemAdder<CtxT,T>(
         CtxT ctxFromBeforeAddItems, 
         HTMLElement container, 
-        EnumT internalValue, 
+        T internalValue, 
         HTMLInputElement inputElem,
         HTMLLabelElement labelElem, 
         int itemNo);
 
     public class RadioBasedSingleChoiceUtilExtensions {
+        /// <summary>EnumT must be enum. It is expected that Convert.ToInt32(x) call will succeed</summary>
         public static RadioBasedSingleChoice BuildForEnum<EnumT>(
-                EnumT defaultValue, Func<EnumT,string> getLabel,
-                Func<int,EnumT> intToEnum) where EnumT:struct {
+                EnumT defaultValue, Func<EnumT,string> getLabel) where EnumT:struct {
 
-            return BuildForEnum(null, defaultValue, getLabel, intToEnum);
+            return BuildForEnum(null, defaultValue, getLabel);
         }
 
+        /// <summary>EnumT must be enum. It is expected that Convert.ToInt32(x) call will succeed</summary>
         public static RadioBasedSingleChoice BuildForEnum<EnumT>(
-                string labelOrNull, EnumT defaultValue, Func<EnumT,string> getLabel,
-                Func<int,EnumT> intToEnum) where EnumT:struct {
+                string labelOrNull, EnumT defaultValue, Func<EnumT,string> getLabel) where EnumT:struct {
 
             return new RadioBasedSingleChoice(labelOrNull) {
                 PermittedValues = 
@@ -34,20 +36,22 @@ namespace Philadelphia.Web {
             };
         }
         
+        /// <summary>EnumT must be enum. It is expected that Convert.ToInt32(x) call will succeed</summary>
         public static RadioBasedSingleChoice BuildForEnum<EnumT,CtxT>(
                 EnumT defaultValue, Func<EnumT,string> getLabel,
                 Func<int,EnumT> intToEnum,
                 Func<HTMLElement,int,CtxT> beforeAddItems,
-                RadioBasedSingleChoiceEnumItemAdder<CtxT,EnumT> itemAdderOrNull = null) where EnumT:struct {
+                RadioBasedSingleChoiceItemAdder<CtxT,EnumT> itemAdderOrNull = null) where EnumT:struct {
 
             return BuildForEnum(null, defaultValue, getLabel, intToEnum, beforeAddItems, itemAdderOrNull);
         }
 
+        /// <summary>EnumT must be enum. It is expected that Convert.ToInt32(x) call will succeed</summary>
         public static RadioBasedSingleChoice BuildForEnum<EnumT,CtxT>(
                 string labelOrNull, EnumT defaultValue, Func<EnumT,string> getLabel,
                 Func<int,EnumT> intToEnum,
                 Func<HTMLElement,int,CtxT> beforeAddItems,
-                RadioBasedSingleChoiceEnumItemAdder<CtxT,EnumT> itemAdderOrNull = null) where EnumT:struct {
+                RadioBasedSingleChoiceItemAdder<CtxT,EnumT> itemAdderOrNull = null) where EnumT:struct {
 
             RadioBasedSingleChoiceItemAdder itemAdder = null;
 

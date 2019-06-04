@@ -13,10 +13,10 @@ namespace Philadelphia.Web {
             = new InputTypeButtonActionView("OK").With(x => x.MarkAsFormsDefaultButton());
 
         public EnumChoiceFormView(
-                T defaultValue, Func<T,string> getLabel, Func<int,T> intToEnum, 
+                T defaultValue, Func<T,string> getLabel, 
                 Action<EnumChoiceFormView<T>> postInitialization = null) {
 
-            Choice = RadioBasedSingleChoiceUtilExtensions.BuildForEnum(defaultValue, getLabel, intToEnum);
+            Choice = RadioBasedSingleChoiceUtilExtensions.BuildForEnum(defaultValue, getLabel);
             postInitialization?.Invoke(this);
         }
 
