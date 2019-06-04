@@ -16,17 +16,16 @@ namespace Philadelphia.Demo.Client {
         public InternationalizationFlow(ITranslationsService service) {
             _downloadTranslation = new RemoteActionsCallerForm(x => 
                 x.Add(
-                    () => _choose.ChoosenValue, 
+                    () => _choose.ChosenValue, 
                     service.FetchTranslation, 
                     y => I18n.ConfigureImplementation(
-                        () => new TranslationWithFallbackI18n(_choose.ChoosenValue.ToString(), y))));
+                        () => new TranslationWithFallbackI18n(_choose.ChosenValue.ToString(), y))));
 
             _choose = new EnumChoiceForm<SupportedLang>(
                 "Language choice", 
                 true, 
                 SupportedLang.EN, 
                 x => x.GetLangName(),
-                x => (SupportedLang)x,
                 x => {
                     x.Choice.Widget.Style.Display = Display.Grid;
                     x.Choice.Widget.Style.GridTemplateColumns = "auto 1fr";
@@ -58,14 +57,14 @@ Those messages can be easily found and translated within JSON file using <a targ
 
             _choose.Ended += async (x, outcome) => {
                 switch (outcome) {
-                    case EnumChoiceFormOutcome.Canceled:
+                    case CompletedOrCanceled.Canceled:
                         renderer.Remove(x);
                         atExit();
                         break;
 
-                    case EnumChoiceFormOutcome.Choosen:
+                    case CompletedOrCanceled.Completed:
                         renderer.Remove(x);
-                        if (_choose.ChoosenValue == SupportedLang.EN) {
+                        if (_choose.ChosenValue == SupportedLang.EN) {
                             await InitWelcomeDialog();
                             renderer.AddPopup(_welcomeDialog); //go directly to dialog
                         } else {

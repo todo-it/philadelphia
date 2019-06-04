@@ -36,7 +36,7 @@ namespace Philadelphia.Demo.Client {
                 _headers.Headers.Items.Replace(_headerItems);
             };
             _layoutChoice = new EnumChoiceForm<LayoutChoice>(
-                "Choose screen layout", true, LayoutChoice.Horizontal, x => x.ToString(), x => (LayoutChoice)x,
+                "Choose screen layout", true, LayoutChoice.Horizontal, x => x.ToString(),
                 x => x.Choice.Widget.ClassList.Add("horizontalOrVerticalChoice"));
         }
 
@@ -46,12 +46,12 @@ namespace Philadelphia.Demo.Client {
             _layoutChoice.Ended += (x, outcome) => {
                 renderer.Remove(x);
                 switch (outcome) {
-                    case EnumChoiceFormOutcome.Canceled:
+                    case CompletedOrCanceled.Canceled:
                         atExit();
                         break;
 
-                    case EnumChoiceFormOutcome.Choosen:
-                        switch(x.ChoosenValue) {
+                    case CompletedOrCanceled.Completed:
+                        switch(x.ChosenValue) {
                             case LayoutChoice.Horizontal: {
                                 var panel = TwoPanelsWithResizerBuilder.BuildHorizontal(
                                     Hideability.None, false, renderer, SpacingPolicy.FirstWins);
