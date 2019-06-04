@@ -34,7 +34,7 @@ namespace Philadelphia.Demo.Client {
                         @"For sake of simplicity you need to make explicit choice below. 
 In a normal program, you would take current language either from logged in
 user property or from browser's Accept-Language header field.
-If you study source code you will see that messages eligable for translation are declared as: 
+If you study source code you will see that messages eligible for translation are declared as: 
     I18n.Translate(""Some message that should be localized"")
 Those messages can be easily found and translated within JSON file using <a target='_blank' href='https://github.com/d-p-y/oldschool-i18n'>OldSchool-I18n</a>";
 
