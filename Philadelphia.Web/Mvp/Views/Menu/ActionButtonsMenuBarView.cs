@@ -47,7 +47,10 @@ namespace Philadelphia.Web {
                 Func<MenuItemModel,InputTypeButtonActionView> customButtonBuilder = null) {
 
             _buttonBuilder = customButtonBuilder ?? (x => {
-                var res = new InputTypeButtonActionView(x.Label);
+                var res = new InputTypeButtonActionView(x.Label.Value);
+                x.Label.Changed += (_, __, newValue, ___, ____) => 
+                    res.ProperLabelElem.TextContent = newValue;
+
                 res.Widget.SetAttribute(Magics.AttrDataMenuItemId, x.Id.ToString());
                     
                 if (x.DescriptonOrNull != null) {

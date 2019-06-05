@@ -114,8 +114,10 @@ namespace Philadelphia.Web {
 
                 var anchor = new HTMLAnchorElement {
                     Href = "#",
-                    TextContent = itemToAdd.Label
+                    TextContent = itemToAdd.Label.Value
                 };
+
+                itemToAdd.Label.Changed += (_, __, newValue, ___, ____) => anchor.TextContent = newValue;
 
                 chld.AppendChild(anchor);
 
