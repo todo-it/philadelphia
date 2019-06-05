@@ -13,7 +13,8 @@ namespace Philadelphia.Demo.Client {
 
         public FlexibleLayoutFlow() {
             _menuView = new ActionsBarMenuFormView(x => {
-                var res = InputTypeButtonActionView.CreateFontAwesomeIconedButtonLabelless(x.Label);
+                var res = InputTypeButtonActionView.CreateFontAwesomeIconedButtonLabelless(x.Label.Value);
+                x.Label.Changed += (_, __, newValue, ___, ____) => res.PreLabelElem.TextContent = newValue;
                 res.StaysPressed = true;
                 return res;
             });
