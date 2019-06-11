@@ -41,20 +41,21 @@ nav.Philadelphia\.Web\.HorizontalMenuBarView > ul > li:first-child {
     margin-left: 15px;
 }
 
-nav.Philadelphia\.Web\.HorizontalMenuBarView a:hover {
+nav.Philadelphia\.Web\.HorizontalMenuBarView > ul > li > a:hover {
     background-color: #ccc;
 }
 
-.Philadelphia\.Web\.HorizontalMenuBarView * {
+.Philadelphia\.Web\.HorizontalMenuBarView > ul > li > a {
     font-size: 16px;
+    cursor: pointer;
 }
 
-nav.Philadelphia\.Web\.HorizontalMenuBarView a {
+nav.Philadelphia\.Web\.HorizontalMenuBarView  > ul > li > a {
     display: inline-block;
     width: 100%;
 }
 
-nav.Philadelphia\.Web\.HorizontalMenuBarView li:focus {
+nav.Philadelphia\.Web\.HorizontalMenuBarView > ul > li:focus {
     outline: none;
 }
 
@@ -73,13 +74,13 @@ nav.Philadelphia\.Web\.HorizontalMenuBarView > ul > li {
     padding-right: 10px;
 }
 
-nav.Philadelphia\.Web\.HorizontalMenuBarView a {
+nav.Philadelphia\.Web\.HorizontalMenuBarView > ul > li > a {
     text-decoration: none;
     padding-right: 10px;
     white-space: nowrap;
 }
 
-nav.Philadelphia\.Web\.HorizontalMenuBarView li {
+nav.Philadelphia\.Web\.HorizontalMenuBarView > ul > li {
     /* get rid of bullet points */
     display: inline;
 }

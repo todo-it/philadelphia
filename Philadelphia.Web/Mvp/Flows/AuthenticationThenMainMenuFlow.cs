@@ -19,13 +19,12 @@ namespace Philadelphia.Web {
         private IFormRenderer<HTMLElement> _baseRenderer;
         private T _currentUserOrNull;
 
-        //FIXME not needed 'string' in login service call
-        //FIXME not needed 'Unit' in logout service call
         public AuthenticationThenMainMenuFlow(
                 Func<Task<Tuple<string,T>>> fetchCsrfAndSelfOrNull, 
                 Func<string,string,Task<string>> loginByUserAndPasswd,
                 Func<Task<Unit>> logoutOper,
-                Func<T,Func<IFormRenderer<HTMLElement>>,IEnumerable<MenuItemUserModel>> menuItemsProvider) {
+                Func<T,Func<IFormRenderer<HTMLElement>>,IEnumerable<MenuItemUserModel>> menuItemsProvider,
+                Func<MenuItemModel,Tuple<HTMLElement,Action<string>>> customItemBuilder = null) {
 
             _menuItemsProvider = menuItemsProvider;
             
@@ -36,7 +35,7 @@ namespace Philadelphia.Web {
                 }));
 
             _loginForm = new LoginForm(loginByUserAndPasswd, StoreCsrf);
-            _mainMenuFormView = new HorizontalLinksMenuFormView();
+            _mainMenuFormView = new HorizontalLinksMenuFormView(customItemBuilder);
             _mainMenuForm = new MenuForm(_mainMenuFormView, new List<MenuItemUserModel>());
             _authProblemMsg = new InformationalMessageForm("", I18n.Translate("Authentication problem"));
             _runLogout = new RemoteActionsCallerForm(x => x.Add(logoutOper));

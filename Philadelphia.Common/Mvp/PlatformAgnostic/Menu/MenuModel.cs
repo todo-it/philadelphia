@@ -34,11 +34,11 @@ namespace Philadelphia.Common {
                 if (item.IsLeaf) {
                     var id = UniqueIdGenerator.Generate();
                     _idToAction[id] = item.Action;
-                    toItems.Add(MenuItemModel.CreateLeaf(id, item.Label, item.DescriptionOrNull));
+                    toItems.Add(MenuItemModel.CreateLeaf(id, item.Label, item, item.DescriptionOrNull));
                 } else {
                     var subItems = new List<MenuItemModel>();
                     RegisterModel(item.Items, subItems);
-                    toItems.Add(MenuItemModel.CreateSubTree(item.Label, subItems));
+                    toItems.Add(MenuItemModel.CreateSubTree(item.Label, item, subItems ));
                 }
             }
         }

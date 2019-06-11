@@ -5,6 +5,7 @@ using Philadelphia.Common;
 
 namespace Philadelphia.Web {
     public class HorizontalMenuBarView : IMenuBarView {
+        private readonly Func<MenuItemModel, Tuple<HTMLElement,Action<string>>> _itemBuilder;
         private readonly HTMLElement _nav;
         private readonly HTMLElement _root;
         private readonly Action<Event> _onItemClicked;
@@ -19,7 +20,13 @@ namespace Philadelphia.Web {
             }
         }
 
-        public HorizontalMenuBarView() {
+        public HorizontalMenuBarView(
+                Func<MenuItemModel,Tuple<HTMLElement,Action<string>>> customItemBuilder = null) {
+
+            _itemBuilder = customItemBuilder ?? (x => {
+                var el = new HTMLAnchorElement {Href = "#"};
+                return Tuple.Create<HTMLElement,Action<string>>(el, y => el.TextContent = y);});
+
             _nav = DocumentUtil.CreateElementHavingClassName("nav", GetType().FullName);
             _nav.Id = UniqueIdGenerator.GenerateAsString();
 
@@ -112,22 +119,23 @@ namespace Philadelphia.Web {
 
                 into.AppendChild(chld);
 
-                var anchor = new HTMLAnchorElement {
-                    Href = "#",
-                    TextContent = itemToAdd.Label.Value
-                };
+                var itemAndSetter = _itemBuilder(itemToAdd);
+                var item = itemAndSetter.Item1;
+                var setter = itemAndSetter.Item2;
 
-                itemToAdd.Label.Changed += (_, __, newValue, ___, ____) => anchor.TextContent = newValue;
+                setter(itemToAdd.Label.Value);
 
-                chld.AppendChild(anchor);
+                itemToAdd.Label.Changed += (_, __, newValue, ___, ____) => setter(itemToAdd.Label.Value);
+                
+                chld.AppendChild(item);
 
                 if (itemToAdd.IsLeaf) {    
-                    anchor.SetAttribute(Magics.AttrDataMenuItemId, itemToAdd.Id.ToString());
-                    anchor.AddEventListener("click", _onItemClicked);
+                    item.SetAttribute(Magics.AttrDataMenuItemId, itemToAdd.Id.ToString());
+                    item.AddEventListener("click", _onItemClicked);
                     SetupSubMenuPopup(chld, chld.FirstElementChild, false);
                 } else {
                     var ul = new Element("ul");
-                    anchor.SetAttribute("onclick", "return false;");
+                    item.SetAttribute("onclick", "return false;");
                     chld.AppendChild(ul);
                     AddItems(ul, itemToAdd.Items, nestingLevel+1);
                     SetupSubMenuPopup(chld, chld.FirstElementChild, true);
