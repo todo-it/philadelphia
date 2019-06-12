@@ -26,11 +26,11 @@ namespace Philadelphia.Demo.Server {
 
         public Task<ConnectionAction> OnConnectionBeforeHandler(
                 IDiResolveReleaseOnlyContainer di, string url, object serviceInstance, 
-                MethodInfo method, ResourceType res) {
+                MethodInfo method, object[] prms, ResourceType res) {
 
             var ci = di.Resolve<ClientConnectionInfo>();
             var guid = Guid.NewGuid().ToString();
-            Logger.Debug(typeof(LifeTimeFilter), $"OnConnectionBeforeHandler() ip={ci.ClientIpAddress} guid={guid} url={url} resourceType={res.ToString()} serviceImpl={serviceInstance} method={method}");
+            Logger.Debug(typeof(LifeTimeFilter), $"OnConnectionBeforeHandler() ip={ci.ClientIpAddress} guid={guid} url={url} resourceType={res.ToString()} serviceImpl={serviceInstance} method={method} prms={prms}");
             return Task.FromResult(ConnectionAction.CreateNonFiltered(guid));
         }
 

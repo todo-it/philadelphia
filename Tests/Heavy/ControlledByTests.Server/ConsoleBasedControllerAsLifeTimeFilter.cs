@@ -96,11 +96,11 @@ namespace ControlledByTests.Server {
  
         public Task<ConnectionAction> OnConnectionBeforeHandler(
                 IDiResolveReleaseOnlyContainer di, string url, object serviceInstanceOrNull, 
-                MethodInfo methodOrNull, ResourceType res) {
+                MethodInfo methodOrNull, object[] parms, ResourceType res) {
  
             var ci = di.Resolve<ClientConnectionInfo>();
             var guid = Guid.NewGuid().ToString();
-            LogAsReply($"OnConnectionBeforeHandler() ip={ci.ClientIpAddress} guid={guid} url={url} resourceType={res.ToString()} serviceImpl={serviceInstanceOrNull} method={methodOrNull}");
+            LogAsReply($"OnConnectionBeforeHandler() ip={ci.ClientIpAddress} guid={guid} url={url} resourceType={res.ToString()} serviceImpl={serviceInstanceOrNull} method={methodOrNull} parms={parms}");
             
             var ctx = new FilterInvocation {
                 Url = url,
