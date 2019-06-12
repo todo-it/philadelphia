@@ -23,6 +23,14 @@ namespace Philadelphia.Common {
             Items = subItemsOrNull;
             IsExit = isExitItem;
         }
+        
+        public static MenuItemUserModel CreateLogoutLeaf(
+            string label, string descriptionOrNull = null) {
+
+            return new MenuItemUserModel(
+                new LocalValue<string>(label), new LocalActionModel(LambdaUtil.DoNothingAction), 
+                null, true, descriptionOrNull);
+        }
 
         public static MenuItemUserModel CreateLogoutLeaf(
                 IReadOnlyValue<string> label, string descriptionOrNull = null) {
