@@ -10,6 +10,6 @@ namespace Philadelphia.Common {
         public bool Secure {get; set; }
         public DateTimeOffset? Expires {get; set; }
         public TimeSpan? MaxAge {get; set; }
-        public string Path {get; set; }
+        public string Path {get; set; } = "/";
     }
 }
