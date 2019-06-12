@@ -58,18 +58,19 @@ type Subscription<'TMsg,'TClientCtx> = {
     Subscribe: Async<unit>->Stream->Func<'TMsg,bool>->unit
     Unsubscribe: Stream->unit
     StringToClientCtx:string->'TClientCtx
-    HandleConnection: IDiResolveReleaseOnlyContainer->Async<LifestyleFilteredResult<'TMsg,'TClientCtx>>
+    HandleConnection: IDiResolveReleaseOnlyContainer->'TClientCtx->Async<LifestyleFilteredResult<'TMsg,'TClientCtx>>
 }
 with
     member self.SendMessage msg = self.Send msg
     member x.SimpleSubscription : SimpleSubscription = {
         Subscribe = fun di cl prms -> async {
-            let! result = x.HandleConnection di
-                       
+            let ctx = prms |> x.StringToClientCtx
+            let! result = x.HandleConnection di ctx 
+
             return
                 match result with
                 |Accepted(logicalFilterFac, onDispose) ->
-                    let logicalFilter = prms |> x.StringToClientCtx |> logicalFilterFac
+                    let logicalFilter = ctx |> logicalFilterFac
                     if logicalFilter = null
                     then 
                         {
@@ -188,14 +189,15 @@ module ServerPushReg =
         let result = 
             {
                 Subscription.Mbox = mbox
-                HandleConnection = (fun di -> async {
+                HandleConnection = (fun di ctx -> async {
                     let serviceInstProv, method = filterBuilder
                     let serviceInst = serviceInstProv di
 
                     let lifetimeFilter:ILifetimeFilter = di.Resolve()
 
                     let! lifetimeFilterRes =
-                        lifetimeFilter.OnConnectionBeforeHandler(di, url, serviceInst, method, ResourceType.ServerSentEventListener)
+                        lifetimeFilter.OnConnectionBeforeHandler(
+                            di, url, serviceInst, method, [| ctx |], ResourceType.ServerSentEventListener)
                         |> Async.AwaitTask
 
                     return
@@ -348,7 +350,7 @@ module Services =
             let connFilter:ILifetimeFilter = di.Resolve()
 
             let! lifetimeFilterRes =
-                connFilter.OnConnectionBeforeHandler(di, url, serviceImpl, m, ResourceType.RegularPostService)
+                connFilter.OnConnectionBeforeHandler(di, url, serviceImpl, m, x, ResourceType.RegularPostService)
                 |> Async.AwaitTask
 
             return

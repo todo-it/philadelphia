@@ -547,7 +547,7 @@ type BaseStartup(
         |None, Some statFile,  _ -> //static file
             async {
                 let! connAct =
-                    lifetimeFilter.OnConnectionBeforeHandler(di, pth, null, null, ResourceType.StaticResource)
+                    lifetimeFilter.OnConnectionBeforeHandler(di, pth, null, null, Array.empty, ResourceType.StaticResource)
                     |> Async.AwaitTask
 
                 let sender =
@@ -623,7 +623,8 @@ type BaseStartup(
         |_ ->
             async {
                 let! filterReply =
-                    lifetimeFilter.OnConnectionBeforeHandler(di, pth, null, null, ResourceType.Unsupported)
+                    lifetimeFilter.OnConnectionBeforeHandler(
+                        di, pth, null, null, Array.empty, ResourceType.Unsupported)
                     |> Async.AwaitTask
 
                 sprintf "unsupported path %s" pth |> log

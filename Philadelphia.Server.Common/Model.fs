@@ -56,7 +56,7 @@ type ILifetimeFilter =
 
     ///maybe replace service call(filter it out). Returns Task instead of Async to be C# friendly
     abstract member OnConnectionBeforeHandler : 
-        di:IDiResolveReleaseOnlyContainer * url:string * serviceInstance:obj * m:MethodInfo * ResourceType->Task<ConnectionAction>
+        di:IDiResolveReleaseOnlyContainer * url:string * serviceInstance:obj * m:MethodInfo * parameters:obj[] * ResourceType->Task<ConnectionAction>
     
     ///not invoked for static resources.
     ///not invoked when OnConnectionBeforeHandler returned filter. 
@@ -67,7 +67,7 @@ type NullLifetimeFilter() =
     interface ILifetimeFilter with
         member __.OnServerStarted di = Task.CompletedTask
 
-        member __.OnConnectionBeforeHandler(di, url, serviceInstance,m,resType) = 
+        member __.OnConnectionBeforeHandler(di, url, serviceInstance, m, prms, resType) = 
             null
             |> ConnectionAction.CreateNonFiltered
             |> System.Threading.Tasks.Task.FromResult
