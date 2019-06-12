@@ -568,8 +568,23 @@ type BaseStartup(
         |Some serviceImpl, _, _ -> //regular POST service            
             serviceImpl.Invoke ctx
         |_, _, Some mbox -> //server sent events listener
-            let clientCtx = ctx.Request.Query.Item("i").Item(0)
-            let connIdAsStreamId = (di.Resolve<ClientConnectionInfo>()).ConnectionId
+            let clientCtx = ctx.Request.Query.Item(Magics.SseContextFieldName).Item(0)
+            let csrfToken = 
+                let x = ctx.Request.Query.Item(Magics.SseCsrfTokenFieldName)
+                if x.Count <= 0 
+                then None
+                else
+                    log "found CSRF token in query string"
+                    x.Item(0) |> Some
+            
+            let connInfo = di.Resolve<ClientConnectionInfo>()
+
+            do
+                match csrfToken with
+                |Some x -> connInfo.InitializeCsrfToken x
+                |_ -> ()
+
+            let connIdAsStreamId = connInfo.ConnectionId
             
             ctx.Response.Headers.Add("Content-Type", StringValues.op_Implicit "text/event-stream")
             ctx.Response.Headers.Add("Cache-Control", StringValues.op_Implicit "no-cache")

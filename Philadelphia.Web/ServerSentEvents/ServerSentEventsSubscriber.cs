@@ -4,6 +4,10 @@ using Newtonsoft.Json;
 using Philadelphia.Common;
 
 namespace Philadelphia.Web {
+    public class ServerSentEventsSubscriber {
+        public static string CsrfToken {get; set;}
+    }
+
     public abstract class ServerSentEventsSubscriber<MsgT,CtxT> : IServerSentEventsSubscriber<MsgT> {
         private EventSource _evSrv = null;
         private readonly Func<string> _urlProvider;
@@ -12,11 +16,16 @@ namespace Philadelphia.Web {
         public event Action<string> OnStreamIdAssigned;
         public event Action<Event,ConnectionReadyState> OnError;
         public string SseStreamId {get; private set;}
+        private string CsrfTokenClause => 
+            ServerSentEventsSubscriber.CsrfToken == null 
+            ? "" 
+            : $"&{Common.Model.Magics.SseCsrfTokenFieldName}={ServerSentEventsSubscriber.CsrfToken}";
 
         protected ServerSentEventsSubscriber(
                 bool autoConnect, Type serviceDecl, string subscrMethodName, Func<CtxT> ctxProv) {
-
-            _urlProvider = () => $"/{serviceDecl.FullName}/{subscrMethodName}?i={JSON.Stringify(ctxProv())}";
+            
+            _urlProvider = 
+                () => $"/{serviceDecl.FullName}/{subscrMethodName}?{Common.Model.Magics.SseContextFieldName}={JSON.Stringify(ctxProv())}{CsrfTokenClause}";
             
             if (autoConnect) {
                 Reconnect();

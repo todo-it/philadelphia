@@ -101,6 +101,7 @@ namespace Philadelphia.Web {
         public static void StoreCsrfToken(string csrfToken) {
             HttpRequester.CsrfToken = csrfToken;
             XMLHttpRequestImplementingIPromise.CsrfToken = csrfToken;
+            ServerSentEventsSubscriber.CsrfToken = csrfToken;
         }
     }
 }
