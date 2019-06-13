@@ -7,9 +7,11 @@ using Philadelphia.Common;
 namespace Philadelphia.Web {
     public class LoginForm : IForm<HTMLElement,LoginForm,CompletedOrCanceled> {
         public string LoggedUserName { get; private set; }
-
         public event Action<LoginForm,CompletedOrCanceled> Ended;
-        public string Title => I18n.Translate("Logging to system");
+        public Func<string> TitleProvider {get; set;}
+        public string Title => 
+            TitleProvider != null ? TitleProvider?.Invoke() : I18n.Translate("Logging to system");
+
         public IFormView<HTMLElement> View { get; }
         public string ErrorMessageOrNull { get; private set;}
 

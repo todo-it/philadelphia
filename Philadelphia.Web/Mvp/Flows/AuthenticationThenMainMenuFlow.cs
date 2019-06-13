@@ -24,7 +24,8 @@ namespace Philadelphia.Web {
                 Func<string,string,Task<string>> loginByUserAndPasswd,
                 Func<Task<Unit>> logoutOper,
                 Func<T,Func<IFormRenderer<HTMLElement>>,IEnumerable<MenuItemUserModel>> menuItemsProvider,
-                Func<MenuItemModel,Tuple<HTMLElement,Action<string>>> customItemBuilder = null) {
+                Func<MenuItemModel,Tuple<HTMLElement,Action<string>>> customItemBuilder = null,
+                Func<string> programNameProvider = null) {
 
             _menuItemsProvider = menuItemsProvider;
             
@@ -35,6 +36,10 @@ namespace Philadelphia.Web {
                 }));
 
             _loginForm = new LoginForm(loginByUserAndPasswd, StoreCsrf);
+            if (programNameProvider != null) {
+                _loginForm.TitleProvider = () => programNameProvider();
+            }
+
             _mainMenuFormView = new HorizontalLinksMenuFormView(customItemBuilder);
             _mainMenuForm = new MenuForm(_mainMenuFormView, new List<MenuItemUserModel>());
             _authProblemMsg = new InformationalMessageForm("", I18n.Translate("Authentication problem"));
