@@ -97,6 +97,7 @@
     <Compile Include="Model\FactoryMethodProvider.cs" />
     <Compile Include="Model\FileModel.cs" />
     <Compile Include="Model\FileUploadOperation.cs" />
+    <Compile Include="Model\IDateTimeBuilder.cs" />
     <Compile Include="Model\IProvider.cs" />
     <Compile Include="Model\Magics.cs" />
     <Compile Include="Model\Optional.cs" />

@@ -53,11 +53,11 @@ namespace Philadelphia.Web {
                 DateTimeFormat precision, 
                 // REVIEW: valuetuple?
                 IEnumerable<Tuple<string,DateTimeElement?>> formatRaw, 
-                Tuple<DateTime?,DateTime?> initialValue, 
-                Func<DateTime,DateTime> timeForDateSince,
-                Func<DateTime,DateTime> timeForDateTill,
+                Tuple<DateTime?,DateTime?> initialValue,
                 Tuple<DateTime?,DateTime?> validRange,
-                PopupLocation popupLocation) {
+                PopupLocation popupLocation,
+                IDateTimeBuilder customBuilderForSince = null,
+                IDateTimeBuilder customBuilderForTill = null) {
 
             _precision = precision;
 
@@ -88,14 +88,14 @@ namespace Philadelphia.Web {
 
             _since = DateTimePickerView.CreateRangeFromEntry(
                 fromLabel, fromLabel, precision, format, initialValue.Item1, initialValue.Item2, 
-                timeForDateSince,
                 validRange,
+                customBuilderForSince ?? LocalDateTimeBuilder.InstanceBeginOfDay,
                 x => x.SetAttribute(Magics.AttrDataForId, id));
             
             _to = DateTimePickerView.CreateRangeToEntry(
-                tillLabel, tillLabel, precision, format, initialValue.Item2, initialValue.Item1, 
-                timeForDateTill,
+                tillLabel, tillLabel, precision, format, initialValue.Item2, initialValue.Item1,
                 validRange,
+                customBuilderForTill ?? LocalDateTimeBuilder.InstanceEndOfDay,
                 x => x.SetAttribute(Magics.AttrDataForId, id));
 
             _since.Changed += async (newValue, isUserInput) => {

@@ -21,7 +21,7 @@ namespace Philadelphia.Web {
         private readonly HTMLElement _lbl;
         private DateTime? _curCalendarMonth;
         private readonly Tuple<DateTime?,DateTime?> _allowedRange;
-        private readonly Func<DateTime,DateTime> _timeForDateStrategy;
+        private readonly IDateTimeBuilder _dateTimeBuilder;
 
         public HTMLElement Widget => _container;
         public DateTimePickerMode Mode { get; }
@@ -49,17 +49,18 @@ namespace Philadelphia.Web {
         public ISet<string> DisabledReasons { set => _inputsContainer.DisabledReasons = value; }
 
         private DateTimePickerView(
-            string label, string extraPopupLabelOrNull, 
-            DateTimeFormat precision, 
-            IEnumerable<Tuple<string,DateTimeElement?>> format, 
-            DateTime? initialValue, DateTime? otherInitialValue, 
-            Tuple<DateTime?,DateTime?> allowedRange, 
-            Func<DateTime,DateTime> timeForDateStrategy,
-            DateTimePickerMode mode,
-            Action<HTMLElement> extraDayBuilderActionOrNull = null,
-            PopupLocation popupLocation = PopupLocation.Right) {
-            
-            _timeForDateStrategy = timeForDateStrategy;
+                string label, string extraPopupLabelOrNull, 
+                DateTimeFormat precision, 
+                IEnumerable<Tuple<string,DateTimeElement?>> format, 
+                DateTime? initialValue, DateTime? otherInitialValue, 
+                Tuple<DateTime?,DateTime?> allowedRange, 
+                DateTimePickerMode mode,
+                IDateTimeBuilder dateTimeBuilder,
+                Action<HTMLElement> extraDayBuilderActionOrNull = null,
+                PopupLocation popupLocation = PopupLocation.Right) {
+                
+            _dateTimeBuilder = dateTimeBuilder;
+            _precision = precision;
             var id = UniqueIdGenerator.GenerateAsString();
             OtherDateTime = new LocalValue<DateTime?>(otherInitialValue);
             OtherDateTime.Changed += (sender, oldValue, newValue, errors, isUserChange) => {
@@ -70,8 +71,9 @@ namespace Philadelphia.Web {
             Mode = mode;
 
             _allowedRange = allowedRange;
-            _curMonth = new LocalValue<DateTime>((initialValue ?? DateTime.Now).BuildMonth());
-            _precision = precision;
+            var v = initialValue ?? _dateTimeBuilder.BuildFrom(DateTime.Now, _precision).BuildMonth();
+            _curMonth = new LocalValue<DateTime>(v);
+            
             _value = initialValue;
 
             switch (mode) {
@@ -92,10 +94,13 @@ namespace Philadelphia.Web {
                 HtmlFor = id };
 
             _inputsContainer = new DateTimeInputView(
-                precision, format, _value, x => _timeForDateStrategy(x), allowedRange);
+                precision, format, _value, allowedRange, _dateTimeBuilder);
+
             _inputsContainer.DateChanged += async ymd => {
                 if (ymd.Day.HasValue) {
-                    var newDate = _inputsContainer.Value ?? new DateTime(ymd.Year, ymd.Month, ymd.Day.Value);
+                    var newDate = 
+                        _inputsContainer.Value 
+                            ?? _dateTimeBuilder.Build(ymd.Year, ymd.Month, ymd.Day.Value);
                     _value = newDate;
                     Logger.Debug(GetType(), "input DateChanged without day value to {0} - forcing calendar view rebuild", _value);
 
@@ -108,7 +113,9 @@ namespace Philadelphia.Web {
                     
                     Logger.Debug(GetType(), "input DateChanged with day value to {0} - forcing calendar view rebuild", _value);
 
-                    await _curMonth.DoChange(new DateTime(ymd.Year, ymd.Month, 1 /*irrelevant*/), true, this, false);
+                    await _curMonth.DoChange(
+                        _dateTimeBuilder.Build(
+                            ymd.Year, ymd.Month, 1 /*irrelevant*/), true, this, false);
                     RepopulateCalendar();
                 }
             };
@@ -188,19 +195,28 @@ namespace Philadelphia.Web {
             
             _yearAndMthLbl.Widget.OnClick += async ev => {
                 ev.PreventDefault();
-                await _curMonth.DoChange(_timeForDateStrategy(DateTime.Now), true, this);
+                await _curMonth.DoChange(
+                    _dateTimeBuilder.BuildFrom(DateTime.Now, _precision), true, this);
             };
             _minusYear.Triggered += async () => {
-                await _curMonth.DoChange(_timeForDateStrategy(_curMonth.Value.AddYears(-1)), true, this);
+                await _curMonth.DoChange(
+                    _dateTimeBuilder.BuildFrom(_curMonth.Value.AddYears(-1), _precision), 
+                    true, this);
             };
             _minusMonth.Triggered += async () =>  {
-                await _curMonth.DoChange(_timeForDateStrategy(_curMonth.Value.AddMonths(-1)), true, this);
+                await _curMonth.DoChange(
+                    _dateTimeBuilder.BuildFrom(_curMonth.Value.AddMonths(-1), _precision), 
+                    true, this);
             };
             _plusMonth.Triggered += async () =>  {
-                await _curMonth.DoChange(_timeForDateStrategy(_curMonth.Value.AddMonths(1)), true, this);
+                await _curMonth.DoChange(
+                    _dateTimeBuilder.BuildFrom(_curMonth.Value.AddMonths(1), _precision), 
+                    true, this);
             };
             _plusYear.Triggered += async () =>  {
-                await _curMonth.DoChange(_timeForDateStrategy(_curMonth.Value.AddYears(1)), true, this);
+                await _curMonth.DoChange(
+                    _dateTimeBuilder.BuildFrom(_curMonth.Value.AddYears(1), _precision), 
+                    true, this);
             };
 
             _curMonth.Changed += (x, oldValue, newValue, errors, iUserChange) => {
@@ -290,7 +306,7 @@ namespace Philadelphia.Web {
                 _curCalendarMonth.Value.Year != _curMonth.Value.Year ||
                 _curCalendarMonth.Value.Month != _curMonth.Value.Month;
             _curCalendarMonth = _curMonth.Value;
-            var today = DateTime.Now.DateOnly();
+            var today = _dateTimeBuilder.BuildFrom(DateTime.Now, DateTimeFormat.DateOnly);
             var thisMonth = _curMonth.Value.Month;
             var formerMonth = DateTimeExtensions.BuildFormerMonth(_curMonth.Value).Month;
             var nextMonth = DateTimeExtensions.BuildNextMonth(_curMonth.Value).Month;
@@ -436,15 +452,15 @@ namespace Philadelphia.Web {
                             case DateTimeFormat.YM:
                                 switch (Mode) {
                                     case DateTimePickerMode.Sole:
-                                        newValue = DateTimeExtensions.BuildThisMonth(iDayCopy);
-                                        break;
-
                                     case DateTimePickerMode.From:
-                                        newValue = DateTimeExtensions.BuildThisMonth(iDayCopy);
+                                        newValue = _dateTimeBuilder.Build(
+                                            iDayCopy.Year, iDayCopy.Month);
                                         break;
 
                                     case DateTimePickerMode.To:
-                                        newValue = DateTimeExtensions.BuildNextMonth(iDayCopy).AddDays(-1);
+                                        newValue = _dateTimeBuilder.BuildFrom(
+                                            DateTimeExtensions.BuildNextMonth(iDayCopy).AddDays(-1),
+                                            _precision);
                                         break;
 
                                     default: throw new Exception("unsupported DateTimePickerMode");
@@ -454,13 +470,12 @@ namespace Philadelphia.Web {
                             case DateTimeFormat.DateOnly:
                             case DateTimeFormat.YMDhm:
                             case DateTimeFormat.YMDhms:
-                                newValue = iDayCopy;
+                                newValue = _dateTimeBuilder.BuildFrom(iDayCopy, _precision);
                                 break;
 
                             default:throw new Exception("unsupported DateTimeFormat");
                         }
-
-                        newValue = _timeForDateStrategy(newValue);
+                        
                         Logger.Debug(GetType(), "Mode {0} changing value to {1}", Mode, newValue);
                         OnChanged(newValue, true);
                         await _curMonth.DoChange(newValue, true, this, true);
@@ -513,41 +528,47 @@ namespace Philadelphia.Web {
         public static DateTimePickerView CreateSoleEntry(
             string label, DateTimeFormat precision, 
             IEnumerable<Tuple<string,DateTimeElement?>> format, 
-            DateTime? initialValue, 
-            Func<DateTime,DateTime> timeForDateStrategy,
+            DateTime? initialValue,
             Tuple<DateTime?,DateTime?> validRange,
+            IDateTimeBuilder customDateTimeBuilder = null,
             PopupLocation popupLocation = PopupLocation.Right) {
 
             return new DateTimePickerView(
                 label, null, precision, format, initialValue, null, validRange, 
-                timeForDateStrategy, DateTimePickerMode.Sole, null, popupLocation);
+                DateTimePickerMode.Sole, 
+                customDateTimeBuilder ?? LocalDateTimeBuilder.InstanceBeginOfDay,
+                null, popupLocation);
         }
 
         public static DateTimePickerView CreateRangeFromEntry(
             string entryLabel, string popupLabel, 
             DateTimeFormat precision, 
             IEnumerable<Tuple<string,DateTimeElement?>> format, 
-            DateTime? initialValue, DateTime? otherInitialValue, 
-            Func<DateTime,DateTime> timeForDateStrategy,
+            DateTime? initialValue, DateTime? otherInitialValue,
             Tuple<DateTime?,DateTime?> validRange,
+            IDateTimeBuilder customDateTimeBuilder = null,
             Action<HTMLElement> extraDayBuilderAction = null) {
             
             return new DateTimePickerView(
                 entryLabel, popupLabel, precision, format, initialValue, otherInitialValue, 
-                validRange, timeForDateStrategy, DateTimePickerMode.From, extraDayBuilderAction);
+                validRange, DateTimePickerMode.From, 
+                customDateTimeBuilder ?? LocalDateTimeBuilder.InstanceBeginOfDay,
+                extraDayBuilderAction);
         }
         
         public static DateTimePickerView CreateRangeToEntry(
             string entryLabel, string popupLabel, 
             DateTimeFormat precision, IEnumerable<Tuple<string,DateTimeElement?>> format, 
-            DateTime? initialValue, DateTime? otherInitialValue, 
-            Func<DateTime,DateTime> timeForDateStrategy,
+            DateTime? initialValue, DateTime? otherInitialValue,
             Tuple<DateTime?,DateTime?> validRange,
+            IDateTimeBuilder customDateTimeBuilder = null,
             Action<HTMLElement> extraDayBuilderAction = null) {
             
             return new DateTimePickerView(
                 entryLabel, popupLabel, precision, format, initialValue, otherInitialValue, 
-                validRange, timeForDateStrategy, DateTimePickerMode.To, extraDayBuilderAction);
+                validRange, DateTimePickerMode.To, 
+                customDateTimeBuilder ?? LocalDateTimeBuilder.InstanceBeginOfDay,
+                extraDayBuilderAction);
         }
 
         public static implicit operator RenderElem<HTMLElement>(DateTimePickerView inp) {

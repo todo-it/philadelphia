@@ -13,8 +13,8 @@ namespace Philadelphia.Web {
         private readonly MaskedNumberInputView _yearInput,_monthInput,_dayInput,_hourInput,_minuteInput,_secondInput;
         private readonly InputTypeButtonActionView _activateCalendar,_clearContent;
         private DateTime? _value;
-        private readonly Func<DateTime, DateTime> _timeForDateStrategy;
-        
+        private readonly IDateTimeBuilder _dateTimeBuilder;
+
         public event ValueChangedSimple<DateTime?> Changed;
         public event Action<CalendarState> CalendarRequest;
         public event Action<YearMonthMaybeDay> DateChanged;
@@ -52,9 +52,10 @@ namespace Philadelphia.Web {
         private int? Second => _secondInput.Value;
         
         public DateTimeInputView(
-            DateTimeFormat precision, IEnumerable<Tuple<string,DateTimeElement?>> format, 
-            DateTime? defaultValue, Func<DateTime,DateTime> timeForDateStrategy,
-            Tuple<DateTime?,DateTime?> validRange) {
+                DateTimeFormat precision, IEnumerable<Tuple<string,DateTimeElement?>> format, 
+                DateTime? defaultValue,
+                Tuple<DateTime?,DateTime?> validRange,
+                IDateTimeBuilder dateTimeBuilder) {
             
             _precision = precision;
             _inputsContainer = new HTMLDivElement {ClassName = GetType().FullNameWithoutGenerics()};
@@ -201,7 +202,7 @@ namespace Philadelphia.Web {
             });
             
             _value = defaultValue;
-            _timeForDateStrategy = timeForDateStrategy;
+            _dateTimeBuilder = dateTimeBuilder;
             OnInitValue();
         }
         
@@ -234,7 +235,7 @@ namespace Philadelphia.Web {
                     case DateTimeElement.Day:
                         if (Month.HasValue && Year.HasValue && Day.HasValue) {
                             //initialize time fields
-                            _value = _timeForDateStrategy(new DateTime(Year.Value, Month.Value, Day.Value));
+                            _value = _dateTimeBuilder.Build(Year.Value, Month.Value, Day.Value);
                             OnInitValue(); 
                         }
 
@@ -252,35 +253,38 @@ namespace Philadelphia.Web {
             switch (_precision) {
                 case DateTimeFormat.Y:
                     if (Year.HasValue) {
-                        _value = new DateTime(Year.Value, 1, 1);
+                        _value = _dateTimeBuilder.Build(Year.Value);
                         Changed?.Invoke(_value, true);
                     }
                     break;
 
                 case DateTimeFormat.YM:
                     if (Year.HasValue && Month.HasValue) {
-                        _value = new DateTime(Year.Value, Month.Value, 1);
+                        _value = _dateTimeBuilder.Build(Year.Value, Month.Value);
                         Changed?.Invoke(_value, true);
                     }
                     break;
                     
                 case DateTimeFormat.DateOnly:
                     if (Year.HasValue && Month.HasValue && Day.HasValue) {
-                        _value = new DateTime(Year.Value, Month.Value, Day.Value);
+                        _value = _dateTimeBuilder.Build(Year.Value, Month.Value, Day.Value);
                         Changed?.Invoke(_value, true);
                     }
                     break;
 
                 case DateTimeFormat.YMDhm:
                     if (Year.HasValue && Month.HasValue && Day.HasValue && Hour.HasValue && Minute.HasValue) {
-                        _value = new DateTime(Year.Value, Month.Value, Day.Value, Hour.Value, Minute.Value, 0);
+                        _value = _dateTimeBuilder.Build(
+                            Year.Value, Month.Value, Day.Value, Hour.Value, Minute.Value);
                         Changed?.Invoke(_value, true);
                     }
                     break;
 
                 case DateTimeFormat.YMDhms:
                     if (Year.HasValue && Month.HasValue && Day.HasValue && Hour.HasValue && Minute.HasValue && Second.HasValue) {
-                        _value = new DateTime(Year.Value, Month.Value, Day.Value, Hour.Value, Minute.Value, Second.Value);
+                        _value = _dateTimeBuilder.Build(
+                            Year.Value, Month.Value, Day.Value, 
+                            Hour.Value, Minute.Value, Second.Value);
                         Changed?.Invoke(_value, true);
                     }
                     break;

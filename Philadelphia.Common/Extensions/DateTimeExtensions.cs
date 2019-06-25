@@ -77,6 +77,17 @@ namespace Philadelphia.Common {
                 fst.Value.Year == snd.Value.Year && 
                 fst.Value.Month == snd.Value.Month;
         }
+        
+        public static bool IsSameDay(DateTime fst, DateTime snd) {
+            return 
+                fst.Year == snd.Year && 
+                fst.Month == snd.Month &&
+                fst.Day == snd.Day;
+        }
+
+        public static bool IsToday(DateTime fst) {
+            return IsSameDay(DateTime.Now, fst);
+        }
 
         public static DateTime WithTime(this DateTime self, int hours, int minutes, int seconds) {
             return new DateTime(self.Year, self.Month, self.Day, hours, minutes, seconds);
