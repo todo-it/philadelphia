@@ -8,7 +8,7 @@
         public bool NavigateIsProgrammatic { get; set; }
         
         public override string ToString() {
-            return $"<ProcessingOutcome Cursor={Cursor} Consumed={Consumed} Changed={Changed} PendingCharRemoval={PendingCharRemoval} Navigate={Navigate} NavigateIsProgrammatic={NavigateIsProgrammatic}>";
+            return $"<ProcessingOutcome Cursor={Cursor?.ToString()} Consumed={Consumed?.ToString()} Changed={Changed} PendingCharRemoval={PendingCharRemoval} Navigate={Navigate?.ToString()} NavigateIsProgrammatic={NavigateIsProgrammatic}>";
         }
     }
 }
