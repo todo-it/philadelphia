@@ -54,7 +54,8 @@ namespace Philadelphia.Common {
         }
 
         public static Validate<string> LimitSize(int length) {
-            return (v, errors) => errors.IfTrueAdd(v != null && v.Length > length, I18n.Translate("Field is too long"));
+            return (v, errors) => errors.IfTrueAdd(v != null && v.Length > length, 
+                string.Format(I18n.Translate("Field is too long by {0} chars"), v?.Length - length));
         }
         
         public static void CannotBePastDate(DateTime? x, ISet<string> errors){
