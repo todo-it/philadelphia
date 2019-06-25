@@ -13,7 +13,7 @@ namespace Philadelphia.Demo.Client {
         private UploadView _uv;
         private static (int width,int height) DemoThumbnailsMaxDimensions = (160, 107);
 
-        public string Title => I18n.Translate("Uploader parameters");
+        public string Title => "Uploader parameters";
         public IFormView<HTMLElement> View => _view;
         
         public UploaderDemoParamsForm() {
