@@ -1340,31 +1340,31 @@ table.Philadelphia\.Web\.HtmlTableBasedTableView th {
     background-position-x: 50%;
 }
 
-.Philadelphia\.Web\.TwoHorizontalPanelsWithResizer.active > *:nth-child(1),
-.Philadelphia\.Web\.TwoVerticalPanelsWithResizer.active > *:nth-child(1) {
+.Philadelphia\.Web\.TwoHorizontalPanelsWithResizer > *:nth-child(1),
+.Philadelphia\.Web\.TwoVerticalPanelsWithResizer > *:nth-child(1) {
     flex-grow: 0;
     flex-shrink: 0;
 }
 
-.Philadelphia\.Web\.TwoHorizontalPanelsWithResizer.active > *:nth-child(1) {
+.Philadelphia\.Web\.TwoHorizontalPanelsWithResizer > *:nth-child(1) {
     overflow-x: auto;
 }
 
-.Philadelphia\.Web\.TwoVerticalPanelsWithResizer.active > *:nth-child(1) {
+.Philadelphia\.Web\.TwoVerticalPanelsWithResizer > *:nth-child(1) {
     overflow-y: auto;
 }
 
-.Philadelphia\.Web\.TwoHorizontalPanelsWithResizer.active > *:nth-child(3),
-.Philadelphia\.Web\.TwoVerticalPanelsWithResizer.active > *:nth-child(3) {
+.Philadelphia\.Web\.TwoHorizontalPanelsWithResizer > *:nth-child(3),
+.Philadelphia\.Web\.TwoVerticalPanelsWithResizer > *:nth-child(3) {
     flex-grow: 0;
     flex-shrink: 0;    
 }
 
-.Philadelphia\.Web\.TwoHorizontalPanelsWithResizer.active > *:nth-child(3) {
+.Philadelphia\.Web\.TwoHorizontalPanelsWithResizer > *:nth-child(3) {
     overflow-x: auto;
 }
 
-.Philadelphia\.Web\.TwoVerticalPanelsWithResizer.active > *:nth-child(3) {
+.Philadelphia\.Web\.TwoVerticalPanelsWithResizer > *:nth-child(3) {
     overflow-y: auto;
 }
 
