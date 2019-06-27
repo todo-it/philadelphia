@@ -9,16 +9,23 @@ namespace Philadelphia.Web {
     public class RemoteValueChangeByChoiceForm<T> : IForm<HTMLElement,RemoteValueChangeByChoiceForm<T>,CompletedOrCanceled> where T:new() {
         private readonly RemoteValueChangeByChoiceFormView<T> _view;
         private readonly LocalValue<T> _localValue;
+        private readonly Func<string> _titleProv;
 
         public event Action<RemoteValueChangeByChoiceForm<T>,CompletedOrCanceled> Ended;
-        public string Title { get; }
+        public string Title => _titleProv();
         public IFormView<HTMLElement> View => _view;
         public T SavedValue { get; private set; }
+        
+        public RemoteValueChangeByChoiceForm(
+                string title, Func<T,Task<T>> saveChange, 
+                RemoteValueChangeByChoiceFormView<T> view)
+                    : this(() => title, saveChange, view) {}
 
         public RemoteValueChangeByChoiceForm(
-                string title, Func<T,Task<T>> saveChange, RemoteValueChangeByChoiceFormView<T> view) {
+                Func<string> titleProv, Func<T,Task<T>> saveChange, 
+                RemoteValueChangeByChoiceFormView<T> view) {
 
-            Title = title;
+            _titleProv = titleProv;
             _view = view;
             
             _localValue = LocalValueFieldBuilder.Build(default(T), view.Choosen, Validator.IsNotNull);
