@@ -18,17 +18,19 @@ namespace Philadelphia.Web {
         
         public RemoteValueChangeByChoiceForm(
                 string title, Func<T,Task<T>> saveChange, 
-                RemoteValueChangeByChoiceFormView<T> view)
-                    : this(() => title, saveChange, view) {}
+                RemoteValueChangeByChoiceFormView<T> view,
+                params Validate<T>[] validators)
+                    : this(() => title, saveChange, view, validators) {}
 
         public RemoteValueChangeByChoiceForm(
                 Func<string> titleProv, Func<T,Task<T>> saveChange, 
-                RemoteValueChangeByChoiceFormView<T> view) {
+                RemoteValueChangeByChoiceFormView<T> view,
+                params Validate<T>[] validators) {
 
             _titleProv = titleProv;
             _view = view;
             
-            _localValue = LocalValueFieldBuilder.Build(default(T), view.Choosen, Validator.IsNotNull);
+            _localValue = LocalValueFieldBuilder.Build(default(T), view.Choosen, validators);
             
             var remoteActionModel = RemoteActionBuilder.Build(view.Confirm,
                 () => saveChange(_localValue.Value),
