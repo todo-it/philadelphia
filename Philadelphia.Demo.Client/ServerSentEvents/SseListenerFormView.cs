@@ -12,7 +12,7 @@ namespace Philadelphia.Demo.Client {
                 x.ContentElement.Style.Border = "0.5px solid gray";
                 x.ContentElement.Style.MinWidth = "200px";
                 x.ContentElement.Style.Height = "calc(100vh - 230px)";
-                x.ContentElement.Style.Overflow = Overflow.Scroll; 
+                x.ContentElement.Style.Overflow = Overflow.Auto; 
                 x.ContentElement.Style.Display = Display.Flex;
                 x.ContentElement.Style.FlexDirection = FlexDirection.Column; });
         public InputTypeButtonActionView Unsubscribe {get; }

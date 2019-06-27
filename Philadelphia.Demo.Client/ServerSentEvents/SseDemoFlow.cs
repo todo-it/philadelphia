@@ -19,7 +19,7 @@ namespace Philadelphia.Demo.Client {
 
         public void Run(IFormRenderer<HTMLElement> renderer, Action atExit) {
             var panels = TwoPanelsWithResizerBuilder.BuildHorizontal(
-                Hideability.None, false, renderer, Tuple.Create((int?)488, (int?)null));
+                Hideability.None, false, renderer, Tuple.Create((int?)522, (int?)null));
 
             panels.First.ReplaceMaster(_sender);
             panels.FirstCanvas.LayoutMode = LayoutModeType.TitleExtra_Actions_Body;
