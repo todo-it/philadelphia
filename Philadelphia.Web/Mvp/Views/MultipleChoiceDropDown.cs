@@ -17,7 +17,7 @@ namespace Philadelphia.Web {
         private readonly HtmlTableBasedTableView _grid;
         private readonly DataGridModel<T> _gridModel;
         private bool _popupShown;
-        private bool _dontSetValue;
+        private int _dontRaiseOnChanged;
 
         public event UiErrorsUpdated ErrorsChanged;
         public HTMLElement Widget => _container;
@@ -25,7 +25,18 @@ namespace Philadelphia.Web {
 
         public IEnumerable<T> PermittedValues {
             set {
-                _dontSetValue = true;
+                var missingSelectedItems = 
+                    _gridModel.Selected.Count(x => !value.Contains(x));
+                var willChangeValue = missingSelectedItems > 0;
+
+                if (willChangeValue) {
+                    _dontRaiseOnChanged++;
+                }
+                
+                Logger.Debug(GetType(), 
+                    "in PermittedValues setter: _dontRaiseOnChanged={0} willChangeValue={1} missingSelectedItems={2}", 
+                    _dontRaiseOnChanged, willChangeValue, missingSelectedItems);
+
                 _gridModel.Items.Replace(value);
             }
         }
@@ -33,7 +44,10 @@ namespace Philadelphia.Web {
         public IEnumerable<T> Value {
             get => _gridModel.Selected.ToArray();
             set {
-                _dontSetValue = true;
+                _dontRaiseOnChanged++;
+                Logger.Debug(GetType(), "in Value setter: _dontRaiseOnChanged={0}", 
+                    _dontRaiseOnChanged);
+
                 _gridModel.Selected.Replace(value ?? new T[0]); //null is presented as empty list 
                 //(similar idea: putting null into text input causes empty string)
             }
@@ -106,8 +120,11 @@ namespace Philadelphia.Web {
             _gridModel.Selected.Changed += (insertedAt, inserted, removed) => {
                 UpdateTextValue();
 
-                if (_dontSetValue) {
-                    _dontSetValue = false;
+                Logger.Debug(GetType(), "_gridModel.Selected.Changed: _dontRaiseOnChanged={0}", 
+                    _dontRaiseOnChanged);
+
+                if (_dontRaiseOnChanged > 0) {
+                    _dontRaiseOnChanged--;
                     return;    
                 }
                 
