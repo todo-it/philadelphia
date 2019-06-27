@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 
 namespace Philadelphia.Common {
     public static class ObjectExtensions {
@@ -13,6 +14,11 @@ namespace Philadelphia.Common {
             return 
                 first == null && second == null || 
                 first != null && first.Equals(second);
+        }
+
+		/// <summary>provides concise check if value Equals anything in the list</summary>
+        public static bool EqualsToAny<T>(this T self, params T[] others) {
+            return others.Any(x => x.Equals(self));
         }
     }
 }
