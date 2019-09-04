@@ -210,7 +210,7 @@
     <Compile Include="ServiceCalling\BaseDownloadUploadHandler.cs" />
     <Compile Include="ServiceCalling\FixedIdUpdateServiceMethodCaller.cs" />
     <Compile Include="ServiceCalling\FixedPropertyUpdateServiceMethodCaller.cs" />
-    <Compile Include="ServiceCalling\HttpRequester.cs" />
+    <Compile Include="ServiceCalling\BridgeHttpRequester.cs" />
     <Compile Include="ServiceCalling\MethodCaller.cs" />
     <Compile Include="ServiceCalling\XMLHttpRequestImplementingIPromise.cs" />
     <Compile Include="ServiceCalling\XMLHttpRequestUtils.cs" />

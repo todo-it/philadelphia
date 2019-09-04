@@ -7,7 +7,6 @@ using ControlledByTests.Domain;
 using Philadelphia.Web;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
-using HttpRequester = Philadelphia.Web.HttpRequester;
 
 namespace ControlledByTests.Client {
     public class HelloWorldFlow : IFlow<HTMLElement> {
@@ -98,7 +97,7 @@ namespace ControlledByTests.Client {
         [Ready]
         public static void OnReady() {
             var di = new DiContainer();
-            di.RegisterAlias<IHttpRequester, HttpRequester>(LifeStyle.Singleton);
+            di.RegisterAlias<IHttpRequester, BridgeHttpRequester>(LifeStyle.Singleton);
             Services.Register(di); //registers discovered services from model
             di.Register<HelloWorldFlow>(LifeStyle.Transient);
 

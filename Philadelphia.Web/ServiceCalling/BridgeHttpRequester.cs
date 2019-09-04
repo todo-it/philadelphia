@@ -6,9 +6,9 @@ using Bridge;
 using Newtonsoft.Json;
 
 namespace Philadelphia.Web {
-    public class HttpRequester : IHttpRequester {
+    public class BridgeHttpRequester : IHttpRequester {
         
-        public static readonly IHttpRequester Instance = new HttpRequester();
+        public static readonly IHttpRequester Instance = new BridgeHttpRequester();
 
         [Template("typeof({data}) === \"object\"")]
         public static extern bool IsSentAsProperJson(object data);
@@ -20,22 +20,22 @@ namespace Philadelphia.Web {
             var requestId = Guid.NewGuid().ToString();
 
             var url = string.Format("/{0}/{1}", interfaceName, methodName);
-			Logger.Debug(typeof(HttpRequester), "Request id={0} to={1} starting", requestId, url);
+			Logger.Debug(typeof(BridgeHttpRequester), "Request id={0} to={1} starting", requestId, url);
 			var result = await Task.FromPromise<ResultHolder<XMLHttpRequest>>(
                 new XMLHttpRequestImplementingIPromise("POST", url, inputAsJson),
                 (Func<ResultHolder<XMLHttpRequest>, ResultHolder<XMLHttpRequest>>)(x => x));
 
             if (result.Success) {
-                Logger.Debug(typeof(HttpRequester), "Request id={0} Success now will deserialize", requestId);
+                Logger.Debug(typeof(BridgeHttpRequester), "Request id={0} Success now will deserialize", requestId);
                 var bsd = deserialize(BridgeObjectUtil.NoOpCast<string>(result.Result.ResponseText));
-                Logger.Debug(typeof(HttpRequester), "Success ok deserialized");
+                Logger.Debug(typeof(BridgeHttpRequester), "Success ok deserialized");
 								
                 return bsd;
             } 
 
             var answer = result.Result.ResponseText;
             Logger.Error(
-                typeof(HttpRequester), 
+                typeof(BridgeHttpRequester), 
                 $"Failed request id={requestId} while calling server. Got status={result.Result.Status} Response={answer}");
             var errMsg = result.Result.Status == 400 ? answer.TillFirstNewLineOrEverything() : answer;
             throw new Exception(errMsg);
@@ -44,7 +44,7 @@ namespace Philadelphia.Web {
         public Task<FileModel> RunHttpRequestReturningAttachmentImplStr(string interfaceName, string methodName, string inputParam) {
             var url = string.Format("/{0}/{1}", interfaceName, methodName);
             
-            Logger.Debug(typeof(HttpRequester), "POST via iframe url={0} params={1}", url, inputParam);
+            Logger.Debug(typeof(BridgeHttpRequester), "POST via iframe url={0} params={1}", url, inputParam);
 
             //create form post within iframe. This will download file and should put eventual error page into new window (thus not breaking singlepageapp too hard)
             
@@ -88,7 +88,7 @@ namespace Philadelphia.Web {
                     "/{0}/{1}?{2}=", interfaceName, methodName, Magics.PostReturningFileParameterName) + 
                 Window.EncodeURIComponent(inputParam);
 
-            Logger.Debug(typeof(HttpRequester), "built GET url={0}", result);
+            Logger.Debug(typeof(BridgeHttpRequester), "built GET url={0}", result);
 
             return result;
         }
