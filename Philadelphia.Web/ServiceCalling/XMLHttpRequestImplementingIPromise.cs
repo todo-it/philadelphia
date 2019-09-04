@@ -17,7 +17,7 @@ namespace Philadelphia.Web {
         private readonly FormData _frmData;
         private readonly string _dataToPost;
 
-        public static string CsrfToken { get; set; }
+        public static string CsrfToken => Toolkit.CsrfToken;
 
         //for another example see https://forums.bridge.net/forum/bridge-net-pro/bugs/296-closed-372-1-7-exception-in-callback-within-promise-breaks-error-handling-in-task-frompromise
         

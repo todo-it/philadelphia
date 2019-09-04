@@ -5,7 +5,7 @@ using Philadelphia.Common;
 
 namespace Philadelphia.Web {
     public class ServerSentEventsSubscriber {
-        public static string CsrfToken {get; set;}
+        public static string CsrfToken => Toolkit.CsrfToken;
     }
 
     public abstract class ServerSentEventsSubscriber<MsgT,CtxT> : IServerSentEventsSubscriber<MsgT> {

@@ -7,7 +7,7 @@ using Newtonsoft.Json;
 
 namespace Philadelphia.Web {
     public class HttpRequester {
-        public static string CsrfToken { get; set; }
+        public static string CsrfToken => Toolkit.CsrfToken;
 
         private static T NullAwareJsonParse<T>(string input) {
             return "null".Equals(input) ? default(T) : JsonConvert.DeserializeObject<T>(input);

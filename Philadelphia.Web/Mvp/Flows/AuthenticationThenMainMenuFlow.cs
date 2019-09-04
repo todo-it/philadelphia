@@ -49,7 +49,7 @@ namespace Philadelphia.Web {
         }
 
         private void StoreCsrf(string token) {
-            Toolkit.StoreCsrfToken(token);
+            Toolkit.CsrfToken = token;
         }
 
         public void Run(IFormRenderer<HTMLElement> renderer, Action atExit) {

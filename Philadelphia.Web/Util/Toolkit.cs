@@ -98,10 +98,6 @@ namespace Philadelphia.Web {
             return result;            
         }
 
-        public static void StoreCsrfToken(string csrfToken) {
-            HttpRequester.CsrfToken = csrfToken;
-            XMLHttpRequestImplementingIPromise.CsrfToken = csrfToken;
-            ServerSentEventsSubscriber.CsrfToken = csrfToken;
-        }
+        public static string CsrfToken { get; set; }
     }
 }
