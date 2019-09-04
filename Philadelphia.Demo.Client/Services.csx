@@ -9,7 +9,7 @@
 //  ...that creates json files so that you can 'open folder' in VS Code
 
 #r "../Philadelphia.CodeGen.ForClient/bin/Debug/netcoreapp2.2/Philadelphia.CodeGen.ForClient.dll"
-#r "../Philadelphia.Common/bin/Debug/netcoreapp2.2/Philadelphia.Common.dll"
+#r "../Philadelphia.Common/bin/Debug/netstandard2.0/Philadelphia.Common.dll"
 #r "../Philadelphia.Demo.SharedModel/bin/Debug/netcoreapp2.2/Philadelphia.Demo.SharedModel.dll"
 
 Philadelphia.CodeGen.ForClient.ServiceInvokerGenerator.GenerateCode(

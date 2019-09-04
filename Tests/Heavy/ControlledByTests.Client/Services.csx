@@ -12,7 +12,7 @@
 //#r "nuget: Philadelphia.CodeGen.ForClient, 0.19.6.1"
 //for local template development instead those two lines above use: 
 #r "../../../Philadelphia.CodeGen.ForClient/bin/Debug/netcoreapp2.2/Philadelphia.CodeGen.ForClient.dll"
-#r "../../../Philadelphia.Common/bin/Debug/netcoreapp2.2/Philadelphia.Common.dll"
+#r "../../../Philadelphia.Common/bin/Debug/netstandard2.0/Philadelphia.Common.dll"
 #r "../ControlledByTests.Domain/bin/Debug/netcoreapp2.2/ControlledByTests.Domain.dll"
 
 Philadelphia.CodeGen.ForClient.ServiceInvokerGenerator.GenerateCode(

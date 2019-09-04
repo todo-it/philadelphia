@@ -12,11 +12,11 @@ namespace Philadelphia.Demo.Client {
         private readonly RemoteActionsCallerForm _fetchFiles;
         private RemoteFileId[] _files;
 
-        public UploaderDemoFlow(ISomeService someService) {
+        public UploaderDemoFlow(ISomeService someService, IHttpRequester httpRequester) {
             _fetchFiles = new RemoteActionsCallerForm(x => x.Add(
                 someService.OrderAttachmentGetFiles,
                 y => _files = y));
-            _demo = new UploaderDemoForm();
+            _demo = new UploaderDemoForm(httpRequester);
             _params = new UploaderDemoParamsForm();
             _params.SetParent(_demo.GetUploadControl());
         }

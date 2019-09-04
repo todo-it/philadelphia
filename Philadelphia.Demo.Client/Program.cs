@@ -3,6 +3,7 @@ using Bridge.Html5;
 using Philadelphia.Common;
 using Philadelphia.Demo.SharedModel;
 using Philadelphia.Web;
+using HttpRequester = Philadelphia.Web.HttpRequester;
 
 namespace Philadelphia.Demo.Client {
     public class Program {
@@ -12,6 +13,7 @@ namespace Philadelphia.Demo.Client {
         public static void OnReady() {
             _di = new DiContainer();
             Services.Register(_di); //registers discovered services from model
+            _di.RegisterAlias<IHttpRequester, HttpRequester>(LifeStyle.Singleton);
             _di.Register<MainMenuFlow>(LifeStyle.Transient);
 
             Toolkit.InitializeToolkit(null, x => _di.Resolve<ISomeService>().DataGridToSpreadsheet(x));

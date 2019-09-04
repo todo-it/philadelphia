@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
+using Philadelphia.Common;
 
 namespace Philadelphia.CodeGen.ForClient {    
     // REVIEW: use pascal case 
@@ -16,13 +17,19 @@ namespace Philadelphia.CodeGen.ForClient {
     public delegate void Trace(string msg);
 
     public static class ServiceInvokerGenerator {
+
+        public static string Join(this IEnumerable<string> strings, string sep) => string.Join(sep, strings);
+
+        public static T Invoke<T>(Func<T> f) => f();
+
+        private static string ServiceProxyName(Type srv) => $"WebClient{srv.Name.TrimStart('I')}";
+
         private static string GenerateDependencyInjection<T>(System.Reflection.Assembly assembly) {
             var result = new StringBuilder();
-
-            // REVIEW AppendLine
-            result.Append(@"    public class Services {
-            public static void Register(IDiContainer container) {");
-            result.Append("\r\n");
+            result.Append(@"
+    public class Services {
+            public static void Register(IDiContainer container) {
+");
                 
             var services = 
                 assembly
@@ -33,12 +40,8 @@ namespace Philadelphia.CodeGen.ForClient {
                     .OrderBy(x => x.FullName);
 
             foreach (var srv in services) {
-                //REVIEW: C# string interpolation $"{}"
-                result.Append(string.Format(
-                    "                container.RegisterFactoryMethod<{0}>(injector => new WebClient{1}(), Philadelphia.Common.LifeStyle.Singleton);\r\n",
-                    srv.FullName,
-                    srv.Name.TrimStart('I')
-                ));
+                result.Append(
+                    $"                container.RegisterAlias<{srv.FullName}, {ServiceProxyName(srv)}>(Philadelphia.Common.LifeStyle.Singleton);\r\n");
             }
 
             result.Append(@"            }
@@ -94,8 +97,7 @@ namespace Philadelphia.CodeGen.ForClient {
             return result.ToString();
         }
         
-        // REVIEW: FileT not used
-        private static string GenerateUploadDownloadProxies<AttrT,FileT>(Assembly assembly) {
+        private static string GenerateUploadDownloadProxies<AttrT>(Assembly assembly) {
             var result = new StringBuilder();
                 
             var services = 
@@ -108,7 +110,7 @@ namespace Philadelphia.CodeGen.ForClient {
 
             foreach (var srv in services) {			
                 var getterAndSetter = new Dictionary<string,UploadDownloadHandlerDto>();
-                var i=0;
+                
 
                 foreach (var method in srv.GetMethods().OrderBy(x => x.Name)) {	
                     UploadDownloadHandlerDto info;
@@ -134,67 +136,48 @@ namespace Philadelphia.CodeGen.ForClient {
                 }
             
                 foreach (var gas in getterAndSetter) {
-                    var clazzName = srv.Name + "_" + gas.Key;
+                    var className = srv.Name + "_" + gas.Key;
 
-                    result.Append("    public class "+clazzName+" : Philadelphia.Web.BaseDownloadUploadHandler {\n");
-                    result.Append("        public "+clazzName+"(");
+                    result.Append($@"
+    public class {className} : Philadelphia.Web.BaseDownloadUploadHandler {{
+        public {className}(IHttpRequester httpRequester");
 
-                    List<ParameterInfo> parms = null;
-                    if (gas.Value.getter != null && gas.Value.getter.GetParameters().Any()) {
-                        parms = gas.Value.getter.GetParameters().Skip(1).ToList();
-                    } else if (gas.Value.setter != null && gas.Value.setter.GetParameters().Any()) {
-                        parms = gas.Value.setter.GetParameters().Skip(1).ToList();
-                    }
+                    var parms = Invoke(() => {
+                        if (gas.Value.getter != null && gas.Value.getter.GetParameters().Any()) {
+                            return gas.Value.getter.GetParameters().Skip(1).ToList();
+                        }
 
-                    if (parms == null) {
-                        result.Append("    }\n");
-                        continue;
-                    }
+                        if (gas.Value.setter != null && gas.Value.setter.GetParameters().Any()) {
+                            return gas.Value.setter.GetParameters().Skip(1).ToList();
+                        }
+                        return new List<ParameterInfo>();
+                    });
+
+                    parms
+                        .Select((parm, i) => $", System.Func<{GetGenericTypeName(parm.ParameterType)}> p{i}")
+                        .Join("")
+                        .Then(result.Append);
+
+                    result.Append(") : base(httpRequester, \n                ");
 
                     if (parms.Count > 0) {
-                        // REVIEW: use local var not global: for(var i = ...) with parm[i]
-                        i=0;
-                        foreach (var parm in parms) {
-                            result.Append("System.Func<");
-                            result.Append(GetGenericTypeName(parm.ParameterType));
-                            result.Append(">");
-                            result.Append(" p" + i++);
-                            result.Append(",");
-                        }
-                        result.Length = result.Length-1;
-                    }
+                        result.Append("() => httpRequester.SerializeObject(");
+                        var sParms = parms
+                            .Select((parm, i) => $"p{i}()")
+                            .Join(", ");
 
-                    result.Append(") \n");
-                    result.Append("             : base(\n                ");
-                    if (parms.Count > 0) {
-                        result.Append("() => Bridge.Html5.JSON.Stringify(");
-                        if (parms.Count > 1) {
-                            result.Append("System.Tuple.Create(");
-                        }
+                        result.Append(parms.Count > 1 ? $"System.Tuple.Create({sParms})" : sParms);
+                        result.Append(")");
                     } else {
                         result.Append("null");
                     }
-                
-                    // REVIEW: use local var not global: for(var i = ...)
-                    i = 0;
-                    foreach (var parm in parms) {
-                        result.Append(" p" + i++ + "(),");
-                    }
-                
-                    if (parms.Count > 0) {
-                        result.Length = result.Length-1;
 
-                        result.Append(")");
-                        if (parms.Count > 1) {
-                            result.Append(")");
-                        }
-                    }
                     result.Append(",\n");
                     
                     result.Append("                typeof("+srv.FullName+").FullName,\n");
                     result.Append("                " + (gas.Value.getter == null ? "null" : ("\""+gas.Value.getter.Name+"\""))+ ",\n");
                     result.Append("                " + (gas.Value.setter == null ? "null" : ("\""+gas.Value.setter.Name+"\""))+ ",\n");
-                    result.Append("                x => Bridge.Html5.JSON.Stringify(");
+                    result.Append("                x => httpRequester.SerializeObject(");
 
                     if (parms.Count >= 1) {
                         result.Append("System.Tuple.Create(");
@@ -202,13 +185,9 @@ namespace Philadelphia.CodeGen.ForClient {
                     result.Append("x");
 
                     if (parms.Count > 0) {
-                        // REVIEW: use local var not global: for(var i = ...)
-                        i=0;
-                        result.Append(",");
-                        foreach (var parm in parms) {
-                            result.Append(" p" + i++ + "(),");
+                        for (var i = 0; i < parms.Count; i++) {
+                            result.Append($", p{i}()");
                         }
-                        result.Length = result.Length-1;
                     }
                     if (parms.Count >= 1) {
                         result.Append(")");
@@ -234,8 +213,15 @@ namespace Philadelphia.CodeGen.ForClient {
 
             foreach (var srv in services) {
                 trace($"Handling service {srv.FullName}");
-                // REVIEW: string interpolation
-                result.Append(string.Format("    public class WebClient{0} : {1} {{\r\n",srv.Name.TrimStart('I'), srv.FullName));
+                var className = ServiceProxyName(srv);
+                trace($"Generating class: {className}");
+
+                result.Append(
+$@"
+public class {className} : {srv.FullName} {{
+    private readonly IHttpRequester _httpRequester;
+    public {className}(IHttpRequester httpRequester) {{ _httpRequester = httpRequester; }}
+");
 
                 foreach (var method in srv.GetMethods().OrderBy(x => x.Name)) {
                     //trace($"Checking method: {method.Name}, return type {method.ReturnType}");
@@ -304,11 +290,11 @@ namespace Philadelphia.CodeGen.ForClient {
                     if (isUpload) {
                         result.Append("throw new System.Exception(\"uploads cannot be called this way\");\n");
                     } else if (isArray) {
-                        result.Append("return await HttpRequester.RunHttpRequestReturningArray");
+                        result.Append("return await _httpRequester.RunHttpRequestReturningArray");
                     } else if (isFile) { 
-                        result.Append("return await HttpRequester.RunHttpRequestReturningAttachment");
+                        result.Append("return await _httpRequester.RunHttpRequestReturningAttachment");
                     } else if (!isFilter) {
-                        result.Append("return await HttpRequester.RunHttpRequestReturningPlain");
+                        result.Append("return await _httpRequester.RunHttpRequestReturningPlain");
                     } else {
                         result.Append("throw new System.Exception(\"SSE listener cannot be invoked this way\");\n");
                     }
@@ -348,8 +334,7 @@ namespace Philadelphia.CodeGen.ForClient {
 
                         i = 0;
                         foreach (var param in method.GetParameters()) {
-                            // REVIEW: use C# string interpolation aka $"{bbb} ccc"
-                            result.Append(string.Format(", p{0}", i++));
+                            result.Append($", p{i++}");
                         }
 
                         result.Append(");\r\n");
@@ -367,7 +352,7 @@ namespace Philadelphia.CodeGen.ForClient {
             return 
                 GenerateRegularProxies<AttrT,FileT>(assembly, trace) + 
                 "\n" +
-                GenerateUploadDownloadProxies<AttrT,FileT>(assembly);
+                GenerateUploadDownloadProxies<AttrT>(assembly);
         }
         
         private static bool IsFilterMethod(MethodInfo method) {

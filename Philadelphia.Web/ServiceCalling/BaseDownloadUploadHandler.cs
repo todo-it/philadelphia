@@ -14,7 +14,8 @@ namespace Philadelphia.Web {
         private readonly string _getterMethod;
         private readonly string _setterMethod;
         private readonly Func<RemoteFileId, string> _downloadSer;
-        
+        private readonly IHttpRequester _httpRequester;
+
         public Func<IEnumerable<Bridge.Html5.File>, FileUploadOperation, RemoteFileId, Task<RemoteFileId[]>> UploadOrNull { 
             get {
                 if (_setterMethod != null) {
@@ -43,6 +44,7 @@ namespace Philadelphia.Web {
             }}
 
         protected BaseDownloadUploadHandler(
+                IHttpRequester httpRequester,
                 Func<string> input, string interfaceName, string getterMethod, string setterMethod, 
                 Func<RemoteFileId,string> downloadSer) {
 
@@ -51,15 +53,16 @@ namespace Philadelphia.Web {
             _getterMethod = getterMethod;
             _setterMethod = setterMethod;
             _downloadSer = downloadSer;
+            _httpRequester = httpRequester;
         }
 
         public Task<FileModel> Download(RemoteFileId id) {
-            return HttpRequester.RunHttpRequestReturningAttachmentImplStr(
+            return _httpRequester.RunHttpRequestReturningAttachmentImplStr(
                 _interfaceName, _getterMethod, _downloadSer(id));
         }
 
         public string BuildDownloadUrl(RemoteFileId id) {
-            return HttpRequester.BuildUrl(_interfaceName, _getterMethod, _downloadSer(id));
+            return _httpRequester.BuildUrl(_interfaceName, _getterMethod, _downloadSer(id));
         }
 
         public async Task<RemoteFileId[]> Upload(

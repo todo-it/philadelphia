@@ -15,9 +15,9 @@ namespace Philadelphia.Demo.Client {
         private readonly UploaderDemoFormView _view;
         private readonly LocalValue<List<RemoteFileDescr>> _attachments;
 
-        public UploaderDemoForm() {
+        public UploaderDemoForm(IHttpRequester httpRequester) {
             _view = new UploaderDemoFormView();
-            _view.Attachments.SetImplementation(new ISomeService_OrderAttachment(() => 124, () => true));
+            _view.Attachments.SetImplementation(new ISomeService_OrderAttachment(httpRequester,() => 124, () => true));
             _attachments = LocalValueFieldBuilder.Build(new List<RemoteFileDescr>(), _view.Attachments, 
                 (newValue, errors) => {
                     errors.IfTrueAdd(newValue.Count > 10, "Maximum 10 files allowed");

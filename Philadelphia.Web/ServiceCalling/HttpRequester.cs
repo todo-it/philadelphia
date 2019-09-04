@@ -6,37 +6,14 @@ using Bridge;
 using Newtonsoft.Json;
 
 namespace Philadelphia.Web {
-    public class HttpRequester {
-        public static string CsrfToken => Toolkit.CsrfToken;
-
-        private static T NullAwareJsonParse<T>(string input) {
-            return "null".Equals(input) ? default(T) : JsonConvert.DeserializeObject<T>(input);
-        }
+    public class HttpRequester : IHttpRequester {
         
+        public static readonly IHttpRequester Instance = new HttpRequester();
+
         [Template("typeof({data}) === \"object\"")]
         public static extern bool IsSentAsProperJson(object data);
         
-        public static Task<OutpT> RunHttpRequest<OutpT>(string interfaceName, string methodName, Func<string,OutpT> deserialize) {
-            return RunHttpRequest(interfaceName, methodName, deserialize, "");
-        }
-
-        public static Task<OutpT> RunHttpRequest<InpT1,InpT2,InpT3,InpT4,InpT5,OutpT>(string interfaceName, string methodName, Func<string,OutpT> deserialize, InpT1 inp1, InpT2 inp2, InpT3 inp3, InpT4 inp4, InpT5 inp5) {
-            return RunHttpRequest(interfaceName, methodName, deserialize, Tuple.Create(inp1, inp2, inp3, inp4, inp5));
-        }
-        
-        public static Task<OutpT> RunHttpRequest<InpT1,InpT2,InpT3,InpT4,OutpT>(string interfaceName, string methodName, Func<string,OutpT> deserialize, InpT1 inp1, InpT2 inp2, InpT3 inp3, InpT4 inp4) {
-            return RunHttpRequest(interfaceName, methodName, deserialize, Tuple.Create(inp1, inp2, inp3, inp4));
-        }
-
-        public static Task<OutpT> RunHttpRequest<InpT1,InpT2,InpT3,OutpT>(string interfaceName, string methodName, Func<string,OutpT> deserialize, InpT1 inp1, InpT2 inp2, InpT3 inp3) {
-            return RunHttpRequest(interfaceName, methodName, deserialize, Tuple.Create(inp1, inp2, inp3));
-        }
-
-        public static Task<OutpT> RunHttpRequest<InpT1,InpT2,OutpT>(string interfaceName, string methodName, Func<string,OutpT> deserialize, InpT1 inp1, InpT2 inp2) {
-            return RunHttpRequest(interfaceName, methodName, deserialize, Tuple.Create(inp1, inp2));
-        }
-
-        public static async Task<OutpT> RunHttpRequest<InpT,OutpT>(
+        public async Task<OutpT> RunHttpRequest<InpT,OutpT>(
                 string interfaceName, string methodName, Func<string,OutpT> deserialize, InpT inp) {
 
             var inputAsJson = JSON.Stringify(inp);
@@ -64,89 +41,7 @@ namespace Philadelphia.Web {
             throw new Exception(errMsg);
         }
 
-        //RunHttpRequestReturningArray: params 5 to 0
-
-        public static async Task<OutpT[]> RunHttpRequestReturningArray<InpT1,InpT2,InpT3,InpT4,InpT5,OutpT>(string interfaceName, string methodName, InpT1 inp1, InpT2 inp2, InpT3 inp3, InpT4 inp4, InpT5 inp5) where OutpT : new() {
-            return await RunHttpRequest(interfaceName, methodName, x => JsonConvert.DeserializeObject<OutpT[]>(x), inp1, inp2, inp3, inp4, inp5);
-        }
-
-        public static async Task<OutpT[]> RunHttpRequestReturningArray<InpT1,InpT2,InpT3,InpT4,OutpT>(string interfaceName, string methodName, InpT1 inp1, InpT2 inp2, InpT3 inp3, InpT4 inp4) where OutpT : new() {
-            return await RunHttpRequest(interfaceName, methodName, x => JsonConvert.DeserializeObject<OutpT[]>(x), inp1, inp2, inp3, inp4);
-        }
-
-        public static async Task<OutpT[]> RunHttpRequestReturningArray<InpT1,InpT2,InpT3,OutpT>(string interfaceName, string methodName, InpT1 inp1, InpT2 inp2, InpT3 inp3) where OutpT : new() {
-            return await RunHttpRequest(interfaceName, methodName, x => JsonConvert.DeserializeObject<OutpT[]>(x), inp1, inp2, inp3);
-        }
-
-        public static async Task<OutpT[]> RunHttpRequestReturningArray<InpT1,InpT2,OutpT>(string interfaceName, string methodName, InpT1 inp1, InpT2 inp2) where OutpT : new() {
-            return await RunHttpRequest(interfaceName, methodName, x => JsonConvert.DeserializeObject<OutpT[]>(x), inp1, inp2);
-        }
-
-        public static async Task<OutpT[]> RunHttpRequestReturningArray<InpT,OutpT>(string interfaceName, string methodName, InpT inp) where OutpT : new() {
-            return await RunHttpRequest(interfaceName, methodName, x => JsonConvert.DeserializeObject<OutpT[]>(x), inp);
-        }
-
-        public static async Task<OutpT[]> RunHttpRequestReturningArray<OutpT>(string interfaceName, string methodName) where OutpT : new() {
-            return await RunHttpRequest(interfaceName, methodName, x => JsonConvert.DeserializeObject<OutpT[]>(x));
-        }
-        
-        //RunHttpRequestReturningPlain: params 5 to 0
-
-        public static async Task<OutpT> RunHttpRequestReturningPlain<InpT1,InpT2,InpT3,InpT4,InpT5,OutpT>(string interfaceName, string methodName, InpT1 inp1, InpT2 inp2, InpT3 inp3, InpT4 inp4, InpT5 inp5) {
-            return await RunHttpRequest(interfaceName, methodName, x => NullAwareJsonParse<OutpT>(x), inp1, inp2, inp3, inp4, inp5);
-        }
-
-        public static async Task<OutpT> RunHttpRequestReturningPlain<InpT1,InpT2,InpT3,InpT4,OutpT>(string interfaceName, string methodName, InpT1 inp1, InpT2 inp2, InpT3 inp3, InpT4 inp4) {
-            return await RunHttpRequest(interfaceName, methodName, x => NullAwareJsonParse<OutpT>(x), inp1, inp2, inp3, inp4);
-        }
-
-        public static async Task<OutpT> RunHttpRequestReturningPlain<InpT1,InpT2,InpT3,OutpT>(string interfaceName, string methodName, InpT1 inp1, InpT2 inp2, InpT3 inp3) {
-            return await RunHttpRequest(interfaceName, methodName, x => NullAwareJsonParse<OutpT>(x), inp1, inp2, inp3);
-        }
-
-        public static async Task<OutpT> RunHttpRequestReturningPlain<InpT1,InpT2,OutpT>(string interfaceName, string methodName, InpT1 inp1, InpT2 inp2) {
-            return await RunHttpRequest(interfaceName, methodName, x => NullAwareJsonParse<OutpT>(x), inp1, inp2);
-        }
-
-		public static async Task<OutpT> RunHttpRequestReturningPlain<InpT,OutpT>(string interfaceName, string methodName, InpT inp) {
-			return await RunHttpRequest(interfaceName, methodName, x => NullAwareJsonParse<OutpT>(x), inp);
-		}
-        
-		public static async Task<OutpT> RunHttpRequestReturningPlain<OutpT>(string interfaceName, string methodName) {
-			return await RunHttpRequest(interfaceName, methodName, x => NullAwareJsonParse<OutpT>(x));
-		}
-
-        //RunHttpRequestReturningAttachment: params 5 to 0
-
-        public static Task<FileModel> RunHttpRequestReturningAttachment<InpT1,InpT2,InpT3,InpT4,InpT5>(string interfaceName, string methodName, InpT1 inp1, InpT2 inp2, InpT3 inp3, InpT4 inp4, InpT5 inp5) {
-            return RunHttpRequestReturningAttachmentImpl(interfaceName, methodName, Tuple.Create(inp1, inp2, inp3, inp4, inp5));
-        }
-
-        public static Task<FileModel> RunHttpRequestReturningAttachment<InpT1,InpT2,InpT3,InpT4>(string interfaceName, string methodName, InpT1 inp1, InpT2 inp2, InpT3 inp3, InpT4 inp4) {
-            return RunHttpRequestReturningAttachmentImpl(interfaceName, methodName, Tuple.Create(inp1, inp2, inp3, inp4));
-        }
-
-        public static Task<FileModel> RunHttpRequestReturningAttachment<InpT1,InpT2,InpT3>(string interfaceName, string methodName, InpT1 inp1, InpT2 inp2, InpT3 inp3) {
-            return RunHttpRequestReturningAttachmentImpl(interfaceName, methodName, Tuple.Create(inp1, inp2, inp3));
-        }
-        
-        public static Task<FileModel> RunHttpRequestReturningAttachment<InpT1,InpT2>(string interfaceName, string methodName, InpT1 inp1, InpT2 inp2) {
-            return RunHttpRequestReturningAttachmentImpl(interfaceName, methodName, Tuple.Create(inp1, inp2));
-        }
-        
-        public static Task<FileModel> RunHttpRequestReturningAttachment<InpT>(string interfaceName, string methodName, InpT inputParam) {
-            return RunHttpRequestReturningAttachmentImpl(interfaceName, methodName, inputParam);
-        }
-        
-        public static Task<FileModel> RunHttpRequestReturningAttachment(string interfaceName, string methodName) {
-            return RunHttpRequestReturningAttachmentImplStr(interfaceName, methodName, "");
-        }
-        
-        public static Task<FileModel> RunHttpRequestReturningAttachmentImpl<T>(string interfaceName, string methodName, T inputParam) {
-            return RunHttpRequestReturningAttachmentImplStr(interfaceName, methodName, JSON.Stringify(inputParam));
-        }
-
-        public static Task<FileModel> RunHttpRequestReturningAttachmentImplStr(string interfaceName, string methodName, string inputParam) {
+        public Task<FileModel> RunHttpRequestReturningAttachmentImplStr(string interfaceName, string methodName, string inputParam) {
             var url = string.Format("/{0}/{1}", interfaceName, methodName);
             
             Logger.Debug(typeof(HttpRequester), "POST via iframe url={0} params={1}", url, inputParam);
@@ -168,11 +63,11 @@ namespace Philadelphia.Web {
                 Name = Magics.PostReturningFileParameterName,
                 Value = inputParam });
 
-            if (CsrfToken != null) {
+            if (Toolkit.CsrfToken != null) {
                 form.AppendChild(new HTMLInputElement {
                     Type = InputType.Hidden,
                     Name = Philadelphia.Common.Model.Magics.CsrfTokenFieldName,
-                    Value = CsrfToken });
+                    Value = Toolkit.CsrfToken });
             }
             
             iframe.AppendChild(form);
@@ -187,7 +82,7 @@ namespace Philadelphia.Web {
                         inputParam)));
         }
         
-        public static string BuildUrl(string interfaceName, string methodName, string inputParam) {
+        public string BuildUrl(string interfaceName, string methodName, string inputParam) {
             var result = 
                 string.Format(
                     "/{0}/{1}?{2}=", interfaceName, methodName, Magics.PostReturningFileParameterName) + 
@@ -196,6 +91,14 @@ namespace Philadelphia.Web {
             Logger.Debug(typeof(HttpRequester), "built GET url={0}", result);
 
             return result;
+        }
+
+        public T DeserializeObject<T>(string input) {
+            return JsonConvert.DeserializeObject<T>(input);
+        }
+
+        public string SerializeObject<T>(T input) {
+            return JSON.Stringify(input);
         }
     }
 }

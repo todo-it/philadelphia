@@ -14,7 +14,7 @@ namespace Philadelphia.Demo.Client {
         private readonly InformationalMessageForm _aboutMsg, _licensesInfoMsg;
         private IFormRenderer<HTMLElement> _lastRenderer;
 
-        public MainMenuFlow(ISomeService someService, ITranslationsService translationsService) {
+        public MainMenuFlow(ISomeService someService, ITranslationsService translationsService, IHttpRequester httpRequester) {
             IFormRenderer<HTMLElement> CreateRenderer() =>
                 _baseRenderer.CreateRendererWithBase(
                     new ElementWrapperFormCanvas(
@@ -52,7 +52,7 @@ namespace Philadelphia.Demo.Client {
                         () => new TabbedViewValidationFlow().Run(CreateRenderer())),
                     CreateLocalLeaf(
                         "File uploads", 
-                        () => new UploaderDemoFlow(someService).Run(CreateRenderer())) ),
+                        () => new UploaderDemoFlow(someService, httpRequester).Run(CreateRenderer())) ),
                 CreateSubTree("Widgets",
                     CreateLocalLeaf(
                         "Databound datagrid", 
