@@ -35,7 +35,6 @@
     <NoStdLib>true</NoStdLib>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="DependencyInjection\DiContainer.cs" />
     <Compile Include="Logging\ForwardErrorsToConsoleLogLoggerImplementation.cs" />
     <Compile Include="Logging\ForwardEverythingToConsoleLogLoggerImplementation.cs" />
     <Compile Include="Logging\ForwardMatchingToConsoleLogLoggerImplementation.cs" />
@@ -256,6 +255,7 @@
     <None Include="Bridge\bridge.json" />
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\Bridge.Min.17.4.0\build\Bridge.Min.targets" Condition="Exists('..\packages\Bridge.Min.17.4.0\build\Bridge.Min.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

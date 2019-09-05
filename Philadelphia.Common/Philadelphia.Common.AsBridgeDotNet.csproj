@@ -55,6 +55,7 @@
     <Compile Include="DependencyInjection\IDiRegisterOnlyContainer.cs" />
     <Compile Include="DependencyInjection\IDiResolveReleaseOnlyContainer.cs" />
     <Compile Include="DependencyInjection\LifeStyle.cs" />
+    <Compile Include="DependencyInjection\PhillyContainer.cs" />
     <Compile Include="Extensions\ArrayExtensions.cs" />
     <Compile Include="Extensions\DateTimeExtensions.cs" />
     <Compile Include="Extensions\DictionaryExtensions.cs" />

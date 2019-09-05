@@ -6,11 +6,11 @@ using Philadelphia.Web;
 
 namespace Philadelphia.Demo.Client {
     public class Program {
-        private static DiContainer _di;
+        private static PhillyContainer _di;
         
         [Ready]
         public static void OnReady() {
-            _di = new DiContainer();
+            _di = new PhillyContainer();
             Services.Register(_di); //registers discovered services from model
             _di.RegisterAlias<IHttpRequester, BridgeHttpRequester>(LifeStyle.Singleton);
             _di.Register<MainMenuFlow>(LifeStyle.Transient);

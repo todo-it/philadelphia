@@ -96,7 +96,7 @@ namespace ControlledByTests.Client {
 
         [Ready]
         public static void OnReady() {
-            var di = new DiContainer();
+            var di = new PhillyContainer();
             di.RegisterAlias<IHttpRequester, BridgeHttpRequester>(LifeStyle.Singleton);
             Services.Register(di); //registers discovered services from model
             di.Register<HelloWorldFlow>(LifeStyle.Transient);

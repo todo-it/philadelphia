@@ -1,11 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Philadelphia.Common;
 
-namespace Philadelphia.Web {
-    public class DiContainer : IDiContainer {
-        
+namespace Philadelphia.Common
+{
+    public class PhillyContainer : IDiContainer {
+        public interface IScopeProvider
+        {
+            IDiResolveReleaseOnlyContainer CreateScope();
+        }
+
         class ResolvingInfo {
             public readonly LinkedList.Node<Type> KeyPath;
             private ResolvingInfo(LinkedList.Node<Type> path) => KeyPath = path;
@@ -20,8 +24,7 @@ namespace Philadelphia.Web {
                 KeyPath
                     .AsEnumerableHeadToTail()
                     .Select(k => k.FullName)
-                    .ToJoinedString(" <- ");
-
+                    .Then(x => string.Join(" <- ", x));
         }
 
         class Implementation {
@@ -150,10 +153,17 @@ namespace Philadelphia.Web {
             //doesn't really do anything on the web (yet?)
         }
 
-        // REVIEW: if this is not needed, perhaps it should be removed from interface; for where it is needed, create specific interface (IScopeFactory) and use where needed 
         public IDiResolveReleaseOnlyContainer CreateScope() {
-            //TODO doesn't really do anything on the web (yet?)
-            throw new NotImplementedException();
+            // Copy patter from MS and their IServiceProvider
+            var (ok, service) = TryResolve(typeof(IScopeProvider));
+            if (ok)
+            {
+                return ((IScopeProvider) service).CreateScope();
+            }
+            else
+            {
+                throw new Exception("Cannot create scope because no IScopeProvider was registered");
+            }
         }
 
         public void Dispose() {
