@@ -44,13 +44,10 @@ namespace Philadelphia.Common
 
         private readonly Dictionary<Type,List<Implementation>> _implementations = new Dictionary<Type, List<Implementation>>();
 
-        private IReadOnlyList<Implementation> FindImplementationsFor(ResolvingInfo resolvingInfo) {
-            var t = resolvingInfo.KeyPath.Head;
-            if (!_implementations.TryGetValue(t, out var impls)) {
-                throw new Exception($"key {t.FullName} is not registered in container");
-            }
-            return impls;
-        }
+        private IReadOnlyList<Implementation> FindImplementationsFor(ResolvingInfo resolvingInfo) => 
+            _implementations.TryGetValue(resolvingInfo.KeyPath.Head, out var impls) 
+                ? impls 
+                : new List<Implementation>();
 
         private static void CheckForCircularity(ResolvingInfo ri) {
             var length = ri.KeyPath.AsEnumerableHeadToTail().Count();
@@ -90,8 +87,18 @@ namespace Philadelphia.Common
             }
         }
 
-        private object ResolveOne(ResolvingInfo ctx) =>
-            ResolveImplementation(FindImplementationsFor(ctx).First(), ctx);
+        private object ResolveOne(ResolvingInfo ctx)
+        {
+            var impl = FindImplementationsFor(ctx).FirstOrDefault();
+            if (impl == null)
+            {
+                throw new Exception($"key {ctx.KeyPath.Head.FullName} is not registered in container");
+            }
+            else
+            {
+                return ResolveImplementation(impl, ctx);
+            }
+        }
 
         private IReadOnlyList<object> ResolveAll(ResolvingInfo resolvingInfo) => 
             FindImplementationsFor(resolvingInfo).Select(reg => ResolveImplementation(reg, resolvingInfo)).ToList();
