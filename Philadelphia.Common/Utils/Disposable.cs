@@ -39,5 +39,8 @@ namespace Philadelphia.Common
                 throw new AggregateException(errors);
             }
         }
+
+        public static IDisposable OfListBestEffort(IEnumerable<IDisposable> disposables) 
+            => new Disposable(() => DisposeBestEffort(disposables));
     }
 }
