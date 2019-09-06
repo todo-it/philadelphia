@@ -40,7 +40,7 @@ namespace Philadelphia.Common
             }
         }
 
-        public static IDisposable OfListBestEffort(IEnumerable<IDisposable> disposables) 
+        public static IDisposable OfSeqBestEffort(IEnumerable<IDisposable> disposables) 
             => new Disposable(() => DisposeBestEffort(disposables));
     }
 }
