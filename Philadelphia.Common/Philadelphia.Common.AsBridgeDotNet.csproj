@@ -163,6 +163,7 @@
     <Compile Include="Subscribeable\ITypedSubscribeable.cs" />
     <Compile Include="Subscribeable\Subscribeable.cs" />
     <Compile Include="Utils\Base64Util.cs" />
+    <Compile Include="Utils\Disposable.cs" />
     <Compile Include="Utils\LambdaUtil.cs" />
     <Compile Include="Utils\MimeUtil.cs" />
     <Compile Include="Utils\NameOfUtil.cs" />
