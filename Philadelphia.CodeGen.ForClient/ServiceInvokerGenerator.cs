@@ -28,7 +28,7 @@ namespace Philadelphia.CodeGen.ForClient {
             var result = new StringBuilder();
             result.Append(@"
     public class Services {
-            public static void Register(IDiContainer container) {
+        public static void Register(IDiContainer container) {
 ");
                 
             var services = 
@@ -39,13 +39,15 @@ namespace Philadelphia.CodeGen.ForClient {
                         y.GetCustomAttributes(typeof(T), false).Any() )
                     .OrderBy(x => x.FullName);
 
-            foreach (var srv in services) {
-                result.Append(
-                    $"                container.RegisterAlias<{srv.FullName}, {ServiceProxyName(srv)}>(Philadelphia.Common.LifeStyle.Singleton);\r\n");
-            }
+            services
+                .Select(srv =>
+$"          container.RegisterAlias<{srv.FullName}, {ServiceProxyName(srv)}>(Philadelphia.Common.LifeStyle.Singleton);")
+                .Join("\n")
+                .Then(result.Append);
 
-            result.Append(@"            }
-        }");
+            result.Append(@"
+        }
+    }");
         
             return result.ToString();
         }
@@ -218,10 +220,10 @@ namespace Philadelphia.CodeGen.ForClient {
 
                 result.Append(
 $@"
-public class {className} : {srv.FullName} {{
-    private readonly IHttpRequester _httpRequester;
-    public {className}(IHttpRequester httpRequester) {{ _httpRequester = httpRequester; }}
-");
+    public class {className} : {srv.FullName} {{
+        private readonly IHttpRequester _httpRequester;
+        public {className}(IHttpRequester httpRequester) {{ _httpRequester = httpRequester; }}
+    ");
 
                 foreach (var method in srv.GetMethods().OrderBy(x => x.Name)) {
                     //trace($"Checking method: {method.Name}, return type {method.ReturnType}");
@@ -284,7 +286,7 @@ public class {className} : {srv.FullName} {{
                         comma = true;
                     }
 
-                    result.Append("){\r\n");
+                    result.Append("){\n");
                 
                     result.Append("                ");
                     if (isUpload) {
@@ -324,11 +326,11 @@ public class {className} : {srv.FullName} {{
                             result.Append(">");
                         }
 
-                        result.Append("(\r\n                    typeof(");
+                        result.Append("(\n                    typeof(");
 
                         result.Append(srv.FullName);
                         result.Append(").FullName");
-                        result.Append(",\r\n                    \"");
+                        result.Append(",\n                    \"");
                         result.Append(method.Name);
                         result.Append("\"");
 
@@ -337,12 +339,12 @@ public class {className} : {srv.FullName} {{
                             result.Append($", p{i++}");
                         }
 
-                        result.Append(");\r\n");
+                        result.Append(");\n");
                     }
-                    result.Append("            }\r\n");
+                    result.Append("            }\n");
                 }
 
-                result.Append("        }\r\n");
+                result.Append("        }\n");
             }
 
             return result.ToString();
@@ -392,10 +394,10 @@ public class {className} : {srv.FullName} {{
             string generatedClassesNamespace,
             Trace trace = null) {
             trace = trace ?? (x => { });
-            File.WriteAllText(outputCsFilePath, 
-                $@"using Philadelphia.Common;
+            File.WriteAllText(outputCsFilePath, $@"
+using Philadelphia.Common;
 
-    namespace {generatedClassesNamespace} {{
+namespace {generatedClassesNamespace} {{
     {GenerateProxies<Philadelphia.Common.HttpService,Philadelphia.Common.FileModel>(serviceDeclarationAssembly, trace)}
     {GenerateServerSideEventsSubscribents<Philadelphia.Common.HttpService>(serviceDeclarationAssembly)}
     {GenerateDependencyInjection<Philadelphia.Common.HttpService>(serviceDeclarationAssembly)}
