@@ -7,8 +7,8 @@ using Bridge.Html5;
 using Philadelphia.Common;
 
 namespace Philadelphia.Web {
-    public class AuthenticationThenMainMenuFlow<T> : IFlow<HTMLElement> {
-        private readonly Func<T,Func<IFormRenderer<HTMLElement>>,IEnumerable<MenuItemUserModel>> _menuItemsProvider;
+    public class AuthenticationThenMainMenuFlow<TUser> : IFlow<HTMLElement> {
+        private readonly Func<TUser,Func<IFormRenderer<HTMLElement>>,IEnumerable<MenuItemUserModel>> _menuItemsProvider;
         private readonly RemoteActionsCallerForm _fetchUser;
         private readonly LoginForm _loginForm;
         private readonly MenuForm _mainMenuForm;
@@ -17,22 +17,22 @@ namespace Philadelphia.Web {
         private readonly RemoteActionsCallerForm _runLogout;
         private readonly ConfirmMessageForm _logoutConfirm;
         private IFormRenderer<HTMLElement> _baseRenderer;
-        private T _currentUserOrNull;
+        private TUser _currentUserOrNull;
 
         public AuthenticationThenMainMenuFlow(
-                Func<Task<Tuple<string,T>>> fetchCsrfAndSelfOrNull, 
+                Func<Task<Tuple<string,TUser>>> fetchCsrfAndUserOrNull, 
                 Func<string,string,Task<string>> loginByUserAndPasswd,
                 Func<Task<Unit>> logoutOper,
-                Func<T,Func<IFormRenderer<HTMLElement>>,IEnumerable<MenuItemUserModel>> menuItemsProvider,
+                Func<TUser,Func<IFormRenderer<HTMLElement>>,IEnumerable<MenuItemUserModel>> menuItemsProvider,
                 Func<MenuItemModel,Tuple<HTMLElement,Action<string>>> customItemBuilder = null,
                 Func<string> programNameProvider = null) {
 
             _menuItemsProvider = menuItemsProvider;
             
             _fetchUser = new RemoteActionsCallerForm(new RemoteActionsCallerFormView(), x => 
-                x.Add(fetchCsrfAndSelfOrNull, y => {
+                x.Add(fetchCsrfAndUserOrNull, y => {
                     StoreCsrf(y?.Item1);
-                    _currentUserOrNull = y != null ? y.Item2 : default(T);
+                    _currentUserOrNull = y != null ? y.Item2 : default(TUser);
                 }));
 
             _loginForm = new LoginForm(loginByUserAndPasswd, StoreCsrf);
