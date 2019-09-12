@@ -13,12 +13,10 @@ namespace Philadelphia.Common
         class ResolvingInfo {
             public readonly LinkedList.Node<Type> KeyPath;
             private ResolvingInfo(LinkedList.Node<Type> path) => KeyPath = path;
+            public static readonly ResolvingInfo Empty = new ResolvingInfo(LinkedList.Empty<Type>());
 
             public ResolvingInfo AddKey(Type t) => 
                 new ResolvingInfo(KeyPath.Add(t));
-
-            public static ResolvingInfo Create(Type rootKey) => 
-                new ResolvingInfo(LinkedList.Singleton(rootKey));
 
             public string KeyPathToString() =>
                 KeyPath
@@ -42,7 +40,15 @@ namespace Philadelphia.Common
             }
         }
 
-        private readonly Dictionary<Type,List<Implementation>> _implementations = new Dictionary<Type, List<Implementation>>();
+        private readonly Dictionary<Type, List<Implementation>> _implementations;
+        private readonly ResolvingInfo _resolvingInfo;
+
+        private PhillyContainer(Dictionary<Type, List<Implementation>> implementations, ResolvingInfo resolvingInfo) {
+            _implementations = implementations;
+            _resolvingInfo = resolvingInfo;
+        }
+
+        public PhillyContainer() : this(new Dictionary<Type,List<Implementation>>(), ResolvingInfo.Empty) {}
 
         private IReadOnlyList<Implementation> FindImplementationsFor(ResolvingInfo resolvingInfo) => 
             _implementations.TryGetValue(resolvingInfo.KeyPath.Head, out var impls) 
@@ -60,15 +66,16 @@ namespace Philadelphia.Common
 
         private object ResolveImplementationUnsafe(Implementation impl, ResolvingInfo info) {
             CheckForCircularity(info);
+            var inner = new PhillyContainer(_implementations, info);
             switch (impl.Life) {
                 case LifeStyle.Transient:
-                    return impl.Factory(this, info);
+                    return impl.Factory(inner, info);
 
                 case LifeStyle.Singleton when impl.SingletonPopulated:
                     return impl.Singleton;
 
                 case LifeStyle.Singleton:
-                    var outcome = impl.Factory(this, info);
+                    var outcome = impl.Factory(inner, info);
                     impl.Singleton = outcome;
                     impl.SingletonPopulated = true;
                     return outcome;
@@ -143,10 +150,10 @@ namespace Philadelphia.Common
             _implementations.AddToList(keyType, new Implementation("factory of " + keyType.FullName, ls, (c, ctx) => factoryMethod(c)));
         }
 
-        public object Resolve(Type t) => ResolveOne(ResolvingInfo.Create(t));
+        public object Resolve(Type t) => ResolveOne(_resolvingInfo.AddKey(t));
 
         public (bool success, object result) TryResolve(Type t) {
-            var resolvingInfo = ResolvingInfo.Create(t);
+            var resolvingInfo = _resolvingInfo.AddKey(t);
             var impls = FindImplementationsFor(resolvingInfo);
 
             return impls.Count <= 0 
@@ -154,7 +161,7 @@ namespace Philadelphia.Common
                 : (true, ResolveImplementation(impls.First(), resolvingInfo));
         }
 
-        public IEnumerable<object> ResolveAll(Type key) => ResolveAll(ResolvingInfo.Create(key));
+        public IEnumerable<object> ResolveAll(Type key) => ResolveAll(_resolvingInfo.AddKey(key));
 
         public void Release(object t) {
             //doesn't really do anything on the web (yet?)
