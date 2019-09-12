@@ -28,7 +28,7 @@ namespace Philadelphia.CodeGen.ForClient {
             var result = new StringBuilder();
             result.Append(@"
     public class Services {
-        public static void Register(IDiContainer container) {
+        public static void Register(IDiRegisterOnlyContainer container) {
 ");
                 
             var services = 
