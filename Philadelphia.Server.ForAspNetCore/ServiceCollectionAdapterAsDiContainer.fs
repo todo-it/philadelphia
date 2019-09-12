@@ -6,13 +6,13 @@ open System
 
 type ServiceCollectionAdapterAsDiContainer(adapted:IServiceCollection) =
     interface IDiRegisterOnlyContainer with
-        member __.RegisterFactoryMethod<'T when 'T : not struct>(factoryMethod:Func<_,'T>, style) =
+        member __.RegisterFactoryMethod(keyType:Type, factoryMethod:Func<_,_>, style) =
             let register = System.Func<_,_> (ServiceProviderAdapterAsDiContainer >> factoryMethod.Invoke)
 
             match style with 
-            |LifeStyle.Scoped -> adapted.AddScoped<_>(register)
-            |LifeStyle.Singleton -> adapted.AddSingleton<'T>(register)
-            |LifeStyle.Transient -> adapted.AddTransient<_>(register)
+            |LifeStyle.Scoped -> adapted.AddScoped(keyType, register)
+            |LifeStyle.Singleton -> adapted.AddSingleton(keyType, register)
+            |LifeStyle.Transient -> adapted.AddTransient(keyType, register)
             |_ -> failwith "unsupported scope"
             |> ignore
 

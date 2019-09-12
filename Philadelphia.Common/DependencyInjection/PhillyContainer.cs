@@ -135,12 +135,12 @@ namespace Philadelphia.Common
             _implementations.AddToList(key, new Implementation("constructor of " + key.FullName, ls, (c, ctx) => BuildUsingReflection(actualType, ctx, ResolveOne)));
         }
 
-        public void RegisterFactoryMethod<T>(Func<IDiResolveReleaseOnlyContainer,T> factoryMethod, LifeStyle ls) where T:class {
+        public void RegisterFactoryMethod(Type keyType, Func<IDiResolveReleaseOnlyContainer,object> factoryMethod, LifeStyle ls) {
             if (ls == LifeStyle.Scoped) {
                 throw new Exception("scope lifestyle is not supported");
             }
 
-            _implementations.AddToList(typeof(T), new Implementation("factory of " + typeof(T).FullName, ls, (c, ctx) => factoryMethod(c)));
+            _implementations.AddToList(keyType, new Implementation("factory of " + keyType.FullName, ls, (c, ctx) => factoryMethod(c)));
         }
 
         public object Resolve(Type t) => ResolveOne(ResolvingInfo.Create(t));
