@@ -74,7 +74,13 @@ nav.Philadelphia\.Web\.HorizontalMenuBarView > ul > li > ul > li {
     display: flex;
     position: relative;
     flex-direction: column;
-    padding-right: 10px;
+}
+
+nav.Philadelphia\.Web\.HorizontalMenuBarView > ul > li {
+    padding-right: 10px; /*gray bg without overlapping next item*/
+}
+nav.Philadelphia\.Web\.HorizontalMenuBarView > ul > li > ul > li {
+    padding-right: 5px; /*gray bg for whole selected line*/
 }
 
 nav.Philadelphia\.Web\.HorizontalMenuBarView > ul > li > a,
@@ -82,12 +88,8 @@ nav.Philadelphia\.Web\.HorizontalMenuBarView > ul > li > ul > li > a {
     text-decoration: none;
     padding-right: 10px;
     white-space: nowrap;
-}
-
-nav.Philadelphia\.Web\.HorizontalMenuBarView > ul > li, 
-nav.Philadelphia\.Web\.HorizontalMenuBarView > ul > li > ul > li {
-    /* get rid of bullet points */
-    display: inline;
+    display: inline-block;
+    width: 100%;    
 }
 
 /* 2nd level menu*/
@@ -98,7 +100,7 @@ nav.Philadelphia\.Web\.HorizontalMenuBarView > ul > li > ul {
     background-color: white;
     display: flex;
     flex-direction: column;
-    padding: 0 10px 0 0;
+    padding: 0 7px 0 0;
     z-index: -1;
     box-shadow: 0 0 22px 8px rgba(0, 0, 0, 0.25);
     border: 1px solid black;
@@ -109,6 +111,7 @@ nav.Philadelphia\.Web\.HorizontalMenuBarView > ul > li > ul > li {
     padding-top: 2px;
     padding-bottom: 2px;
     padding-left: 2px;
+    overflow: visible;
 }
 
 nav.Philadelphia\.Web\.HorizontalMenuBarView > ul > li.inactive > ul {
