@@ -13,19 +13,26 @@ public static string GetPathToMsbuild() {
     }
 
     var studios = BlackFox.VsWhere.VsInstances.GetAll();
-    var pth = 
+    var pth1 = 
        (from studio in studios
-        let pthx = Path.Combine(studio.InstallationPath, "MSBuild\\15.0\\Bin\\MSBuild.exe")
+        let pthx = Path.Combine(studio.InstallationPath, "MSBuild\\15.0\\Bin\\MSBuild.exe")		
         where File.Exists(pthx)
         select pthx)
         .FirstOrDefault();
-    
-    if (pth == null) {
+		
+    var pth2 = 
+       (from studio in studios
+		let pthx = Path.Combine(studio.InstallationPath, "MSBuild\\Current\\Bin\\MSBuild.exe")
+        where File.Exists(pthx)
+        select pthx)
+        .FirstOrDefault();
+		
+    if (pth1 == null && pth2 == null) {
         var stds = String.Join("", studios.Select(x => "\n   " + x.InstallationPath));
         throw new Exception($"msbuild not detected (using visual studio detection). Visual studio paths found:[{stds} ]");
     }
 
-    return pth;
+    return pth1 != null ? pth1 : pth2;
 }
 
 public static string GetVersionNoFromGitTag() {
