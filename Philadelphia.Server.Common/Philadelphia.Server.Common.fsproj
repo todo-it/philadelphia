@@ -31,15 +31,12 @@
   <ItemGroup>
     <PackageReference Include="AutoMapper" Version="7.0.1" />
     <PackageReference Include="Newtonsoft.Json" Version="11.0.2" />
-    <PackageReference Include="FSharp.Core" Version="4.5.2" />
+    <PackageReference Include="FSharp.Core" Version="4.5.4" />
+	<PackageReference Update="FSharp.Core" Version="4.5.4" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\Philadelphia.Common\Philadelphia.Common.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <PackageReference Update="FSharp.Core" Version="4.5.2" />
   </ItemGroup>
 
 </Project>
