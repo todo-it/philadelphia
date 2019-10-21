@@ -1,4 +1,4 @@
-#! "netcoreapp2.2"
+#! "netcoreapp3.0"
 
 //uses: https://github.com/filipw/dotnet-script
 //to install: dotnet tool install -g dotnet-script
@@ -70,6 +70,7 @@ Executor ex;
     ex = Executor.WithinDir(projDir);
 
     Executor.AssureEmptyDir(Path.Combine(projDir, "bin"));
+	Executor.AssureEmptyDir(Path.Combine(projDir, "obj"));
     ex.Exe(msbuild, "Philadelphia.Common.AsBridgeDotNet.csproj /target:clean");
     ex.Exe(msbuild, "Philadelphia.Common.AsBridgeDotNet.csproj /p:Configuration=Release /target:build");
     ex.Exe(nuget, "pack Philadelphia.Common.AsBridgeDotNet.nuspec");
@@ -84,6 +85,7 @@ Executor ex;
     var projDir = Path.Combine(slnDir, "Philadelphia.CodeGen.ForClient");
     ex = Executor.WithinDir(projDir);
     Executor.AssureEmptyDir(Path.Combine(projDir, "bin"));
+	Executor.AssureEmptyDir(Path.Combine(projDir, "obj"));
 
     ex.Exe("dotnet", "pack Philadelphia.CodeGen.ForClient.csproj -c Release");
     ex.MoveFileBetweenDirs($"Philadelphia.CodeGen.ForClient.{version}.nupkg", 
@@ -95,6 +97,8 @@ Executor ex;
     ex = Executor.WithinDir(projDir);
 
     Executor.AssureEmptyDir(Path.Combine(projDir, "bin"));
+	Executor.AssureEmptyDir(Path.Combine(projDir, "obj"));
+	
     ex.Exe(msbuild, "Philadelphia.Web.csproj /target:clean");
     ex.Exe(msbuild, "Philadelphia.Web.csproj /p:Configuration=Release /target:build");
     ex.Exe(nuget, "pack Philadelphia.Web.nuspec");
@@ -113,6 +117,7 @@ Executor ex;
     var projDir = Path.Combine(slnDir, "Philadelphia.Server.Common");
     ex = Executor.WithinDir(projDir);
     Executor.AssureEmptyDir(Path.Combine(projDir, "bin"));
+	Executor.AssureEmptyDir(Path.Combine(projDir, "obj"));
 
     ex.Exe("dotnet", "pack Philadelphia.Server.Common.fsproj -c Release");
     ex.MoveFileBetweenDirs($"Philadelphia.Server.Common.{version}.nupkg", 
@@ -123,6 +128,7 @@ Executor ex;
     var projDir = Path.Combine(slnDir, "Philadelphia.ServerSideUtils");
     ex = Executor.WithinDir(projDir);
     Executor.AssureEmptyDir(Path.Combine(projDir, "bin"));
+	Executor.AssureEmptyDir(Path.Combine(projDir, "obj"));
 
     ex.Exe("dotnet", "pack Philadelphia.ServerSideUtils.fsproj -c Release");
     ex.MoveFileBetweenDirs($"Philadelphia.ServerSideUtils.{version}.nupkg", 
@@ -133,6 +139,7 @@ Executor ex;
     var projDir = Path.Combine(slnDir, "Philadelphia.Server.ForAspNetCore");
     ex = Executor.WithinDir(projDir);
     Executor.AssureEmptyDir(Path.Combine(projDir, "bin"));
+	Executor.AssureEmptyDir(Path.Combine(projDir, "obj"));
 
     ex.Exe("dotnet", "pack Philadelphia.Server.ForAspNetCore.fsproj -c Release");
     ex.MoveFileBetweenDirs($"Philadelphia.Server.ForAspNetCore.{version}.nupkg", 
