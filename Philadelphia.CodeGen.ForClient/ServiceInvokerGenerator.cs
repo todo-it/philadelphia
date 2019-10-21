@@ -396,6 +396,7 @@ $@"
             trace = trace ?? (x => { });
             File.WriteAllText(outputCsFilePath, $@"
 using Philadelphia.Common;
+using Philadelphia.Web;
 
 namespace {generatedClassesNamespace} {{
     {GenerateProxies<Philadelphia.Common.HttpService,Philadelphia.Common.FileModel>(serviceDeclarationAssembly, trace)}
