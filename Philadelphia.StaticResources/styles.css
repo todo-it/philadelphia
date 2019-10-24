@@ -931,13 +931,13 @@ table.Philadelphia\.Web\.HtmlTableBasedTableView td:last-child {
     display: inline-block;    
 }
 
-.Philadelphia\.Web\.InputTypeButtonActionView.usesFontBtn > span:nth-child(1)  {
+.Philadelphia\.Web\.InputTypeButtonActionView.usesFontBtn > span.cssClassUsesFontAwesome {
     vertical-align: middle;
     padding-left: 6px;
     font-family: FontAwesome;
 }
 
-.Philadelphia\.Web\.InputTypeButtonActionView.usesFontBtn > span:nth-child(2) {
+.Philadelphia\.Web\.InputTypeButtonActionView.usesFontBtn > span:not(.cssClassUsesFontAwesome) {
     padding: 5px 15px 6px 15px;
 }
 

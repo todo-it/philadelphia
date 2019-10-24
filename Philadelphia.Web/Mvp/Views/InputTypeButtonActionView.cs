@@ -5,6 +5,11 @@ using Bridge.Html5;
 using Philadelphia.Common;
 
 namespace Philadelphia.Web {
+    public enum LeftOrRight {
+        Left,
+        Right
+    }
+
     public class InputTypeButtonActionView : IActionView<HTMLElement> {
         private readonly HTMLElement _elem,_properLabelElem,_preLabelElem;
         private Action<bool> _opensNewTabImpl;
@@ -140,13 +145,13 @@ namespace Philadelphia.Web {
         /// <summary>
         /// create new element - sets up visuals and events
         /// </summary>
-        public InputTypeButtonActionView(string labelContent, string preLabelContent = null) :
-            this(Unit.Instance, CreateElement(labelContent, preLabelContent)) {}
+        public InputTypeButtonActionView(string labelContent, string preLabelContent = null, LeftOrRight loc = LeftOrRight.Left) :
+            this(Unit.Instance, CreateElement(labelContent, preLabelContent, loc)) {}
         
         public static InputTypeButtonActionView CreateFontAwesomeIconedButton(
-                string labelContent, string icon) {
+                string labelContent, string icon, LeftOrRight loc = LeftOrRight.Left) {
 
-            var res = new InputTypeButtonActionView(labelContent, icon);
+            var res = new InputTypeButtonActionView(labelContent, icon, loc);
             res.Widget.AddClasses(Magics.CssClassFontAwesomeBasedButton);
             return res;
         }
@@ -172,15 +177,28 @@ namespace Philadelphia.Web {
         }
 
         /// <summary>returns element AND action to set should-open-in-new-tab?</summary>
-        private static Tuple<HTMLElement,Action<bool>,HTMLElement,HTMLElement> CreateElement(string labelContent, string preLabelContent = null) {
+        private static Tuple<HTMLElement,Action<bool>,HTMLElement,HTMLElement> CreateElement(string labelContent, string preLabelContent = null, LeftOrRight loc = LeftOrRight.Left) {
             var preLabel = new HTMLElement(ElementType.Span) {TextContent = preLabelContent ?? ""};
+            preLabel.AddClasses(Magics.CssClassUsesFontAwesome);
             var properLabel = new HTMLElement(ElementType.Span) {TextContent = labelContent};
 
             var result = new HTMLElement(ElementType.Span) {
                 ClassName = typeof(InputTypeButtonActionView).FullName};
             result.SetAttribute("tabindex", "0");
-            result.AppendChild(preLabel);
-            result.AppendChild(properLabel);
+
+            switch (loc) {
+                case LeftOrRight.Left:
+                    result.AppendChild(preLabel);
+                    result.AppendChild(properLabel);
+                    break;
+
+                case LeftOrRight.Right:
+                    result.AppendChild(properLabel);
+                    result.AppendChild(preLabel);
+                    break;
+
+                default: throw new Exception("unsupported LeftOrRight");
+            }
 
             return Tuple.Create<HTMLElement,Action<bool>,HTMLElement,HTMLElement>(result, x => {
                 if (x) {
