@@ -45,7 +45,8 @@ namespace Philadelphia.Web {
                 x => {
                     validators.ForEach(y => x.AddValidatorAndRevalidate(y));
                     view.BindReadWriteAndInitialize(x);
-                });;
+                },
+                _postOperationConsumerOrNull);
         }
 
         public ClassFieldRemoteMutator<DateTime?,DateTime?,ContT> BuildDateTimePickerNullable(
@@ -196,7 +197,8 @@ namespace Philadelphia.Web {
                 x => {
                     validators.ForEach(y => x.AddValidatorAndRevalidate(y));
                     view.BindReadWriteAndInitialize(x);
-                });
+                },
+                _postOperationConsumerOrNull);
         }
 
         public ClassFieldRemoteMutator<LocalCollT,RemT,ContT> BuildMultiChoiceDropDown<WidgetT,LocalCollT,RemT>(
@@ -213,7 +215,8 @@ namespace Philadelphia.Web {
                 x => {
                     validators.ForEach(y => x.AddValidatorAndRevalidate(y));
                     view.BindReadWriteAndInitialize(x);
-                });
+                },
+                _postOperationConsumerOrNull);
         }
 
         public ClassFieldRemoteMutator<DataT,DataT,ContT> Build<WidgetT,DataT>(
