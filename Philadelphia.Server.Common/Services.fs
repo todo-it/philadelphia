@@ -239,7 +239,7 @@ type ServerSentRegistrator =
                 
         di.RegisterFactoryMethod<Subscription<'O,'I>> (
             (fun _ -> subscr),
-            LifeStyle.Singleton)
+            Nullable LifeStyle.Singleton)
 
         subscr.SimpleSubscription
 

@@ -386,9 +386,9 @@ type BaseStartup(
             |> List.ofSeq
 
         serviceToImpl
-        |> Seq.iter(fun x -> di.RegisterAlias(x.Contract, x.Implementation, LifeStyle.Scoped))
+        |> Seq.iter(fun x -> di.RegisterAlias(x.Contract, x.Implementation, Nullable LifeStyle.Scoped))
 
-        di.Register<ClientConnectionInfo>(LifeStyle.Scoped)
+        di.Register<ClientConnectionInfo>(Nullable LifeStyle.Scoped)
 
         // bind services to http machinery
         Services.registerServices
@@ -684,7 +684,7 @@ type BaseStartup(
        
         di.RegisterFactoryMethod(
             (fun _ -> lifetimeFilter), 
-            LifeStyle.Singleton)
+            Nullable LifeStyle.Singleton)
 
         //static files
         let staticResources = 

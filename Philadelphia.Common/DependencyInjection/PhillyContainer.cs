@@ -2,11 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Philadelphia.Common
-{
+namespace Philadelphia.Common {
     public class PhillyContainer : IDiContainer {
-        public interface IScopeProvider
-        {
+        public interface IScopeProvider {
             IDiResolveReleaseOnlyContainer CreateScope();
         }
 
@@ -33,22 +31,26 @@ namespace Philadelphia.Common
             public object Singleton {get; set;}
 
             public Implementation(string name, LifeStyle life,
-                Func<IDiResolveReleaseOnlyContainer, ResolvingInfo, object> factory) {
+                    Func<IDiResolveReleaseOnlyContainer, ResolvingInfo, object> factory) {
+
                 Life = life;
                 Factory = factory;
                 Name = name;
             }
         }
 
+        private readonly LifeStyle? _defaultLifeStyle;
         private readonly Dictionary<Type, List<Implementation>> _implementations;
         private readonly ResolvingInfo _resolvingInfo;
 
-        private PhillyContainer(Dictionary<Type, List<Implementation>> implementations, ResolvingInfo resolvingInfo) {
+        private PhillyContainer(LifeStyle? defaultLifeStyle, Dictionary < Type, List<Implementation>> implementations, ResolvingInfo resolvingInfo) {
+            _defaultLifeStyle = defaultLifeStyle;
             _implementations = implementations;
             _resolvingInfo = resolvingInfo;
         }
 
-        public PhillyContainer() : this(new Dictionary<Type,List<Implementation>>(), ResolvingInfo.Empty) {}
+        public PhillyContainer(LifeStyle? defaultLifeStyle = null) 
+            : this(defaultLifeStyle, new Dictionary<Type,List<Implementation>>(), ResolvingInfo.Empty) {}
 
         private IReadOnlyList<Implementation> FindImplementationsFor(ResolvingInfo resolvingInfo) => 
             _implementations.TryGetValue(resolvingInfo.KeyPath.Head, out var impls) 
@@ -66,7 +68,7 @@ namespace Philadelphia.Common
 
         private object ResolveImplementationUnsafe(Implementation impl, ResolvingInfo info) {
             CheckForCircularity(info);
-            var inner = new PhillyContainer(_implementations, info);
+            var inner = new PhillyContainer(_defaultLifeStyle, _implementations, info);
             switch (impl.Life) {
                 case LifeStyle.Transient:
                     return impl.Factory(inner, info);
@@ -88,23 +90,17 @@ namespace Philadelphia.Common
         private object ResolveImplementation(Implementation impl, ResolvingInfo resolvingInfo) {
             try {
                 return ResolveImplementationUnsafe(impl, resolvingInfo);
-            }
-            catch (Exception e) {
+            } catch (Exception e) {
                 throw new Exception($"Failed resolving [{resolvingInfo.KeyPath.Head.FullName}]. Implementation: [{impl.Name}]", e);
             }
         }
 
-        private object ResolveOne(ResolvingInfo ctx)
-        {
+        private object ResolveOne(ResolvingInfo ctx) {
             var impl = FindImplementationsFor(ctx).FirstOrDefault();
-            if (impl == null)
-            {
+            if (impl == null) {
                 throw new Exception($"key {ctx.KeyPath.Head.FullName} is not registered in container");
             }
-            else
-            {
-                return ResolveImplementation(impl, ctx);
-            }
+            return ResolveImplementation(impl, ctx);
         }
 
         private IReadOnlyList<object> ResolveAll(ResolvingInfo resolvingInfo) => 
@@ -114,10 +110,10 @@ namespace Philadelphia.Common
 
         private static object BuildUsingReflection(Type actualType, ResolvingInfo ctx, Resolver resolve) {
             var constrs = actualType.GetConstructors();
-            if (constrs.Length > 1){
+            if (constrs.Length > 1) {
                 throw new Exception($"Type {actualType.FullName} has more than one constructor");
             }
-            if (constrs.Length == 0){
+            if (constrs.Length == 0) {
                 throw new Exception($"Type {actualType.FullName} has no constructors");
             }
         
@@ -130,24 +126,43 @@ namespace Philadelphia.Common
             return inst;
         }
 
-        public void RegisterAlias(Type key, Type actualType, LifeStyle ls) {
+        public void RegisterAlias(Type key, Type actualType, LifeStyle? ls = null) {
+            ls = ls ?? _defaultLifeStyle;
+
+            if (!ls.HasValue) {
+                throw new Exception("lifestyle is not given");
+            }
+
             if (!key.IsAssignableFrom(actualType)) {
                 throw new Exception($"Key type {key.FullName} is not assignable from actual type {actualType.FullName}");
             }
 
-            if (ls == LifeStyle.Scoped) {
+            if (ls.Value == LifeStyle.Scoped) {
                 throw new Exception("scope lifestyle is not supported");
             }
 
-            _implementations.AddToList(key, new Implementation("constructor of " + key.FullName, ls, (c, ctx) => BuildUsingReflection(actualType, ctx, ResolveOne)));
+            _implementations.AddToList(
+                key, 
+                new Implementation("constructor of " + key.FullName, ls.Value, 
+                    (c, ctx) => BuildUsingReflection(actualType, ctx, ResolveOne)));
         }
 
-        public void RegisterFactoryMethod(Type keyType, Func<IDiResolveReleaseOnlyContainer,object> factoryMethod, LifeStyle ls) {
-            if (ls == LifeStyle.Scoped) {
+        public void RegisterFactoryMethod(
+                Type keyType, Func<IDiResolveReleaseOnlyContainer,object> factoryMethod, LifeStyle? ls = null) {
+
+            ls = ls ?? _defaultLifeStyle;
+
+            if (!ls.HasValue) {
+                throw new Exception("lifestyle is not given");
+            }
+
+            if (ls.Value == LifeStyle.Scoped) {
                 throw new Exception("scope lifestyle is not supported");
             }
 
-            _implementations.AddToList(keyType, new Implementation("factory of " + keyType.FullName, ls, (c, ctx) => factoryMethod(c)));
+            _implementations.AddToList(
+                keyType, 
+                new Implementation("factory of " + keyType.FullName, ls.Value, (c, ctx) => factoryMethod(c)));
         }
 
         public object Resolve(Type t) => ResolveOne(_resolvingInfo.AddKey(t));
@@ -168,16 +183,12 @@ namespace Philadelphia.Common
         }
 
         public IDiResolveReleaseOnlyContainer CreateScope() {
-            // Copy patter from MS and their IServiceProvider
+            // Copy design pattern from MS and their IServiceProvider
             var (ok, service) = TryResolve(typeof(IScopeProvider));
-            if (ok)
-            {
+            if (ok) {
                 return ((IScopeProvider) service).CreateScope();
             }
-            else
-            {
-                throw new Exception("Cannot create scope because no IScopeProvider was registered");
-            }
+            throw new Exception("Cannot create scope because no IScopeProvider was registered");
         }
 
         public void Dispose() {
