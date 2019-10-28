@@ -31,7 +31,7 @@ namespace Philadelphia.Tests.Client.Tests
 
         [Fact]
         public void CanBuildWithParameterlessConstr() {
-            var di = new DiContainer();
+            var di = new PhillyContainer();
             di.Register<SimpleDependency>(LifeStyle.Transient);
             var itm = di.Resolve<SimpleDependency>();
             itm.Assert().NotNull();
@@ -40,7 +40,7 @@ namespace Philadelphia.Tests.Client.Tests
 
         [Fact]
         public void CanBuildWithNonEmptyConstr() {
-            var di = new DiContainer();
+            var di = new PhillyContainer();
             di.Register<SimpleDependency>(LifeStyle.Transient);
             di.Register<SimpleService>(LifeStyle.Transient);
             var itm = di.Resolve<SimpleService>();
@@ -51,7 +51,7 @@ namespace Philadelphia.Tests.Client.Tests
 
         [Fact]
         public void missing_dependency__error_thrown() {
-            var di = new DiContainer();
+            var di = new PhillyContainer();
             di.Register<SimpleService>(LifeStyle.Transient);
             Assert
                 .ThrowsAny(() => di.Resolve<SimpleService>())
@@ -90,7 +90,7 @@ namespace Philadelphia.Tests.Client.Tests
 
         [Fact]
         public void IsSingletonLifeStyleRespected() {
-            var di = new DiContainer();
+            var di = new PhillyContainer();
             di.Register<PurportedSingleton>(LifeStyle.Singleton);
             
             var itm1 = di.Resolve<PurportedSingleton>();
@@ -104,7 +104,7 @@ namespace Philadelphia.Tests.Client.Tests
         
         [Fact]
         public void IsTransientLifeStyleRespected() {
-            var di = new DiContainer();
+            var di = new PhillyContainer();
             di.Register<PurportedTransient>(LifeStyle.Transient);
             
             var itm1 = di.Resolve<PurportedTransient>();
@@ -142,7 +142,7 @@ namespace Philadelphia.Tests.Client.Tests
 
         [Fact]
         public void RegisterAliasIsWorking() {
-            var di = new DiContainer();
+            var di = new PhillyContainer();
             di.RegisterAlias<ISomeAbst,FirstImpl>(LifeStyle.Transient);
             
             var itm = di.Resolve<ISomeAbst>();
@@ -152,7 +152,7 @@ namespace Philadelphia.Tests.Client.Tests
         
         [Fact]
         public void RegisterManyAliasesIsWorking() {
-            var di = new DiContainer();
+            var di = new PhillyContainer();
             di.RegisterAlias<ISomeAbst,FirstImpl>(LifeStyle.Transient);
             di.RegisterAlias<ISomeAbst,OtherImpl>(LifeStyle.Transient);
             
@@ -166,7 +166,7 @@ namespace Philadelphia.Tests.Client.Tests
         [Fact]
         public void type_not_registered__exception_thrown()
         {
-            var di = new DiContainer();
+            var di = new PhillyContainer();
 
             Assert
                 .ThrowsAny(() => di.Resolve<FirstImpl>())
@@ -178,7 +178,7 @@ namespace Philadelphia.Tests.Client.Tests
         [Fact]
         public void type_registered_with_mapping__cant_use_impl_when_resolving()
         {
-            var di = new DiContainer();
+            var di = new PhillyContainer();
             di.RegisterAlias<ISomeAbst,FirstImpl>(LifeStyle.Transient);
 
             Assert
@@ -194,7 +194,7 @@ namespace Philadelphia.Tests.Client.Tests
 
         [Fact]
         public void references_itself__exception_thrown() {
-            var di = new DiContainer();
+            var di = new PhillyContainer();
             di.Register<SelfRef>(LifeStyle.Transient);
 
             Assert
@@ -212,7 +212,7 @@ namespace Philadelphia.Tests.Client.Tests
 
         [Fact]
         public void circular_references__exception_thrown() {
-            var di = new DiContainer();
+            var di = new PhillyContainer();
             di.Register<AWithB>(LifeStyle.Transient);
             di.Register<BWithA>(LifeStyle.Transient);
             Assert
@@ -222,7 +222,7 @@ namespace Philadelphia.Tests.Client.Tests
 
         [Fact]
         public void circular_references__exception_thrown_2() {
-            var di = new DiContainer();
+            var di = new PhillyContainer();
             di.Register<AWithB>(LifeStyle.Transient);
             di.Register<BWithA>(LifeStyle.Transient);
 
