@@ -44,6 +44,7 @@ namespace Philadelphia.Web {
                 transformation,
                 observableOrNull,
                 Persistable.BuildEditor,
+                Persistable.Validators,
                 Persistable.SetValue,
                 SaveOperation,
                 ExtractId,

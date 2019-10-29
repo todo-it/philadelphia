@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Bridge.Html5;
 using Philadelphia.Common;
 
@@ -18,15 +19,22 @@ namespace Philadelphia.Web {
             PropertyName = propertyName;
         }
 
+        private IEnumerable<Validate<DataT>> NoValidationNeeded() {
+            return new List<Validate<DataT>>();
+        }
+
         public PersistedRemotelyUnboundColumn<RecordT,DataT> NonEditable() {
-            return new PersistedRemotelyUnboundColumn<RecordT,DataT>(this, null, null);
+            return new PersistedRemotelyUnboundColumn<RecordT,DataT>(this, null, null, NoValidationNeeded);
         }
         
         public PersistedRemotelyUnboundColumn<RecordT,DataT> Editable(
-            Func<IReadWriteValueView<HTMLElement,DataT>> buildEditor,
-            Action<RecordT,DataT> setValue) {
+                Func<IReadWriteValueView<HTMLElement,DataT>> buildEditor,
+                Action<RecordT,DataT> setValue,
+                Func<IEnumerable<Validate<DataT>>> validators) {
 
-            return new PersistedRemotelyUnboundColumn<RecordT,DataT>(this, buildEditor, setValue);
+            return new PersistedRemotelyUnboundColumn<RecordT,DataT>(
+                this, buildEditor, setValue,
+                validators ?? NoValidationNeeded);
         }
         
         public IDataGridColumn<RecordT> Build() {
