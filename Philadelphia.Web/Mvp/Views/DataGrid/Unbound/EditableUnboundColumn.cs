@@ -30,7 +30,7 @@ namespace Philadelphia.Web {
         public PersistedRemotelyUnboundColumn<RecordT,DataT> Editable(
                 Func<IReadWriteValueView<HTMLElement,DataT>> buildEditor,
                 Action<RecordT,DataT> setValue,
-                Func<IEnumerable<Validate<DataT>>> validators) {
+                Func<IEnumerable<Validate<DataT>>> validators = null) {
 
             return new PersistedRemotelyUnboundColumn<RecordT,DataT>(
                 this, buildEditor, setValue,
