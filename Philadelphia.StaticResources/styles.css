@@ -668,14 +668,18 @@ table.Philadelphia\.Web\.HtmlTableBasedTableView th:last-child {
     border-right: 1px solid #ddd;
 }
 
-/* filter controls should be shrinked when column is thin */
-table.Philadelphia\.Web\.HtmlTableBasedTableView th select,
-table.Philadelphia\.Web\.HtmlTableBasedTableView th input[type='text']  {
+/* filter controls in header should be shrinked when column is thin */
+table.Philadelphia\.Web\.HtmlTableBasedTableView > thead > tr > th select,
+table.Philadelphia\.Web\.HtmlTableBasedTableView > thead > tr > th input[type='text'],
+/* rows in edit mode  */
+table.Philadelphia\.Web\.HtmlTableBasedTableView > tbody > tr > td > .Philadelphia\.Web\.InputView > .inputContainer > input,
+table.Philadelphia\.Web\.HtmlTableBasedTableView > tbody > tr > td > .Philadelphia\.Web\.DateTimePickerView > div > .Philadelphia\.Web\.DateTimeInputView {
     max-width: 100%;
     min-width: 100%;
     text-align: center; /*ff*/
     text-align-last: center; /*chrome*/
     overflow: hidden;
+    box-sizing: border-box
 }
 
 /* filter controls should be shrinked when column is thin */
@@ -1653,13 +1657,21 @@ label {
     background-color: #ffffff; /*so that popup is not semi transparent*/
 }
 
-.Philadelphia\.Web\.MultipleChoiceDropDown .valueContainer {
+.Philadelphia\.Web\.MultipleChoiceDropDown > .valueContainer {
     background-repeat: no-repeat;
     background-position-y: 100%;
     background-position-x: 100%;
     background-size: contain;
     box-sizing: border-box; /* otherwise width 100% overflows table's cell*/
-    padding-right: 20px;
+    padding-right: 20px;    
+}
+
+.Philadelphia\.Web\.MultipleChoiceDropDown > .valueContainer > .value {
+    display: flex;
+}
+
+.Philadelphia\.Web\.MultipleChoiceDropDown > .valueContainer > .value > a {
+    flex-grow: 1;
 }
 
 .Philadelphia\.Web\.MultipleChoiceDropDown.userSuccess .valueContainer {
@@ -2135,6 +2147,7 @@ body[data-dragging] .Philadelphia\.Web\.UploadView > div:nth-child(1) {
 .Philadelphia\.Web\.DateTimeInputView {
     align-items: center;
     display: inline-flex; /*so that inpout doesn't grow if is a cell inside tableLike*/
+    justify-content: center; /* least awkward IMHO*/
 }
 
 .Philadelphia\.Web\.DateTimeInputView {
