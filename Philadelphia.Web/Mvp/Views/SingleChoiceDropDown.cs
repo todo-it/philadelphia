@@ -76,6 +76,7 @@ namespace Philadelphia.Web {
             _view = new HtmlTableBasedTableView {
                 Sortable = false,
                 Filterable = false,
+                Groupable = false,
                 Resizable = false
             };
 
