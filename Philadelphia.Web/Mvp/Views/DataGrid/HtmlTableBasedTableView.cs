@@ -180,6 +180,14 @@ namespace Philadelphia.Web {
                     var td = clickedElem.TagName == "TD" ? clickedElem : clickedElem.GetParentElementOfTypeOrNull("TD");
 
                     if (td != null ) {
+                        //that TD is directly contained in ourselves (don't act when there's an embedded table in cell)
+                        var tbodyOrThead = td.ParentElement.ParentElement;
+
+                        if (tbodyOrThead != _tbody && tbodyOrThead != _thead) {
+                            Logger.Debug(GetType(), "row selection - ignoring as it seems another table is embedded in cell");
+                            return;
+                        }
+
                         //...and user clicked within cell
                         var colNo = td.ParentElement.IndexOfChild(td);
                         var th = _thead.Children[0].Children[colNo];
