@@ -16,6 +16,8 @@ namespace Philadelphia.Web {
         public event Action<string> OnStreamIdAssigned;
         public event Action<Event,ConnectionReadyState> OnError;
         public string SseStreamId {get; private set;}
+        public bool ConnectionActive => _evSrv != null;
+
         private string CsrfTokenClause => 
             ServerSentEventsSubscriber.CsrfToken == null 
             ? "" 
@@ -40,7 +42,7 @@ namespace Philadelphia.Web {
             _evSrv.close();
             _evSrv = null;
         }
-        
+
         public void Connect() {
             if (_evSrv != null) {
                 throw new Exception("already attempting to connect");
