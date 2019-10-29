@@ -1668,6 +1668,7 @@ label {
 
 .Philadelphia\.Web\.MultipleChoiceDropDown > .valueContainer > .value {
     display: flex;
+    align-items: center;
 }
 
 .Philadelphia\.Web\.MultipleChoiceDropDown > .valueContainer > .value > a {
