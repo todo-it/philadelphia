@@ -19,22 +19,18 @@ namespace Philadelphia.Web {
             PropertyName = propertyName;
         }
 
-        private IEnumerable<Validate<DataT>> NoValidationNeeded() {
-            return new List<Validate<DataT>>();
-        }
-
         public PersistedRemotelyUnboundColumn<RecordT,DataT> NonEditable() {
-            return new PersistedRemotelyUnboundColumn<RecordT,DataT>(this, null, null, NoValidationNeeded);
+            return new PersistedRemotelyUnboundColumn<RecordT,DataT>(this, null, null);
         }
         
         public PersistedRemotelyUnboundColumn<RecordT,DataT> Editable(
                 Func<IReadWriteValueView<HTMLElement,DataT>> buildEditor,
                 Action<RecordT,DataT> setValue,
-                Func<IEnumerable<Validate<DataT>>> validators = null) {
+                params Validate<DataT>[] validators) {
 
             return new PersistedRemotelyUnboundColumn<RecordT,DataT>(
                 this, buildEditor, setValue,
-                validators ?? NoValidationNeeded);
+                validators);
         }
         
         public IDataGridColumn<RecordT> Build() {

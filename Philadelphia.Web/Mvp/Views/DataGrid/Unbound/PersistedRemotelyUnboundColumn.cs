@@ -8,14 +8,14 @@ namespace Philadelphia.Web {
     public class PersistedRemotelyUnboundColumn<RecordT,DataT> where RecordT : new() {
         public EditableUnboundColumn<RecordT,DataT> Editable {get; }
         public Func<IReadWriteValueView<HTMLElement,DataT>> BuildEditor { get; }
-        public Func<IEnumerable<Validate<DataT>>> Validators { get; }
+        public IEnumerable<Validate<DataT>> Validators { get; }
         public Action<RecordT, DataT> SetValue { get; }
 
         public PersistedRemotelyUnboundColumn(
                 EditableUnboundColumn<RecordT,DataT> editable,
                 Func<IReadWriteValueView<HTMLElement,DataT>> buildEditor,
                 Action<RecordT, DataT> setValue,
-                Func<IEnumerable<Validate<DataT>>> validators) {
+                params Validate<DataT>[] validators) {
 
             Editable = editable;
             BuildEditor = buildEditor;

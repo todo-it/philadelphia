@@ -52,7 +52,7 @@ namespace Philadelphia.Web {
                     return new InputCheckboxView("")
                         .With(x => x.Widget.ClassList.Add(Magics.CssClassIsSelectionHandler) );
                 }, 
-                () => new List<Validate<bool>>(),
+                new List<Validate<bool>>(),
                 (x,toBeSelected) => {
                     var isSelected = model().Selected.Contains(x);
                     if (!isSelected && toBeSelected) {

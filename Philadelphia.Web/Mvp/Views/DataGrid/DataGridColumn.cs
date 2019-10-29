@@ -13,7 +13,7 @@ namespace Philadelphia.Web {
         private readonly Action<DataT, ICellValueExporter> _exporter;
         private readonly Func<ITransformationMediator, Tuple<HTMLElement, DataGridColumnControllerResult<DataT>>> _transformation;
         private readonly Func<RecordT, DataT> _getValue;
-        private readonly Func<IEnumerable<Validate<DataT>>> _getValidators;
+        private readonly List<Validate<DataT>> _validators;
         private readonly ITypedSubscribeable<RecordT> _itemObserverOrNull;
         private readonly Func<IReadWriteValueView<HTMLElement,DataT>> _buildEditorOrNull;
         private readonly Action<RecordT, DataT> _setValueOrNull;
@@ -65,7 +65,7 @@ namespace Philadelphia.Web {
                 Func<ITransformationMediator,Tuple<HTMLElement,DataGridColumnControllerResult<DataT>>> transformation,
                 ITypedSubscribeable<RecordT> itemObserverOrNull,
                 Func<IReadWriteValueView<HTMLElement,DataT>> buildEditorOrNull,
-                Func<IEnumerable<Validate<DataT>>> getValidators,
+                IEnumerable<Validate<DataT>> validators,
                 Action<RecordT,DataT> setValueOrNull,
                 Func<int, DataT, Task<RecordT>> saveOperationOrNull,
                 Func<RecordT,int> extractIdOrNull,
@@ -81,7 +81,7 @@ namespace Philadelphia.Web {
             _getValue = getValue;
             _itemObserverOrNull = itemObserverOrNull;
             _buildEditorOrNull = buildEditorOrNull;
-            _getValidators = getValidators;
+            _validators = validators.ToList();
             _setValueOrNull = setValueOrNull;
             _saveOperationOrNull = saveOperationOrNull;
             _extractIdOrNull = extractIdOrNull;
@@ -209,11 +209,9 @@ namespace Philadelphia.Web {
                 () => _getValue(item), 
                 x => _setValueOrNull(item, x),
                 x => _saveOperationOrNull(_extractIdOrNull(item), x) );
-
-            var validators = _getValidators().ToList();
-
-            if (validators.Any()) {
-                validators.ForEach(x => model.Validate += x);
+            
+            if (_validators.Any()) {
+                _validators.ForEach(x => model.Validate += x);
 
                 model.Reset(false, this);
             }
@@ -240,10 +238,8 @@ namespace Philadelphia.Web {
                 () => _getValue(item), 
                 x => _setValueOrNull(item, x));
             
-            var validators = _getValidators().ToList();
-            
-            if (validators.Any()) {
-                validators.ForEach(x => model.Validate += x);
+            if (_validators.Any()) {
+                _validators.ForEach(x => model.Validate += x);
 
                 model.Reset(false, this);
             }
