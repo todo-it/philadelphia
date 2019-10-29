@@ -156,6 +156,29 @@ namespace Philadelphia.Common {
 
 	    public static IDictionary<K,V> ToDictionary<K,V>(this IEnumerable<Tuple<K,V>> self) {
 	        return self.ToDictionary(x => x.Item1, x => x.Item2);
-	    }        
+	    }
+
+        /// <summary> added as there's no easy way to avoid EnumerableInstance'</summary>
+        public static IEnumerable<T> AsIEnumerable<T>(this IEnumerable<T> self) {
+            return self;
+        }
+
+        public static bool ContainsAny<T>(this IEnumerable<T> self, params T[] other) {
+            var tmp = self.ToList();
+            return other.Any(x => tmp.Contains(x));
+        }
+
+        public static T SingleOrFail<T>(
+            this IEnumerable<T> self, string errMsgNoElems, string errMsgMoreThanOne) {
+
+            var res = self.Take(2).ToList();
+            if (res.Count <= 0) {
+                throw new Exception(errMsgNoElems);
+            }
+            if (res.Count > 1) {
+                throw new Exception(errMsgMoreThanOne);
+            }
+            return res[0];
+        }
     } 
 }
