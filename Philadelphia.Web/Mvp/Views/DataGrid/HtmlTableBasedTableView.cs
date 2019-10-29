@@ -84,6 +84,11 @@ namespace Philadelphia.Web {
             }
         }
 
+        public bool TbodyTraversable {
+            get => _tbody.IsTraversable();
+            set => _tbody.MarkAsTraversable(value);
+        }
+
         public HtmlTableBasedTableView() {
             _reloadDataAction = InputTypeButtonActionView.CreateFontAwesomeIconedButtonLabelless(
                 Magics.FontAwesomeReloadData);
@@ -339,7 +344,8 @@ namespace Philadelphia.Web {
             });
 
             //potentially dozens of nodes managed by table itself. No need to traverse it / disable for performance reasons
-            _tbody.MarkAsTraversable(false); 
+            
+            TbodyTraversable = false;
 
             // resize events
             Widget.AddAttachedToDocumentEventListener(() => RerenderNeeded?.Invoke(RerenderReason.AttachedToDom));

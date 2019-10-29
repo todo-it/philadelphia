@@ -168,6 +168,7 @@
         public const string CssClassTabHandle = "tabHandle";
         public const string CssClassTabLabel = "tabLabel";
         public const string CssClassTabContent = "tabContent";
+        public const string CssClassTdMayOverflow = "tdMayOverflow";
 
         public const string FontAwesomePrint = "";
         public const string FontAwesomeDownload = "";
@@ -204,6 +205,7 @@
         public const string FontAwesomeSpinner = "";
         public const string FontAwesomeThumbsoUp = "";
         public const string FontAwesomeThumbsUp = "";
+        public const string FontAwesomeFloppyO = "";
 
         public const string IconUrlFilterDelete = "FilterDelete.png";
         public const string IconUrlExit = "Exit.png";

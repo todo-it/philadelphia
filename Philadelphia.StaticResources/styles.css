@@ -761,6 +761,10 @@ table.Philadelphia\.Web\.HtmlTableBasedTableView td {
     text-overflow: ellipsis;
 }
 
+table.Philadelphia\.Web\.HtmlTableBasedTableView.tdMayOverflow > tbody > tr > td {
+    overflow: visible;
+}
+
 table.Philadelphia\.Web\.HtmlTableBasedTableView td:last-child {
     border-right: 1px solid #ddd;
 }
