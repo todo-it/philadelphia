@@ -160,7 +160,7 @@ $"          container.RegisterAlias<{srv.FullName}, {ServiceProxyName(srv)}>(Phi
                         .Join("")
                         .Then(result.Append);
 
-                    result.Append(") : base(httpRequester, \n                ");
+                    result.Append(") : base(httpRequester, \n            ");
 
                     if (parms.Count > 0) {
                         result.Append("() => httpRequester.SerializeObject(");
@@ -176,10 +176,10 @@ $"          container.RegisterAlias<{srv.FullName}, {ServiceProxyName(srv)}>(Phi
 
                     result.Append(",\n");
                     
-                    result.Append("                typeof("+srv.FullName+").FullName,\n");
-                    result.Append("                " + (gas.Value.getter == null ? "null" : ("\""+gas.Value.getter.Name+"\""))+ ",\n");
-                    result.Append("                " + (gas.Value.setter == null ? "null" : ("\""+gas.Value.setter.Name+"\""))+ ",\n");
-                    result.Append("                x => httpRequester.SerializeObject(");
+                    result.Append("            typeof("+srv.FullName+").FullName,\n");
+                    result.Append("            " + (gas.Value.getter == null ? "null" : ("\""+gas.Value.getter.Name+"\""))+ ",\n");
+                    result.Append("            " + (gas.Value.setter == null ? "null" : ("\""+gas.Value.setter.Name+"\""))+ ",\n");
+                    result.Append("            x => httpRequester.SerializeObject(");
 
                     if (parms.Count >= 1) {
                         result.Append("System.Tuple.Create(");
@@ -231,7 +231,7 @@ $@"
                     var isUpload = (method.GetParameters().Any() && method.GetParameters().First().ParameterType == typeof(Philadelphia.Common.UploadInfo));
                     var isFilter = method.ReturnType.GetGenericTypeDefinition() == typeof(Func<object,object>).GetGenericTypeDefinition();
 
-                    result.Append("            public ");
+                    result.Append("        public ");
 
                     if (!isUpload && !isFilter) {
                         result.Append("async ");
@@ -288,7 +288,7 @@ $@"
 
                     result.Append("){\n");
                 
-                    result.Append("                ");
+                    result.Append("            ");
                     if (isUpload) {
                         result.Append("throw new System.Exception(\"uploads cannot be called this way\");\n");
                     } else if (isArray) {
@@ -326,11 +326,11 @@ $@"
                             result.Append(">");
                         }
 
-                        result.Append("(\n                    typeof(");
+                        result.Append("(\n                typeof(");
 
                         result.Append(srv.FullName);
                         result.Append(").FullName");
-                        result.Append(",\n                    \"");
+                        result.Append(",\n                \"");
                         result.Append(method.Name);
                         result.Append("\"");
 
@@ -341,10 +341,10 @@ $@"
 
                         result.Append(");\n");
                     }
-                    result.Append("            }\n");
+                    result.Append("        }\n");
                 }
 
-                result.Append("        }\n");
+                result.Append("    }\n");
             }
 
             return result.ToString();
@@ -378,7 +378,7 @@ $@"
                     var notifType = method.ReturnType.GetGenericArguments()[0];
                     var ctxType = method.GetParameters()[0];
 
-                    result.Append($"    public class {srv.Name}_{method.Name}_SseSubscriber : ServerSentEventsSubscriber<{notifType.FullName},{ctxType.ParameterType.FullName}> {{\n");
+                    result.Append($"    public class {srv.Name}_{method.Name}_SseSubscriber : Philadelphia.Web.ServerSentEventsSubscriber<{notifType.FullName},{ctxType.ParameterType.FullName}> {{\n");
                     result.Append($"        public {srv.Name}_{method.Name}_SseSubscriber(System.Func<{ctxType.ParameterType.FullName}> ctxProvider, bool autoConnect=true)\n");
                     result.Append($"            : base(autoConnect, typeof({srv.FullName}), \"{method.Name}\", ctxProvider) {{}}\n");
                     result.Append("    }\n");
@@ -396,14 +396,13 @@ $@"
             trace = trace ?? (x => { });
             File.WriteAllText(outputCsFilePath, $@"
 using Philadelphia.Common;
-using Philadelphia.Web;
 
 namespace {generatedClassesNamespace} {{
-    {GenerateProxies<Philadelphia.Common.HttpService,Philadelphia.Common.FileModel>(serviceDeclarationAssembly, trace)}
-    {GenerateServerSideEventsSubscribents<Philadelphia.Common.HttpService>(serviceDeclarationAssembly)}
-    {GenerateDependencyInjection<Philadelphia.Common.HttpService>(serviceDeclarationAssembly)}
-    }}
-    ");
+{GenerateProxies<Philadelphia.Common.HttpService,Philadelphia.Common.FileModel>(serviceDeclarationAssembly, trace)}
+{GenerateServerSideEventsSubscribents<Philadelphia.Common.HttpService>(serviceDeclarationAssembly)}
+{GenerateDependencyInjection<Philadelphia.Common.HttpService>(serviceDeclarationAssembly)}
+}}
+");
         }
     }
 }
