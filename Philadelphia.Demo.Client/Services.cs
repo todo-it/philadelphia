@@ -6,7 +6,7 @@ namespace Philadelphia.Demo.Client {
     public class WebClientSomeService : Philadelphia.Demo.SharedModel.ISomeService {
         private readonly IHttpRequester _httpRequester;
         public WebClientSomeService(IHttpRequester httpRequester) { _httpRequester = httpRequester; }
-            public System.Func<Philadelphia.Demo.SharedModel.ContinentalNotification,System.Boolean>ContinentalListener(Philadelphia.Demo.SharedModel.ContinentalSubscriptionRequest p0){
+        public System.Func<Philadelphia.Demo.SharedModel.ContinentalNotification,System.Boolean>ContinentalListener(Philadelphia.Demo.SharedModel.ContinentalSubscriptionRequest p0){
             throw new System.Exception("SSE listener cannot be invoked this way");
         }
         public async System.Threading.Tasks.Task<Philadelphia.Demo.SharedModel.SomeDto>Create(Philadelphia.Demo.SharedModel.SomeDto p0){
@@ -62,7 +62,7 @@ namespace Philadelphia.Demo.Client {
     public class WebClientTranslationsService : Philadelphia.Demo.SharedModel.ITranslationsService {
         private readonly IHttpRequester _httpRequester;
         public WebClientTranslationsService(IHttpRequester httpRequester) { _httpRequester = httpRequester; }
-            public async System.Threading.Tasks.Task<Philadelphia.Common.TranslationItem[]>FetchTranslation(Philadelphia.Demo.SharedModel.SupportedLang p0){
+        public async System.Threading.Tasks.Task<Philadelphia.Common.TranslationItem[]>FetchTranslation(Philadelphia.Demo.SharedModel.SupportedLang p0){
             return await _httpRequester.RunHttpRequestReturningArray<Philadelphia.Demo.SharedModel.SupportedLang, Philadelphia.Common.TranslationItem>(
                 typeof(Philadelphia.Demo.SharedModel.ITranslationsService).FullName,
                 "FetchTranslation", p0);
@@ -87,8 +87,8 @@ namespace Philadelphia.Demo.Client {
 
     public class Services {
         public static void Register(IDiRegisterOnlyContainer container) {
-          container.RegisterAlias<Philadelphia.Demo.SharedModel.ISomeService, WebClientSomeService>(Philadelphia.Common.LifeStyle.Singleton);
-          container.RegisterAlias<Philadelphia.Demo.SharedModel.ITranslationsService, WebClientTranslationsService>(Philadelphia.Common.LifeStyle.Singleton);
+            container.RegisterAlias<Philadelphia.Demo.SharedModel.ISomeService, WebClientSomeService>(Philadelphia.Common.LifeStyle.Singleton);
+            container.RegisterAlias<Philadelphia.Demo.SharedModel.ITranslationsService, WebClientTranslationsService>(Philadelphia.Common.LifeStyle.Singleton);
         }
     }
 }
