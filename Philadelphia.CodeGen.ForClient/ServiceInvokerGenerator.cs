@@ -41,7 +41,7 @@ namespace Philadelphia.CodeGen.ForClient {
 
             services
                 .Select(srv =>
-$"          container.RegisterAlias<{srv.FullName}, {ServiceProxyName(srv)}>(Philadelphia.Common.LifeStyle.Singleton);")
+$"            container.RegisterAlias<{srv.FullName}, {ServiceProxyName(srv)}>(Philadelphia.Common.LifeStyle.Singleton);")
                 .Join("\n")
                 .Then(result.Append);
 
@@ -223,7 +223,7 @@ $@"
     public class {className} : {srv.FullName} {{
         private readonly IHttpRequester _httpRequester;
         public {className}(IHttpRequester httpRequester) {{ _httpRequester = httpRequester; }}
-    ");
+");
 
                 foreach (var method in srv.GetMethods().OrderBy(x => x.Name)) {
                     //trace($"Checking method: {method.Name}, return type {method.ReturnType}");
