@@ -7,6 +7,7 @@
         public const double DefaultDataGridRowHeight = 20;
         public const int DefaultDropDownVisibleItems = 6;
 
+        public const int AutocompleteDefaultDelay = 150;
         public const int TooltipFadeInMs = 300;
         public const int TooltipFadeOutMs = 1000;
         public const int ValidationTriggerDelayMilisec = 150;
@@ -58,7 +59,8 @@
         public const string AttrDataReadOnly = "data-readonly";
         public const string AttrDataIcon = "data-icon";
         public const string AttrDataStatus = "data-status";
-         
+
+        public const string CssClassOptions = "options";
         public const string CssClassGlass = "glass";
         public const string CssClassLightBox = "lightBox";
         public const string CssClassLightBoxLoading = "loading";

@@ -2284,6 +2284,33 @@ body[data-dragging] .Philadelphia\.Web\.UploadView > div:nth-child(1) {
     box-shadow: 0 10px 22px 3px rgba(0, 0, 0, 0.25);
 }
 
+.Philadelphia\.Web\.AutocompleteDropdown {
+    position: relative;
+}
+
+.Philadelphia\.Web\.AutocompleteDropdown > div.options {
+    border: 1px solid #ddd;
+    min-width: 100%;
+    padding: 3px;
+    background-color: white;
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 5px 5px 14px #dadada, -5px 5px 14px #dadada;
+}
+
+.Philadelphia\.Web\.AutocompleteDropdown > div.options > div.active {
+    background-color: #eeef9c;
+}
+
+.Philadelphia\.Web\.AutocompleteDropdown > div.options {
+    white-space: nowrap;
+}
+
+.Philadelphia\.Web\.AutocompleteDropdown > div:empty {
+    display: none;
+}
+
 .notRendered {
     display: none;
 }
