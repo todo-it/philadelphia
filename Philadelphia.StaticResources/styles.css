@@ -2288,6 +2288,16 @@ body[data-dragging] .Philadelphia\.Web\.UploadView > div:nth-child(1) {
     position: relative;
 }
 
+.Philadelphia\.Web\.AutocompleteDropdown > input {
+    background-position-x: calc(100%);
+    background-size: contain;
+    background-repeat: no-repeat;
+}
+
+.Philadelphia\.Web\.AutocompleteDropdown.validating > input {
+    background-image: url('spin32.gif');
+}
+
 .Philadelphia\.Web\.AutocompleteDropdown > div.options {
     border: 1px solid #ddd;
     min-width: 100%;

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using Bridge.Html5;
 using Philadelphia.Common;
@@ -31,7 +32,7 @@ namespace Philadelphia.Web {
         private TextType _textType;
         private int _delayMilisec;
         private string _matchingValuesKey;
-
+        
         public HTMLElement Widget => _cnt;
         public int MaxVisibleItems {get; set; } = 10;
         public HTMLInputElement InputItem => _input; 
@@ -53,8 +54,8 @@ namespace Philadelphia.Web {
 
         //not really disabling field as it looses focus...
         public bool IsValidating {
-            get { return _input.ClassList.Contains(Magics.CssClassIsValidating); }
-            set { _input.AddOrRemoveClass(value, Magics.CssClassIsValidating); }
+            get { return _cnt.ClassList.Contains(Magics.CssClassIsValidating); }
+            set { _cnt.AddOrRemoveClass(value || _requestCount > 0, Magics.CssClassIsValidating); }
         }
         public bool Enabled { 
             get { return !_input.ClassList.Contains(Magics.CssClassDisabled); }
@@ -276,38 +277,66 @@ namespace Philadelphia.Web {
             }
         }
 
+        private async Task<ResultHolder<DataT[]>> FetchMatching() {
+            var matchingValuesKey = Guid.NewGuid().ToString();
+            _matchingValuesKey = matchingValuesKey;
+            var par = _input.Value;
+
+            await Task.Delay(_delayMilisec);
+            var mayUse = _matchingValuesKey == matchingValuesKey;
+
+            Logger.Debug(GetType(),
+                "autocomplete awaiting for result of input {0} requestCount={1} mayUse={2}",
+                par, _requestCount, mayUse);
+        
+            if (!mayUse) {
+                return ResultHolder<DataT[]>.CreateFailure("autocomplete[1] skipping due to new input");
+            }
+
+            DataT[] result;
+
+            try {
+                result = await _matchingValuesProvider(MaxVisibleItems, par);
+            } catch (Exception ex) {
+                return ResultHolder<DataT[]>.CreateFailure("autocomplete result not received", ex);
+            }
+
+            mayUse = _matchingValuesKey == matchingValuesKey;
+
+            Logger.Debug(GetType(),
+                "autocomplete result received itemsCount={0} for input={1} currentInputIs={2} mayUse?={3}",
+                result.Length, par, _input.Value, mayUse);
+
+            if (!mayUse) {
+                return ResultHolder<DataT[]>.CreateFailure("autocomplete[2] skipping due to new input");
+            }
+            
+            return ResultHolder<DataT[]>.CreateSuccess(result);
+        }
+
         private void ScheduleAutocomplete() {
             if (_matchingValuesProvider == null) {
                 return;
             }
-
-            _requestCount++;
-
+            
             Window.SetTimeout(async () => {
-                var matchingValuesKey = Guid.NewGuid().ToString();
-                _matchingValuesKey = matchingValuesKey;
-
-                var par = _input.Value;
-                Logger.Debug(GetType(), "autocomplete awaiting for result of input {0} requestCount={1}", par, _requestCount);
-                try {
-                    var result = await _matchingValuesProvider(MaxVisibleItems, par);
-                    var mayUse = _matchingValuesKey == matchingValuesKey;
-                    Logger.Debug(GetType(), "autocomplete result received itemsCount={0} for input={1} currentInputIs={2} mayUse?={3}", 
-                        result.Length, par, _input.Value, mayUse);
-                    
-                    if (mayUse) {
-                        _activeItemNo = null;
-                        _availOptions = result.ToList();
-                        AvailableOptions = _availOptions;
-                    }
-                    
-                } catch(Exception ex) {
-                    Logger.Debug(GetType(), "autocomplete result not received due to={0}", ex);
+                _requestCount++;
+                IsValidating = IsValidating;
+                
+                var res = await FetchMatching();
+                if (!res.Success) {
+                    Logger.Debug(GetType(), res.ErrorMessage);
+                } else {
+                    _activeItemNo = null;
+                    _availOptions = res.Result.ToList();
+                    AvailableOptions = _availOptions;
                 }
+
                 _requestCount--;
-            },
-            _delayMilisec);
+                IsValidating = IsValidating;
+            });
         }
+
 
         public static implicit operator RenderElem<HTMLElement>(AutocompleteDropdown<DataT> self) {
             return RenderElem<HTMLElement>.Create(self);
