@@ -15,7 +15,7 @@ namespace Philadelphia.Web {
     public class AutocompleteDropdown<DataT> : IReadWriteValueView<HTMLElement,DataT> {
         private Func<int,string,Task<DataT[]>> _matchingValuesProvider;
         private Func<DataT, string> _extractLabel;
-        private Func<DataT, bool> _isCompleteValue;
+        private Func<string, DataT, bool> _isCompleteValue;
 
         private readonly HTMLDivElement _cnt = new HTMLDivElement();
         private readonly HTMLInputElement _input = new HTMLInputElement()
@@ -37,6 +37,7 @@ namespace Philadelphia.Web {
         public HTMLInputElement InputItem => _input; 
         public event ValueChangedSimple<DataT> Changed;
         public event UiErrorsUpdated ErrorsChanged;
+        public HTMLInputElement InputElem => _input;
 
         public DataT Value {
             get { return _value; }
@@ -94,10 +95,15 @@ namespace Philadelphia.Web {
         } }
 
         public AutocompleteDropdown(
+                string label,
                 TextType textType = TextType.TreatAsText, 
                 int delayMilisec = Magics.AutocompleteDefaultDelay) {
 
             _cnt.ClassName = GetType().FullNameWithoutGenerics();
+            
+            var lbl = new HTMLLabelElement {HtmlFor = _input.Id, TextContent = label};
+            _cnt.AppendChild(lbl);
+
             _cnt.AppendChild(_input);
             _cnt.AppendChild(_options);
             
@@ -162,7 +168,7 @@ namespace Philadelphia.Web {
         public void Configure(
                 Func<int, string, Task<DataT[]>> matchingValuesProvider,
                 Func<DataT, string> extractLabel,
-                Func<DataT, bool> isCompleteValue) {
+                Func<string, DataT, bool> isCompleteValue) {
 
             _matchingValuesProvider = matchingValuesProvider;
             _extractLabel = extractLabel;
@@ -198,7 +204,7 @@ namespace Philadelphia.Web {
                 switch (ev.KeyCode) {
                     case Magics.KeyCodeEnter:
                         if (!_activeItemNo.HasValue) {
-                            if (_availOptions.Count == 1 && _isCompleteValue(_availOptions[0])) {
+                            if (_availOptions.Count == 1 && _isCompleteValue(_input.Value, _availOptions[0])) {
                                 _value = _availOptions[0];
                                 Changed?.Invoke(Value, true);
                             }
@@ -206,7 +212,7 @@ namespace Philadelphia.Web {
                             break;
                         }
                         var act = _availOptions[_activeItemNo.Value];
-                        if (!_isCompleteValue(act)) {
+                        if (!_isCompleteValue(_input.Value, act)) {
                             break;
                         }
                         _value = act;
