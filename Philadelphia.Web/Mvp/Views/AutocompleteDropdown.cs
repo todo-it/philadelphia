@@ -9,7 +9,7 @@ using Philadelphia.Common;
 namespace Philadelphia.Web {
     public enum AutocompleteSrcType {
         KeyDown,
-        Keypressed
+        KeyPressed
     }
 
     public class AutocompleteDropdown<DataT> : IReadWriteValueView<HTMLElement,DataT> {
@@ -30,6 +30,7 @@ namespace Philadelphia.Web {
         private bool _ignoreNextFocus;
         private TextType _textType;
         private int _delayMilisec;
+        private string _matchingValuesKey;
 
         public HTMLElement Widget => _cnt;
         public int MaxVisibleItems {get; set; } = 10;
@@ -92,24 +93,14 @@ namespace Philadelphia.Web {
                 }).ForEach(x => _options.AppendChild(x));
         } }
 
-        public void Configure(
-            Func<int,string,Task<DataT[]>> matchingValuesProvider,
-            Func<DataT,string> extractLabel,
-            Func<DataT,bool> isCompleteValue) {
-        
-            _matchingValuesProvider = matchingValuesProvider;
-            _extractLabel = extractLabel;
-            _isCompleteValue = isCompleteValue;
-        }
-
         public AutocompleteDropdown(
-                TextType textType = TextType.TreatAsText, int delayMilisec = Magics.AutocompleteDefaultDelay) {
+                TextType textType = TextType.TreatAsText, 
+                int delayMilisec = Magics.AutocompleteDefaultDelay) {
 
             _cnt.ClassName = GetType().FullNameWithoutGenerics();
             _cnt.AppendChild(_input);
             _cnt.AppendChild(_options);
             
-            _options.Style.ZIndex = "1";
             _input.OnBlur += ev => _options.Style.Display = Display.None;
             _input.OnFocus += ev => {
                 if (_ignoreNextFocus) {
@@ -131,7 +122,7 @@ namespace Philadelphia.Web {
                         if (OptionsVisible) {
                             ev.PreventDefault();
                             ev.StopPropagation();
-                            HideOptionsIfNeccessary();    
+                            HideOptionsIfNecessary();    
                         }
                         break;
 
@@ -159,7 +150,7 @@ namespace Philadelphia.Web {
                         break;
 
                     default:
-                        OnKeyboardEvent(AutocompleteSrcType.Keypressed, ev);
+                        OnKeyboardEvent(AutocompleteSrcType.KeyPressed, ev);
                         break;
                 }
             };
@@ -167,8 +158,18 @@ namespace Philadelphia.Web {
             _textType = textType;
             _delayMilisec = delayMilisec;
         }
-        
-        private void HideOptionsIfNeccessary() {
+
+        public void Configure(
+                Func<int, string, Task<DataT[]>> matchingValuesProvider,
+                Func<DataT, string> extractLabel,
+                Func<DataT, bool> isCompleteValue) {
+
+            _matchingValuesProvider = matchingValuesProvider;
+            _extractLabel = extractLabel;
+            _isCompleteValue = isCompleteValue;
+        }
+
+        private void HideOptionsIfNecessary() {
             _options.RemoveAllChildren();
         }
 
@@ -184,7 +185,9 @@ namespace Philadelphia.Web {
             _input.Value = val;
         }
 
-        private void OnKeyboardEvent(AutocompleteSrcType src, KeyboardEvent<HTMLInputElement> ev) {
+        private void OnKeyboardEvent(
+                AutocompleteSrcType src, KeyboardEvent<HTMLInputElement> ev) {
+
             Logger.Debug(GetType(), "autocomplete input={0} key={1} src={2}", _input.Value, ev.KeyCode, src);
 
             if (!ev.IsUserGenerated()) {
@@ -211,7 +214,7 @@ namespace Philadelphia.Web {
                         break;
 
                     case Magics.KeyCodeBackspace:
-                        ScheduleAutocompletition();
+                        ScheduleAutocomplete();
                         break;
 
                     case Magics.KeyCodeArrowUp:
@@ -256,15 +259,13 @@ namespace Philadelphia.Web {
                 return;
             }
             
-            if (src == AutocompleteSrcType.Keypressed) {
-                ScheduleAutocompletition();
+            if (src == AutocompleteSrcType.KeyPressed) {
+                ScheduleAutocomplete();
                 return;
             }
         }
 
-        private string _matchingValuesKey;
-
-        private void ScheduleAutocompletition() {
+        private void ScheduleAutocomplete() {
             if (_matchingValuesProvider == null) {
                 return;
             }

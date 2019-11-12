@@ -2305,6 +2305,7 @@ body[data-dragging] .Philadelphia\.Web\.UploadView > div:nth-child(1) {
 
 .Philadelphia\.Web\.AutocompleteDropdown > div.options {
     white-space: nowrap;
+    z-index: 1;
 }
 
 .Philadelphia\.Web\.AutocompleteDropdown > div:empty {
