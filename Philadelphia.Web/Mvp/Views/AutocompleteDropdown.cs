@@ -204,6 +204,11 @@ namespace Philadelphia.Web {
                 switch (ev.KeyCode) {
                     case Magics.KeyCodeEnter:
                         if (!_activeItemNo.HasValue) {
+                            if (_input.Value.Length <= 0) {
+                                Changed?.Invoke(default(DataT), true);
+                                break;
+                            }
+
                             if (_availOptions.Count == 1 && _isCompleteValue(_input.Value, _availOptions[0])) {
                                 _value = _availOptions[0];
                                 Changed?.Invoke(Value, true);
