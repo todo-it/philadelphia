@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using Bridge;
 using Bridge.Html5;
 using Philadelphia.Common;
 
@@ -28,14 +29,13 @@ namespace Philadelphia.Web {
         private string _valueBeforeArrows;
         private List<DataT> _availOptions;
         private DataT _value;
-        private bool _ignoreNextFocus;
+        private bool _ignoreNextFocus, _logicalIsValidating;
         private TextType _textType;
         private int _delayMilisec;
         private string _matchingValuesKey;
         
         public HTMLElement Widget => _cnt;
         public int MaxVisibleItems {get; set; } = 10;
-        public HTMLInputElement InputItem => _input; 
         public event ValueChangedSimple<DataT> Changed;
         public event UiErrorsUpdated ErrorsChanged;
         public HTMLInputElement InputElem => _input;
@@ -54,8 +54,11 @@ namespace Philadelphia.Web {
 
         //not really disabling field as it looses focus...
         public bool IsValidating {
-            get { return _cnt.ClassList.Contains(Magics.CssClassIsValidating); }
-            set { _cnt.AddOrRemoveClass(value || _requestCount > 0, Magics.CssClassIsValidating); }
+            get { return _logicalIsValidating; }
+            set {
+                _logicalIsValidating = value;
+                _cnt.AddOrRemoveClass(value || _requestCount > 0, Magics.CssClassIsValidating);
+            }
         }
         public bool Enabled { 
             get { return !_input.ClassList.Contains(Magics.CssClassDisabled); }
@@ -91,6 +94,14 @@ namespace Philadelphia.Web {
                         default: throw new Exception("unsupported TextType");
                     }
 
+                    opt.OnClick += ev => {
+                        Logger.Debug(GetType(), "mouse click choose value key={0}", x);
+                        _input.Value = _extractLabel(x);
+                        _value = x;
+                        Changed?.Invoke(Value, true);
+                        HideOptions();
+                    };
+
                     return opt;
                 }).ForEach(x => _options.AppendChild(x));
         } }
@@ -107,16 +118,30 @@ namespace Philadelphia.Web {
 
             _cnt.AppendChild(_input);
             _cnt.AppendChild(_options);
-            
-            _input.OnBlur += ev => _options.Style.Display = Display.None;
+            HideOptions();
+
+            DocumentUtil.AddMouseDownListener(_cnt, x => {
+                if (!x.HasHtmlTarget()) {
+                    return;
+                }
+                var htmlTarget = x.HtmlTarget();
+
+                if (htmlTarget.IsElementOrItsDescendant(_cnt)) {
+                    //clicked inside control (focus stays within logical control) thus do nothing
+                    return;
+                }
+
+                HideOptions();
+            });
+
             _input.OnFocus += ev => {
                 if (_ignoreNextFocus) {
                     _ignoreNextFocus = false;
                     return;
                 }
 
-                _options.Style.SetProperty("display", "");
-
+                ShowOptions();
+                
                 if (!_input.HasFocus()) {
                     //non user generated (isTrusted == false) events don't invoke default action in Chrome 
                     _ignoreNextFocus = true;
@@ -129,7 +154,7 @@ namespace Philadelphia.Web {
                         if (OptionsVisible) {
                             ev.PreventDefault();
                             ev.StopPropagation();
-                            HideOptionsIfNecessary();    
+                            HideOptions();    
                         }
                         break;
 
@@ -143,7 +168,11 @@ namespace Philadelphia.Web {
                     case Magics.KeyCodeBackspace:
                         OnKeyboardEvent(AutocompleteSrcType.KeyDown, ev); //it is not called onkeypress
                         break;
-                        
+
+                    case Magics.KeyCodeTab:
+                        HideOptions();
+                        break;
+
                     default: break;
                 }                
             };
@@ -176,8 +205,12 @@ namespace Philadelphia.Web {
             _isCompleteValue = isCompleteValue;
         }
 
-        private void HideOptionsIfNecessary() {
-            _options.RemoveAllChildren();
+        private void ShowOptions() {
+            _options.Style.SetProperty("display", "");
+        }
+
+        private void HideOptions() {
+            _options.Style.Display = Display.None;
         }
 
         private void ActivateItem(int idx) {
@@ -204,25 +237,28 @@ namespace Philadelphia.Web {
             if (src == AutocompleteSrcType.KeyDown) {
                 switch (ev.KeyCode) {
                     case Magics.KeyCodeEnter:
+                        var changed = false;
+
                         if (!_activeItemNo.HasValue) {
                             if (_input.Value.Length <= 0) {
-                                Changed?.Invoke(default(DataT), true);
-                                break;
-                            }
-
-                            if (_availOptions.Count == 1 && _isCompleteValue(_input.Value, _availOptions[0])) {
+                                _value = default(DataT);
+                                changed = true;
+                            } else if (_availOptions.Count == 1 && _isCompleteValue(_input.Value, _availOptions[0])) {
                                 _value = _availOptions[0];
-                                Changed?.Invoke(Value, true);
+                                changed = true;
                             }
+                        } else {
+                            var act = _availOptions[_activeItemNo.Value];
+                            if (_isCompleteValue(_input.Value, act)) {
+                                _value = act;
+                                changed = true;
+                            }
+                        }
 
-                            break;
+                        if (changed) {
+                            HideOptions();
+                            Changed?.Invoke(Value, true);
                         }
-                        var act = _availOptions[_activeItemNo.Value];
-                        if (!_isCompleteValue(_input.Value, act)) {
-                            break;
-                        }
-                        _value = act;
-                        Changed?.Invoke(Value, true);
                         break;
 
                     case Magics.KeyCodeBackspace:
@@ -334,10 +370,10 @@ namespace Philadelphia.Web {
 
                 _requestCount--;
                 IsValidating = IsValidating;
+                Logger.Debug(GetType(), "ScheduleAutocomplete ending _requestCount={0}", _requestCount);
             });
         }
-
-
+        
         public static implicit operator RenderElem<HTMLElement>(AutocompleteDropdown<DataT> self) {
             return RenderElem<HTMLElement>.Create(self);
         }
