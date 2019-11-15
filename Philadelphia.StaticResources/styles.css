@@ -2302,6 +2302,21 @@ body[data-dragging] .Philadelphia\.Web\.UploadView > div:nth-child(1) {
     background-image: url('spin32.gif');
 }
 
+.Philadelphia\.Web\.AutocompleteDropdown.userSuccess > input {
+    background-image: url('Success.png');
+}
+
+.Philadelphia\.Web\.AutocompleteDropdown.userError > input {
+    background-image: url('Error.png');
+}
+
+.Philadelphia\.Web\.InputView.programmaticSuccess {
+}
+
+.Philadelphia\.Web\.AutocompleteDropdown.programmaticError > input {
+    background-image: url('Error.png');
+}
+
 .Philadelphia\.Web\.AutocompleteDropdown > div.options {
     border: 1px solid #ddd;
     min-width: 100%;
