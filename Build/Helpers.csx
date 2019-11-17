@@ -35,20 +35,6 @@ public static string GetPathToMsbuild() {
     return pth1 != null ? pth1 : pth2;
 }
 
-public static string GetVersionNoFromGitTag() {
-    var repo = new LibGit2Sharp.Repository("..");
-    var branchName = repo.Head.FriendlyName;
-    var shaToTagName = repo.Tags.ToDictionary(x => x.Reference.TargetIdentifier, x => x.FriendlyName);
-    
-    var maybeTag = repo.Head.Commits.FirstOrDefault(x => shaToTagName.ContainsKey(x.Sha));
-
-    if (maybeTag == null) {
-        throw new Exception("version detection failed - current branch has no tagged commit");
-    }
-
-    return shaToTagName[maybeTag.Sha];
-}
-
 public class Executor {
     private string workDir;
     public static bool OutputOnlyOnError {get; set; } = false;
@@ -118,7 +104,7 @@ public class Executor {
         File.Move(Path.Combine(fromDir, fileName), Path.Combine(toDir, fileName));
     }
 
-    public void Exe(string exeFile, string args) {
+    public String Exe(string exeFile, string args) {
         Console.WriteLine($"starting {exeFile} {args}");
         var p = new System.Diagnostics.Process();
         var outp = new StringBuilder();
@@ -142,9 +128,29 @@ public class Executor {
         if (p.ExitCode != 0) {
             throw new Exception("wrong exitcode");
         }
+	return outp.ToString();
     }
 }
 
+public static string GetVersionNoFromGitTag() {
+    try {
+        return new Executor().Exe("git", "describe --tags --abbrev=0").Trim();
+    } catch (Exception ex) {
+        Console.WriteLine($"could not find tag name using git command. falling back to library because of {ex}");
+    }
+
+    var repo = new LibGit2Sharp.Repository("..");
+    var branchName = repo.Head.FriendlyName;
+    var shaToTagName = repo.Tags.ToDictionary(x => x.Reference.TargetIdentifier, x => x.FriendlyName);
+    
+    var maybeTag = repo.Head.Commits.FirstOrDefault(x => shaToTagName.ContainsKey(x.Sha));
+
+    if (maybeTag == null) {
+        throw new Exception("version detection failed - current branch has no tagged commit");
+    }
+
+    return shaToTagName[maybeTag.Sha];
+}
 
 class Replacement {
     public Regex FileName {get; }
