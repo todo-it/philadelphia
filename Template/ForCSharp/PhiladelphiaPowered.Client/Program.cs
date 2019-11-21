@@ -67,7 +67,7 @@ namespace PhiladelphiaPowered.Client {
     public class Program {
         [Ready]
         public static void OnReady() {
-            var di = new DiContainer();
+            var di = new PhillyContainer();
             Services.Register(di); //registers discovered services from model
             di.Register<HelloFlow>(LifeStyle.Transient);
 
