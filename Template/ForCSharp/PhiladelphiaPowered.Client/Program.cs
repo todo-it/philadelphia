@@ -68,6 +68,7 @@ namespace PhiladelphiaPowered.Client {
         [Ready]
         public static void OnReady() {
             var di = new PhillyContainer();
+            di.RegisterAlias<IHttpRequester, BridgeHttpRequester>(LifeStyle.Singleton);
             Services.Register(di); //registers discovered services from model
             di.Register<HelloFlow>(LifeStyle.Transient);
 
