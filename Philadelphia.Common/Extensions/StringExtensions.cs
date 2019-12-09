@@ -53,7 +53,6 @@ namespace Philadelphia.Common {
 			return TillFirstOccurenceOfOrEverything(inp, "\n");
 		}
         
-        [Obsolete("don't use it until bridge issue 3759 is resolved")]
         public static string MessageFormat(this string self, params object[] args) {
             return string.Format(self, args);
         }
