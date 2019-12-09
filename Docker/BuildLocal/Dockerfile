@@ -20,16 +20,19 @@ RUN mv prod.list /etc/apt/sources.list.d/microsoft-prod.list
 RUN chown root:root /etc/apt/trusted.gpg.d/microsoft.asc.gpg
 RUN chown root:root /etc/apt/sources.list.d/microsoft-prod.list
 RUN apt-get install apt-transport-https
-RUN apt-get update && apt-get -y install dotnet-sdk-2.2
+RUN apt-get update && apt-get -y install dotnet-sdk-3.0
 
 # from https://github.com/filipw/dotnet-script
 RUN dotnet tool install -g dotnet-script
+
+# needed for Build.csx version number fallback
+RUN apt-get -y install git
 
 #cleanup
 RUN apt-get clean
 
 RUN echo "#!/bin/bash" > /run.sh && \
-	echo "cd /build/Build/ && ~/.dotnet/tools/dotnet-script --verbosity i Build.csx" >> /run.sh && \
+	echo "cd /build/Build/ && ~/.dotnet/tools/dotnet-script --no-cache --verbosity i Build.csx" >> /run.sh && \
 	chmod a+x /run.sh
 
 ENTRYPOINT ["/run.sh"]
