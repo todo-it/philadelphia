@@ -17,14 +17,9 @@ namespace Philadelphia.Common {
         public event ValueChangedRich<KeyT> Changed;
         
         public RemoteValueAccessor(Func<KeyT, Task<FullT>> getFullValueOperation, 
-            Action<RemoteValueAccessor<FullT,KeyT>> initializationOrNull = null
-            //TODO due to bridge.net issue 2207 above two lines are wrongly compiled to 'null'. Revisit in future
-        ) : this(getFullValueOperation, initializationOrNull, default(KeyT), default(KeyT)) {}
-
-        public RemoteValueAccessor(Func<KeyT, Task<FullT>> getFullValueOperation, 
                 Action<RemoteValueAccessor<FullT,KeyT>> initializationOrNull, 
-                KeyT initialValue,
-                KeyT invalidValue) {
+                KeyT initialValue = default(KeyT),
+                KeyT invalidValue = default(KeyT)) {
 
             Value = initialValue;
             _getFullValueOperation = getFullValueOperation;

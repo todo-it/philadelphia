@@ -25,16 +25,10 @@ namespace Philadelphia.Common {
         public event ValueChangedRich<LocalT> Changed;
         
         public RemoteValue(
-                LocalT initialValue, Func<LocalT, Task<RemOperResT>> saveOperation, 
+                LocalT initialValue, Func<LocalT, Task<RemOperResT>> saveOperation,
                 Func<RemOperResT,LocalT> remToLocal,
-                Action<RemoteValue<LocalT,RemOperResT>> initialization = null
-
-            //TODO due to bridge.net issue 2207 default(T) is wrongly compiled to 'null'. Revisit in future
-        ) : this(initialValue, saveOperation, default(LocalT), remToLocal, initialization) {}
-
-        public RemoteValue(
-                LocalT initialValue, Func<LocalT, Task<RemOperResT>> saveOperation, LocalT invalidValue,
-                Func<RemOperResT,LocalT> remToLocal, Action<RemoteValue<LocalT,RemOperResT>> initialization = null) {
+                LocalT invalidValue = default(LocalT),
+                Action<RemoteValue<LocalT,RemOperResT>> initialization = null) {
 
             Value = initialValue;
 		    

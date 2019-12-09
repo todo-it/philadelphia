@@ -11,13 +11,9 @@ namespace Philadelphia.Common {
         public event Validate<T> Validate;
         public event ValueChangedRich<T> Changed;
 
-        public LocalValue(T initialValue, T invalidValue) {
+        public LocalValue(T initialValue, T invalidValue= default(T)) {
             Value = initialValue;
             _invalidValue = invalidValue;
-        }
-
-        public LocalValue(T initialValue) : this(initialValue, default(T)) {
-            //TODO due to bridge.net issue 2207 above two lines are wrongly compiled to 'null'. Revisit in future
         }
 
         private void RecalculateErrors(T input) {

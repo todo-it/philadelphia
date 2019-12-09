@@ -37,24 +37,13 @@ namespace Philadelphia.Common {
         public event Validate<LocalT> Validate;
         public event ValueChangedRich<LocalT> Changed;
         
-        public ClassFieldRemoteMutator(
-            Expression<Func<ContT,RemT>> getRemoteField,
-            Func<LocalT,RemT> localToRemote,
-            Func<RemT,LocalT> remoteToLocal,
-            Func<RemT, Task<ContT>> saveOperation, 
-            Action<ClassFieldRemoteMutator<LocalT,RemT,ContT>> initialization = null,
-            Action<ContT,string> postOperationConsumerOrNull = null
-            //TODO due to bridge.net issue 2207 default(T) is wrongly compiled to 'null'. Revisit in future
-        ) : this(getRemoteField, localToRemote, remoteToLocal, saveOperation, 
-            initialization, default(LocalT), default(LocalT), postOperationConsumerOrNull) {}
-
         public ClassFieldRemoteMutator(Expression<Func<ContT,RemT>> getRemoteField,
                 Func<LocalT,RemT> localToRemote,
                 Func<RemT,LocalT> remoteToLocal,
                 Func<RemT, Task<ContT>> saveOperation, 
                 Action<ClassFieldRemoteMutator<LocalT,RemT,ContT>> initialization, 
-                LocalT initialValue,
-                LocalT invalidValue,
+                LocalT initialValue = default(LocalT),
+                LocalT invalidValue = default(LocalT),
                 Action<ContT,string> postOperationConsumerOrNull = null) {
 
             Value = initialValue;
