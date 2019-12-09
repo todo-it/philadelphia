@@ -59,11 +59,11 @@ namespace Philadelphia.Common {
         }
         
         public static void CannotBePastDate(DateTime? x, ISet<string> errors){
-            errors.IfTrueAdd(x.HasValue && x.Value.DateOnly() < DateTime.Now.DateOnly(), I18n.Translate("Cannot be past date"));
+            errors.IfTrueAdd(x.HasValue && x.Value.Date < DateTime.Now.Date, I18n.Translate("Cannot be past date"));
         }
         
         public static void MustBeTomorrowOrLaterNullable(DateTime? x, ISet<string> errors) {
-            errors.IfTrueAdd(x.HasValue && x.Value.DateOnly() < DateTimeExtensions.BuildSoonestMidnight(), I18n.Translate("Must be tomorrow or later"));
+            errors.IfTrueAdd(x.HasValue && x.Value.Date < DateTimeExtensions.BuildSoonestMidnight(), I18n.Translate("Must be tomorrow or later"));
         }
 
         public static void IsValidEmailAddressOrEmpty(string emailAddress, ISet<string> errors) {

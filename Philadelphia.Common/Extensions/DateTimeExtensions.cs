@@ -10,11 +10,6 @@ namespace Philadelphia.Common {
             return string.Format("{0:0000}-{1:00}-{2:00} {3:00}:{4:00}:{5:00}", inp.Year, inp.Month, inp.Day, inp.Hour, inp.Minute, inp.Second);
         }
 
-        [Obsolete("to be inlined when bridge issue 3757 is fixed")]
-        public static DateTime DateOnly(this DateTime inp) {
-            return new DateTime(inp.Year, inp.Month, inp.Day);
-        }
-
         public static DateTime WhenNull(this DateTime? inp, DateTime defaultValue) {
             return inp ?? defaultValue;
         }
@@ -28,11 +23,11 @@ namespace Philadelphia.Common {
         }
 
         public static DateTime BuildLastMomentOfDay(DateTime inp) {
-            return inp.DateOnly().AddDays(1).DateOnly().AddSeconds(-1);
+            return inp.Date.AddDays(1).Date.AddSeconds(-1);
         }
 
         public static DateTime BuildLastMomentOfToday() {    
-            return DateTime.Now.AddDays(1).DateOnly().AddSeconds(-1);
+            return DateTime.Now.AddDays(1).Date.AddSeconds(-1);
         }
 
         public static DateTime BuildThisMonthOnLastDay() {
@@ -46,7 +41,7 @@ namespace Philadelphia.Common {
         
         public static DateTime BuildSoonestMidnight() {
             var result = DateTime.Now;
-            return result.DateOnly().AddDays(1);
+            return result.Date.AddDays(1);
         }
         
         public static DateTime BuildYesterdayMidnight() {

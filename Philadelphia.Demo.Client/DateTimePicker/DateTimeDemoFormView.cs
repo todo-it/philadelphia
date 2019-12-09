@@ -68,8 +68,8 @@ namespace Philadelphia.Demo.Client {
             Tuple.Create<DateTime?,DateTime?>(null, DateTimeExtensions.BuildSoonestMidnight()),
             LocalDateTimeBuilder.Custom(
                 y => DateTimeExtensions.IsToday(y) 
-                ? y.DateOnly().WithTime(23, 59, 59) 
-                : y.DateOnly().WithTime(12, 0, 0) ) );
+                ? y.Date.WithTime(23, 59, 59) 
+                : y.Date.WithTime(12, 0, 0) ) );
 
         public DateTimePickerView SingleYMDhmEntry { get; } = DateTimePickerView.CreateSoleEntry(
             "YMDhm single", 
@@ -79,8 +79,8 @@ namespace Philadelphia.Demo.Client {
             Tuple.Create<DateTime?,DateTime?>(null, DateTimeExtensions.BuildSoonestMidnight()),
             LocalDateTimeBuilder.Custom(
                 y => DateTimeExtensions.IsToday(y) 
-                    ? y.DateOnly().WithTime(23, 59, 59) 
-                    : y.DateOnly().WithTime(12, 0, 0) ));
+                    ? y.Date.WithTime(23, 59, 59) 
+                    : y.Date.WithTime(12, 0, 0) ));
 
         public DateTimePickerView SingleValidation { get; } = DateTimePickerView.CreateSoleEntry(
                 "Datetime with even day&hour", 

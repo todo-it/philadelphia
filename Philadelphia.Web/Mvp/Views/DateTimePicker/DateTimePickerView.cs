@@ -378,7 +378,7 @@ namespace Philadelphia.Web {
                             case DateTimeFormat.DateOnly:
                             case DateTimeFormat.YMDhm:
                             case DateTimeFormat.YMDhms:
-                                if (_value.HasValue && iDay.DateOnly().Equals(_value.Value.DateOnly())) {
+                                if (_value.HasValue && iDay.Date.Equals(_value.Value.Date)) {
                                     day.AddClasses(Magics.CssClassChoosen);
                                 }
                                 break;
@@ -404,28 +404,28 @@ namespace Philadelphia.Web {
                         break;
 
                     case DateTimePickerMode.From:
-                        if (_value.HasValue && iDay.DateOnly().Equals(_value.Value.DateOnly())) {
+                        if (_value.HasValue && iDay.Date.Equals(_value.Value.Date)) {
                             day.AddClasses(Magics.CssClassSince);
                         } else if (OtherDateTime.Value.HasValue) {
                             var other = OtherDateTime.Value.Value;
 
-                            if (other.DateOnly().Equals(iDay.DateOnly())) {
+                            if (other.Date.Equals(iDay.Date)) {
                                 day.AddClasses(Magics.CssClassUntil);
-                            } else if (other > iDay && _value.HasValue && iDay > _value.Value.DateOnly()) {
+                            } else if (other > iDay && _value.HasValue && iDay > _value.Value.Date) {
                                 day.AddClasses(Magics.CssClassInRange);
                             }
                         }
                         break;
 
                     case DateTimePickerMode.To:
-                        if (_value.HasValue && iDay.DateOnly().Equals(_value.Value.DateOnly())) {
+                        if (_value.HasValue && iDay.Date.Equals(_value.Value.Date)) {
                             day.AddClasses(Magics.CssClassUntil);
                         } else if (OtherDateTime.Value.HasValue) {
                             var other = OtherDateTime.Value.Value;
 
-                            if (other.DateOnly().Equals(iDay.DateOnly())) {
+                            if (other.Date.Equals(iDay.Date)) {
                                 day.AddClasses(Magics.CssClassSince);
-                            } else if (other < iDay && _value.HasValue && iDay < _value.Value.DateOnly()) {
+                            } else if (other < iDay && _value.HasValue && iDay < _value.Value.Date) {
                                 day.AddClasses(Magics.CssClassInRange);
                             }
                         }
@@ -493,13 +493,13 @@ namespace Philadelphia.Web {
         private bool IsInRange(DateTime inp) {
             switch (Mode) {
                 case DateTimePickerMode.From:
-                    if (OtherDateTime.Value.HasValue && inp.DateOnly() > OtherDateTime.Value.Value) {
+                    if (OtherDateTime.Value.HasValue && inp.Date > OtherDateTime.Value.Value) {
                         return false;
                     }
                     break;
 
                 case DateTimePickerMode.To:
-                    if (OtherDateTime.Value.HasValue && inp.DateOnly() < OtherDateTime.Value.Value) {
+                    if (OtherDateTime.Value.HasValue && inp.Date < OtherDateTime.Value.Value) {
                         return false;
                     }
                     break;
