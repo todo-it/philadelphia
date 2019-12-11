@@ -30,16 +30,17 @@ namespace Philadelphia.Web {
             SecondPanel.Style.MaxWidth = $"{sizes.Item2}px"; //needed for FF
         }
         
-        protected override Tuple<double,double> CalculateSizesOnAttachOrResize(VisibilityAction change, Tuple<double,double> lastSizeOrNull = null) {
-            
+        protected override Tuple<double,double> CalculateSizesOnAttachOrResize(
+                VisibilityAction? change, Tuple<double,double> lastSizeOrNull = null) {
+
             var theoretAvailSpace = Window.InnerWidth; //TODO change to equivalent of Container.GetAvailableHeightForFormElement();
             var factAvailSpace = theoretAvailSpace - Splitter.GetBoundingClientRect().Width;
             
             var leftWdth = FirstPanel.GetBoundingClientRect().Width;
             var rightWdth = SecondPanel.GetBoundingClientRect().Width;
             
-            Logger.Debug(GetType(), "lastSize change={0} lastSize={1} avail={2}",
-                change, lastSizeOrNull?.Item1 + lastSizeOrNull?.Item2, factAvailSpace);
+            Logger.Debug(GetType(), "lastSize change={0} hidden?={1} lastSize={2} avail={3}",
+                change, Hidden, lastSizeOrNull?.Item1 + lastSizeOrNull?.Item2, factAvailSpace);
 
             if (lastSizeOrNull != null && change == VisibilityAction.Showing && 
                 DoubleExtensions.AreApproximatellyTheSame(
@@ -49,13 +50,9 @@ namespace Philadelphia.Web {
 
                 leftWdth = lastSizeOrNull.Item1;
                 rightWdth = lastSizeOrNull.Item2;
-            } else if (change == VisibilityAction.Showing) {
-                Logger.Debug(GetType(), "not reusing lastSize");
-                var res = ComputeSpace(leftWdth, rightWdth, factAvailSpace);
-                
-                leftWdth = res.Item1;
-                rightWdth = res.Item2;
-            } else {
+            } else if (Hidden) {
+                Logger.Debug(GetType(), "hiding reusing all available space");
+
                 if (Hideable == Hideability.First) {
                     leftWdth = 0;
                     rightWdth = factAvailSpace;
@@ -63,9 +60,16 @@ namespace Philadelphia.Web {
                     leftWdth = factAvailSpace;
                     rightWdth = 0;
                 }
+            } else {
+                //showing or resize or attach
+                Logger.Debug(GetType(), "not reusing lastSize");
+                var res = ComputeSpace(leftWdth, rightWdth, factAvailSpace);
+
+                leftWdth = res.Item1;
+                rightWdth = res.Item2;
             }
 
-            if (change == VisibilityAction.Showing) {
+            if (!Hidden) {
                 leftWdth = Math.Max(leftWdth, MinPanelSizePx);
                 rightWdth = Math.Max(rightWdth, MinPanelSizePx);
                 

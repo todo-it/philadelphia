@@ -26,10 +26,12 @@ namespace Philadelphia.Web {
         public HTMLElement Widget => _container;
         
         protected abstract void SetPanelsSize(Tuple<double,double> sizes);
-        protected abstract Tuple<double,double> CalculateSizesOnAttachOrResize(VisibilityAction change, Tuple<double,double> lastSizeOrNull = null);
+        protected abstract Tuple<double,double> CalculateSizesOnAttachOrResize(
+            VisibilityAction? change, Tuple<double,double> lastSizeOrNull = null);
         protected abstract Tuple<double,double> CalculateSizesOnUserResize(int pageX, int pageY);
         protected int MinPanelSizePx {get; }
         protected readonly Hideability Hideable;
+        protected bool Hidden = false;
         private readonly Tuple<int?,int?> _fixedSize;
         private readonly SpacingPolicy? _spacingPolicy;
 
@@ -185,15 +187,20 @@ namespace Philadelphia.Web {
             return Tuple.Create(fstResult, sndResult);
         }
 
-        public void ForceSizeCalculation(VisibilityAction change, Tuple<double,double> lastSizeOrNull = null) {
+        public void ForceSizeCalculation(VisibilityAction? change, Tuple<double,double> lastSizeOrNull = null) {
+            if (change.HasValue) {
+                Hidden = change.Value == VisibilityAction.Hiding;
+            }
+            
             var sizes = CalculateSizesOnAttachOrResize(change, lastSizeOrNull);
             Sizes = sizes;
-            Logger.Debug(GetType(), "forced size update for panelType={0} id={1} to ({2}; {3})", GetType().FullName, _container.Id, sizes.Item1, sizes.Item2);
+            Logger.Debug(GetType(), "forced size update for panelType={0} id={1} to ({2}; {3}) due to {4}", 
+                GetType().FullName, _container.Id, sizes.Item1, sizes.Item2, change);
             SetPanelsSize(sizes);
         }
 
         private void InitializeWidthsOnAttachOrResize() {
-            var sizes = CalculateSizesOnAttachOrResize(VisibilityAction.Showing, null);
+            var sizes = CalculateSizesOnAttachOrResize(null, null);
             Sizes = sizes;
             Logger.Debug(GetType(), "initializing sizes for panelType={0} id={1} to ({2}; {3})", GetType().FullName, _container.Id, sizes.Item1, sizes.Item2);
             SetPanelsSize(sizes);

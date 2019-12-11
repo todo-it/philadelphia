@@ -29,16 +29,17 @@ namespace Philadelphia.Web {
             SecondPanel.Style.MaxHeight = $"{sizes.Item2}px"; //needed for FF
         }
 
-        protected override Tuple<double,double> CalculateSizesOnAttachOrResize(VisibilityAction change, Tuple<double,double> lastSizeOrNull = null) {
-           
+        protected override Tuple<double,double> CalculateSizesOnAttachOrResize(
+                VisibilityAction? change, Tuple<double,double> lastSizeOrNull = null) {
+
             var theoretAvailSpace = Container.GetAvailableHeightForFormElement();
             var factAvailSpace = theoretAvailSpace - Splitter.GetBoundingClientRect().Height;
 
             var upperHght = FirstPanel.GetBoundingClientRect().Height;
             var lowerHght = SecondPanel.GetBoundingClientRect().Height;
             
-            Logger.Debug(GetType(), "lastSize change={0} lastSize={1} avail={2}",
-                change, lastSizeOrNull?.Item1 + lastSizeOrNull?.Item2, factAvailSpace);
+            Logger.Debug(GetType(), "lastSize change={0} hidden?={1} lastSize={2} avail={3}",
+                change, Hidden, lastSizeOrNull?.Item1 + lastSizeOrNull?.Item2, factAvailSpace);
 
             if (lastSizeOrNull != null && change == VisibilityAction.Showing && 
                     DoubleExtensions.AreApproximatellyTheSame(
@@ -48,13 +49,9 @@ namespace Philadelphia.Web {
 
                 upperHght = lastSizeOrNull.Item1;
                 lowerHght = lastSizeOrNull.Item2;
-            }  else if (change == VisibilityAction.Showing) {
-                Logger.Debug(GetType(), "not reusing lastSize");
-                var res = ComputeSpace(upperHght, lowerHght, factAvailSpace);
-                
-                upperHght = res.Item1;
-                lowerHght = res.Item2;
-            } else {
+            } else if (Hidden) {
+                Logger.Debug(GetType(), "hiding reusing all available space");
+
                 if (Hideable == Hideability.First) {
                     upperHght = 0;
                     lowerHght = factAvailSpace;
@@ -62,9 +59,16 @@ namespace Philadelphia.Web {
                     upperHght = factAvailSpace;
                     lowerHght = 0;
                 }
+            } else {
+                //showing or resize or attach
+                Logger.Debug(GetType(), "not reusing lastSize");
+                var res = ComputeSpace(upperHght, lowerHght, factAvailSpace);
+
+                upperHght = res.Item1;
+                lowerHght = res.Item2;
             }
             
-            if (change == VisibilityAction.Showing) {
+            if (!Hidden) {
                 upperHght = Math.Max(upperHght, MinPanelSizePx);
                 lowerHght = Math.Max(lowerHght, MinPanelSizePx);
                 
