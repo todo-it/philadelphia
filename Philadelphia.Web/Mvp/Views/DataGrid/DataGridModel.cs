@@ -31,7 +31,8 @@ namespace Philadelphia.Web {
             _items = new FilterableSortableObservableCollection<RecordT>();
             Columns = new FilterableSortableObservableCollection<IDataGridColumn<RecordT>>(initialColumns);
         }
-
+        
+        /// <summary> probably good idea to better use 'params' version for shorter syntax in client's code</summary>
         public static (DataGridModel<RecordT> model,DataGridModelPresenter<RecordT> presenter) CreateAndBindReloadable(
                 ITableView view, Action reloadDataAction, CalculateTbodyHeight tbodyHeight, 
                 IEnumerable<IDataGridColumn<RecordT>> initialColumns) {
@@ -40,7 +41,16 @@ namespace Philadelphia.Web {
             var presenter = model.BindAndInitialize(view);
             return (model, presenter);
         }
-        
+
+        public static (DataGridModel<RecordT> model, DataGridModelPresenter<RecordT> presenter) CreateAndBindReloadable(
+            ITableView view, Action reloadDataAction, CalculateTbodyHeight tbodyHeight,
+            params IDataGridColumn<RecordT>[] initialColumns) {
+
+            var model = new DataGridModel<RecordT>(reloadDataAction, tbodyHeight, initialColumns);
+            var presenter = model.BindAndInitialize(view);
+            return (model, presenter);
+        }
+
         /// <summary> probably good idea to better use 'params' version for shorter syntax in client's code</summary>
         public static (DataGridModel<RecordT> model,DataGridModelPresenter<RecordT> presenter) CreateAndBindNonReloadable(
                 ITableView view, CalculateTbodyHeight tbodyHeight, 
