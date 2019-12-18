@@ -1,4 +1,6 @@
-﻿namespace Philadelphia.Web {
+﻿using System;
+
+namespace Philadelphia.Web {
     public static class Magics {
         public const double MinUserResizeColumnWidth = 7.0;
         public const double MaxUserResizeColumnWidth = 1400;
@@ -172,42 +174,114 @@
         public const string CssClassTabContent = "tabContent";
         public const string CssClassTdMayOverflow = "tdMayOverflow";
 
-        public const string FontAwesomePrint = "";
-        public const string FontAwesomeDownload = "";
-        public const string FontAwesomeUpload = "";
-        public const string FontAwesomeBackward = "";
-        public const string FontAwesomeExclamationTriangle = "";
-        public const string FontAwesomeChevronLeft = "";
-        public const string FontAwesomeChevronRight = "";
-        public const string FontAwesomeForward = "";
-        public const string FontAwesomeCalendar = "";
+        [Obsolete("there are three fonts now")]
         public const string FontAwesomeName = "FontAwesome";
-        public const string FontAwesomeFilter = "";
-        public const string FontAwesomePaperPlaneO = "";
-        public const string FontAwesomeSortOrderUnspecified = "";
-        public const string FontAwesomeSortOrderAsc = "";
-        public const string FontAwesomeSortOrderDesc = "";
-        public const string FontAwesomePlusCircle = "";
-        public const string FontAwesomeSearch = "";
-        public const string FontAwesomeClose = "";
-        public const string FontAwesomeArrowsAlt = "";
-        public const string FontAwesomeReloadData = "";
-        public const string FontAwesomeGears = "";
-        public const string FontAwesomeBarChart = "";
-        public const string FontAwesomeTable = "";
-        public const string FontAwesomeWindowClose = "";
-        public const string FontAwesomeSignOut = "";
-        public const string FontAwesomeBars = "";
-        public const string FontAwesomeTrash = "";
-        public const string FontAwesomeExchange = "";
+
+        [Obsolete("use FontAwesome* class directly")]
+        public const string FontAwesomePrint = FontAwesomeSolid.IconPrint;
+
+        [Obsolete("use FontAwesome* class directly")]
+        public const string FontAwesomeDownload = FontAwesomeSolid.IconDownload;
+
+        [Obsolete("use FontAwesome* class directly")]
+        public const string FontAwesomeUpload = FontAwesomeSolid.IconUpload;
+
+        [Obsolete("use FontAwesome* class directly")]
+        public const string FontAwesomeBackward = FontAwesomeSolid.IconBackward;
+
+        [Obsolete("use FontAwesome* class directly")]
+        public const string FontAwesomeExclamationTriangle = FontAwesomeSolid.IconExclamationTriangle;
+
+        [Obsolete("use FontAwesome* class directly")]
+        public const string FontAwesomeChevronLeft = FontAwesomeSolid.IconChevronLeft;
+
+        [Obsolete("use FontAwesome* class directly")]
+        public const string FontAwesomeChevronRight = FontAwesomeSolid.IconChevronRight;
+
+        [Obsolete("use FontAwesome* class directly")]
+        public const string FontAwesomeForward = FontAwesomeSolid.IconForward;
+
+        [Obsolete("use FontAwesome* class directly")]
+        public const string FontAwesomeCalendar = FontAwesomeRegular.IconCalendarAlt;
+
+        [Obsolete("use FontAwesome* class directly")]
+        public const string FontAwesomeFilter = FontAwesomeSolid.IconFilter;
+
+        [Obsolete("use FontAwesome* class directly")]
+        public const string FontAwesomePaperPlaneO = FontAwesomeSolid.IconPaperPlane;
+
+        [Obsolete("use FontAwesome* class directly")]
+        public const string FontAwesomeSortOrderUnspecified = FontAwesomeSolid.IconSort;
+
+        [Obsolete("use FontAwesome* class directly")]
+        public const string FontAwesomeSortOrderAsc = FontAwesomeSolid.IconSortAlphaDown;
+
+        [Obsolete("use FontAwesome* class directly")]
+        public const string FontAwesomeSortOrderDesc = FontAwesomeSolid.IconSortAlphaDownAlt;
+
+        [Obsolete("use FontAwesome* class directly")]
+        public const string FontAwesomePlusCircle = FontAwesomeSolid.IconPlusCircle;
+
+        [Obsolete("use FontAwesome* class directly")]
+        public const string FontAwesomeSearch = FontAwesomeSolid.IconSearch;
+
+        [Obsolete("use FontAwesome* class directly")]
+        public const string FontAwesomeClose = FontAwesomeSolid.IconTimes;
+
+        [Obsolete("use FontAwesome* class directly")]
+        public const string FontAwesomeArrowsAlt = FontAwesomeSolid.IconArrowsAlt;
+
+        [Obsolete("use FontAwesome* class directly")]
+        public const string FontAwesomeReloadData = FontAwesomeSolid.IconSync;
+
+        [Obsolete("use FontAwesome* class directly")]
+        public const string FontAwesomeGears = FontAwesomeSolid.IconCogs;
+
+        [Obsolete("use FontAwesome* class directly")]
+        public const string FontAwesomeBarChart = FontAwesomeSolid.IconChartBar;
+
+        [Obsolete("use FontAwesome* class directly")]
+        public const string FontAwesomeTable = FontAwesomeSolid.IconTable;
+
+        [Obsolete("use FontAwesome* class directly")]
+        public const string FontAwesomeWindowClose = FontAwesomeSolid.IconTimes;
+
+        [Obsolete("use FontAwesome* class directly")]
+        public const string FontAwesomeSignOut = FontAwesomeSolid.IconSignOutAlt;
+
+        [Obsolete("use FontAwesome* class directly")]
+        public const string FontAwesomeBars = FontAwesomeSolid.IconBars;
+
+        [Obsolete("use FontAwesome* class directly")]
+        public const string FontAwesomeTrash = FontAwesomeSolid.IconTrashAlt;
+
+        [Obsolete("use FontAwesome* class directly")]
+        public const string FontAwesomeExchange = FontAwesomeSolid.IconExchangeAlt;
+
+        [Obsolete("use FontAwesome* class directly")]
         public const string FontAwesomeEyeSlash = "";
-        public const string FontAwesomeTimes = "";
-        public const string FontAwesomeListUl = "";
-        public const string FontAwesomeFileTextO = "";
-        public const string FontAwesomeSpinner = "";
-        public const string FontAwesomeThumbsoUp = "";
-        public const string FontAwesomeThumbsUp = "";
-        public const string FontAwesomeFloppyO = "";
+
+        [Obsolete("use FontAwesome* class directly")]
+        public const string FontAwesomeTimes = FontAwesomeSolid.IconTimes;
+
+        [Obsolete("use FontAwesome* class directly")]
+        public const string FontAwesomeListUl = FontAwesomeSolid.IconListUl;
+
+        [Obsolete("use FontAwesome* class directly")]
+        public const string FontAwesomeFileTextO = FontAwesomeSolid.IconFileAlt;
+
+        [Obsolete("use FontAwesome* class directly")]
+        public const string FontAwesomeSpinner = FontAwesomeSolid.IconSpinner;
+
+        [Obsolete("use FontAwesome* class directly")]
+        public const string FontAwesomeThumbsoUp = FontAwesomeRegular.IconThumbsUp;
+
+        [Obsolete("use FontAwesome* class directly")]
+        public const string FontAwesomeThumbsUp = FontAwesomeSolid.IconThumbsUp;
+
+        [Obsolete("use FontAwesome* class directly")]
+        public const string FontAwesomeFloppyO = FontAwesomeRegular.IconSave;
+
 
         public const string IconUrlFilterDelete = "FilterDelete.png";
         public const string IconUrlExit = "Exit.png";

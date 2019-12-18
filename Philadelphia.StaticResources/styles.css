@@ -501,7 +501,7 @@ div.Philadelphia\.Web\.ModalDialogFromCanvas .headerClose.enabled {
     
     align-self: flex-end;
     flex: 1;
-    font-family: FontAwesome;
+    font-family: FontAwesomeSolid;
     font-size: 18px;
     background-color: rgba(0, 0, 0, .1);
 
@@ -549,7 +549,7 @@ div.Philadelphia\.Web\.HtmlTableBasedTableView:not(.popup) .settingsAction {
     top: 2px;
     z-index: 2;
     left: 2px;
-    font-family: FontAwesome;
+    font-family: FontAwesomeSolid;
     font-size: 23px;
     border-radius: 30px;
     padding: 3px 5px 3px 5px;
@@ -1095,8 +1095,18 @@ table.Philadelphia\.Web\.HtmlTableBasedTableView td:last-child {
 }
 
 @font-face {
-    font-family: FontAwesome;
-    src: url('fontawesome-webfont.woff');
+    font-family: FontAwesomeSolid;
+    src: url('fa-solid-900_v5.12.0.woff2');
+}
+
+@font-face {
+    font-family: FontAwesomeRegular;
+    src: url('fa-regular-400_v5.12.0.woff2');
+}
+
+@font-face {
+    font-family: FontAwesomeBrands;
+    src: url('fa-brands-400_v5.12.0.woff2');
 }
 
 /* default pointer cursor instead of (disabled anyway) text select */
@@ -1566,7 +1576,7 @@ table.Philadelphia\.Web\.HtmlTableBasedTableView th {
 }
 
 .Philadelphia\.Web\.ValidationIndicatorView {
-    font-family: FontAwesome;
+    font-family: FontAwesomeSolid;
     width: 13px;
 }
 

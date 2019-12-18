@@ -52,7 +52,7 @@
     {
         "Url": "/{0}",
         "Dir": "../Philadelphia.StaticResources",
-        "FilePattern": "(?i)\\.woff$",
-        "MimeType": "application/x-font-woff"
+        "FilePattern": "(?i)\\.woff2$",
+        "MimeType": "font/woff2"
     }
 ]

@@ -10,6 +10,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Include="..\..\..\Philadelphia.Web\FontAwesomeBrands.cs" Link="Constants\FontAwesomeBrands.cs" />
+    <Compile Include="..\..\..\Philadelphia.Web\FontAwesomeRegular.cs" Link="Constants\FontAwesomeRegular.cs" />
+    <Compile Include="..\..\..\Philadelphia.Web\FontAwesomeSolid.cs" Link="Constants\FontAwesomeSolid.cs" />
     <Compile Include="..\..\..\Philadelphia.Web\Magics.cs" Link="Constants\Magics.cs" />
   </ItemGroup>
 

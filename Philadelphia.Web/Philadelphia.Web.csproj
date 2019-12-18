@@ -35,6 +35,9 @@
     <NoStdLib>true</NoStdLib>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="FontAwesomeBrands.cs" />
+    <Compile Include="FontAwesomeRegular.cs" />
+    <Compile Include="FontAwesomeSolid.cs" />
     <Compile Include="Logging\ForwardErrorsToConsoleLogLoggerImplementation.cs" />
     <Compile Include="Logging\ForwardEverythingToConsoleLogLoggerImplementation.cs" />
     <Compile Include="Logging\ForwardMatchingToConsoleLogLoggerImplementation.cs" />
