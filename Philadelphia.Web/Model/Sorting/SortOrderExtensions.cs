@@ -1,4 +1,5 @@
-﻿using Philadelphia.Common;
+﻿using System;
+using Philadelphia.Common;
 
 namespace Philadelphia.Web {
     public static class SortOrderExtensions {   
@@ -19,19 +20,19 @@ namespace Philadelphia.Web {
             }
         }
         
-        public static string GetIconText(this SortOrder inp) {
+        public static Tuple<IconFontType,string> GetIconText(this SortOrder inp) {
             switch(inp) {
                 case SortOrder.Unsupported:
-                    return " ";
+                    return Tuple.Create(IconFontType.FontAwesomeSolid," ");
                 case SortOrder.Unspecified:
-                    return Magics.FontAwesomeSortOrderUnspecified;
+                    return Tuple.Create(IconFontType.FontAwesomeSolid, FontAwesomeSolid.IconSort);
                 case SortOrder.Asc:
-                    return Magics.FontAwesomeSortOrderAsc;
+                    return Tuple.Create(IconFontType.FontAwesomeSolid, FontAwesomeSolid.IconSortAlphaDown);
                 case SortOrder.Desc:
-                    return Magics.FontAwesomeSortOrderDesc;
+                    return Tuple.Create(IconFontType.FontAwesomeSolid, FontAwesomeSolid.IconSortAlphaDownAlt);
                 default:
                     Logger.Error(typeof(SortOrderExtensions), "Unsupported value of SortOrder");
-                    return Magics.FontAwesomeSortOrderUnspecified;
+                    return Tuple.Create(IconFontType.FontAwesomeSolid, FontAwesomeSolid.IconSort);
             }
         }
     }

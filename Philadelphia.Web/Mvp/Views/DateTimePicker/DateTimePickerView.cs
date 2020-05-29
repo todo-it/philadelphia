@@ -145,10 +145,14 @@ namespace Philadelphia.Web {
             _yearAndMonthChoice = new HTMLDivElement();
             _yearAndMonthChoice.AddClasses(Magics.CssClassYearAndMonthChoice);
             
-            _minusYear = InputTypeButtonActionView.CreateFontAwesomeIconedAction(Magics.FontAwesomeBackward);
-            _minusMonth = InputTypeButtonActionView.CreateFontAwesomeIconedAction(Magics.FontAwesomeChevronLeft);
-            _plusMonth = InputTypeButtonActionView.CreateFontAwesomeIconedAction(Magics.FontAwesomeChevronRight);
-            _plusYear = InputTypeButtonActionView.CreateFontAwesomeIconedAction(Magics.FontAwesomeForward);
+            _minusYear = InputTypeButtonActionView.CreateFontAwesomeIconedAction(
+                IconFontType.FontAwesomeSolid, FontAwesomeSolid.IconBackward);
+            _minusMonth = InputTypeButtonActionView.CreateFontAwesomeIconedAction(
+                IconFontType.FontAwesomeSolid, FontAwesomeSolid.IconChevronLeft);
+            _plusMonth = InputTypeButtonActionView.CreateFontAwesomeIconedAction(
+                IconFontType.FontAwesomeSolid, FontAwesomeSolid.IconChevronRight);
+            _plusYear = InputTypeButtonActionView.CreateFontAwesomeIconedAction(
+                IconFontType.FontAwesomeSolid, FontAwesomeSolid.IconForward);
 
             _yearAndMthLbl = new LabellessReadOnlyView();
             _yearAndMthLbl.BindReadOnlyAndInitialize(_curMonth, x => $"{x.Year} {I18n.GetFullMonthName(x.Month)}");

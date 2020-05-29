@@ -54,8 +54,8 @@ namespace Philadelphia.Web {
             _container = new HTMLDivElement {ClassName = GetType().FullNameWithoutGenerics()};
             
             var upArrow = new HTMLDivElement();
-            upArrow.SetAttribute(Magics.AttrDataIcon, Magics.FontAwesomeChevronLeft);
-            upArrow.AddClasses(Magics.CssClassUpArrow);
+            upArrow.SetAttribute(Magics.AttrDataIcon, FontAwesomeSolid.IconChevronLeft);
+            upArrow.AddClasses(Magics.CssClassUpArrow, IconFontType.FontAwesomeSolid.ToCssClassName());
             upArrow.OnClick += ev => {
                 if (!Enabled) {
                     return;
@@ -70,8 +70,8 @@ namespace Philadelphia.Web {
             };
 
             var downArrow = new HTMLDivElement();
-            downArrow.SetAttribute(Magics.AttrDataIcon, Magics.FontAwesomeChevronRight);
-            downArrow.AddClasses(Magics.CssClassDownArrow);
+            downArrow.SetAttribute(Magics.AttrDataIcon, FontAwesomeSolid.IconChevronRight);
+            downArrow.AddClasses(Magics.CssClassDownArrow, IconFontType.FontAwesomeSolid.ToCssClassName());
             downArrow.OnClick += ev => {
                 if (!Enabled) {
                     return;

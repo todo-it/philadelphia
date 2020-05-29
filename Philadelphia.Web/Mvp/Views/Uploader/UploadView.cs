@@ -79,10 +79,9 @@ namespace Philadelphia.Web {
                     case UploadStatus.Running: {
                         widget.State = ActionViewState.CreateOperationRunning();
                         
-                        var throbber = new HTMLDivElement {
-                            ClassName = Magics.CssClassUsesFontAwesome,
-                            TextContent = Magics.FontAwesomeSpinner};
-
+                        var throbber = new HTMLDivElement {TextContent = FontAwesomeSolid.IconSpinner};
+                        throbber.AddClasses(IconFontType.FontAwesomeSolid.ToCssClassName());
+                        
                         throbber.Style.FontSize = $"{_parent._cellSize.width/3}px";
                         throbber.Style.SetProperty("animation", "throbberSpin 1.0s linear infinite");
 
@@ -110,9 +109,8 @@ namespace Philadelphia.Web {
                                 Src = forFile.ThumbnailDataUrl};
                             widget.Widget.AppendChild(img);
                         } else {
-                            var icn = new HTMLDivElement {
-                                ClassName = Magics.CssClassUsesFontAwesome,
-                                TextContent = Magics.FontAwesomeFileTextO};
+                            var icn = new HTMLDivElement {TextContent = FontAwesomeSolid.IconFileAlt};
+                            icn.AddClasses(IconFontType.FontAwesomeSolid.ToCssClassName());
                             icn.Style.FontSize = $"{_parent._cellSize.width/3}px";
 
                             widget.Widget.AppendChild(icn);
@@ -307,7 +305,8 @@ namespace Philadelphia.Web {
             }
 
             public IView<HTMLElement> Create(RemoteFileDescr forFile, Action forceAddOrRemoveToView) {
-                var widget = InputTypeButtonActionView.CreateFontAwesomeIconedAction(Magics.FontAwesomeClose);
+                var widget = InputTypeButtonActionView.CreateFontAwesomeIconedAction(
+                    IconFontType.FontAwesomeSolid, FontAwesomeSolid.IconTimes);
                 widget.Widget.Title = I18n.Translate("Hide");
                 widget.Triggered += () => _parent.OnRemoveTransient(forFile);
                 
@@ -354,12 +353,13 @@ namespace Philadelphia.Web {
             }
 
             public IView<HTMLElement> Create(RemoteFileDescr forFile, Action forceAddOrRemoveToView) {
-                var widget = InputTypeButtonActionView.CreateFontAwesomeIconedAction(Magics.FontAwesomeTrash);
+                var widget = InputTypeButtonActionView.CreateFontAwesomeIconedAction(
+                    IconFontType.FontAwesomeSolid, FontAwesomeSolid.IconTrashAlt);
                 widget.Widget.Title = I18n.Translate("Remove");
                 widget.Triggered += async () => {
                     widget.State = ActionViewState.CreateOperationRunning();
                     var result = await _parent.OnRemove(widget, forFile, forceAddOrRemoveToView);
-                    widget.Widget.TextContent = Magics.FontAwesomeTrash;
+                    widget.Widget.TextContent = FontAwesomeSolid.IconTrashAlt;
                     widget.State = result.Success ? 
                             ActionViewState.CreateIdleOrSuccess() 
                         : 
@@ -424,7 +424,8 @@ namespace Philadelphia.Web {
             }
 
             public IView<HTMLElement> Create(RemoteFileDescr forFile, Action forceAddOrRemoveToView) {
-                var widget = InputTypeButtonActionView.CreateFontAwesomeIconedAction(Magics.FontAwesomeExchange);
+                var widget = InputTypeButtonActionView.CreateFontAwesomeIconedAction(
+                    IconFontType.FontAwesomeSolid, FontAwesomeSolid.IconExchangeAlt);
                 widget.Widget.Title = I18n.Translate("Replace");
                 widget.Triggered += () => {
                     //HACK due to lack of: on input[file] activated but user declined to select anything
@@ -438,7 +439,7 @@ namespace Philadelphia.Web {
                     
                     _parent._hackOnUploadEnded = result => {
                         _activatedFor.Remove(forFile);
-                        widget.Widget.TextContent = Magics.FontAwesomeExchange;
+                        widget.Widget.TextContent = FontAwesomeSolid.IconExchangeAlt;
                         widget.State = result.Success ? 
                                 ActionViewState.CreateIdleOrSuccess() 
                             : 
@@ -1059,7 +1060,8 @@ namespace Philadelphia.Web {
 
             switch (PresentationMode) {
                 case UploadViewPresentation.ThumbnailGrid:
-                    aDivInAInItemDiv.TextContent = Magics.FontAwesomeExclamationTriangle;
+                    //changing solid-throbber into solid-exclamation
+                    aDivInAInItemDiv.TextContent = FontAwesomeSolid.IconExclamationTriangle;
                     aDivInAInItemDiv.Style.SetProperty("animation", "");
                     aDivInAInItemDiv.Style.SetProperty("color", "red");
                     DefaultInputLogic.SetErrorsTooltip(aDivInAInItemDiv, new HashSet<string>(new []{ errMsg }));

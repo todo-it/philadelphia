@@ -103,9 +103,10 @@ namespace Philadelphia.Web {
         public const string CssClassItems = "items";
 
         public const string CssClassIcon = "icon";
+        
         public const string CssClassFontAwesomeBasedButton = "usesFontBtn";
         public const string CssClassFontAwesomeBasedButtonLabelLess = "usesFontBtnLabelLess";
-        public const string CssClassUsesFontAwesome = "usesFontAwesome";
+        
         public const string CssClassFilterRemove = "filterRemove";
         public const string CssClassFilterable = "filterable";
         public const string CssClassFilterMainContainer = "filterMainContainer";
@@ -136,6 +137,7 @@ namespace Philadelphia.Web {
         public const string CssClassResizeHandle = "resizeHandle";
         public const string CssClassIsResizing = "isResizing";
         public const string CssClassColumnLabel = "columnLabel";
+        public const string CssClassHeaderClose = "headerClose";
         
         public const string CssClassCurrent = "current";
         public const string CssClassValidDay = "validDay";
@@ -173,10 +175,7 @@ namespace Philadelphia.Web {
         public const string CssClassTabLabel = "tabLabel";
         public const string CssClassTabContent = "tabContent";
         public const string CssClassTdMayOverflow = "tdMayOverflow";
-
-        [Obsolete("there are three fonts now")]
-        public const string FontAwesomeName = "FontAwesome";
-
+        
         [Obsolete("use FontAwesome* class directly")]
         public const string FontAwesomePrint = FontAwesomeSolid.IconPrint;
 
@@ -185,7 +184,7 @@ namespace Philadelphia.Web {
 
         [Obsolete("use FontAwesome* class directly")]
         public const string FontAwesomeUpload = FontAwesomeSolid.IconUpload;
-
+    
         [Obsolete("use FontAwesome* class directly")]
         public const string FontAwesomeBackward = FontAwesomeSolid.IconBackward;
 

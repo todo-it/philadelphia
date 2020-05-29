@@ -5,9 +5,11 @@ using Philadelphia.Web;
 namespace Philadelphia.Demo.Client {
     public class SomeChoicesFormView : IFormView<HTMLElement> {
         public IActionView<HTMLElement> First {get;} 
-            = InputTypeButtonActionView.CreateFontAwesomeIconedButton("First", Magics.FontAwesomeChevronLeft);
+            = InputTypeButtonActionView.CreateFontAwesomeIconedButton(
+                IconFontType.FontAwesomeSolid, "First", FontAwesomeSolid.IconChevronLeft);
         public IActionView<HTMLElement> Second {get;}
-            = InputTypeButtonActionView.CreateFontAwesomeIconedButton("Second", Magics.FontAwesomeChevronRight);
+            = InputTypeButtonActionView.CreateFontAwesomeIconedButton(
+                IconFontType.FontAwesomeSolid, "Second", FontAwesomeSolid.IconChevronRight);
         public IView<HTMLElement>[] Actions => new IView<HTMLElement>[]{First, Second};
 
         public RenderElem<HTMLElement>[] Render(HTMLElement _) {

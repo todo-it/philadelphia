@@ -129,7 +129,8 @@ namespace Philadelphia.Web {
             _validationOutcome.ClassList.Add(Magics.CssClassValidationState);
             _inputsContainer.AppendChild(_validationOutcome);
 
-            _activateCalendar = InputTypeButtonActionView.CreateFontAwesomeIconedAction(Magics.FontAwesomeCalendar);
+            _activateCalendar = InputTypeButtonActionView.CreateFontAwesomeIconedAction(
+                IconFontType.FontAwesomeRegular, FontAwesomeRegular.IconCalendarAlt);
             _activateCalendar.Triggered += () => {
                 if (!Enabled) {
                     return;
@@ -142,7 +143,7 @@ namespace Philadelphia.Web {
             }
 
             _clearContent = InputTypeButtonActionView.CreateFontAwesomeIconedAction(
-                Magics.FontAwesomeTimes, Magics.CssClassClearContainer);
+                IconFontType.FontAwesomeSolid, FontAwesomeSolid.IconTimes, Magics.CssClassClearContainer);
             _clearContent.Triggered += () => {
                 if (!Enabled) {
                     return;

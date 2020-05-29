@@ -13,7 +13,7 @@ namespace Philadelphia.Demo.Client {
 
         public FlexibleLayoutFlow() {
             _menuView = new ActionsBarMenuFormView(x => {
-                var res = InputTypeButtonActionView.CreateFontAwesomeIconedButtonLabelless(x.Label.Value);
+                var res = InputTypeButtonActionView.CreateFontAwesomeIconedButtonLabelless(IconFontType.FontAwesomeSolid, x.Label.Value);
                 x.Label.Changed += (_, __, newValue, ___, ____) => res.PreLabelElem.TextContent = newValue;
                 res.StaysPressed = true;
                 return res;
@@ -22,15 +22,15 @@ namespace Philadelphia.Demo.Client {
             _menuView.BodyPanel.Value = "Activate some action button...";
 
             _menu = new MenuForm(_menuView, new []{
-                MenuItemUserModel.CreateLocalLeaf(Magics.FontAwesomeSearch, 
+                MenuItemUserModel.CreateLocalLeaf(FontAwesomeSolid.IconSearch, 
                     () => ChangeModeTo(FlexibleLayoutContentForm.ModeType.Search)),
-                MenuItemUserModel.CreateLocalLeaf(Magics.FontAwesomeGears, 
+                MenuItemUserModel.CreateLocalLeaf(FontAwesomeSolid.IconCogs, 
                     () => ChangeModeTo(FlexibleLayoutContentForm.ModeType.Settings)),
-                MenuItemUserModel.CreateLocalLeaf(Magics.FontAwesomeBarChart, 
+                MenuItemUserModel.CreateLocalLeaf(FontAwesomeSolid.IconChartBar, 
                     () => ChangeModeTo(FlexibleLayoutContentForm.ModeType.Chart)),
-                MenuItemUserModel.CreateLocalLeaf(Magics.FontAwesomeTable, 
+                MenuItemUserModel.CreateLocalLeaf(FontAwesomeSolid.IconTable, 
                     () => ChangeModeTo(FlexibleLayoutContentForm.ModeType.Table)),
-                MenuItemUserModel.CreateLocalLeaf(Magics.FontAwesomeSignOut, () => {
+                MenuItemUserModel.CreateLocalLeaf(FontAwesomeSolid.IconSignOutAlt, () => {
                     _onExit?.Invoke();
                 }) });
             _menu.Title = "Menu";

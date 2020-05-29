@@ -145,28 +145,29 @@ namespace Philadelphia.Web {
         /// <summary>
         /// create new element - sets up visuals and events
         /// </summary>
-        public InputTypeButtonActionView(string labelContent, string preLabelContent = null, LeftOrRight loc = LeftOrRight.Left) :
-            this(Unit.Instance, CreateElement(labelContent, preLabelContent, loc)) {}
+        public InputTypeButtonActionView(string labelContent, Tuple<IconFontType,string> preLabel = null, LeftOrRight loc = LeftOrRight.Left) :
+            this(Unit.Instance, CreateElement(labelContent, preLabel, loc)) {}
         
         public static InputTypeButtonActionView CreateFontAwesomeIconedButton(
-                string labelContent, string icon, LeftOrRight loc = LeftOrRight.Left) {
+                IconFontType font, string labelContent, string icon, LeftOrRight loc = LeftOrRight.Left) {
 
-            var res = new InputTypeButtonActionView(labelContent, icon, loc);
-            res.Widget.AddClasses(Magics.CssClassFontAwesomeBasedButton);
+            var res = new InputTypeButtonActionView(labelContent, Tuple.Create(font, icon), loc);
+            res.Widget.AddClasses(Magics.CssClassFontAwesomeBasedButton, font.ToCssClassName());
             return res;
         }
 
-        public static InputTypeButtonActionView CreateFontAwesomeIconedButtonLabelless(string icon) {
-            var res = new InputTypeButtonActionView("", icon);
-            res.Widget.AddClasses(Magics.CssClassFontAwesomeBasedButtonLabelLess);
+        public static InputTypeButtonActionView CreateFontAwesomeIconedButtonLabelless(IconFontType font, string icon) {
+            var res = new InputTypeButtonActionView("", Tuple.Create(font, icon));
+            res.Widget.AddClasses(Magics.CssClassFontAwesomeBasedButtonLabelLess, font.ToCssClassName());
             return res;
         }
 
-        public static InputTypeButtonActionView CreateFontAwesomeIconedAction(string fontAwesomeIcon, string cssClassName=Magics.CssClassAnchorWithFontIcon) {
-            var action = new HTMLAnchorElement {
-                ClassName = cssClassName,
-                TextContent = fontAwesomeIcon
-            };
+        public static InputTypeButtonActionView CreateFontAwesomeIconedAction(
+                IconFontType font, string fontAwesomeIcon, string cssClassName=Magics.CssClassAnchorWithFontIcon) {
+            
+            var action = new HTMLAnchorElement {TextContent = fontAwesomeIcon};
+            action.AddClasses(cssClassName, font.ToCssClassName());
+            
             return new InputTypeButtonActionView(action, x => {
                 if (x) {
                     action.SetAttribute("target", "_blank");
@@ -177,9 +178,13 @@ namespace Philadelphia.Web {
         }
 
         /// <summary>returns element AND action to set should-open-in-new-tab?</summary>
-        private static Tuple<HTMLElement,Action<bool>,HTMLElement,HTMLElement> CreateElement(string labelContent, string preLabelContent = null, LeftOrRight loc = LeftOrRight.Left) {
-            var preLabel = new HTMLElement(ElementType.Span) {TextContent = preLabelContent ?? ""};
-            preLabel.AddClasses(Magics.CssClassUsesFontAwesome);
+        private static Tuple<HTMLElement,Action<bool>,HTMLElement,HTMLElement> CreateElement(string labelContent, Tuple<IconFontType, string> preLabel = null, LeftOrRight loc = LeftOrRight.Left) {
+            var preLblEl = new HTMLElement(ElementType.Span);
+            if (preLabel != null) {
+                preLblEl.TextContent = preLabel.Item2;
+                preLblEl.AddClasses(preLabel.Item1.ToCssClassName());    
+            }
+            
             var properLabel = new HTMLElement(ElementType.Span) {TextContent = labelContent};
 
             var result = new HTMLElement(ElementType.Span) {
@@ -188,13 +193,13 @@ namespace Philadelphia.Web {
 
             switch (loc) {
                 case LeftOrRight.Left:
-                    result.AppendChild(preLabel);
+                    result.AppendChild(preLblEl);
                     result.AppendChild(properLabel);
                     break;
 
                 case LeftOrRight.Right:
                     result.AppendChild(properLabel);
-                    result.AppendChild(preLabel);
+                    result.AppendChild(preLblEl);
                     break;
 
                 default: throw new Exception("unsupported LeftOrRight");
@@ -206,7 +211,7 @@ namespace Philadelphia.Web {
                     return;
                 }
                 result.RemoveAttribute("target");
-            }, preLabel, properLabel);
+            }, preLblEl, properLabel);
         }
 
         public HTMLElement Widget => _elem;

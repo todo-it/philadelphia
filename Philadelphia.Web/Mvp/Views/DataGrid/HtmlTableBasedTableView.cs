@@ -91,7 +91,7 @@ namespace Philadelphia.Web {
 
         public HtmlTableBasedTableView() {
             _reloadDataAction = InputTypeButtonActionView.CreateFontAwesomeIconedButtonLabelless(
-                Magics.FontAwesomeReloadData);
+                IconFontType.FontAwesomeSolid, FontAwesomeSolid.IconSync);
             _reloadDataAction.Widget.ClassList.Add(Magics.CssClassNotRendered);
             _reloadDataAction.Widget.SetAttribute(Magics.AttrAlignToRight, "");
             
@@ -152,8 +152,8 @@ namespace Philadelphia.Web {
 
             _tblContainer.AppendChild(_tbl);
 
-            _tblSettings = new HTMLAnchorElement {Href = "#", TextContent = Magics.FontAwesomeBars};
-            _tblSettings.AddClasses(Magics.CssClassSettingsAction);
+            _tblSettings = new HTMLAnchorElement {Href = "#", TextContent = FontAwesomeSolid.IconBars};
+            _tblSettings.AddClasses(Magics.CssClassSettingsAction, IconFontType.FontAwesomeSolid.ToCssClassName());
             
             _tblContainer.AppendChild(_tblSettings);
 
@@ -519,10 +519,11 @@ namespace Philadelphia.Web {
         }
 
         private void SetSortOrder(Element el, SortOrder order) {
+            var fontAndIcon = order.GetIconText();
             el.SetAttributeIfNeeded(Magics.AttrDataSortOrder, ((int)order).ToString()); //icon
             el.ParentElement?.SetAttributeIfNeeded(Magics.AttrDataSortOrder, ((int)order).ToString()); //for cursor pointer    
 
-            el.TextContent = order.GetIconText();
+            el.TextContent = fontAndIcon.Item2;
         }
 
         public void InsertHeader(IEnumerable<HeaderColumnDescr> items) {
@@ -548,23 +549,20 @@ namespace Philadelphia.Web {
                 }
                 thFilter.AppendChild(item.FilterElem);
                 
-                var filterIndicator = new HTMLSpanElement {
-                    ClassName = Magics.CssClassFilterIndicator,
-                    TextContent = Magics.FontAwesomeFilter };
+                var filterIndicator = new HTMLSpanElement { TextContent = FontAwesomeSolid.IconFilter };
+                filterIndicator.AddClasses(Magics.CssClassFilterIndicator, IconFontType.FontAwesomeSolid.ToCssClassName());
 
-                var groupIndicator = new HTMLSpanElement {
-                    ClassName = Magics.CssClassGroupIndicator,
-                    TextContent = Magics.FontAwesomeListUl };
+                var groupIndicator = new HTMLSpanElement {TextContent = FontAwesomeSolid.IconListUl };
+                groupIndicator.AddClasses(Magics.CssClassGroupIndicator, IconFontType.FontAwesomeSolid.ToCssClassName());
 
                 var aggregationIndicator = new HTMLSpanElement {
                     ClassName = Magics.CssClassAggregationIndicator,
                     TextContent = "Σ" };
                 
-                var sortControl = new HTMLSpanElement();
-                sortControl.Style.FontFamily = Magics.FontAwesomeName;
-
                 var order = item.Orderable ? SortOrder.Unspecified : SortOrder.Unsupported;
-                sortControl.TextContent = order.GetIconText();
+                var fontAndIcon = order.GetIconText();
+                var sortControl = new HTMLSpanElement {ClassName = fontAndIcon.Item1.ToCssClassName()};
+                sortControl.TextContent = fontAndIcon.Item2;
                 
                 _sortControls.Add(sortControl);
                 alwaysVisibleItemsContainer.AddEventListener("click", OnSortClicked, false);

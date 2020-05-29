@@ -47,13 +47,15 @@
     <Content Include="drag64rotated.png" />
     <Content Include="Error.png" />
     <Content Include="Exit.png" />
+    <Content Include="fa-brands-400_v5.12.0.woff2" />
+    <Content Include="fa-regular-400_v5.12.0.woff2" />
+    <Content Include="fa-solid-900_v5.12.0.woff2" />
     <Content Include="Search.png" />
     <Content Include="spin32.gif" />
     <Content Include="spin84.gif" />
     <Content Include="styles.css" />
     <Content Include="Success.png" />
     <Content Include="Xlsx.png" />
-    <None Include="fontawesome-webfont.woff" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

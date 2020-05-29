@@ -4,7 +4,8 @@ using Philadelphia.Web;
 
 namespace Philadelphia.Demo.Client {
     public class AllFieldsFilledDataEntryFormView : IFormView<HTMLElement> {
-        public InputTypeButtonActionView ConfirmAction = InputTypeButtonActionView.CreateFontAwesomeIconedButton("Confirm", Magics.FontAwesomeChevronRight, LeftOrRight.Right)
+        public InputTypeButtonActionView ConfirmAction = InputTypeButtonActionView.CreateFontAwesomeIconedButton(
+                IconFontType.FontAwesomeSolid, "Confirm", FontAwesomeSolid.IconChevronRight, LeftOrRight.Right)
             .With(x => x.MarkAsFormsDefaultButton());
         public IView<HTMLElement>[] Actions => new IView<HTMLElement>[]{ ConfirmAction };
         public InputView StringEntry = new InputView("Text entry");

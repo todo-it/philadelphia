@@ -1,4 +1,31 @@
-﻿/* try to not use margin at all as one cannot measure it efficiently in runtime */
+﻿@font-face {
+    font-family: FontAwesomeSolid;
+    src: url('fa-solid-900_v5.12.0.woff2');
+}
+
+@font-face {
+    font-family: FontAwesomeRegular;
+    src: url('fa-regular-400_v5.12.0.woff2');
+}
+
+@font-face {
+    font-family: FontAwesomeBrands;
+    src: url('fa-brands-400_v5.12.0.woff2');
+}
+
+.faSolid {
+    font-family: FontAwesomeSolid;    
+}
+
+.faRegular {
+    font-family: FontAwesomeRegular;
+}
+
+.faBrands {
+    font-family: FontAwesomeBrands;
+}
+
+/* try to not use margin at all as one cannot measure it efficiently in runtime */
 html, body {
     height: 100%;
     margin: 0;
@@ -500,8 +527,7 @@ div.Philadelphia\.Web\.ModalDialogFromCanvas .headerClose.enabled {
     padding-top: 4px;
     
     align-self: flex-end;
-    flex: 1;
-    font-family: FontAwesomeSolid;
+    flex: 1;    
     font-size: 18px;
     background-color: rgba(0, 0, 0, .1);
 
@@ -548,8 +574,7 @@ div.Philadelphia\.Web\.HtmlTableBasedTableView:not(.popup) .settingsAction {
     display: inline;
     top: 2px;
     z-index: 2;
-    left: 2px;
-    font-family: FontAwesomeSolid;
+    left: 2px;    
     font-size: 23px;
     border-radius: 30px;
     padding: 3px 5px 3px 5px;
@@ -707,8 +732,7 @@ table.Philadelphia\.Web\.HtmlTableBasedTableView th input[type='radio'] {
 }
 
 .Philadelphia\.Web\.HtmlTableBasedTableView thead tr:nth-child(1) th.withFilter .filterIndicator {
-    opacity: 1;
-    font-family: FontAwesome;
+    opacity: 1;    
     padding-right: 3px;
 }
 
@@ -725,8 +749,7 @@ table.Philadelphia\.Web\.HtmlTableBasedTableView th input[type='radio'] {
 }
 
 .Philadelphia\.Web\.HtmlTableBasedTableView thead tr:nth-child(1) th.withGrouping .groupIndicator {
-    opacity: 1;
-    font-family: FontAwesome;
+    opacity: 1;    
     padding-right: 3px;
 }
 
@@ -939,18 +962,11 @@ table.Philadelphia\.Web\.HtmlTableBasedTableView td:last-child {
     display: inline-block;    
 }
 
-.Philadelphia\.Web\.InputTypeButtonActionView.usesFontBtn > span.cssClassUsesFontAwesome {
-    vertical-align: middle;
-    padding-left: 6px;
-    font-family: FontAwesome;
-}
-
-.Philadelphia\.Web\.InputTypeButtonActionView.usesFontBtn > span:not(.cssClassUsesFontAwesome) {
+.Philadelphia\.Web\.InputTypeButtonActionView.usesFontBtn > span {
     padding: 5px 15px 6px 15px;
 }
 
-.Philadelphia\.Web\.InputTypeButtonActionView.usesFontBtnLabelLess > span:nth-child(1) {
-    font-family: FontAwesome;
+.Philadelphia\.Web\.InputTypeButtonActionView.usesFontBtnLabelLess > span:nth-child(1) {    
     padding: 7px 10px 7px 10px;
 }
 
@@ -1028,8 +1044,8 @@ table.Philadelphia\.Web\.HtmlTableBasedTableView td:last-child {
 }
 
 .Philadelphia\.Web\.InputTypeButtonActionView.failed::before {
-    font-family: FontAwesome;
-    content: "";
+    font-family: FontAwesomeSolid;
+    content: ""; /*IconTimesCircle*/
     color: #f00000;
 }
 
@@ -1042,8 +1058,8 @@ table.Philadelphia\.Web\.HtmlTableBasedTableView td:last-child {
 @keyframes throbberSpin { 100% { transform: rotate(360deg); } }
 
 .Philadelphia\.Web\.InputTypeButtonActionView.running::before {
-    font-family: FontAwesome;
-    content: "";
+    font-family: FontAwesomeSolid;
+    content: ""; /*IconSpinner*/
     animation: throbberSpin 1.0s linear infinite;
     color: #000;
 
@@ -1094,21 +1110,6 @@ table.Philadelphia\.Web\.HtmlTableBasedTableView td:last-child {
     display: none;
 }
 
-@font-face {
-    font-family: FontAwesomeSolid;
-    src: url('fa-solid-900_v5.12.0.woff2');
-}
-
-@font-face {
-    font-family: FontAwesomeRegular;
-    src: url('fa-regular-400_v5.12.0.woff2');
-}
-
-@font-face {
-    font-family: FontAwesomeBrands;
-    src: url('fa-brands-400_v5.12.0.woff2');
-}
-
 /* default pointer cursor instead of (disabled anyway) text select */
 table.Philadelphia\.Web\.HtmlTableBasedTableView th[data-sort="4"] {
     cursor: default;
@@ -1140,14 +1141,14 @@ table.Philadelphia\.Web\.HtmlTableBasedTableView > thead > tr > th:not(.withAggr
     display: none;
 }
 
-table.Philadelphia\.Web\.HtmlTableBasedTableView > thead > tr > th.withGrouping > .filterMainContainer .groupRemove {
-    font-family: FontAwesome;
+table.Philadelphia\.Web\.HtmlTableBasedTableView > thead > tr > th.withGrouping > .filterMainContainer .groupRemove {    
     font-size: 20px;
     overflow: hidden;
 }
 
 table.Philadelphia\.Web\.HtmlTableBasedTableView > thead > tr > th.withGrouping > .filterMainContainer .groupRemove:after {
-    content: "";
+    font-family: FontAwesomeSolid;
+    content: ""; /*IconTimes*/
     color: red;
     font-size: 15px;
     margin-left: -10px;
@@ -1160,8 +1161,8 @@ table.Philadelphia\.Web\.HtmlTableBasedTableView > thead > tr > th.withAggregati
 }
 
 table.Philadelphia\.Web\.HtmlTableBasedTableView > thead > tr > th.withAggregation > .filterMainContainer .aggregationRemove:after {
-    font-family: FontAwesome;
-    content: "";
+    font-family: FontAwesomeSolid;
+    content: ""; /*IconTimes*/
     color: red;
     font-size: 15px;
     margin-left: -10px;
@@ -1271,15 +1272,14 @@ table.Philadelphia\.Web\.HtmlTableBasedTableView:not(.filterable) thead tr th.fi
 
 .Philadelphia\.Web\.HtmlTableBasedTableView.filterable thead th.filter a.filterRemove {
     display: inline-block;
-    font-family: FontAwesome;
     font-size: 20px;
     padding-right: 15px;    
 }
 
 .Philadelphia\.Web\.HtmlTableBasedTableView.filterable thead th.filter a.filterRemove:after {
-    font-family: FontAwesome;
+    font-family: FontAwesomeSolid;
     font-size: 15px;
-    content: ""; /*times*/
+    content: ""; /*IconTimes*/
     color: red;
     margin-left: -10px;
 }
@@ -1389,8 +1389,7 @@ table.Philadelphia\.Web\.HtmlTableBasedTableView th {
     overflow-y: auto;
 }
 
-.anchorWithFontIcon:not(.headerClose) {
-    font-family: FontAwesome;
+.anchorWithFontIcon:not(.headerClose) {    
     color: #fff;
     font-size: 15px;
     padding-left: 4px;
@@ -1466,8 +1465,8 @@ table.Philadelphia\.Web\.HtmlTableBasedTableView th {
         
 .Philadelphia\.Web\.InputView > .inputContainer > .clearContainer:after {
     position: absolute;
-    content: "";
-    font-family: FontAwesome;
+    font-family: FontAwesomeSolid;
+    content: ""; /*IconTimes*/    
     top: 1px;
     left: -14px;
     cursor: pointer;
@@ -1575,13 +1574,13 @@ table.Philadelphia\.Web\.HtmlTableBasedTableView th {
     /*overflow: auto; disabled because popups in tabs are truncated*/
 }
 
-.Philadelphia\.Web\.ValidationIndicatorView {
-    font-family: FontAwesomeSolid;
+.Philadelphia\.Web\.ValidationIndicatorView {    
     width: 13px;
 }
 
 .Philadelphia\.Web\.ValidationIndicatorView.failed:after {
-    content: ""; /*exclamation mark in circle*/
+    font-family: FontAwesomeSolid;
+    content: ""; /*IconExclamationCircle*/
 }
 
 .tableLike {
@@ -1648,9 +1647,9 @@ label {
     white-space: pre; /*so that overflowing text doesn't cause multi lines'*/
 }
 
-.Philadelphia\.Web\.MultipleChoiceDropDown > .valueContainer > .value > .icon:after {
-    content: "";
-    font-family: FontAwesome;
+.Philadelphia\.Web\.MultipleChoiceDropDown > .valueContainer > .value > .icon:after {    
+    font-family: FontAwesomeSolid;
+    content: ""; /*IconCaretDown*/
     padding-right: 5px;
 }
 
@@ -1873,8 +1872,8 @@ body[data-dragging] .Philadelphia\.Web\.UploadView > div:nth-child(1) {
 }
 
 .Philadelphia\.Web\.UploadView[mode='TextRow'] > div:nth-child(3) > div.items > *[data-status='Running']::after {
-    font-family: FontAwesome;
-    content: "";
+    font-family: FontAwesomeSolid;
+    content: ""; /*IconSpinner*/
     animation: throbberSpin 1.0s linear infinite;
     color: #000;
     font-size: 16px;
@@ -2183,9 +2182,9 @@ body[data-dragging] .Philadelphia\.Web\.UploadView > div:nth-child(1) {
     outline: none; /*hide individual inputs*/
 }
 
-.Philadelphia\.Web\.DateTimeInputView > .clearContainer {
-    content: ""; /*times*/
-    font-family: FontAwesome;
+.Philadelphia\.Web\.DateTimeInputView > .clearContainer {    
+    font-family: FontAwesomeSolid;
+    content: ""; /*IconTimes*/
     cursor: pointer;
     width: 16px;
     padding-left:4px;
@@ -2225,8 +2224,7 @@ body[data-dragging] .Philadelphia\.Web\.UploadView > div:nth-child(1) {
 
 .Philadelphia\.Web\.MaskedNumberInputView .upArrow:before {
     content: attr(data-icon);
-    transform: rotate(90deg);
-    font-family: FontAwesome;
+    transform: rotate(90deg);    
     font-size: 10px;
     display: inline-block;
     align-self: center;    
@@ -2236,7 +2234,6 @@ body[data-dragging] .Philadelphia\.Web\.UploadView > div:nth-child(1) {
 .Philadelphia\.Web\.MaskedNumberInputView .downArrow:before {
     content: attr(data-icon);
     transform: rotate(90deg);
-    font-family: FontAwesome;
     font-size: 10px;
     display: inline-block;    
     align-self: center;
@@ -2360,10 +2357,6 @@ body[data-dragging] .Philadelphia\.Web\.UploadView > div:nth-child(1) {
     display: none;
 }
 
-.usesFontAwesome {
-    font-family: FontAwesome;
-}
-
 .positionRelative {
     position: relative;
 }
@@ -2372,8 +2365,7 @@ body[data-dragging] .Philadelphia\.Web\.UploadView > div:nth-child(1) {
     display: none;
 }
 
-.hideAction.enabled {
-    font-family: FontAwesome;
+.hideAction.enabled {    
     font-size: 30px;
     text-shadow: 3px 3px 3px #ccc;
     color: #050062;
@@ -2395,8 +2387,7 @@ body[data-dragging] .Philadelphia\.Web\.UploadView > div:nth-child(1) {
     display: none;
 }
 
-.showAction.enabled {
-    font-family: FontAwesome;
+.showAction.enabled {    
     font-size: 30px;
     text-shadow: 3px 3px 3px #ccc;
     color: #050062;

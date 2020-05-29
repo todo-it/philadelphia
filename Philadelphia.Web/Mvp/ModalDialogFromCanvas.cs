@@ -69,8 +69,8 @@ namespace Philadelphia.Web {
 
             _headerTitle = DocumentUtil.CreateElementHavingClassName("div", "headerTitle");
             
-            _userClose = InputTypeButtonActionView.CreateFontAwesomeIconedAction(Magics.FontAwesomeClose);
-            _userClose.Widget.ClassList.Add("headerClose");
+            _userClose = InputTypeButtonActionView.CreateFontAwesomeIconedAction(IconFontType.FontAwesomeSolid, FontAwesomeSolid.IconTimes);
+            _userClose.Widget.ClassList.Add(Magics.CssClassHeaderClose);
             _userClose.Widget.SetAttribute(Magics.AttrDataEscListener, "");
 
             _modalGlass.AppendChild(_dialog);

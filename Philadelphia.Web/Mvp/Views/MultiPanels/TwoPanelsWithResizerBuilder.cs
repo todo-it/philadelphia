@@ -25,10 +25,12 @@ namespace Philadelphia.Web {
             var fstIsHideable = whichOne;
             var toBeHidden = fstIsHideable ? panels.FirstPanel : panels.SecondPanel;
 
-            var hideAct = new HTMLDivElement{TextContent = Magics.FontAwesomeClose}
-                .With(x => x.AddClasses(Magics.CssClassHideAction, Magics.CssClassEnabled));
-            var showAct = showable ? new HTMLDivElement{TextContent = Magics.FontAwesomeBars}
-                .With(x => x.AddClasses(Magics.CssClassShowAction)) : null;
+            var hideAct = new HTMLDivElement{TextContent = FontAwesomeSolid.IconTimes}
+                .With(x => x.AddClasses(
+                    Magics.CssClassHideAction, Magics.CssClassEnabled, IconFontType.FontAwesomeSolid.ToCssClassName()));
+            var showAct = showable ? new HTMLDivElement{TextContent = FontAwesomeSolid.IconBars}
+                .With(x => x.AddClasses(
+                    Magics.CssClassShowAction, IconFontType.FontAwesomeSolid.ToCssClassName())) : null;
             
             panels.FirstPanel.AddClasses(Magics.CssClassPositionRelative);
             var leftCanvas = new ElementWrapperFormCanvas(

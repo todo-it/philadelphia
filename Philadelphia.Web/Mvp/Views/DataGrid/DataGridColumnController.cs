@@ -120,10 +120,10 @@ namespace Philadelphia.Web {
             }
 
             var removeFilter = new HTMLAnchorElement {
-                ClassName = Magics.CssClassFilterRemove,
                 Target = "#",
                 Title = I18n.Translate("Remove filter"),
-                Text = Magics.FontAwesomeFilter };
+                Text = FontAwesomeSolid.IconFilter };
+            removeFilter.AddClasses(Magics.CssClassFilterRemove, IconFontType.FontAwesomeSolid.ToCssClassName());
             actionContainer.AppendChild(removeFilter);
                     
             var removeFilterActionView = new InputTypeButtonActionView(removeFilter);
@@ -134,10 +134,10 @@ namespace Philadelphia.Web {
             });
 
             var removeGrouping = new HTMLAnchorElement {
-                ClassName = Magics.CssClassGroupingRemove,
                 Target = "#",
                 Title = I18n.Translate("Remove grouping"),
-                Text = Magics.FontAwesomeListUl };
+                Text = FontAwesomeSolid.IconListUl };
+            removeGrouping.AddClasses(Magics.CssClassGroupingRemove, IconFontType.FontAwesomeSolid.ToCssClassName());
             actionContainer.AppendChild(removeGrouping);
                 
             var removeGroupingActionView = new InputTypeButtonActionView(removeGrouping);

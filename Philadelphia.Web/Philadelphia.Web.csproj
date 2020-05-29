@@ -38,6 +38,7 @@
     <Compile Include="FontAwesomeBrands.cs" />
     <Compile Include="FontAwesomeRegular.cs" />
     <Compile Include="FontAwesomeSolid.cs" />
+    <Compile Include="IconFontType.cs" />
     <Compile Include="Logging\ForwardErrorsToConsoleLogLoggerImplementation.cs" />
     <Compile Include="Logging\ForwardEverythingToConsoleLogLoggerImplementation.cs" />
     <Compile Include="Logging\ForwardMatchingToConsoleLogLoggerImplementation.cs" />
@@ -245,7 +246,6 @@
     <Content Include="ToBeUpstreamed\readme.txt" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="bridge.json" />
     <None Include="Bridge\bridge.json" />
     <None Include="packages.config" />
   </ItemGroup>

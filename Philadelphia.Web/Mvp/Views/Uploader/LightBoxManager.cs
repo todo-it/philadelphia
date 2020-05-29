@@ -36,25 +36,25 @@ namespace Philadelphia.Web {
             lightboxCnt.Style.Height = $"{dim.Item2}px";
             
             var throbber = new HTMLDivElement {
-                TextContent = Magics.FontAwesomeSpinner};
+                TextContent = FontAwesomeSolid.IconSpinner};
             throbber.AddClasses(
-                Magics.CssClassUsesFontAwesome, Magics.CssClassLightBoxThrobber);
+                IconFontType.FontAwesomeSolid.ToCssClassName(), Magics.CssClassLightBoxThrobber);
             lightboxCnt.AppendChild(throbber);
 
             var closeAction = new HTMLDivElement {
-                TextContent = Magics.FontAwesomeClose};
+                TextContent = FontAwesomeSolid.IconTimes};
             closeAction.AddClasses(
-                Magics.CssClassUsesFontAwesome, Magics.CssClassLightBoxClose);
+                IconFontType.FontAwesomeSolid.ToCssClassName(), Magics.CssClassLightBoxClose);
             lightboxCnt.AppendChild(closeAction);
             closeAction.OnClick += ev => parentForModal.RemoveChild(glass);
 
             var openInNewTab = new HTMLAnchorElement {
-                TextContent = Magics.FontAwesomeArrowsAlt,
+                TextContent = FontAwesomeSolid.IconArrowsAlt,
                 Href = generatedImageUrl,
                 Target = "_blank"
             };
             openInNewTab.AddClasses(
-                Magics.CssClassUsesFontAwesome, Magics.CssClassLightBoxOpenInNewTab);
+                IconFontType.FontAwesomeSolid.ToCssClassName(), Magics.CssClassLightBoxOpenInNewTab);
             lightboxCnt.AppendChild(openInNewTab);
 
             glass.OnClick += ev => {
