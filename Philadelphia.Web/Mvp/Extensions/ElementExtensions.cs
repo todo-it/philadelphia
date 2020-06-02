@@ -125,6 +125,21 @@ namespace Philadelphia.Web {
             self.SetAttribute(attributeName, attributeValue);
         }
         
+        public static void SetValuelessAttribute(this Element self, string attributeName) => self.SetAttribute(attributeName, "");
+
+        public static bool? GetBoolAttribute(this Element self, string attributeName) {
+            var res = self.GetAttribute(attributeName);
+            if (res == "0") {
+                return false;
+            }
+            if (res == "1") {
+                return true;
+            }
+
+            return null;
+        } 
+        public static void SetBoolAttribute(this Element self, string attributeName, bool val) => self.SetAttribute(attributeName, val ? "1" : "0");
+        
         public static Element GetParentElementMatching(this Element container, Func<HTMLElement,bool> matches) {
             var el = container.ParentElement;
 
@@ -178,18 +193,6 @@ namespace Philadelphia.Web {
             }
         }
 
-        public static void FindAndFocusOnFirstItem(this HTMLElement self) {
-            self.TraverseUntilFirst(el => {
-                if (el.TagName != "INPUT" && el.TagName != "TEXTAREA" && el.TagName != "SELECT") {
-                    return false;
-                }
-                
-                el.TryFocusElement();
-                
-                return true;
-            });
-        }
-
         public static bool HasParentWithAttribute(this HTMLElement self, string attribName, HTMLElement dontLookUpperThan = null) {
             var parent = self.ParentElement;
             
@@ -214,43 +217,6 @@ namespace Philadelphia.Web {
 
         public static bool IsInVerticalPanel(this HTMLElement self, HTMLElement dontLookUpperThan = null) {
             return self.HasParentWithAttribute(Magics.AttrDataIsVerticalPanel, dontLookUpperThan);
-        }
-        
-        public static bool IsPopupFormView(this Element self) {
-            return self.HasAttribute(Magics.AttrDataIsPopup);
-        }
-
-        public static void MarkAsFormView(this Element self, bool isPopup) {
-            self.SetAttribute(Magics.AttrDataFormview, "");
-            if (isPopup) {
-                self.SetAttribute(Magics.AttrDataIsPopup, "");
-            }
-        }
-
-        public static HTMLElement FindFormViewOrNull(this HTMLElement self) {
-            if (self.HasAttribute(Magics.AttrDataFormview)) {
-                return self;
-            }
-            if (self == Document.Body || self.ParentElement == null) {
-                return null;
-            }
-            return self.ParentElement.FindFormViewOrNull();
-        }
-
-        public static void ActivateMyFormsDefaultButtonIfAny(this HTMLElement self) {
-            var form = self.FindFormViewOrNull();
-            if (form == null) {
-                Logger.Debug(typeof(ElementExtensions), "Element doesn't seem to be contained in any form OR is detached from DOM");
-                return;
-            }
-            var button = form.TraverseUntilFirst(el => el.HasAttribute(Magics.AttrDataDefaultAction));
-            if (button == null) {
-                Logger.Debug(typeof(ElementExtensions), "Element's form doesn't seem to be have default button");
-                return;
-            }
-
-            Logger.Debug(typeof(ElementExtensions), "Activating element's form default button");
-            button.Click();
         }
         
         public static void MarkAsResizeRecipient(this Element self, bool value) {
@@ -566,138 +532,43 @@ namespace Philadelphia.Web {
             return self.ParentElement.IsDescendantOf(checkedAncestor);
         }
 
+        public static List<HTMLElement> GetSiblings(this HTMLElement self) =>
+            (self.ParentElement == null) ? new List<HTMLElement>() : self.ParentElement.Children.Where(x => x != self).ToList();
+        
         /// <summary>
-        /// assume that there can be several forms embedded in theselves. 
-        /// Available height for element is a Widnow->ClientHeight diminished by all action bars (in current form and all parent forms)
+        /// Assume that there can be several forms embedded in one another.
+        /// Assume that forms have vertically stacked items.
+        /// Take into account that form can be a child of TwoHorizontalPanelsWithResizer (horizontal or vertical) 
+        /// Available height for element is a Window->ClientHeight diminished by all action bars (in current form and all parent forms)
         /// </summary>
-        public static int GetAvailableHeightForFormElement(this HTMLElement el, int diminishAvailQty = 0, int extraEmptySpacePerLevel=0) {
-            var curType = typeof(ElementExtensions);
-            var forms = new List<Tuple<HTMLElement,List<HTMLElement>>>();
+        public static int GetAvailableHeightForFormElement(
+                this HTMLElement el, int diminishAvailQty = 0, int extraEmptySpacePerLevel = 0) {
+
+            Logger.Debug(typeof(ElementExtensions), "GetAvailableHeightForFormElement starting");
             
-            var parent = el;
-            Logger.Debug(curType, "GetAvailableHeightForFormElement(element id={0})", el.Id);
+            var horPanClass = typeof(TwoHorizontalPanelsWithResizer).FullNameWithoutGenerics();
+            var modalDialogClass = typeof(ModalDialogFormCanvas).FullNameWithoutGenerics();
+            
+            Func<HTMLElement, bool> isParentAHorizontalPanel = x => x.ParentElement != null && x.ParentElement.ClassList.Contains(horPanClass);  
+            
+            //summary of different *Height properties https://stackoverflow.com/questions/22675126/what-is-offsetheight-clientheight-scrollheight
 
-            while(true) {
-                parent = parent.FindFormViewOrNull();
+            var consumedHeight = 0;
 
-                if (parent == null) {
-                    break;
-                }
+            while (el != null) {
+                var siblingHeights = !isParentAHorizontalPanel(el) ? el.GetSiblings().Where(x => !x.ClassList.Contains(modalDialogClass)).Sum(x => x.OffsetHeight) : 0;
+                Logger.Debug(typeof(ElementExtensions), $"GetAvailableHeightForFormElement consumedHeight={consumedHeight} siblingHeights={siblingHeights} ");
                 
-                forms.Insert(0, Tuple.Create(parent, new List<HTMLElement>()));
-                parent = parent.ParentElement;
-            } 
-            
-            if (!forms.Any()) {
-                Logger.Debug(curType, "GetAvailableHeightForFormElement result for formless element {0}", Window.InnerHeight);
-                return Window.InnerHeight;
+                consumedHeight += siblingHeights + extraEmptySpacePerLevel;
+                el = el.ParentElement;
             }
 
-            for (var i=forms.Count-2; i>=0; i--) {
-                var siblingsOf = forms[i].Item1;
-                var subForms = forms[i].Item2;
-                var butNot = forms[i+1].Item1;
-                
-                Logger.Debug(curType, "GetAvailableHeightForFormElement looking for siblings of {0} that are not {1}", siblingsOf.Id, butNot.Id);
-                
-                if (butNot.IsInHorizontalPanel(siblingsOf)) {
-                    Logger.Debug(curType, "GetAvailableHeightForFormElement determined that {0} is in horizontal panel so ignoring its siblings", siblingsOf.Id);
-                    continue;
-                }
-
-                siblingsOf.TraverseAll(x => {
-                        if (x != siblingsOf && x.HasAttribute(Magics.AttrDataFormview)) {
-                            subForms.Add(x);
-                            Logger.Debug(curType, "GetAvailableHeightForFormElement found sibling {0}", x.Id);
-                        }}, 
-                    x => x != butNot && !x.IsPopupFormView());
-            }
+            var result = Window.InnerHeight - consumedHeight - diminishAvailQty;
+            Logger.Debug(typeof(ElementExtensions), $"GetAvailableHeightForFormElement ending with {result}");
             
-            int? result = null;
-
-            Logger.Debug(curType, "GetAvailableHeightForFormElement element is in form id={0}. Generally it is contained in {1} nested forms", forms.Last().Item1.Id, forms.Count);
-            
-            foreach (var frm in forms) {     
-                Logger.Debug(curType, "GetAvailableHeightForFormElement iteration for form {0} having {1} siblings", frm.Item1.Id, frm.Item2.Count);
-
-                foreach (var subFrm in frm.Item2) {
-                    Logger.Debug(curType, "GetAvailableHeightForFormElement has subFrm {0}", subFrm.Id);
-                }
-
-                var body = frm.Item1.FirstElementChild.FindFirstMatchingSibling(
-                    x => x.ClassList.Contains(Magics.CssClassBody));
-                
-                var title = body.FindFirstMatchingSibling(x => x.ClassList.Contains(Magics.CssClassTitle));
-                var actions = body.FindFirstMatchingSibling(x => x.ClassList.Contains(Magics.CssClassActions));
-                
-                Logger.Debug(curType, "GetAvailableHeightForFormElement titleId={0} bodyId={1} actionsId={2}",
-                    title?.Id, body?.Id, actions?.Id);
-
-                if (body == null) {
-                    Logger.Debug(curType, "GetAvailableHeightForFormElement body is null");
-                    continue;
-                }
-
-                var frmHeight = GetFormHeights(frm.Item1);
-
-                if (!result.HasValue) {    
-                    result = Window.InnerHeight - frmHeight.Item2 - diminishAvailQty;
-                    Logger.Debug(curType, 
-                        "GetAvailableHeightForFormElement initial {0} = {1} - {2} - {3}", result, Window.InnerHeight, frmHeight.Item2, diminishAvailQty);
-                } else {
-                    Logger.Debug(curType, 
-                        "GetAvailableHeightForFormElement next {0} -= {1} + {2}", result, frmHeight.Item2, extraEmptySpacePerLevel);
-
-                    result -= frmHeight.Item2 + extraEmptySpacePerLevel;
-                }
-
-                foreach (var subFrm in frm.Item2) {
-                    var subFrmHeights = GetFormHeights(subFrm);
-
-                    Logger.Debug(curType, 
-                        "GetAvailableHeightForFormElement sibling form {0} diminishes space {1} -= {2}", subFrm.Id, result, subFrmHeights.Item1);
-
-                    result -= subFrmHeights.Item1 + subFrmHeights.Item2;
-                }
-            }
-            
-            Logger.Debug(curType, "GetAvailableHeightForFormElement result {0}", result);
-            return result.GetValueOrDefault();
+            return result;
         }
-
-        /// <summary>
-        /// returns in pixels: 1) Pure form body height px 2) Other occupied space such as scrollbars, actions, title
-        /// </summary>
-        /// <param name="frm"></param>
-        /// <returns></returns>
-        private static Tuple<int,int> GetFormHeights(HTMLElement frm) {   
-            var body = frm.FirstElementChild.FindFirstMatchingSibling(
-                x => x.ClassList.Contains(Magics.CssClassBody));
-
-            Logger.Debug(typeof(ElementExtensions), "GetFormHeight for form {0} body {1}", frm.Id, body?.Id);
-                      
-            if (body == null) {
-                Logger.Debug(typeof(ElementExtensions), "GetFormHeight body is null");
-                return Tuple.Create(0, 0);
-            }
-            
-            var title = body.FindFirstMatchingSibling(x => x.ClassList.Contains(Magics.CssClassTitle));
-            var actions = body.FindFirstMatchingSibling(x => x.ClassList.Contains(Magics.CssClassActions));
-                
-            Logger.Debug(typeof(ElementExtensions), "GetFormHeight for titleId={0} bodyId={1} actionsId={2}",
-                title?.Id, body.Id, actions?.Id);
-
-            var formScrollBar = frm.OffsetHeight - frm.ClientHeight;
-            var bodyScrollBar = body.OffsetHeight - body.ClientHeight;
-            var result = (actions?.OffsetHeight ?? 0) + (title?.OffsetHeight ?? 0) + formScrollBar + bodyScrollBar;
-                    
-            Logger.Debug(typeof(ElementExtensions), 
-                "GetFormHeight result ({0}; {1} = {2} + {3} + {4} + {5})", 
-                body.ClientHeight, result, actions?.OffsetHeight ?? 0, title?.OffsetHeight ?? 0, formScrollBar, bodyScrollBar);
-
-            return Tuple.Create(body.ClientHeight, result);
-        }
-
+        
         public static bool IsAttached(this HTMLElement self) {
             if (self == Document.Body) {
                 return true;

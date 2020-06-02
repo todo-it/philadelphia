@@ -31,8 +31,6 @@ namespace Philadelphia.Web {
             _currentMaster = null;
         }
 
-        public HTMLElement BaseCanvasElement => _masterCanvas.Body.ParentElement;
-
         public void ReplaceMasterWithAdapter(IView<HTMLElement> newView) {
             Logger.Debug(GetType(),"Replacing master with view {0}", newView);
             ClearMaster();

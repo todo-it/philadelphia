@@ -4,14 +4,14 @@ using Bridge.Html5;
 using Philadelphia.Common;
 
 namespace Philadelphia.Web {
-    public class ModalDialogFromCanvas : IFormCanvas<HTMLElement> {
-        private static void Debug(string m) => Logger.Debug(typeof(ModalDialogFromCanvas), m);
-        private readonly HTMLElement _modalGlass, _footer, _body, _header, _headerTitle;
-        private bool _shown;
+    public class ModalDialogFormCanvas : IFormCanvas<HTMLElement> {
+        private static void Debug(string m) => Logger.Debug(typeof(ModalDialogFormCanvas), m);
+        private readonly HTMLElement _modalGlass, _actionsInFooter, _body, _header, _headerTitle;
         private bool _isDragging;
         private readonly HTMLElement _dialog;
         private readonly InputTypeButtonActionView _userClose;
         private Action _onUserClose;
+        private readonly string _formId;
 
         public string Title {
             set {
@@ -21,10 +21,8 @@ namespace Philadelphia.Web {
         }
 
         public HTMLElement Body { 
-            get {
-                return _body.FirstElementChild;
-            }
             set { 
+                Logger.Debug(GetType(),$"ModalDialogFromCanvas(formId={_formId}): body setting");
                 _body.RemoveAllChildren();
                 _body.AppendChild(value);
             } 
@@ -32,57 +30,63 @@ namespace Philadelphia.Web {
 
         public IEnumerable<HTMLElement> Actions { 
             set { 
-                _footer.RemoveAllChildren();
-                value.ForEach(x => _footer.AppendChild(x));
+                Logger.Debug(GetType(),$"ModalDialogFromCanvas(formId={_formId}): actions setting");
+                _actionsInFooter.RemoveAllChildren();
+                value.ForEach(x => _actionsInFooter.AppendChild(x));
             } 
         }
 
         public Action UserCancel {
             set {
-                Debug($"Setting UserCancel. Will be null={value == null}, was null={_onUserClose == null}");
-                //adding or removing action widget
-                if (_onUserClose == null && value != null) {
-                    _header.AppendChild(_userClose.Widget); 
-                } else if (_onUserClose != null && value == null) {
-                    _header.RemoveChild(_userClose.Widget);
-                }
-
-                if (_onUserClose != null) {
-                    _userClose.Triggered -= _onUserClose;
-                }
-
+                Debug($"ModalDialogFromCanvas(formId={_formId}) setting UserCancel. Will be null={value == null}, was null={_onUserClose == null}");
+                
                 _onUserClose = value;
-
-                if (_onUserClose != null) {
-                    _userClose.Triggered += _onUserClose;
-                }
             }
         }
 
-        public ModalDialogFromCanvas() {
-            _modalGlass = DocumentUtil.CreateElementHavingClassName("div", GetType().FullName);
+        public ModalDialogFormCanvas() {
+            _formId = UniqueIdGenerator.GenerateAsString();
+            _modalGlass = DocumentUtil.CreateElementHavingClassName("div", GetType().FullNameWithoutGenerics());
             _dialog = Document.CreateElement("div");
-            _dialog.MarkAsFormView(true);
-            _header = DocumentUtil.CreateElementHavingClassName("div", "header");
-            _body = DocumentUtil.CreateElementHavingClassName("div", Magics.CssClassBody);
-            _footer = DocumentUtil.CreateElementHavingClassName("div", Magics.CssClassActions);
+            
+            _dialog.SetValuelessAttribute(Magics.AttrDataFormContainer);
+            _dialog.SetAttribute(Magics.AttrDataFormId, _formId);
+            _dialog.SetBoolAttribute(Magics.AttrDataFormIsPopup, true);
+            _dialog.SetValuelessAttribute(Magics.AttrDataFormIsShown);
+            _dialog.SetValuelessAttribute(Magics.AttrDataFormIsCloseable);
+            _dialog.AddEventListener(Magics.ProgramaticCloseFormEventName, () => _onUserClose?.Invoke());
+            
+            _body = Document.CreateElement("div");
+            _body.SetAttribute(Magics.AttrDataFormId, _formId);
+            _body.SetValuelessAttribute(Magics.AttrDataFormBody);
+            
+            _actionsInFooter = new HTMLDivElement();
+            _actionsInFooter.SetAttribute(Magics.AttrDataFormId, _formId);
+            _actionsInFooter.SetValuelessAttribute(Magics.AttrDataFormActions);
+            
+            _header = Document.CreateElement("div");
+            _header.SetAttribute(Magics.AttrDataFormId, _formId);
+            _header.SetValuelessAttribute(Magics.AttrDataFormHeader);
 
             _headerTitle = DocumentUtil.CreateElementHavingClassName("div", "headerTitle");
             
             _userClose = InputTypeButtonActionView.CreateFontAwesomeIconedAction(IconFontType.FontAwesomeSolid, FontAwesomeSolid.IconTimes);
             _userClose.Widget.ClassList.Add(Magics.CssClassHeaderClose);
-            _userClose.Widget.SetAttribute(Magics.AttrDataEscListener, "");
-
+            _userClose.Widget.AddEventListener(EventType.Click, () => _onUserClose?.Invoke());
+            
             _modalGlass.AppendChild(_dialog);
             _dialog.AppendChild(_header);
+            
             _header.AppendChild(_headerTitle);
             _header.AppendChild(DocumentUtil.CreateElementHavingClassName("span", Magics.CssClassFlexSpacer));
+            _header.AppendChild(_userClose.Widget);
+            
             _dialog.AppendChild(_body);
-            _dialog.AppendChild(_footer);
+            _dialog.AppendChild(_actionsInFooter);
             MakeItDraggable(_header);
         }
 
-        //theoretically I can use html5's events: dragenter, drag. Unfortunatelly drag event has screenX, clientX properties that are always zero (at least in FF)
+        //theoretically I can use html5's events: dragenter, drag. Unfortunately drag event has screenX, clientX properties that are always zero (at least in FF)
         private void MakeItDraggable(HTMLElement header) {
             DocumentUtil.AddMouseDownListener(header, x => {
                 if (!x.HasHtmlTarget()) {
@@ -123,23 +127,36 @@ namespace Philadelphia.Web {
         }
 
         public void Show() {
-            if (!_shown) {
-                Document.Body.AppendChild(_modalGlass);
-                _shown = true;
-            } else {
+            if (Document.Body.Contains(_modalGlass)) {
                 Logger.Error(GetType(), "cannot show already shown dialog");
-                throw new Exception("cannot show already shown dialog");
+                return;
             }
+            
+            _dialog.SetBoolAttribute(Magics.AttrDataFormIsCloseable, _onUserClose != null);
+            _dialog.SetBoolAttribute(Magics.AttrDataFormIsShown, true);
+            Document.Body.AppendChild(_modalGlass);
+            
+            BuildFormFromElement(_modalGlass).FindAndFocusOnFirstItem();
         }
 
         public void Hide() {
-            if (_shown) {
-                Document.Body.RemoveChild(_modalGlass);
-                _shown = true;
-            } else {
+            if (!Document.Body.Contains(_modalGlass)) {
                 Logger.Error(GetType(), "cannot hide hidden dialog");
-                throw new Exception("cannot hide already hidden dialog");
+                return;
             }
+            
+            _dialog.SetBoolAttribute(Magics.AttrDataFormIsCloseable, false);
+            _dialog.SetBoolAttribute(Magics.AttrDataFormIsShown, false);
+            
+            Document.Body.RemoveChild(_modalGlass);
+        }
+        
+        public static FormDescr BuildFormFromElement(HTMLElement el) {
+            var shouldBeDialog = el.Children[0]; //glass is parent
+            return new FormDescr(
+                shouldBeDialog, 
+                shouldBeDialog.Children[1], 
+                shouldBeDialog.Children[2]);
         }
     }
 }

@@ -857,7 +857,7 @@ namespace Philadelphia.Web {
 
             el.AppendChild(_thumbnailAction.Create(x, RefreshFileList).Widget);
         
-            var actionsBar = new HTMLDivElement {ClassName = Magics.CssClassActions};
+            var actionsBar = new HTMLDivElement {ClassName = Magics.CssClassUploadActions};
             actionsBar.Style.WhiteSpace = WhiteSpace.NoWrap;
             actionsBar.AppendChild(_fileNameAction.Create(x, RefreshFileList).Widget);
 

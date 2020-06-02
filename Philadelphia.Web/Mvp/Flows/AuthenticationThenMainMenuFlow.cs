@@ -137,7 +137,7 @@ namespace Philadelphia.Web {
 
         public IFormRenderer<HTMLElement> CreateRenderer() {
             return _baseRenderer.CreateRendererWithBase(
-                new ElementWrapperFormCanvas(_mainMenuFormView.BodyPanel.Widget, Toolkit.DefaultExitButtonBuilder));
+                new ElementWrapperFormCanvas(_mainMenuFormView.BodyPanel.Widget, Toolkit.DefaultExitButtonBuilder, Toolkit.DefaultLayoutMode));
         }
     }
 }

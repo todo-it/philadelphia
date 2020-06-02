@@ -12,7 +12,7 @@ namespace Philadelphia.Web {
         public HorizontalLinksMenuFormView(
                 Func<MenuItemModel,Tuple<HTMLElement,Action<string>>> customItemBuilder = null) {
 
-            _rawMenuBar = new HorizontalMenuBarView(customItemBuilder).With(x => x.DecorateAsFormView());
+            _rawMenuBar = new HorizontalMenuBarView(customItemBuilder);
         }
 
         public RenderElem<HTMLElement>[] Render(HTMLElement _) {

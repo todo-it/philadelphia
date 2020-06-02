@@ -2,6 +2,8 @@
 
 namespace Philadelphia.Web {
     public static class Magics {
+        public const string ProgramaticCloseFormEventName = "closeform";
+        
         public const double MinUserResizeColumnWidth = 7.0;
         public const double MaxUserResizeColumnWidth = 1400;
         public const float DefaultColumnWidthPx = 100;
@@ -34,6 +36,17 @@ namespace Philadelphia.Web {
 
         public const string PostReturningFileParameterName = "i";
         
+        public const string AttrDataFormContainer = "data-form";
+        public const string AttrDataFormId = "data-formId";
+        public const string AttrDataFormIsPopup = "data-isPopup";
+        public const string AttrDataFormIsShown = "data-shown";
+        public const string AttrDataFormIsCloseable = "data-closeable";
+        public const string AttrDataFormHeader = "data-formHeader";
+        public const string AttrDataFormTitle = "data-formTitle";
+        public const string AttrDataFormBody = "data-formBody";
+        public const string AttrDataFormActions = "data-formActions";
+        public const string AttrDataFormDefaultAction = "data-defaultAction";
+
         public const string AttrDataHandlesEnter = "data-handlesEnter";
         public const string AttrDataOptOutOfWholeTextSelectionOnFocus = "data-noSelectOnFocus";
         public const string AttrDataForId = "data-forId";
@@ -41,13 +54,14 @@ namespace Philadelphia.Web {
         public const string AttrDataNonMutable = "data-nonMutable";
         public const string AttrDataEmptyCaption = "data-emptyCaption";
         public const string AttrDataDraggingFile = "data-dragging";
-        public const string AttrDataEscListener = "data-escListener";
+        
+        //TODO refactor to avoid traversing (expensive operation)
         public const string AttrDataNotraverse = "data-notraverse";
-        public const string AttrDataFormview = "data-formView";
-        public const string AttrDataIsPopup = "data-isPopup";
+        
         public const string AttrDataIsHorizontalPanel = "data-horizontalPanel";
         public const string AttrDataIsVerticalPanel = "data-verticalPanel";
-        public const string AttrDataDefaultAction = "data-defaultAction";
+        
+        
         public const string AttrDataErrorsTooltip = "data-errors-tooltip";
         public const string AttrDataDisabledTooltip = "data-disabled-tooltip";
         public const string AttrDataMayBeTooltipContainer = "data-is-container";
@@ -56,6 +70,7 @@ namespace Philadelphia.Web {
         public const string AttrDataMenuItemId = "data-menuitemid";
         public const string AttrDataInnerHtml = "data-innerText";
         public const string AttrDataSortOrder = "data-sort";
+        
         public const string AttrAlignToRight = "data-alignToRight";
         public const string AttrDataSelectionHandler = "data-selectHndlr";
         public const string AttrDataReadOnly = "data-readonly";
@@ -86,14 +101,14 @@ namespace Philadelphia.Web {
         public const string CssClassActive = "active";
         public const string CssClassDisabled = "disabled";
         public const string CssClassEnabled = "enabled";
+        
+        //TODO rework to leverage margin-left: auto
         public const string CssClassFlexSpacer = "flexSpacer";
         public const string CssClassSplitter = "splitter";
         public const string CssClassSearchBox = "searchBox";
         public const string CssClassPressed = "pressed";
         public const string CssClassPopup = "popup";
-        public const string CssClassBody = "body";
-        public const string CssClassActions = "actions";
-        public const string CssClassTitle = "title";
+        
         public const string CssClassExtraElement = "extraElement";
         public const string CssClassTabHandleContainer = "tabHandleContainer";
         public const string CssClassTabContentContainer = "tabContentContainer";
@@ -138,6 +153,7 @@ namespace Philadelphia.Web {
         public const string CssClassIsResizing = "isResizing";
         public const string CssClassColumnLabel = "columnLabel";
         public const string CssClassHeaderClose = "headerClose";
+        public const string CssClassUploadActions = "uploadActions";
         
         public const string CssClassCurrent = "current";
         public const string CssClassValidDay = "validDay";

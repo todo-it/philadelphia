@@ -67,11 +67,6 @@ namespace Philadelphia.Web {
             _nav.AppendChild(_actionsCntnr);
         }
         
-        public void DecorateAsFormView() {
-            _nav.MarkAsFormView(false);
-            _actionsCntnr.ClassList.Add(Magics.CssClassBody);
-        }
-
         public static implicit operator RenderElem<HTMLElement>(ActionButtonsMenuBarView inp) {
             return RenderElem<HTMLElement>.Create(inp);
         }

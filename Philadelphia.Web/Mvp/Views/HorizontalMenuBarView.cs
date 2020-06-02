@@ -27,7 +27,7 @@ namespace Philadelphia.Web {
                 var el = new HTMLAnchorElement {Href = "#"};
                 return Tuple.Create<HTMLElement,Action<string>>(el, y => el.TextContent = y);});
 
-            _nav = DocumentUtil.CreateElementHavingClassName("nav", GetType().FullName);
+            _nav = DocumentUtil.CreateElementHavingClassName("nav", GetType().FullNameWithoutGenerics());
             _nav.Id = UniqueIdGenerator.GenerateAsString();
 
             _root = new HTMLElement("ul") {Id = UniqueIdGenerator.GenerateAsString()};
@@ -77,11 +77,6 @@ namespace Philadelphia.Web {
 
                 ActivateAllBut(_root, new List<HTMLElement>());
             });
-        }
-
-        public void DecorateAsFormView() {
-            _nav.MarkAsFormView(false);
-            _root.ClassList.Add(Magics.CssClassBody);
         }
 
         public HTMLElement Widget => _nav;

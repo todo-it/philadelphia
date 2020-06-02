@@ -11,7 +11,7 @@ namespace Philadelphia.Web {
         public IView<HTMLElement>[] Actions => ActionsBuilder.For().AddFrom(_rawMenuBar);
         
         public ActionsBarMenuFormView(Func<MenuItemModel,InputTypeButtonActionView> customButtonBuilder = null) {
-            _rawMenuBar = new ActionButtonsMenuBarView(customButtonBuilder).With(x => x.DecorateAsFormView());
+            _rawMenuBar = new ActionButtonsMenuBarView(customButtonBuilder);
         }
 
         public RenderElem<HTMLElement>[] Render(HTMLElement _) {

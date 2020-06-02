@@ -149,21 +149,22 @@ nav.Philadelphia\.Web\.HorizontalMenuBarView > ul > li.active > ul {
     visibility: visible;
 }
 
+
+
 .Philadelphia\.Web\.ElementWrapperFormCanvas {
-    display: grid;
     margin: 0;
 }
 
-.Philadelphia\.Web\.ElementWrapperFormCanvas > .title {
+.Philadelphia\.Web\.ElementWrapperFormCanvas > div[data-formTitle] {
     align-self: center;
     justify-self: center;
 }
 
-.Philadelphia\.Web\.ElementWrapperFormCanvas > .title:empty {
+.Philadelphia\.Web\.ElementWrapperFormCanvas > div[data-formTitle]:empty {
     display: none;
 }
 
-.Philadelphia\.Web\.ElementWrapperFormCanvas > .title:not(:empty) > div {
+.Philadelphia\.Web\.ElementWrapperFormCanvas > div[data-formTitle]:not(:empty) > div {
     font-weight: bold;
     font-variant: small-caps;
     letter-spacing: 1px;
@@ -177,12 +178,12 @@ nav.Philadelphia\.Web\.HorizontalMenuBarView > ul > li.active > ul {
     text-shadow: -1px 0 1px #555, 0 1px 1px #555, -1px 1px 1px #555;
 }
 
-.Philadelphia\.Web\.ElementWrapperFormCanvas > .body {
+.Philadelphia\.Web\.ElementWrapperFormCanvas > div[data-formBody] {
     flex-grow: 1;
     overflow-y: auto;
 }
 
-.Philadelphia\.Web\.ElementWrapperFormCanvas > .actions {
+.Philadelphia\.Web\.ElementWrapperFormCanvas > div[data-formActions] {
     display: flex;
     /*overflow-x: hidden; otherwise it leaks content when in two panels*/
 }
@@ -191,18 +192,18 @@ nav.Philadelphia\.Web\.HorizontalMenuBarView > ul > li.active > ul {
     display: none;
 }
 
-.Philadelphia\.Web\.ElementWrapperFormCanvas > .actions:not(:empty) {
+.Philadelphia\.Web\.ElementWrapperFormCanvas > div[data-formActions]:not(:empty) {
     padding: 5px 5px 5px 5px;
     flex-shrink: 0; /*so that buttons content doesn't leak outside of borders'*/
 }
 
-.Philadelphia\.Web\.ElementWrapperFormCanvas > .actions:empty {
+.Philadelphia\.Web\.ElementWrapperFormCanvas > div[data-formActions]:empty {
     padding: 0;
     flex-shrink: 1;
     display: none;
 }
 
-.Philadelphia\.Web\.ElementWrapperFormCanvas > .actions > .flexSpacer {
+.Philadelphia\.Web\.ElementWrapperFormCanvas > div[data-formActions] > .flexSpacer {
     visibility: hidden;
     flex-grow: 1;
 }
@@ -214,11 +215,12 @@ nav.Philadelphia\.Web\.HorizontalMenuBarView > ul > li.active > ul {
  
 
 .Philadelphia\.Web\.ElementWrapperFormCanvas.LayoutModeType_TitleExtra_Actions_Body {
+    display: grid;
     grid-template-rows: auto auto 1fr;
     grid-template-columns: 1fr auto;
 }
 
-.LayoutModeType_TitleExtra_Actions_Body > .title:not(:empty) {
+.LayoutModeType_TitleExtra_Actions_Body > div[data-formTitle]:not(:empty) {
     grid-row: 1;
     grid-column: 1;
     justify-self: center;
@@ -232,12 +234,12 @@ nav.Philadelphia\.Web\.HorizontalMenuBarView > ul > li.active > ul {
     align-self: start;
 }
 
-.LayoutModeType_TitleExtra_Actions_Body > .body {
+.LayoutModeType_TitleExtra_Actions_Body > div[data-formBody] {
     grid-row: 3;
     grid-column: 1 / span 2;
 }
 
-.LayoutModeType_TitleExtra_Actions_Body > .actions:not(:empty) {
+.LayoutModeType_TitleExtra_Actions_Body > div[data-formActions]:not(:empty) {
     grid-row: 2;
     grid-column: 1 / span 2;
 }
@@ -250,11 +252,12 @@ nav.Philadelphia\.Web\.HorizontalMenuBarView > ul > li.active > ul {
 
 
 .Philadelphia\.Web\.ElementWrapperFormCanvas.LayoutModeType_ActionsTitleExtra_Body {
+    display: grid;
     grid-template-rows: auto 1fr;
     grid-template-columns: auto 1fr auto;
 }
 
-.LayoutModeType_ActionsTitleExtra_Body > .title:not(:empty) {
+.LayoutModeType_ActionsTitleExtra_Body > div[data-formTitle]:not(:empty) {
     grid-row: 1;
     grid-column: 2;
     justify-self: center;
@@ -268,12 +271,12 @@ nav.Philadelphia\.Web\.HorizontalMenuBarView > ul > li.active > ul {
     align-self: start;
 }
 
-.LayoutModeType_ActionsTitleExtra_Body > .body {
+.LayoutModeType_ActionsTitleExtra_Body > div[data-formBody] {
     grid-row: 2;
     grid-column: 1 / span 3;
 }
 
-.LayoutModeType_ActionsTitleExtra_Body > .actions:not(:empty) {
+.LayoutModeType_ActionsTitleExtra_Body > div[data-formActions]:not(:empty) {
     grid-row: 1;
     grid-column: 1;
     align-self: center;
@@ -287,11 +290,12 @@ nav.Philadelphia\.Web\.HorizontalMenuBarView > ul > li.active > ul {
 
 
 .Philadelphia\.Web\.ElementWrapperFormCanvas.LayoutModeType_ExtraActionsTitle_Body {
+    display: grid;
     grid-template-rows: auto 1fr;
     grid-template-columns: auto auto 1fr;
 }
 
-.LayoutModeType_ExtraActionsTitle_Body > .title:not(:empty) {
+.LayoutModeType_ExtraActionsTitle_Body > div[data-formTitle]:not(:empty) {
     grid-row: 1;
     grid-column: 3;
     justify-self: center;
@@ -305,12 +309,12 @@ nav.Philadelphia\.Web\.HorizontalMenuBarView > ul > li.active > ul {
     align-self: start;
 }
 
-.LayoutModeType_ExtraActionsTitle_Body > .body {
+.LayoutModeType_ExtraActionsTitle_Body > div[data-formBody] {
     grid-row: 2;
     grid-column: 1 / span 3;
 }
 
-.LayoutModeType_ExtraActionsTitle_Body > .actions:not(:empty) {
+.LayoutModeType_ExtraActionsTitle_Body > div[data-formActions]:not(:empty) {
     grid-row: 1;
     grid-column: 2;
     align-self: center; /*so that buttons don't grow*/
@@ -324,11 +328,12 @@ nav.Philadelphia\.Web\.HorizontalMenuBarView > ul > li.active > ul {
 
 
 .Philadelphia\.Web\.ElementWrapperFormCanvas.LayoutModeType_ExtraTitle_Body_Actions {
+    display: grid;
     grid-template-rows: auto 1fr auto;
     grid-template-columns:  auto 1fr;
 }
 
-.LayoutModeType_ExtraTitle_Body_Actions > .title:not(:empty) {
+.LayoutModeType_ExtraTitle_Body_Actions > div[data-formTitle]:not(:empty) {
     grid-row: 1;
     grid-column: 2;
     justify-self: center;
@@ -342,12 +347,12 @@ nav.Philadelphia\.Web\.HorizontalMenuBarView > ul > li.active > ul {
     align-self: start;
 }
 
-.LayoutModeType_ExtraTitle_Body_Actions > .body {
+.LayoutModeType_ExtraTitle_Body_Actions > div[data-formBody] {
     grid-row: 2;
     grid-column: 1 / span 2;
 }
 
-.LayoutModeType_ExtraTitle_Body_Actions > .actions:not(:empty) {
+.LayoutModeType_ExtraTitle_Body_Actions > div[data-formActions]:not(:empty) {
     grid-row: 3;
     grid-column: 1 / span 2;
 }
@@ -358,12 +363,14 @@ nav.Philadelphia\.Web\.HorizontalMenuBarView > ul > li.active > ul {
 
 
 
+
 .Philadelphia\.Web\.ElementWrapperFormCanvas.LayoutModeType_TitleExtra_Body_Actions {
+    display: grid;
     grid-template-rows: auto 1fr auto;
     grid-template-columns: 1fr auto;
 }
 
-.LayoutModeType_TitleExtra_Body_Actions > .title:not(:empty) {
+.LayoutModeType_TitleExtra_Body_Actions > div[data-formTitle]:not(:empty) {
     grid-row: 1;
     grid-column: 1;
 }
@@ -372,15 +379,15 @@ nav.Philadelphia\.Web\.HorizontalMenuBarView > ul > li.active > ul {
     grid-row: 1;
     grid-column: 2;
     align-self: center;
-    justify-self: end;   
+    justify-self: end;
 }
 
-.LayoutModeType_TitleExtra_Body_Actions > .body {
+.LayoutModeType_TitleExtra_Body_Actions > div[data-formBody] {
     grid-row: 2;
     grid-column: 1 / span 2;
 }
 
-.LayoutModeType_TitleExtra_Body_Actions > .actions:not(:empty) {
+.LayoutModeType_TitleExtra_Body_Actions > div[data-formActions]:not(:empty) {
     grid-row: 3;
     grid-column: 1 / span 2;
 }
@@ -391,11 +398,12 @@ nav.Philadelphia\.Web\.HorizontalMenuBarView > ul > li.active > ul {
 
 
 .Philadelphia\.Web\.ElementWrapperFormCanvas.LayoutModeType_Title_Body_ActionsExtra {
+    display: grid;
     grid-template-rows: auto 1fr auto;
     grid-template-columns: 1fr auto;
 }
 
-.LayoutModeType_Title_Body_ActionsExtra > .title:not(:empty) {
+.LayoutModeType_Title_Body_ActionsExtra > div[data-formTitle]:not(:empty) {
     grid-row: 1;
     grid-column: 1 / span 2;
 }
@@ -407,12 +415,12 @@ nav.Philadelphia\.Web\.HorizontalMenuBarView > ul > li.active > ul {
     justify-self: end;   
 }
 
-.LayoutModeType_Title_Body_ActionsExtra > .body {
+.LayoutModeType_Title_Body_ActionsExtra > div[data-formBody] {
     grid-row: 2;
     grid-column: 1 / span 2;
 }
 
-.LayoutModeType_Title_Body_ActionsExtra > .actions:not(:empty) {
+.LayoutModeType_Title_Body_ActionsExtra > div[data-formActions]:not(:empty) {
     grid-row: 3;
     grid-column: 1;
     align-self: center; /*so that buttons don't grow*/
@@ -443,11 +451,16 @@ nav.Philadelphia\.Web\.HorizontalMenuBarView > ul > li.active > ul {
     align-self: center;
 }
 
-.Philadelphia\.Web\.ModalDialogFromCanvas > div {
+
+
+
+
+
+.Philadelphia\.Web\.ModalDialogFormCanvas > div[data-form] {
     box-shadow: 0 0 22px 8px rgba(0, 0, 0, 0.25);
 }
 
-div.Philadelphia\.Web\.ModalDialogFromCanvas {
+div.Philadelphia\.Web\.ModalDialogFormCanvas {
     left: 0;
     top: 0;
     width: 100%;
@@ -459,7 +472,7 @@ div.Philadelphia\.Web\.ModalDialogFromCanvas {
     background-color: rgba(1, 1, 1, 0.1);
 }
 
-div.Philadelphia\.Web\.ModalDialogFromCanvas > div {
+div.Philadelphia\.Web\.ModalDialogFormCanvas > div[data-form] {
     flex-direction: column;
     align-self: center;
     display: flex;
@@ -467,7 +480,7 @@ div.Philadelphia\.Web\.ModalDialogFromCanvas > div {
     background-color: #fff;
 }
 
-div.Philadelphia\.Web\.ModalDialogFromCanvas div.header {
+div.Philadelphia\.Web\.ModalDialogFormCanvas > div[data-form] > div[data-formHeader] {
     display: flex;
     flex-direction: row;
     background-color: #9999ff;
@@ -478,7 +491,7 @@ div.Philadelphia\.Web\.ModalDialogFromCanvas div.header {
     -webkit-user-select: none;
 }
 
-div.Philadelphia\.Web\.ModalDialogFromCanvas div.headerTitle {
+div.Philadelphia\.Web\.ModalDialogFormCanvas > div[data-form] > div[data-formHeader] > div.headerTitle {
     flex-grow: 1;
     align-self: center;
     font-weight: bold;
@@ -488,71 +501,78 @@ div.Philadelphia\.Web\.ModalDialogFromCanvas div.headerTitle {
     position: relative;
 }
 
-.Philadelphia\.Web\.ModalDialogFromCanvas .flexSpacer {
+.Philadelphia\.Web\.ModalDialogFormCanvas .flexSpacer {
     visibility: hidden;
     flex-grow: 1;
 }
 
 /* grab cursor in FF */
-div.Philadelphia\.Web\.ModalDialogFromCanvas .headerTitle:hover {
+div.Philadelphia\.Web\.ModalDialogFormCanvas > div[data-form] > div[data-formHeader] > .headerTitle:hover {
     cursor: grab;
 }
 
 /* grab cursor in Chrome */
 @media screen and (-webkit-min-device-pixel-ratio: 0) {
-    div.Philadelphia\.Web\.ModalDialogFromCanvas .headerTitle:hover {
+    div.Philadelphia\.Web\.ModalDialogFormCanvas  > div[data-form] > div[data-formHeader] > .headerTitle:hover {
         cursor: -webkit-grab;
     }
 }
 
 /*for inset shadow like effect */
-div.Philadelphia\.Web\.ModalDialogFromCanvas .headerTitle:before, .headerTitle:after {
+div.Philadelphia\.Web\.ModalDialogFormCanvas > div[data-form] > div[data-formHeader] > .headerTitle:before,
+div.Philadelphia\.Web\.ModalDialogFormCanvas > div[data-form] > div[data-formHeader] > .headerTitle:after {
     content: attr(data-innerText);
     color: rgba(255, 255, 255, .1);
     position: absolute;
 
 }
 
-div.Philadelphia\.Web\.ModalDialogFromCanvas .headerTitle:before {top: 1px;left: 3px }
-div.Philadelphia\.Web\.ModalDialogFromCanvas .headerTitle:after {top: 2px;left: 4px }
+div.Philadelphia\.Web\.ModalDialogFormCanvas > div[data-form] > div[data-formHeader] > .headerTitle:before {top: 1px;left: 3px }
+div.Philadelphia\.Web\.ModalDialogFormCanvas > div[data-form] > div[data-formHeader] > .headerTitle:after {top: 2px;left: 4px }
 
-div.Philadelphia\.Web\.ModalDialogFromCanvas .headerClose:not(.enabled) {
+div.Philadelphia\.Web\.ModalDialogFormCanvas > div[data-closeable="0"] > div[data-formHeader] > .headerClose {
     display: none;
 }
 
-div.Philadelphia\.Web\.ModalDialogFromCanvas .headerClose.enabled {
+div.Philadelphia\.Web\.ModalDialogFormCanvas > div[data-form][data-closeable="1"] > div[data-formHeader] > .headerClose {
     min-width: 24px;
     max-width: 24px;
     min-height: 24px;
     padding-top: 4px;
-    
+
     align-self: flex-end;
-    flex: 1;    
+    flex: 1;
     font-size: 18px;
     background-color: rgba(0, 0, 0, .1);
 
     justify-content: center;
     flex-direction: column;
     text-align: center;
-    
+
     border-left: 1px solid rgba(0, 0, 0, 0.2);
     cursor: pointer;
 }
 
-div.Philadelphia\.Web\.ModalDialogFromCanvas .headerClose.enabled:hover {
+div.Philadelphia\.Web\.ModalDialogFormCanvas > div[data-form][data-closeable="1"] > div[data-formHeader] > .headerClose:hover {
     background-color: rgba(0, 0, 0, 0.3);
     font-size: 22px;
     padding-top: 2px;
     padding-bottom: 2px;
 }
 
-div.Philadelphia\.Web\.ModalDialogFromCanvas > div[data-formView] > div.body {
+div.Philadelphia\.Web\.ModalDialogFormCanvas > div[data-form] > div[data-formBody] {
     padding: 20px;
 }
 
-div.Philadelphia\.Web\.ModalDialogFromCanvas > div[data-formView] > div.actions {
+div.Philadelphia\.Web\.ModalDialogFormCanvas > div[data-form] > div[data-formActions] {
     padding: 0 0 9px 4px;
 }
+
+
+
+
+
+
 
 div.Philadelphia\.Web\.HtmlTableBasedTableView {
     position: relative;
@@ -1003,9 +1023,10 @@ table.Philadelphia\.Web\.HtmlTableBasedTableView td:last-child {
     padding-right: 6px;
 }
 
-/*emphasise default form button*/
+/*emphasize default form button*/
 .Philadelphia\.Web\.InputTypeButtonActionView.enabled[data-defaultaction] {
     border-width: 1px;
+    border-color: #414141;
 }
 
 .Philadelphia\.Web\.InputTypeButtonActionView.enabled:focus,
@@ -1846,17 +1867,17 @@ body[data-dragging] .Philadelphia\.Web\.UploadView > div:nth-child(1) {
     flex-direction: column;
 }
 
-.Philadelphia\.Web\.UploadView[mode='ThumbnailGrid'] > div:nth-child(3) > div.items > div > div.actions {
+.Philadelphia\.Web\.UploadView[mode='ThumbnailGrid'] > div:nth-child(3) > div.items > div > div.uploadActions {
     display: flex;
     width: 100%; /*otherwise it overflows...*/
     justify-content: center;
 }
 
-.Philadelphia\.Web\.UploadView[mode='ThumbnailGrid'] > div:nth-child(3) > div.items > div > div.actions > * {
+.Philadelphia\.Web\.UploadView[mode='ThumbnailGrid'] > div:nth-child(3) > div.items > div > div.uploadActions > * {
     flex: 0;
 }
 
-.Philadelphia\.Web\.UploadView[mode='ThumbnailGrid'] > div:nth-child(3) > div.items > div > div.actions > *:nth-child(1) {
+.Philadelphia\.Web\.UploadView[mode='ThumbnailGrid'] > div:nth-child(3) > div.items > div > div.uploadActions > *:nth-child(1) {
     flex-grow: 1;
 }
 

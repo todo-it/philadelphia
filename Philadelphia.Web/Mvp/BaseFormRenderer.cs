@@ -37,8 +37,6 @@ namespace Philadelphia.Web {
         public IFormRenderer<HTMLElement> CreateRendererWithBase(IFormCanvas<HTMLElement> masterCanvas) => 
             new PopupDelegatingFormRenderer(this, masterCanvas);
 
-        public HTMLElement BaseCanvasElement => _masterCanvas.Body.ParentElement;
-
         public void ReplaceMasterWithAdapter(IView<HTMLElement> newItem) {
             Logger.Debug(GetType(),"Replacing master with {0}", newItem);
             ClearMaster();

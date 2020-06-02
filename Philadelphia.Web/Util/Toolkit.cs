@@ -9,6 +9,8 @@ using Bridge.Html5;
 
 namespace Philadelphia.Web {
     public static class Toolkit {
+        public static LayoutModeType DefaultLayoutMode { get; set; } = LayoutModeType.TitleExtra_Body_Actions;
+        
         public static void InitializeToolkit(
                 ILoggerImplementation customLogger = null, 
                 Func<DatagridContent,Task<FileModel>> spreadsheetBuilder = null) {
@@ -72,18 +74,11 @@ namespace Philadelphia.Web {
             };
         }
 
-        public static BaseFormRenderer DefaultFormRenderer(LayoutModeType? defaultLayout = null) {
-            var documentBodyCanvas = new ElementWrapperFormCanvas(Document.Body, DefaultExitButtonBuilder);
-            
-            if (defaultLayout.HasValue) {
-                documentBodyCanvas.LayoutMode = defaultLayout.Value;
-            }
-            
-            var popupProvider = new FactoryMethodProvider<IFormCanvas<HTMLElement>>(() => new ModalDialogFromCanvas());
-            
-            return new BaseFormRenderer(documentBodyCanvas, popupProvider);
-        }
-
+        public static BaseFormRenderer DefaultFormRenderer() =>
+            new BaseFormRenderer(
+                new ElementWrapperFormCanvas(Document.Body, DefaultExitButtonBuilder, DefaultLayoutMode), 
+                new FactoryMethodProvider<IFormCanvas<HTMLElement>>(() => new ModalDialogFormCanvas()));
+        
         public static CalculateTbodyHeight DefaultTableBodyHeightProvider(int fixedHeightToAdd=0) {
              return (el,theaderHeight,_) => el.GetAvailableHeightForFormElement(0, 2) - theaderHeight + fixedHeightToAdd;
         }

@@ -102,7 +102,7 @@ namespace Philadelphia.Web {
             Handlers.Set(self, handlers);
 
             self.Show();
-            self.Body.FindAndFocusOnFirstItem();
+            
             Logger.Debug(typeof(FormCanvasExtensions), "Replacing form in canvas - new form added");
         }
     }

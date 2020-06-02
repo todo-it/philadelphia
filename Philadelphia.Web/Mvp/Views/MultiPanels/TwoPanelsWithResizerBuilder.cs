@@ -8,10 +8,10 @@ namespace Philadelphia.Web {
         private static BuiltPanels<T> BuildNonhideable<T>(T panels, IFormRenderer<HTMLElement> renderer) 
                 where T : TwoPanelsWithResizer {
 
-            var leftCanvas = new ElementWrapperFormCanvas(panels.FirstPanel, Toolkit.DefaultExitButtonBuilder);
+            var leftCanvas = new ElementWrapperFormCanvas(panels.FirstPanel, Toolkit.DefaultExitButtonBuilder, Toolkit.DefaultLayoutMode);
             var leftRenderer = renderer.CreateRendererWithBase(leftCanvas);
             
-            var rightCanvas = new ElementWrapperFormCanvas(panels.SecondPanel, Toolkit.DefaultExitButtonBuilder);
+            var rightCanvas = new ElementWrapperFormCanvas(panels.SecondPanel, Toolkit.DefaultExitButtonBuilder, Toolkit.DefaultLayoutMode);
             var rightRenderer = renderer.CreateRendererWithBase(rightCanvas);
             
             return BuiltPanels<T>.BuiltNonHideable(panels, leftRenderer, rightRenderer, leftCanvas, rightCanvas); 
@@ -36,6 +36,7 @@ namespace Philadelphia.Web {
             var leftCanvas = new ElementWrapperFormCanvas(
                 panels.FirstPanel, 
                 Toolkit.DefaultExitButtonBuilder,
+                Toolkit.DefaultLayoutMode,
                 fstIsHideable ? hideAct : showAct);
             
             var leftRenderer = renderer.CreateRendererWithBase(leftCanvas);
@@ -43,7 +44,8 @@ namespace Philadelphia.Web {
             panels.SecondPanel.AddClasses(Magics.CssClassPositionRelative);
             var rightCanvas = new ElementWrapperFormCanvas(
                 panels.SecondPanel, 
-                Toolkit.DefaultExitButtonBuilder, 
+                Toolkit.DefaultExitButtonBuilder,
+                Toolkit.DefaultLayoutMode,
                 fstIsHideable ? showAct : hideAct);
             
             var rightRenderer = renderer.CreateRendererWithBase(rightCanvas);

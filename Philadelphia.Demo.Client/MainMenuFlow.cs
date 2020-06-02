@@ -18,7 +18,9 @@ namespace Philadelphia.Demo.Client {
             IFormRenderer<HTMLElement> CreateRenderer() =>
                 _baseRenderer.CreateRendererWithBase(
                     new ElementWrapperFormCanvas(
-                        _mainMenuFormView.BodyPanel.Widget, Toolkit.DefaultExitButtonBuilder));
+                        _mainMenuFormView.BodyPanel.Widget,
+                        Toolkit.DefaultExitButtonBuilder, 
+                        Toolkit.DefaultLayoutMode));
 
             _aboutMsg = new InformationalMessageForm(
                 new InformationalMessageFormView(TextType.TreatAsHtml),
