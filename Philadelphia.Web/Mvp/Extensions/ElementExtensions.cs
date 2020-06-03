@@ -76,6 +76,12 @@ namespace Philadelphia.Web {
             }
         }
 
+        public static void ReplaceChildren(this HTMLElement self, IEnumerable<HTMLElement> newChildren) {
+            var x = newChildren.ToList(); //to assure atomicity
+            self.RemoveAllChildren();
+            self.AppendAllChildren(x);
+        }
+
         public static void RemoveAllCssClasses(this Element self) {
             while (self.ClassList.Length > 0) {
                 self.ClassList.Remove(self.ClassList[0]);
@@ -585,8 +591,10 @@ namespace Philadelphia.Web {
             return self == Document.ActiveElement;
         }
         
-        public static void AppendAllChildren(this HTMLElement self, params HTMLElement[] items) {
+        public static void AppendAllChildren(this HTMLElement self, params HTMLElement[] items) =>
             items.ForEach(x => self.AppendChild(x));
-        }
+        
+        public static void AppendAllChildren(this HTMLElement self, IEnumerable<HTMLElement> items) =>
+            items.ForEach(x => self.AppendChild(x));
     }
 }

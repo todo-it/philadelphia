@@ -499,6 +499,7 @@ div.Philadelphia\.Web\.ModalDialogFormCanvas > div[data-form] > div[data-formHea
     padding-left: 2px;
     color: black;
     position: relative;
+    margin-right: auto;
 }
 
 .Philadelphia\.Web\.ModalDialogFormCanvas .flexSpacer {
@@ -564,8 +565,9 @@ div.Philadelphia\.Web\.ModalDialogFormCanvas > div[data-form] > div[data-formBod
     padding: 20px;
 }
 
-div.Philadelphia\.Web\.ModalDialogFormCanvas > div[data-form] > div[data-formActions] {
-    padding: 0 0 9px 4px;
+div.Philadelphia\.Web\.ModalDialogFormCanvas > div[data-form] > div[data-formActions] {    
+    padding: 0 4px 9px 4px;
+    display: flex;
 }
 
 

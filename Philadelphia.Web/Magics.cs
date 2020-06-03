@@ -102,7 +102,8 @@ namespace Philadelphia.Web {
         public const string CssClassDisabled = "disabled";
         public const string CssClassEnabled = "enabled";
         
-        //TODO rework to leverage margin-left: auto
+        //TODO rework to leverage margin-left: auto where possible
+        //HtmlTableBasedTableView is not possible at this moment as reload button is display-none-able in runtime and thus margin-left: auto doesn't work
         public const string CssClassFlexSpacer = "flexSpacer";
         public const string CssClassSplitter = "splitter";
         public const string CssClassSearchBox = "searchBox";

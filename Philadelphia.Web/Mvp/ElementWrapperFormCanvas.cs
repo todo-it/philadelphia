@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using Bridge.Html5;
 using Philadelphia.Common;
 // ReSharper disable InconsistentNaming
@@ -51,7 +50,12 @@ namespace Philadelphia.Web {
                 _elementToWrap.AddClasses(_layoutMode.GetAsCssClassName());
             }
         }
-        
+
+        private bool IsShown {
+            get => _elementToWrap.GetBoolAttribute(Magics.AttrDataFormIsShown) == true;
+            set => _elementToWrap.SetBoolAttribute(Magics.AttrDataFormIsShown, value);
+        }
+
         public HTMLElement Body {
             set { 
                 Logger.Debug(GetType(),$"ElementWrapperFormCanvas(formId={_formId}): body setting");
@@ -63,21 +67,10 @@ namespace Philadelphia.Web {
         public IEnumerable<HTMLElement> Actions { 
             set { 
                 Logger.Debug(GetType(),$"ElementWrapperFormCanvas(formId={_formId}): actions setting");
-                _actions.RemoveAllChildren();
-                var actions = value.ToList();
-                actions
-                    .Where(x => !x.HasAttribute(Magics.AttrAlignToRight))
-                    .ForEach(x => _actions.AppendChild(x));
-                var toRight = actions.Where(x => x.HasAttribute(Magics.AttrAlignToRight)).ToList();
 
-                if (_userCancelUiAction.Enabled) {
-                    toRight.Add(_userCancelUiAction.Widget);
-                }
-
-                if (toRight.Any()) {
-                    _actions.AppendChild(DocumentUtil.CreateElementHavingClassName("span", Magics.CssClassFlexSpacer));
-                    toRight.ForEach(x => _actions.AppendChild(x));
-                }
+                FormCanvasShared.AddActions(
+                    _actions,
+                    value.ConcatElementIfTrue(_userCancelUiAction.Enabled, _userCancelUiAction.Widget));
             } 
         }
 
@@ -103,7 +96,7 @@ namespace Philadelphia.Web {
             _elementToWrap.SetValuelessAttribute(Magics.AttrDataFormContainer);
             _elementToWrap.SetAttribute(Magics.AttrDataFormId, _formId);
             _elementToWrap.SetBoolAttribute(Magics.AttrDataFormIsPopup, false);
-            _elementToWrap.SetValuelessAttribute(Magics.AttrDataFormIsShown);
+            IsShown = false;
             _elementToWrap.SetValuelessAttribute(Magics.AttrDataFormIsCloseable);
             _elementToWrap.AddEventListener(Magics.ProgramaticCloseFormEventName, () => _onUserClose?.Invoke());
             
@@ -137,14 +130,14 @@ namespace Philadelphia.Web {
             _elementToWrap.AppendChild(_extraElement);
             
             _elementToWrap.SetBoolAttribute(Magics.AttrDataFormIsCloseable, _onUserClose != null);
-            _elementToWrap.SetBoolAttribute(Magics.AttrDataFormIsShown, true);
+            IsShown = true;
             
             BuildFormFromElement(_elementToWrap).FindAndFocusOnFirstItem();
         }
 
         public void Hide() {
             _elementToWrap.SetBoolAttribute(Magics.AttrDataFormIsCloseable, false);
-            _elementToWrap.SetBoolAttribute(Magics.AttrDataFormIsShown, false);
+            IsShown = false;
             
             _elementToWrap.RemoveAllChildren();
         }

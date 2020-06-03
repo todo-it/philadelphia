@@ -31,8 +31,8 @@ namespace Philadelphia.Web {
         public IEnumerable<HTMLElement> Actions { 
             set { 
                 Logger.Debug(GetType(),$"ModalDialogFromCanvas(formId={_formId}): actions setting");
-                _actionsInFooter.RemoveAllChildren();
-                value.ForEach(x => _actionsInFooter.AppendChild(x));
+                
+                FormCanvasShared.AddActions(_actionsInFooter, value);
             } 
         }
 
@@ -78,7 +78,6 @@ namespace Philadelphia.Web {
             _dialog.AppendChild(_header);
             
             _header.AppendChild(_headerTitle);
-            _header.AppendChild(DocumentUtil.CreateElementHavingClassName("span", Magics.CssClassFlexSpacer));
             _header.AppendChild(_userClose.Widget);
             
             _dialog.AppendChild(_body);

@@ -62,6 +62,7 @@
     <Compile Include="Mvp\Extensions\HtmlBodyExtensions.cs" />
     <Compile Include="Mvp\Extensions\HTMLTableElementExtensions.cs" />
     <Compile Include="Mvp\Extensions\NodeExtensions.cs" />
+    <Compile Include="Mvp\FormCanvasShared.cs" />
     <Compile Include="Mvp\Forms\SingleRadioBasedChoiceForm.cs" />
     <Compile Include="Mvp\Forms\SingleRadioBasedChoiceFormView.cs" />
     <Compile Include="Mvp\ModalDialogFormCanvas.cs" />

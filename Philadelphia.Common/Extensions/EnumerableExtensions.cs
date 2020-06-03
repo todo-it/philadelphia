@@ -18,7 +18,28 @@ namespace Philadelphia.Common {
 			}
 		}
 
-	    public static bool AllI<T>(this IEnumerable<T> self, Func<int,T,bool> operation) {
+        public static IEnumerable<T> ConcatElementIfTrue<T>(this IEnumerable<T> self, bool addWhenTrue, T itmToAdd) => 
+	        addWhenTrue ? self.Concat(new List<T>{itmToAdd}) : self;
+        
+        /// <summary>
+        /// split into two collections preserving order of elements. Each element for which predicate returns true goes into first collection.
+        /// </summary>
+        public static Tuple<IEnumerable<T>, IEnumerable<T>> Partition<T>(this IEnumerable<T> self, Func<T,bool> predicate) {
+	        var left = new List<T>();
+	        var right = new List<T>();
+
+	        self.ForEach(x => {
+		        if (predicate(x)) {
+			        left.Add(x);
+		        } else {
+			        right.Add(x);
+		        }
+	        });
+
+	        return Tuple.Create<IEnumerable<T>,IEnumerable<T>>(left, right);
+        }
+
+        public static bool AllI<T>(this IEnumerable<T> self, Func<int,T,bool> operation) {
 	        var i = 0;
 	        foreach (var t in self) {
 	            if (!operation(i++, t)) {
