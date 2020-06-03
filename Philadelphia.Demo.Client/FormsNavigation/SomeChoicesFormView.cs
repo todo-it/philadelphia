@@ -9,7 +9,8 @@ namespace Philadelphia.Demo.Client {
                 IconFontType.FontAwesomeSolid, "First", FontAwesomeSolid.IconChevronLeft);
         public IActionView<HTMLElement> Second {get;}
             = InputTypeButtonActionView.CreateFontAwesomeIconedButton(
-                IconFontType.FontAwesomeSolid, "Second", FontAwesomeSolid.IconChevronRight);
+                IconFontType.FontAwesomeSolid, "Second", FontAwesomeSolid.IconChevronRight)
+                .With(x => x.Widget.SetValuelessAttribute(Magics.AttrAlignToRight));
         public IView<HTMLElement>[] Actions => new IView<HTMLElement>[]{First, Second};
 
         public RenderElem<HTMLElement>[] Render(HTMLElement _) {
