@@ -18,6 +18,7 @@ namespace Philadelphia.Demo.Client {
             IFormRenderer<HTMLElement> CreateRenderer() =>
                 _baseRenderer.CreateRendererWithBase(
                     new ElementWrapperFormCanvas(
+                        Toolkit.BaseFormCanvasTitleStrategy,
                         _mainMenuFormView.BodyPanel.Widget,
                         Toolkit.DefaultExitButtonBuilder, 
                         Toolkit.DefaultLayoutMode));

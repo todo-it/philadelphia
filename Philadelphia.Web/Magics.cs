@@ -154,6 +154,7 @@ namespace Philadelphia.Web {
         public const string CssClassIsResizing = "isResizing";
         public const string CssClassColumnLabel = "columnLabel";
         public const string CssClassHeaderClose = "headerClose";
+        public const string CssClassHeaderTitle = "headerTitle";
         public const string CssClassUploadActions = "uploadActions";
         
         public const string CssClassCurrent = "current";

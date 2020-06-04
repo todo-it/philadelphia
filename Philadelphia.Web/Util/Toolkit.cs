@@ -10,6 +10,8 @@ using Bridge.Html5;
 namespace Philadelphia.Web {
     public static class Toolkit {
         public static LayoutModeType DefaultLayoutMode { get; set; } = LayoutModeType.TitleExtra_Body_Actions;
+        public static Func<IHtmlFormCanvas,ITitleFormCanvasStrategy> BaseFormCanvasTitleStrategy  { get; set; } 
+            = x => new RegularDomElementTitleFormCanvasStrategy(x);
         
         public static void InitializeToolkit(
                 ILoggerImplementation customLogger = null, 
@@ -26,7 +28,7 @@ namespace Philadelphia.Web {
             
             if (customLogger != null) {
                 Logger.ConfigureImplementation(customLogger);
-            } else if (DocumentUtil.HasHashParameter("debug") && DocumentUtil.GetHashParameter("debug") == "lite") {
+            } else if (DocumentUtil.HasQueryParameter("debug") && DocumentUtil.GetQueryParameter("debug") == "lite") {
                 var toIgnoreByType = new [] {
                     typeof(Philadelphia.Web.GeneralAttrChangedObserver),
                     typeof(Philadelphia.Web.GeneralChildListChangedObserver),
@@ -41,7 +43,7 @@ namespace Philadelphia.Web {
 
                 Logger.ConfigureImplementation(new ForwardMatchingToConsoleLogLoggerImplementation(
                     x => !toIgnoreByType.Contains(x) && !toIgnoreByBaseName.Contains(x.FullNameWithoutGenerics()) ));
-            } else if (DocumentUtil.HasHashParameter("debug")) {
+            } else if (DocumentUtil.HasQueryParameter("debug")) {
                 Logger.ConfigureImplementation(new ForwardEverythingToConsoleLogLoggerImplementation());
             } else {
                 Logger.ConfigureImplementation(new ForwardErrorsToConsoleLogLoggerImplementation());
@@ -76,7 +78,8 @@ namespace Philadelphia.Web {
 
         public static BaseFormRenderer DefaultFormRenderer() =>
             new BaseFormRenderer(
-                new ElementWrapperFormCanvas(Document.Body, DefaultExitButtonBuilder, DefaultLayoutMode), 
+                new ElementWrapperFormCanvas(
+                    BaseFormCanvasTitleStrategy, Document.Body, DefaultExitButtonBuilder, DefaultLayoutMode), 
                 new FactoryMethodProvider<IFormCanvas<HTMLElement>>(() => new ModalDialogFormCanvas()));
         
         public static CalculateTbodyHeight DefaultTableBodyHeightProvider(int fixedHeightToAdd=0) {

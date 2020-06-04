@@ -8,10 +8,12 @@ namespace Philadelphia.Web {
         private static BuiltPanels<T> BuildNonhideable<T>(T panels, IFormRenderer<HTMLElement> renderer) 
                 where T : TwoPanelsWithResizer {
 
-            var leftCanvas = new ElementWrapperFormCanvas(panels.FirstPanel, Toolkit.DefaultExitButtonBuilder, Toolkit.DefaultLayoutMode);
+            var leftCanvas = new ElementWrapperFormCanvas(
+                Toolkit.BaseFormCanvasTitleStrategy, panels.FirstPanel, Toolkit.DefaultExitButtonBuilder, Toolkit.DefaultLayoutMode);
             var leftRenderer = renderer.CreateRendererWithBase(leftCanvas);
             
-            var rightCanvas = new ElementWrapperFormCanvas(panels.SecondPanel, Toolkit.DefaultExitButtonBuilder, Toolkit.DefaultLayoutMode);
+            var rightCanvas = new ElementWrapperFormCanvas(
+                Toolkit.BaseFormCanvasTitleStrategy, panels.SecondPanel, Toolkit.DefaultExitButtonBuilder, Toolkit.DefaultLayoutMode);
             var rightRenderer = renderer.CreateRendererWithBase(rightCanvas);
             
             return BuiltPanels<T>.BuiltNonHideable(panels, leftRenderer, rightRenderer, leftCanvas, rightCanvas); 
@@ -34,6 +36,7 @@ namespace Philadelphia.Web {
             
             panels.FirstPanel.AddClasses(Magics.CssClassPositionRelative);
             var leftCanvas = new ElementWrapperFormCanvas(
+                Toolkit.BaseFormCanvasTitleStrategy, 
                 panels.FirstPanel, 
                 Toolkit.DefaultExitButtonBuilder,
                 Toolkit.DefaultLayoutMode,
@@ -43,6 +46,7 @@ namespace Philadelphia.Web {
 
             panels.SecondPanel.AddClasses(Magics.CssClassPositionRelative);
             var rightCanvas = new ElementWrapperFormCanvas(
+                Toolkit.BaseFormCanvasTitleStrategy, 
                 panels.SecondPanel, 
                 Toolkit.DefaultExitButtonBuilder,
                 Toolkit.DefaultLayoutMode,

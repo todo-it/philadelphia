@@ -65,7 +65,10 @@
     <Compile Include="Mvp\FormCanvasShared.cs" />
     <Compile Include="Mvp\Forms\SingleRadioBasedChoiceForm.cs" />
     <Compile Include="Mvp\Forms\SingleRadioBasedChoiceFormView.cs" />
+    <Compile Include="Mvp\IHtmlFormCanvas.cs" />
+    <Compile Include="Mvp\ITitleFormCanvasStrategy.cs" />
     <Compile Include="Mvp\ModalDialogFormCanvas.cs" />
+    <Compile Include="Mvp\RegularDomElementTitleFormCanvasStrategy.cs" />
     <Compile Include="Mvp\Views\AutocompleteDropdown.cs" />
     <Compile Include="Mvp\Views\MultipleChoiceDropDown.cs" />
     <Compile Include="Mvp\Views\RadioBasedSingleChoice.cs" />

@@ -76,6 +76,12 @@ namespace Philadelphia.Web {
             }
         }
 
+        public static void MaybeRemoveChild(this HTMLElement self, HTMLElement toRemove) {
+            if (self.Children.Contains(toRemove)) {
+                self.RemoveChild(toRemove);
+            }
+        }
+
         public static void ReplaceChildren(this HTMLElement self, IEnumerable<HTMLElement> newChildren) {
             var x = newChildren.ToList(); //to assure atomicity
             self.RemoveAllChildren();
