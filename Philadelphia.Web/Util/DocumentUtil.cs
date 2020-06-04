@@ -94,7 +94,46 @@ namespace Philadelphia.Web {
                 .AsIEnumerable()
                 .ToDictionary(x => x, x => u.searchParams.get(x));
         }
-        
+
+        public static bool TryCloseTopMostForm() {
+            var activeDialogOrNull = Document.Body.GetActiveFormOrNull();
+
+            Logger.Debug(typeof(Toolkit), "TryCloseTopMostForm() hasDialog?={0}", activeDialogOrNull != null);
+
+            if (activeDialogOrNull?.IsCloseable == true) {
+                activeDialogOrNull.InvokeClose();
+                return true;
+            }
+            
+            Logger.Debug(typeof(Toolkit), "TryCloseTopMostForm() no dialog or not closeable");
+            return false;
+        }
+
+        public static bool TryActivateDefaultButtonInTopMostForm() {
+            var isInInput = 
+                Document.ActiveElement != null && 
+                StandardHtmlFocusableTagNames.Contains(Document.ActiveElement.TagName);
+            var mayHandleEnter = 
+                Document.ActiveElement != null &&
+                !Document.ActiveElement.HasAttribute(Magics.AttrDataHandlesEnter);
+            var activeDialogOrNull = Document.Body.GetActiveFormOrNull();
+
+            Logger.Debug(typeof(Toolkit), 
+                "TryActivateDefaultButtonInTopMostForm() have focused input/textArea/select?={0} hasDialog?={1} mayHandle?={2}", 
+                isInInput, activeDialogOrNull != null, mayHandleEnter);
+
+            if (activeDialogOrNull!= null && mayHandleEnter) {
+                var defaultButtonOrNull = activeDialogOrNull.DefaultButtonOrNull;
+
+                if (defaultButtonOrNull != null) {
+                    defaultButtonOrNull.Click();
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
         public static void Initialize() {
             if (_isInitialized) {
                 return;
@@ -110,50 +149,20 @@ namespace Philadelphia.Web {
             
             Document.OnKeyDown += ev => {
                 switch (ev.KeyCode) {
-                    case Magics.KeyCodeEscape: {
-                        var activeDialogOrNull = Document.Body.GetActiveFormOrNull();
-
-                        Logger.Debug(typeof(Toolkit), "Handling ESC key hasDialog?={0}", activeDialogOrNull != null);
-
-                        if (activeDialogOrNull != null) {
-                            if (!activeDialogOrNull.IsCloseable) {
-                                Logger.Debug(typeof(Toolkit), "Handling ESC key activeDialog is not closeable");
-                                break;    
-                            }
-                            
+                    case Magics.KeyCodeEscape:
+                        if (TryCloseTopMostForm()) {
                             ev.PreventDefault();
-                            activeDialogOrNull.InvokeClose();
                         }
-
                         break; 
-                    }
-
-                    case Magics.KeyCodeEnter: {
-                        var isInInput = 
-                            Document.ActiveElement != null && 
-                            StandardHtmlFocusableTagNames.Contains(Document.ActiveElement.TagName);
-                        var mayHandleEnter = 
-                            Document.ActiveElement != null &&
-                            !Document.ActiveElement.HasAttribute(Magics.AttrDataHandlesEnter);
-                        var activeDialogOrNull = Document.Body.GetActiveFormOrNull();
-
-                        Logger.Debug(typeof(Toolkit), 
-                            "Handling ENTER key have focused input/textArea/select?={0} hasDialog?={1} mayHandle?={2}", 
-                            isInInput, activeDialogOrNull != null, mayHandleEnter);
-
-                        if (activeDialogOrNull!= null && mayHandleEnter) {
-                            var defaultButtonOrNull = activeDialogOrNull.DefaultButtonOrNull;
-
-                            if (defaultButtonOrNull != null) {
-                                ev.PreventDefault();
-                                ev.StopImmediatePropagation();
-                                ev.StopPropagation();
-                                defaultButtonOrNull.Click();
-                            }
+                    
+                    case Magics.KeyCodeEnter:
+                        if (TryActivateDefaultButtonInTopMostForm()) {
+                            ev.PreventDefault(); //TODO is it needed?
+                            ev.StopImmediatePropagation();
+                            ev.StopPropagation(); //TODO is it needed?
                         }
 
                         break;
-                    }
                 }
             };            
         }
