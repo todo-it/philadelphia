@@ -29,8 +29,8 @@ namespace Philadelphia.Web {
         
         public HTMLElement DefaultButtonOrNull => ActionsContainerElement.Children.FirstOrDefault(x => x.HasAttribute(Magics.AttrDataFormDefaultAction));
         
-        public void FindAndFocusOnFirstItem() {
-            BodyContainerElement.TraverseUntilFirst(el => {
+        public bool FindAndFocusOnFirstItem() {
+            var isSuccess = BodyContainerElement.TraverseUntilFirst(el => {
                 if (el.TagName != "INPUT" && el.TagName != "TEXTAREA" && el.TagName != "SELECT") {
                     return false;
                 }
@@ -39,6 +39,9 @@ namespace Philadelphia.Web {
                 
                 return true;
             });
+            
+            Logger.Debug(typeof(FormDescr), "FindAndFocusOnFirstItem() outcome={0}", isSuccess != null);
+            return isSuccess != null;
         }
         
         public void InvokeClose() {

@@ -133,7 +133,7 @@ namespace Philadelphia.Web {
         }
 
         public static FormDescr BuildFormFromElement(HTMLElement el) {
-            return new FormDescr(el, el.Children[1], el.Children[2]);
+            return new FormDescr(el, el.Children[0], el.Children[1]);
         }
     }
 }

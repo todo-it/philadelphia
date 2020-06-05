@@ -96,12 +96,15 @@ namespace Philadelphia.Web {
             IsShown = true;
             Document.Body.AppendChild(_modalGlass);
             
-            BuildFormFromElement(_modalGlass).FindAndFocusOnFirstItem();
+            if (!BuildFormFromElement(_modalGlass).FindAndFocusOnFirstItem()) {
+                Logger.Error(GetType(), "no input is focusable yet still maybe needs to steal focus from glass covered element {0}", Document.ActiveElement);
+                Document.ActiveElement?.Blur();
+            }
         }
 
         public void Hide() {
             if (!Document.Body.Contains(_modalGlass)) {
-                Logger.Error(GetType(), "cannot hide hidden dialog");
+                Logger.Error(GetType(), "cannot hide already hidden dialog");
                 return;
             }
             
