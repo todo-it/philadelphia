@@ -92,8 +92,7 @@ namespace Philadelphia.Web {
             _wrapped.SetBoolAttribute(Magics.AttrDataFormIsPopup, false);
             IsShown = false;
             _wrapped.SetValuelessAttribute(Magics.AttrDataFormIsCloseable);
-            _wrapped.AddEventListener(Magics.ProgramaticCloseFormEventName, () => _onUserClose?.Invoke());
-
+            
             _body = new HTMLDivElement();
             _body.SetAttribute(Magics.AttrDataFormId, FormId);
             _body.SetValuelessAttribute(Magics.AttrDataFormBody);
@@ -103,7 +102,6 @@ namespace Philadelphia.Web {
             _actions.SetValuelessAttribute(Magics.AttrDataFormActions);
             
             _userCancelUiAction = createCloseButton();
-            _userCancelUiAction.Triggered += () => _onUserClose?.Invoke();
             
             _extraElement = extraElementOrNull ?? new HTMLSpanElement();
             _extraElement.AddClasses(Magics.CssClassExtraElement);
@@ -111,27 +109,36 @@ namespace Philadelphia.Web {
             _titleImpl = titleImpl(this);
         }
 
+        private void OnUserClose() => _onUserClose?.Invoke();
+        
         public void Show() {
             _titleImpl.OnCanvasShowing();
             
+            _wrapped.AddEventListener(Magics.ProgramaticCloseFormEventName, OnUserClose);
+            _userCancelUiAction.Triggered += OnUserClose;
+
             _wrapped.AppendChild(_body);
             _wrapped.AppendChild(_actions);
             _wrapped.AppendChild(_extraElement);
             
             _wrapped.SetBoolAttribute(Magics.AttrDataFormIsCloseable, _onUserClose != null);
             IsShown = true;
-            
-            BuildFormFromElement(_wrapped).FindAndFocusOnFirstItem();
         }
 
         public void Hide() {
             _wrapped.SetBoolAttribute(Magics.AttrDataFormIsCloseable, false);
             IsShown = false;
-            
+ 
+            _wrapped.RemoveEventListener(Magics.ProgramaticCloseFormEventName, OnUserClose);
+            _userCancelUiAction.Triggered -= OnUserClose;
+
             _titleImpl.OnCanvasHiding();
             _wrapped.RemoveAllChildren();
         }
 
+        public void Focus() => AsFormDescr().FindAndFocusOnFirstItem();
+        public FormDescr AsFormDescr() => BuildFormFromElement(ContainerElement);
+        
         public static FormDescr BuildFormFromElement(HTMLElement el) {
             return new FormDescr(el, el.Children[0], el.Children[1]);
         }

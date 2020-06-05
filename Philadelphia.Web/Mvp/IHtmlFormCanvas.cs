@@ -6,5 +6,6 @@ namespace Philadelphia.Web {
         string FormId { get; }
         bool IsShown { get; }
         HTMLElement ContainerElement { get; }
+        FormDescr AsFormDescr();
     }
 }

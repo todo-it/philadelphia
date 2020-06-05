@@ -9,5 +9,8 @@ namespace Philadelphia.Common {
         void Show();
         void Hide();
         string Title { set; }
+        
+        /// <summary>needed because Show() doesn't necessarily mean that form gets focused (e.g. when baseform under popup)</summary>
+        void Focus();
     }
 }

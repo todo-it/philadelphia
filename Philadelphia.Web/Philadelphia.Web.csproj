@@ -59,15 +59,18 @@
     <Compile Include="Mvp\Extensions\AdaptAsIview.cs" />
     <Compile Include="Mvp\Extensions\ElementExtensions.cs" />
     <Compile Include="Mvp\Extensions\EventExtensions.cs" />
+    <Compile Include="Mvp\Extensions\FormDescr.cs" />
     <Compile Include="Mvp\Extensions\HtmlBodyExtensions.cs" />
     <Compile Include="Mvp\Extensions\HTMLTableElementExtensions.cs" />
     <Compile Include="Mvp\Extensions\NodeExtensions.cs" />
     <Compile Include="Mvp\FormCanvasShared.cs" />
+    <Compile Include="Mvp\FormRenderer.cs" />
     <Compile Include="Mvp\Forms\SingleRadioBasedChoiceForm.cs" />
     <Compile Include="Mvp\Forms\SingleRadioBasedChoiceFormView.cs" />
     <Compile Include="Mvp\IHtmlFormCanvas.cs" />
     <Compile Include="Mvp\ITitleFormCanvasStrategy.cs" />
     <Compile Include="Mvp\ModalDialogFormCanvas.cs" />
+    <Compile Include="Mvp\PopupImplementation.cs" />
     <Compile Include="Mvp\RegularDomElementTitleFormCanvasStrategy.cs" />
     <Compile Include="Mvp\Views\AutocompleteDropdown.cs" />
     <Compile Include="Mvp\Views\MultipleChoiceDropDown.cs" />
@@ -102,7 +105,6 @@
     <Compile Include="Mvp\Forms\TextInputFormView.cs" />
     <Compile Include="Mvp\LocalValueFieldBuilder.cs" />
     <Compile Include="Mvp\MenuModelExtensions.cs" />
-    <Compile Include="Mvp\PopupDelegatingFormRenderer.cs" />
     <Compile Include="Mvp\RemoteFieldBuilder.cs" />
     <Compile Include="Mvp\RemoteValueBuilder.cs" />
     <Compile Include="Mvp\ViewExtensions.cs" />

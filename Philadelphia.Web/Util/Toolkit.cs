@@ -76,11 +76,11 @@ namespace Philadelphia.Web {
             };
         }
 
-        public static BaseFormRenderer DefaultFormRenderer() =>
-            new BaseFormRenderer(
+        public static FormRenderer DefaultFormRenderer() =>
+            new FormRenderer(
                 new ElementWrapperFormCanvas(
-                    BaseFormCanvasTitleStrategy, Document.Body, DefaultExitButtonBuilder, DefaultLayoutMode), 
-                new FactoryMethodProvider<IFormCanvas<HTMLElement>>(() => new ModalDialogFormCanvas()));
+                    BaseFormCanvasTitleStrategy, Document.Body, DefaultExitButtonBuilder, DefaultLayoutMode),
+                    new FactoryMethodProvider<IFormCanvas<HTMLElement>>(() => new ModalDialogFormCanvas()) );
         
         public static CalculateTbodyHeight DefaultTableBodyHeightProvider(int fixedHeightToAdd=0) {
              return (el,theaderHeight,_) => el.GetAvailableHeightForFormElement(0, 2) - theaderHeight + fixedHeightToAdd;

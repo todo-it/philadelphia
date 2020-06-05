@@ -8,6 +8,7 @@ namespace Philadelphia.Web {
         private readonly HTMLElement _modalGlass, _actionsInFooter, _body, _header, _headerTitle, _dialog;
         private Action _onUserClose;
         private bool _isDragging;
+        private readonly InputTypeButtonActionView _userClose;
         
         public string FormId { get; } = UniqueIdGenerator.GenerateAsString();
         public string Title {
@@ -16,6 +17,7 @@ namespace Philadelphia.Web {
                 _headerTitle.SetAttribute(Magics.AttrDataInnerHtml, value);
             }
         }
+        
         public HTMLElement ContainerElement => _modalGlass;
 
         public bool IsShown {
@@ -54,7 +56,6 @@ namespace Philadelphia.Web {
             _dialog.SetBoolAttribute(Magics.AttrDataFormIsPopup, true);
             IsShown = false;
             _dialog.SetValuelessAttribute(Magics.AttrDataFormIsCloseable);
-            _dialog.AddEventListener(Magics.ProgramaticCloseFormEventName, () => _onUserClose?.Invoke());
             
             _body = Document.CreateElement("div");
             _body.SetAttribute(Magics.AttrDataFormId, FormId);
@@ -64,9 +65,8 @@ namespace Philadelphia.Web {
             _actionsInFooter.SetAttribute(Magics.AttrDataFormId, FormId);
             _actionsInFooter.SetValuelessAttribute(Magics.AttrDataFormActions);
             
-            var userClose = InputTypeButtonActionView.CreateFontAwesomeIconedAction(IconFontType.FontAwesomeSolid, FontAwesomeSolid.IconTimes);
-            userClose.Widget.ClassList.Add(Magics.CssClassHeaderClose);
-            userClose.Widget.AddEventListener(EventType.Click, () => _onUserClose?.Invoke());
+            _userClose = InputTypeButtonActionView.CreateFontAwesomeIconedAction(IconFontType.FontAwesomeSolid, FontAwesomeSolid.IconTimes);
+            _userClose.Widget.ClassList.Add(Magics.CssClassHeaderClose);
             
             _modalGlass.AppendChild(_dialog);
             
@@ -78,7 +78,7 @@ namespace Philadelphia.Web {
             _dialog.AppendChild(_header);
             
             _header.AppendChild(_headerTitle);
-            _header.AppendChild(userClose.Widget);
+            _header.AppendChild(_userClose.Widget);
             
             _dialog.AppendChild(_body);
             _dialog.AppendChild(_actionsInFooter);
@@ -86,20 +86,20 @@ namespace Philadelphia.Web {
             MakeItDraggable(_header);
         }
 
+        private void OnUserClose() => _onUserClose?.Invoke();
+        
         public void Show() {
             if (Document.Body.Contains(_modalGlass)) {
                 Logger.Error(GetType(), "cannot show already shown dialog");
                 return;
             }
             
+            _dialog.AddEventListener(Magics.ProgramaticCloseFormEventName, OnUserClose);
+            _userClose.Widget.AddEventListener(EventType.Click, OnUserClose);
+            
             _dialog.SetBoolAttribute(Magics.AttrDataFormIsCloseable, _onUserClose != null);
             IsShown = true;
             Document.Body.AppendChild(_modalGlass);
-            
-            if (!BuildFormFromElement(_modalGlass).FindAndFocusOnFirstItem()) {
-                Logger.Error(GetType(), "no input is focusable yet still maybe needs to steal focus from glass covered element {0}", Document.ActiveElement);
-                Document.ActiveElement?.Blur();
-            }
         }
 
         public void Hide() {
@@ -108,12 +108,18 @@ namespace Philadelphia.Web {
                 return;
             }
             
+            _dialog.RemoveEventListener(Magics.ProgramaticCloseFormEventName, OnUserClose);
+            _userClose.Widget.RemoveEventListener(EventType.Click, OnUserClose);
+            
             _dialog.SetBoolAttribute(Magics.AttrDataFormIsCloseable, false);
             IsShown = false;
             
             Document.Body.RemoveChild(_modalGlass);
         }
         
+        public void Focus() => AsFormDescr().FindAndFocusOnFirstItem();
+        public FormDescr AsFormDescr() => BuildFormFromElement(ContainerElement);
+
         public static FormDescr BuildFormFromElement(HTMLElement el) {
             var shouldBeDialog = el.Children[0]; //glass is parent
             return new FormDescr(
