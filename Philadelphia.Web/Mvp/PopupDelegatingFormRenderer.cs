@@ -35,7 +35,7 @@ namespace Philadelphia.Web {
             Logger.Debug(GetType(),"Replacing master with view {0}", newView);
             ClearMaster();
             _masterView = newView;
-            _masterCanvas.Render(newView);
+            _masterCanvas.RenderAdapter(newView);
         }
 
         public void ReplaceMaster(IBareForm<HTMLElement> newForm) {
@@ -44,7 +44,7 @@ namespace Philadelphia.Web {
             
             ClearMaster();
             
-            _masterCanvas.Render(
+            _masterCanvas.RenderForm(
                 newForm, 
                 () => _currentMaster = newForm.View);
             _masterCanvas.Title = newForm.Title;

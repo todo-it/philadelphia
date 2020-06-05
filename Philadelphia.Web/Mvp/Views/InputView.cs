@@ -23,7 +23,7 @@ namespace Philadelphia.Web {
                     (x,v) => x.Value = v,
                     label) {
 
-            InputWidget.SetAttribute(Magics.AttrDataHandlesEnter, "true");
+            InputWidget.SetBoolAttribute(Magics.AttrDataHandlesEnter, true);
         }
     }
 }

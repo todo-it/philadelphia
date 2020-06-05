@@ -23,7 +23,7 @@ namespace Philadelphia.Web {
                     var id = UniqueIdGenerator.Generate();
                     innerHtmlTemplate += string.Format("<div id='{0}'></div>", id);
                     controls.Add(id.ToString(), t.Iview.Widget);
-                    Logger.Debug(typeof(FormCanvasExtensions),"BuildTemplateAndParams iview={0} with id={1}", t, id);                    
+                    Logger.Debug(typeof(FormCanvasExtensions),"BuildTemplateAndParams() iview={0} with id={1}", t, id);                    
                     continue;
                 } 
                 
@@ -31,12 +31,12 @@ namespace Philadelphia.Web {
                     var id = UniqueIdGenerator.Generate();
                     innerHtmlTemplate += string.Format("<div id='{0}'></div>", id);
                     controls.Add(id.ToString(), t.NativeItm);
-                    Logger.Debug(typeof(FormCanvasExtensions),"BuildTemplateAndParams NativeItm={0} with id={1}", t, id);                    
+                    Logger.Debug(typeof(FormCanvasExtensions),"BuildTemplateAndParams() NativeItm={0} with id={1}", t, id);                    
                     continue;
                 }
 
                 innerHtmlTemplate += t.Token;
-                Logger.Debug(typeof(FormCanvasExtensions),"BuildTemplateAndParams literal={0}", t);
+                Logger.Debug(typeof(FormCanvasExtensions),"BuildTemplateAndParams() literal={0}", t);
             }
 
             return new Tuple<string, Dictionary<string, HTMLElement>>(innerHtmlTemplate, controls);
@@ -46,7 +46,7 @@ namespace Philadelphia.Web {
             var result = new HTMLDivElement();
             var templateWithParams = BuildTemplateAndParams(newMaster.Render(result));
 
-            Logger.Debug(typeof(FormCanvasExtensions),"got template={0} and params={1}", templateWithParams.Item1, templateWithParams.Item2.Values.PrettyToString());
+            Logger.Debug(typeof(FormCanvasExtensions),"BuildBody() got template={0} and params={1}", templateWithParams.Item1, templateWithParams.Item2.Values.PrettyToString());
 
             result.InnerHTML = templateWithParams.Item1;
             
@@ -54,21 +54,21 @@ namespace Philadelphia.Web {
                 var id = idToView.Key + "";
                 var toBeReplaced = result.FindContainedElementByIdOrNull(id);
                 var replaceTo = idToView.Value;
-                Logger.Debug(typeof(FormCanvasExtensions),"ReplaceWithMaster will replace {0} having id={1} with iview {2}", toBeReplaced.InnerHTML, id, replaceTo.InnerHTML);
+                //Logger.Debug(typeof(FormCanvasExtensions),"BuildBody() will replace {0} having id={1} with iview {2}", toBeReplaced.InnerHTML, id, replaceTo.InnerHTML);
 
                 toBeReplaced.ParentNode.ReplaceChild(
                     replaceTo,
                     toBeReplaced );
 
-                Logger.Debug(typeof(FormCanvasExtensions),"ReplaceWithMaster replaced and container is now {0}", result.InnerHTML);
+                //Logger.Debug(typeof(FormCanvasExtensions),"BuildBody() replaced and container is now {0}", result.InnerHTML);
             }
 
-            Logger.Debug(typeof(FormCanvasExtensions),"ReplaceWithMaster all replaced");
+            Logger.Debug(typeof(FormCanvasExtensions),"BuildBody() ending");
             return result;
         }
 
         public static void Unrender(this IFormCanvas<HTMLElement> self) {
-            Logger.Debug(typeof(FormCanvasExtensions),"Hiding form in canvas - unbinding user cancel");
+            Logger.Debug(typeof(FormCanvasExtensions),"Unrender()");
             var handlers = Handlers.Get(self);
             self.Hide();
             
@@ -79,21 +79,19 @@ namespace Philadelphia.Web {
             Handlers.Delete(self);
         }
 
-        public static void Render(this IFormCanvas<HTMLElement> self, IView<HTMLElement> form) {
-            Logger.Debug(typeof(FormCanvasExtensions), "Replacing view in canvas");
-            
+        public static void RenderAdapter(this IFormCanvas<HTMLElement> self, IView<HTMLElement> form) {
+            Logger.Debug(typeof(FormCanvasExtensions), "RenderAdapter() starting");
             self.Body = form.Widget;
             self.Title = "";
             self.UserCancel = null;
             self.Actions = new List<HTMLElement>();
             self.Show();
-            Logger.Debug(typeof(FormCanvasExtensions), "Replaced view in canvas");
+            Logger.Debug(typeof(FormCanvasExtensions), "RenderAdapter() ending");
         }
 
-        public static void Render(this IFormCanvas<HTMLElement> self, IBareForm<HTMLElement> form, Action beforeShow) {
-            Debug("Replacing form in canvas - building new form");
+        public static void RenderForm(this IFormCanvas<HTMLElement> self, IBareForm<HTMLElement> form, Action beforeShow) {
+            Debug($"RenderForm() form into canvas: title={form.Title}, type={form.GetType().FullName}");
             var handlers = form.ExternalEventsHandlers;
-            Debug($"Form details: title={form.Title}, type={form.GetType().FullName}, external handlers={handlers}");
             self.UserCancel = handlers.OnUserCancel;
             self.Body = BuildBody(form.View);
             self.Actions = form.View.Actions.Select(x => x.Widget);
@@ -103,7 +101,7 @@ namespace Philadelphia.Web {
 
             self.Show();
             
-            Logger.Debug(typeof(FormCanvasExtensions), "Replacing form in canvas - new form added");
+            Logger.Debug(typeof(FormCanvasExtensions), "RenderForm() ending");
         }
     }
 }

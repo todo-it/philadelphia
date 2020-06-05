@@ -19,8 +19,9 @@ namespace Philadelphia.Web {
         }
 
         public void ClearMaster() {
+            Logger.Debug(GetType(),"ClearMaster() _currentMaster={0} _masterView={1}", _currentMaster, _masterView);
+            
             if (_masterView != null) {
-                Logger.Debug(typeof(FormCanvasExtensions), "Cleaning IView from masterCanvas");
                 _masterCanvas.Hide();
                 _masterView = null;
             }
@@ -29,7 +30,6 @@ namespace Philadelphia.Web {
                 return;
             }
             
-            Logger.Debug(GetType(),"Removing master");
             _masterCanvas.Unrender();
             _currentMaster = null;
         }
@@ -38,20 +38,20 @@ namespace Philadelphia.Web {
             new PopupDelegatingFormRenderer(this, masterCanvas);
 
         public void ReplaceMasterWithAdapter(IView<HTMLElement> newItem) {
-            Logger.Debug(GetType(),"Replacing master with {0}", newItem);
+            Logger.Debug(GetType(),"ReplaceMasterWithAdapter() with {0}", newItem);
             ClearMaster();
 			
-            _masterCanvas.Render(newItem);
+            _masterCanvas.RenderAdapter(newItem);
             _masterView = newItem;
         }
 
         public void ReplaceMaster(IBareForm<HTMLElement> newForm) {
             var isSame = newForm.View == _currentMaster;
-            Logger.Debug(GetType(),"Replacing master with {0}. Same as now?{0}", newForm, isSame);
+            Logger.Debug(GetType(),"ReplaceMaster() with {0}. Same as now?{0}", newForm, isSame);
             
             ClearMaster();
 			
-            _masterCanvas.Render(
+            _masterCanvas.RenderForm(
                 newForm, 
                 () => _currentMaster = newForm.View);
             _masterCanvas.Title = newForm.Title;
@@ -60,12 +60,19 @@ namespace Philadelphia.Web {
         }
 
         public void AddPopup(IBareForm<HTMLElement> newForm) {
-            Logger.Debug(GetType(),"Adding popup {0}", newForm);
+            Logger.Debug(GetType(),"AddPopup() {0}", newForm);
             var newCanvas = _popupCanvasProvider.Provide();
 
-            newCanvas.Render(
+            newCanvas.RenderForm(
                 newForm, 
-                () => _popups.Add(newForm.View, newCanvas));
+                () => {
+                    if (_popups.ContainsKey(newForm.View)) {
+                        Logger.Error(GetType(),"AddPopup() form was already added. master={0} popups={1} failing!", _currentMaster, _popups.PrettyToString());
+                        throw new Exception(string.Format("form was already added {0}", newForm));
+                    }
+
+                    _popups.Add(newForm.View, newCanvas);
+                });
             
             newCanvas.Title = newForm.Title;
             
@@ -73,23 +80,23 @@ namespace Philadelphia.Web {
         }
         
         public void Remove(IBareForm<HTMLElement> frm) {
-            Logger.Debug(GetType(),"Removing form {0}", frm);
+            Logger.Debug(GetType(),"Remove() form {0}", frm);
 
             if (frm.View == _currentMaster) {
                 ClearMaster();
                 return;
             }
 
-            if (_popups.ContainsKey(frm.View)) { 
-                Logger.Debug(GetType(),"Removing popup {0}", frm);
+            if (_popups.ContainsKey(frm.View)) {
                 var canvas = _popups[frm.View];
 
                 canvas.Unrender();
                 _popups.Remove(frm.View);
+                
                 return;
             }
 
-            Logger.Debug(GetType(),"form was not shown. master={0} popups={1} failing!", _currentMaster, _popups.PrettyToString());
+            Logger.Error(GetType(),"Remove() form was not shown. master={0} popups={1} failing!", _currentMaster, _popups.PrettyToString());
             throw new Exception(string.Format("form was not shown {0}", frm));
         }
     }

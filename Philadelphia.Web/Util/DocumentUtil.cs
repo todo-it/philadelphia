@@ -115,7 +115,7 @@ namespace Philadelphia.Web {
                 StandardHtmlFocusableTagNames.Contains(Document.ActiveElement.TagName);
             var mayHandleEnter = 
                 Document.ActiveElement != null &&
-                !Document.ActiveElement.HasAttribute(Magics.AttrDataHandlesEnter);
+                Document.ActiveElement.GetBoolAttribute(Magics.AttrDataHandlesEnter) != true;
             var activeDialogOrNull = Document.Body.GetActiveFormOrNull();
 
             Logger.Debug(typeof(Toolkit), 
@@ -124,6 +124,8 @@ namespace Philadelphia.Web {
 
             if (activeDialogOrNull!= null && mayHandleEnter) {
                 var defaultButtonOrNull = activeDialogOrNull.DefaultButtonOrNull;
+                Logger.Debug(typeof(Toolkit), 
+                    "TryActivateDefaultButtonInTopMostForm() has defaultButton?={0}", defaultButtonOrNull != null);
 
                 if (defaultButtonOrNull != null) {
                     defaultButtonOrNull.Click();
