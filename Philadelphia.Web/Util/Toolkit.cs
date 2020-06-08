@@ -12,7 +12,9 @@ namespace Philadelphia.Web {
         public static LayoutModeType DefaultLayoutMode { get; set; } = LayoutModeType.TitleExtra_Body_Actions;
         public static Func<IHtmlFormCanvas,ITitleFormCanvasStrategy> BaseFormCanvasTitleStrategy  { get; set; } 
             = x => new RegularDomElementTitleFormCanvasStrategy(x);
-        
+
+        public static Func<IActionView<HTMLElement>> BaseFormCanvasExitButtonBuilderOrNull { get; set; } = DefaultExitButtonBuilder;
+
         public static void InitializeToolkit(
                 ILoggerImplementation customLogger = null, 
                 Func<DatagridContent,Task<FileModel>> spreadsheetBuilder = null) {
@@ -79,7 +81,8 @@ namespace Philadelphia.Web {
         public static FormRenderer DefaultFormRenderer() =>
             new FormRenderer(
                 new ElementWrapperFormCanvas(
-                    BaseFormCanvasTitleStrategy, Document.Body, DefaultExitButtonBuilder, DefaultLayoutMode),
+                    BaseFormCanvasTitleStrategy, Document.Body, 
+                    BaseFormCanvasExitButtonBuilderOrNull, DefaultLayoutMode),
                     new FactoryMethodProvider<IFormCanvas<HTMLElement>>(() => new ModalDialogFormCanvas()) );
         
         public static CalculateTbodyHeight DefaultTableBodyHeightProvider(int fixedHeightToAdd=0) {
@@ -89,9 +92,7 @@ namespace Philadelphia.Web {
         public static IActionView<HTMLElement> DefaultExitButtonBuilder() {
             var result = new InputTypeButtonActionView("");
             result.Widget.ClassList.Add(Magics.CssClassDatagridAction);
-            var img = new HTMLImageElement {
-                Src = Magics.IconUrlExit
-            };
+            var img = new HTMLImageElement {Src = Magics.IconUrlExit};
             result.Widget.AppendChild(img);
             return result;            
         }

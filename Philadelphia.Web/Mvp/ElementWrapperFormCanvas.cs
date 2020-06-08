@@ -28,7 +28,7 @@ namespace Philadelphia.Web {
 
         private readonly HTMLElement _wrapped;
         private readonly HTMLElement _body,_actions,_extraElement;
-        private readonly IActionView<HTMLElement> _userCancelUiAction;
+        private readonly IActionView<HTMLElement> _maybeUserCancelUiAction;
         private Action _onUserClose;
         private LayoutModeType _layoutMode;
         public string FormId { get; } = UniqueIdGenerator.GenerateAsString();
@@ -64,21 +64,24 @@ namespace Philadelphia.Web {
 
                 FormCanvasShared.AddActions(
                     _actions,
-                    value.ConcatElementIfTrue(_userCancelUiAction.Enabled, _userCancelUiAction.Widget));
+                    value.ConcatElementIfTrue(_maybeUserCancelUiAction?.Enabled == true, _maybeUserCancelUiAction?.Widget));
             } 
         }
 
         public Action UserCancel {
             set {
                 Debug($"ElementWrapperFormCanvas(formId={FormId}) setting UserCancel was closeable?={_onUserClose == null}, will be closeable?={value == null}");
-                _userCancelUiAction.Enabled = value != null;
+                if (_maybeUserCancelUiAction != null) {
+                    _maybeUserCancelUiAction.Enabled = value != null;
+                }
+
                 _onUserClose = value;
             }
         }
 
         public ElementWrapperFormCanvas(
                 Func<IHtmlFormCanvas,ITitleFormCanvasStrategy> titleImpl,
-                HTMLElement elementToWrap, Func<IActionView<HTMLElement>> createCloseButton,
+                HTMLElement elementToWrap, Func<IActionView<HTMLElement>> nullOrCreateCloseButton,
                 LayoutModeType layoutMode, HTMLElement extraElementOrNull=null) {
             
             _layoutMode = layoutMode;
@@ -101,7 +104,7 @@ namespace Philadelphia.Web {
             _actions.SetAttribute(Magics.AttrDataFormId, FormId);
             _actions.SetValuelessAttribute(Magics.AttrDataFormActions);
             
-            _userCancelUiAction = createCloseButton();
+            _maybeUserCancelUiAction = nullOrCreateCloseButton?.Invoke();
             
             _extraElement = extraElementOrNull ?? new HTMLSpanElement();
             _extraElement.AddClasses(Magics.CssClassExtraElement);
@@ -115,7 +118,9 @@ namespace Philadelphia.Web {
             _titleImpl.OnCanvasShowing();
             
             _wrapped.AddEventListener(Magics.ProgramaticCloseFormEventName, OnUserClose);
-            _userCancelUiAction.Triggered += OnUserClose;
+            if (_maybeUserCancelUiAction != null) {
+                _maybeUserCancelUiAction.Triggered += OnUserClose;    
+            }
 
             _wrapped.AppendChild(_body);
             _wrapped.AppendChild(_actions);
@@ -130,7 +135,9 @@ namespace Philadelphia.Web {
             IsShown = false;
  
             _wrapped.RemoveEventListener(Magics.ProgramaticCloseFormEventName, OnUserClose);
-            _userCancelUiAction.Triggered -= OnUserClose;
+            if (_maybeUserCancelUiAction != null) {
+                _maybeUserCancelUiAction.Triggered -= OnUserClose;    
+            }
 
             _titleImpl.OnCanvasHiding();
             _wrapped.RemoveAllChildren();
@@ -139,8 +146,7 @@ namespace Philadelphia.Web {
         public void Focus() => AsFormDescr().FindAndFocusOnFirstItem();
         public FormDescr AsFormDescr() => BuildFormFromElement(ContainerElement);
         
-        public static FormDescr BuildFormFromElement(HTMLElement el) {
-            return new FormDescr(el, el.Children[0], el.Children[1]);
-        }
+        public static FormDescr BuildFormFromElement(HTMLElement el) =>
+            new FormDescr(el, el.Children[0], el.Children[1]);
     }
 }
