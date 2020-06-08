@@ -9,7 +9,8 @@ namespace Philadelphia.Web {
         private Action _onUserClose;
         private bool _isDragging;
         private readonly InputTypeButtonActionView _userClose;
-        
+        private readonly bool _clickingOnGlassDismissesDialog;
+
         public string FormId { get; } = UniqueIdGenerator.GenerateAsString();
         public string Title {
             set {
@@ -47,7 +48,8 @@ namespace Philadelphia.Web {
             }
         }
 
-        public ModalDialogFormCanvas() {
+        public ModalDialogFormCanvas(bool clickingOnGlassDismissesDialog) {
+            _clickingOnGlassDismissesDialog = clickingOnGlassDismissesDialog;
             _modalGlass = DocumentUtil.CreateElementHavingClassName("div", GetType().FullNameWithoutGenerics());
             _dialog = Document.CreateElement("div");
             
@@ -96,7 +98,10 @@ namespace Philadelphia.Web {
             
             _dialog.AddEventListener(Magics.ProgramaticCloseFormEventName, OnUserClose);
             _userClose.Widget.AddEventListener(EventType.Click, OnUserClose);
-            
+            if (_clickingOnGlassDismissesDialog) {
+                _modalGlass.AddEventListener(EventType.Click, OnUserClose);
+            }
+
             _dialog.SetBoolAttribute(Magics.AttrDataFormIsCloseable, _onUserClose != null);
             IsShown = true;
             Document.Body.AppendChild(_modalGlass);
@@ -108,9 +113,12 @@ namespace Philadelphia.Web {
                 return;
             }
             
-            _dialog.RemoveEventListener(Magics.ProgramaticCloseFormEventName, OnUserClose);
+            if (_clickingOnGlassDismissesDialog) {
+                _modalGlass.RemoveEventListener(EventType.Click, OnUserClose);
+            }
             _userClose.Widget.RemoveEventListener(EventType.Click, OnUserClose);
-            
+            _dialog.RemoveEventListener(Magics.ProgramaticCloseFormEventName, OnUserClose);
+
             _dialog.SetBoolAttribute(Magics.AttrDataFormIsCloseable, false);
             IsShown = false;
             

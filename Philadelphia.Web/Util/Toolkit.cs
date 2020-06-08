@@ -9,6 +9,7 @@ using Bridge.Html5;
 
 namespace Philadelphia.Web {
     public static class Toolkit {
+        public static bool ClickingOutsideOfDialogDismissesIt { get; set; } 
         public static LayoutModeType DefaultLayoutMode { get; set; } = LayoutModeType.TitleExtra_Body_Actions;
         public static Func<IHtmlFormCanvas,ITitleFormCanvasStrategy> BaseFormCanvasTitleStrategy  { get; set; } 
             = x => new RegularDomElementTitleFormCanvasStrategy(x);
@@ -83,7 +84,7 @@ namespace Philadelphia.Web {
                 new ElementWrapperFormCanvas(
                     BaseFormCanvasTitleStrategy, Document.Body, 
                     BaseFormCanvasExitButtonBuilderOrNull, DefaultLayoutMode),
-                    new FactoryMethodProvider<IFormCanvas<HTMLElement>>(() => new ModalDialogFormCanvas()) );
+                    new FactoryMethodProvider<IFormCanvas<HTMLElement>>(() => new ModalDialogFormCanvas(ClickingOutsideOfDialogDismissesIt)) );
         
         public static CalculateTbodyHeight DefaultTableBodyHeightProvider(int fixedHeightToAdd=0) {
              return (el,theaderHeight,_) => el.GetAvailableHeightForFormElement(0, 2) - theaderHeight + fixedHeightToAdd;
