@@ -11,6 +11,8 @@ namespace Philadelphia.Web {
         public string Title { get; private set; }
         public IFormView<HTMLElement> View { get; }
 
+        public ExternalEventsHandlers ExternalEventsHandlers => ExternalEventsHandlers.Create(() => Ended?.Invoke(this, Unit.Instance));
+        
         public InformationalMessageForm(string messageOrNull = null, string titleOrNull = null, TextType textType = TextType.TreatAsText) 
             : this(new InformationalMessageFormView(textType), messageOrNull, titleOrNull) {
         }
@@ -29,7 +31,5 @@ namespace Philadelphia.Web {
             Title = title ?? Title ?? I18n.Translate("Untitled");
             await _message.DoChange(message, false, this, false);
         }
-
-        public ExternalEventsHandlers ExternalEventsHandlers => ExternalEventsHandlers.Ignore;
     }
 }
