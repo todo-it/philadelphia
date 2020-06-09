@@ -20,13 +20,11 @@ namespace Philadelphia.Web {
                 var effective = value && _curState.Type != ActionViewStateType.OperationRunning;
                 _a.AddOrRemoveClass(effective, Magics.CssClassEnabled);
                 _a.AddOrRemoveClass(!effective, Magics.CssClassDisabled);
-                _a.Style.TextDecoration = effective ? TextDecoration.Underline : TextDecoration.None;
-                _a.Style.Cursor = effective ? Cursor.Pointer : Cursor.Default;
             }
         }
-        public bool OpensNewTab { set { throw new Exception("not supported");} }
+        public bool OpensNewTab { set { Logger.Error(GetType(), "OpensNewTab is not supported");} }
         public bool IsPressed { get { return false; } }
-        public bool StaysPressed  { set { throw new Exception("not supported");} }
+        public bool StaysPressed  { set { Logger.Error(GetType(), "StaysPressed is not supported"); } }
         public ISet<string> DisabledReason { set { DefaultInputLogic.SetDisabledReasons(_a, value); } }
         public string Label { set { _a.TextContent = value; } }
         public string Title { set { _a.Title = value; } }
@@ -66,15 +64,31 @@ namespace Philadelphia.Web {
             }
         }
 
-        public AnchorBasedActionView(string textContent = null, string title = null) {
+        public AnchorBasedActionView(string textContent = null, string title = null)
+            : this(new LabelDescr {Label = textContent}, title) { }
+
+        public AnchorBasedActionView(LabelDescr lbl, string title = null) {
+            if (lbl.Label == null && lbl.PreLabelIcon == null) {
+                throw new Exception("cannot have labelless and icon less in the same time");
+            }
+            
             _a = new HTMLAnchorElement {
                 Href = "#",
                 ClassName = GetType().FullNameWithoutGenerics(),
                 Title = title ?? "" };
 
-            if (textContent != null) {
-                _a.TextContent = textContent;
+            var preLabel = Document.CreateElement("div");
+            _a.AppendChild(preLabel);
+
+            if (lbl.PreLabelIcon != null) {
+                preLabel.AddClasses(lbl.PreLabelIcon.Item1.ToCssClassName());
+                preLabel.TextContent = lbl.PreLabelIcon.Item2;
             }
+
+            var label = Document.CreateElement("div");
+            _a.AppendChild(label);
+
+            label.TextContent = lbl.Label ?? "";
 
             Enabled = true; //initialize css class
 

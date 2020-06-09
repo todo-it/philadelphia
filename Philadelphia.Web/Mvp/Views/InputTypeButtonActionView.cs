@@ -142,12 +142,25 @@ namespace Philadelphia.Web {
             //FIXME: optionally support getter for label element
             this(Unit.Instance, Tuple.Create<HTMLElement,Action<bool>,HTMLElement,HTMLElement>(elem, _ => {}, null, null)) {}
 
+        //most commonly used overload
+        public InputTypeButtonActionView(string labelContent, LeftOrRight loc = LeftOrRight.Left) :
+            this(Unit.Instance, CreateElement(labelContent, null, loc)) {}
+
+        public InputTypeButtonActionView(LabelDescr lbl, LeftOrRight loc = LeftOrRight.Left) :
+            this(Unit.Instance, CreateElement(
+                lbl.Label, 
+                lbl.PreLabelIcon != null ? Tuple.Create(lbl.PreLabelIcon.Item1, lbl.PreLabelIcon.Item2) : null, 
+                loc)) {}
+
+        
         /// <summary>
         /// create new element - sets up visuals and events
         /// </summary>
-        public InputTypeButtonActionView(string labelContent, Tuple<IconFontType,string> preLabel = null, LeftOrRight loc = LeftOrRight.Left) :
+        [Obsolete("use constructor accepting LabelDescr parameter")]
+        public InputTypeButtonActionView(string labelContent, Tuple<IconFontType,string> preLabel, LeftOrRight loc = LeftOrRight.Left) :
             this(Unit.Instance, CreateElement(labelContent, preLabel, loc)) {}
-        
+
+        [Obsolete("use constructor accepting LabelDescr parameter")]
         public static InputTypeButtonActionView CreateFontAwesomeIconedButton(
                 IconFontType font, string labelContent, string icon, LeftOrRight loc = LeftOrRight.Left) {
 
@@ -156,12 +169,14 @@ namespace Philadelphia.Web {
             return res;
         }
 
+        [Obsolete("use constructor accepting LabelDescr parameter")]
         public static InputTypeButtonActionView CreateFontAwesomeIconedButtonLabelless(IconFontType font, string icon) {
             var res = new InputTypeButtonActionView("", Tuple.Create(font, icon));
             res.Widget.AddClasses(Magics.CssClassFontAwesomeBasedButtonLabelLess, font.ToCssClassName());
             return res;
         }
 
+        [Obsolete("use constructor accepting LabelDescr parameter")]
         public static InputTypeButtonActionView CreateFontAwesomeIconedAction(
                 IconFontType font, string fontAwesomeIcon, string cssClassName=Magics.CssClassAnchorWithFontIcon) {
             
@@ -185,7 +200,7 @@ namespace Philadelphia.Web {
                 preLblEl.AddClasses(preLabel.Item1.ToCssClassName());    
             }
             
-            var properLabel = new HTMLElement(ElementType.Span) {TextContent = labelContent};
+            var properLabel = new HTMLElement(ElementType.Span) {TextContent = labelContent ?? ""};
 
             var result = new HTMLElement(ElementType.Span) {
                 ClassName = typeof(InputTypeButtonActionView).FullName};

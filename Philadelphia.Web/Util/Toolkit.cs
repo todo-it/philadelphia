@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
-using Bridge;
 using Philadelphia.Common;
 using Bridge.Html5;
 
@@ -14,8 +10,11 @@ namespace Philadelphia.Web {
         public static Func<IHtmlFormCanvas,ITitleFormCanvasStrategy> BaseFormCanvasTitleStrategy  { get; set; } 
             = x => new RegularDomElementTitleFormCanvasStrategy(x);
 
-        public static Func<IActionView<HTMLElement>> BaseFormCanvasExitButtonBuilderOrNull { get; set; } = DefaultExitButtonBuilder;
-
+        public static Func<IActionView<HTMLElement>> BaseFormCanvasExitButtonBuilderOrNull { get; set; } 
+            = DefaultExitButtonBuilder;
+        public static Func<LabelDescr,IActionView<HTMLElement>> DefaultActionBuilder { get; set; } = 
+            x => new InputTypeButtonActionView(x);
+            
         public static void InitializeToolkit(
                 ILoggerImplementation customLogger = null, 
                 Func<DatagridContent,Task<FileModel>> spreadsheetBuilder = null) {

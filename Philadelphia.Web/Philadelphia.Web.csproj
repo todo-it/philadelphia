@@ -74,6 +74,7 @@
     <Compile Include="Mvp\PopupImplementation.cs" />
     <Compile Include="Mvp\RegularDomElementTitleFormCanvasStrategy.cs" />
     <Compile Include="Mvp\Views\AutocompleteDropdown.cs" />
+    <Compile Include="Mvp\Views\LabelDescr.cs" />
     <Compile Include="Mvp\Views\MultipleChoiceDropDown.cs" />
     <Compile Include="Mvp\Views\RadioBasedSingleChoice.cs" />
     <Compile Include="ServerSentEvents\ServerSentEventsSubscriber.cs" />
