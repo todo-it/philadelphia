@@ -44,6 +44,7 @@
     <Compile Include="Logging\ForwardMatchingToConsoleLogLoggerImplementation.cs" />
     <Compile Include="Magics.cs" />
     <Compile Include="Model\Dimensions2D.cs" />
+    <Compile Include="Model\EnvironmentType.cs" />
     <Compile Include="Model\MutableHolder.cs" />
     <Compile Include="Model\Range.cs" />
     <Compile Include="Model\Sorting\CompareImpl.cs" />

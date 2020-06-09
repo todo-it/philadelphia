@@ -54,6 +54,9 @@ namespace Philadelphia.Web {
             
             DocumentUtil.Initialize(); //initialize tooltips, esc handler etc
             
+            var env = EnvironmentTypeUtil.GetInstanceFromWindow(Window.Instance);
+            Document.Body.SetAttribute(Magics.AttrDataEnvironment, env.AsDataEnvironmentAttributeValue());
+
             Func<DatagridContent,Task<FileModel>> noExportImpl = 
                 _ => {
                     throw new Exception("spreadsheet builder not provided via DataGridSettings.Init()");

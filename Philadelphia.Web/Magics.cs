@@ -36,6 +36,8 @@ namespace Philadelphia.Web {
 
         public const string PostReturningFileParameterName = "i";
         
+        public const string AttrDataEnvironment = "data-environment";
+        
         public const string AttrDataFormContainer = "data-form";
         public const string AttrDataFormId = "data-formId";
         public const string AttrDataFormIsPopup = "data-isPopup";
