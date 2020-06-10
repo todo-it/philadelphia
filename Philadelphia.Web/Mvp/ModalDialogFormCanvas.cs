@@ -12,13 +12,7 @@ namespace Philadelphia.Web {
         private readonly bool _clickingOnGlassDismissesDialog;
 
         public string FormId { get; } = UniqueIdGenerator.GenerateAsString();
-        public string Title {
-            set {
-                _headerTitle.TextContent = value;
-                _headerTitle.SetAttribute(Magics.AttrDataInnerHtml, value);
-            }
-        }
-        
+        public string Title { set => _headerTitle.TextContent = value; }
         public HTMLElement ContainerElement => _modalGlass;
 
         public bool IsShown {

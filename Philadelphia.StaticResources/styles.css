@@ -14,26 +14,26 @@
 }
 
 .faSolid {
-    font-family: FontAwesomeSolid;
+    font-family: FontAwesomeSolid !important;
 }
 
 .faRegular {
-    font-family: FontAwesomeRegular;
+    font-family: FontAwesomeRegular !important;
 }
 
 .faBrands {
-    font-family: FontAwesomeBrands;
+    font-family: FontAwesomeBrands !important;
 }
 
-/* try to not use margin at all as one cannot measure it efficiently in runtime */
 html, body {
+    /* try to not use margin at all as one cannot measure it efficiently in runtime */
     height: 100%;
     margin: 0;
     padding: 0;
 }
 
-/*disable non portable X button within nonempty input in IE10&IE11 */
 input::-ms-clear {
+    /*disable non portable X button within nonempty input in IE10&IE11 */
     display: none;
 }
 
@@ -41,13 +41,47 @@ textarea[readonly] {
     background-color: #f1f1f1;
 }
 
-html * {
-    /*default font*/
+[data-environment="desktop"] div[data-formActions] {
+    justify-content: start;
+}
+
+[data-environment="iawapp"] div[data-formActions] {
+    justify-content: flex-end;
+    padding-right: 10px;
+    padding-bottom: 10px;
+}
+
+@keyframes throbberSpin { 100% { transform: rotate(360deg); } }
+
+
+/******************
+ * lowest priority defaults
+ ******************/
+[data-environment="desktop"],
+[data-environment="desktop"] * {
     font-size: 12px;
-    color: #000;
+    color: black;
+}
+
+[data-environment="desktop"],
+[data-environment="desktop"] * {
     font-family: Helvetica, Arial;
 }
 
+[data-environment="iawapp"],
+[data-environment="iawapp"] * {
+    font-family: "Roboto", Helvetica, Arial;
+}
+
+
+
+
+
+/****************************************************
+ *
+ * Philadelphia.Web.HorizontalMenuBarView 
+ *
+ ***************************************************/
 ul.Philadelphia\.Web\.HorizontalMenuBarView {
     margin-top: 0;
     margin-bottom: 0;
@@ -151,6 +185,17 @@ nav.Philadelphia\.Web\.HorizontalMenuBarView > ul > li.active > ul {
 
 
 
+
+
+
+
+
+
+/****************************************************
+ *
+ * Philadelphia.Web.ElementWrapperFormCanvas
+ *
+ ***************************************************/
 .Philadelphia\.Web\.ElementWrapperFormCanvas {
     margin: 0;
 }
@@ -432,54 +477,24 @@ nav.Philadelphia\.Web\.HorizontalMenuBarView > ul > li.active > ul {
 
 
 
-.Philadelphia\.Web\.AnchorBasedActionView.enabled {
-    cursor: pointer;
-    text-decoration: none;
-}
-
-.Philadelphia\.Web\.AnchorBasedActionView:not(.enabled) {
-    cursor: default;
-}
-
-.Philadelphia\.Web\.AnchorBasedActionView > div {
-    color: #5570ff;
-    font-weight: bolder;
-    font-size: 16px;
-    text-decoration: none;
-}
 
 
 
-
-
-
-
-.Philadelphia\.Web\.InputTypeButtonActionView.datagridAction,
-.Philadelphia\.Web\.InputTypeButtonActionView.enabled.datagridAction {
-    padding: 0 8px 0 8px;
-
-    vertical-align: middle;
-    display: flex;
-    justify-content: center;
-    height: 26px;
-}
-
-.datagridAction img {
-    width: 18px;
-    height: 18px;
-    max-width: 18px;
-    max-height: 18px;
-    vertical-align: middle;
-    align-self: center;
-}
-
-
-
-
-
-
+/****************************************************
+ *
+ * Philadelphia.Web.ModalDialogFormCanvas
+ *
+ ***************************************************/
 .Philadelphia\.Web\.ModalDialogFormCanvas > div[data-form] {
     box-shadow: 0 0 22px 8px rgba(0, 0, 0, 0.25);
+}
+
+[data-environment="desktop"] div.Philadelphia\.Web\.ModalDialogFormCanvas {
+    background-color: rgba(1, 1, 1, 0.1); /*on desktop subtly...*/
+}
+
+[data-environment="iawapp"] div.Philadelphia\.Web\.ModalDialogFormCanvas {
+    background-color: rgba(1, 1, 1, 0.4); /*...but on mobile boldly*/
 }
 
 div.Philadelphia\.Web\.ModalDialogFormCanvas {
@@ -491,7 +506,7 @@ div.Philadelphia\.Web\.ModalDialogFormCanvas {
     position: fixed;
     z-index: 2;
     justify-content: center;
-    background-color: rgba(1, 1, 1, 0.1);
+
 }
 
 div.Philadelphia\.Web\.ModalDialogFormCanvas > div[data-form] {
@@ -502,10 +517,10 @@ div.Philadelphia\.Web\.ModalDialogFormCanvas > div[data-form] {
     background-color: #fff;
 }
 
-div.Philadelphia\.Web\.ModalDialogFormCanvas > div[data-form] > div[data-formHeader] {
+body[data-environment="desktop"] div.Philadelphia\.Web\.ModalDialogFormCanvas > div[data-form] > div[data-formHeader] {
     display: flex;
     flex-direction: row;
-    background-color: #9999ff;
+    background-color: #99f;
 
     user-select: none;
     -moz-user-select: none;
@@ -513,15 +528,17 @@ div.Philadelphia\.Web\.ModalDialogFormCanvas > div[data-form] > div[data-formHea
     -webkit-user-select: none;
 }
 
-div.Philadelphia\.Web\.ModalDialogFormCanvas > div[data-form] > div[data-formHeader] > div.headerTitle {
+[data-environment="desktop"] div.Philadelphia\.Web\.ModalDialogFormCanvas > div[data-form] > div[data-formHeader] > div.headerTitle {
     flex-grow: 1;
     align-self: center;
     font-weight: bold;
     font-size: 16px;
     padding-left: 2px;
-    color: black;
-    position: relative;
     margin-right: auto;
+
+    /*inset shadow effect data-innerText*/
+    color: rgba(50, 50, 50, 0.8);
+    text-shadow: 1px 1px 1px rgb(153, 153, 255), 0 0 0 #000, 1px 1px 1px rgb(153, 153, 255);
 }
 
 .Philadelphia\.Web\.ModalDialogFormCanvas .flexSpacer {
@@ -541,18 +558,11 @@ div.Philadelphia\.Web\.ModalDialogFormCanvas > div[data-form] > div[data-formHea
     }
 }
 
-/*for inset shadow like effect */
-div.Philadelphia\.Web\.ModalDialogFormCanvas > div[data-form] > div[data-formHeader] > .headerTitle:before,
-div.Philadelphia\.Web\.ModalDialogFormCanvas > div[data-form] > div[data-formHeader] > .headerTitle:after {
-    content: attr(data-innerText);
-    color: rgba(255, 255, 255, .1);
-    position: absolute;
-
-}
-
 div.Philadelphia\.Web\.ModalDialogFormCanvas > div[data-form] > div[data-formHeader] > .headerTitle:before {top: 1px;left: 3px }
 div.Philadelphia\.Web\.ModalDialogFormCanvas > div[data-form] > div[data-formHeader] > .headerTitle:after {top: 2px;left: 4px }
 
+/* noncloseable OR running on mobile */
+body[data-environment="iawapp"] div.Philadelphia\.Web\.ModalDialogFormCanvas > div[data-form] > div[data-formHeader] > .headerClose,
 div.Philadelphia\.Web\.ModalDialogFormCanvas > div[data-closeable="0"] > div[data-formHeader] > .headerClose {
     display: none;
 }
@@ -583,21 +593,240 @@ div.Philadelphia\.Web\.ModalDialogFormCanvas > div[data-form][data-closeable="1"
     padding-bottom: 2px;
 }
 
-div.Philadelphia\.Web\.ModalDialogFormCanvas > div[data-form] > div[data-formBody] {
-    padding: 20px;
-}
-
-div.Philadelphia\.Web\.ModalDialogFormCanvas > div[data-form] > div[data-formActions] {    
-    padding: 0 4px 9px 4px;
+div.Philadelphia\.Web\.ModalDialogFormCanvas > div[data-form] > div[data-formActions] {
     display: flex;
 }
 
+[data-environment="iawapp"] div.Philadelphia\.Web\.ModalDialogFormCanvas > div[data-form] > div[data-formHeader],
+[data-environment="iawapp"] div.Philadelphia\.Web\.ModalDialogFormCanvas > div[data-form] > div[data-formBody] {
+    padding: 5px; /*sane padding default for mobile*/
+}
+
+[data-environment="desktop"] div.Philadelphia\.Web\.ModalDialogFormCanvas > div[data-form] > div[data-formBody] {
+    padding: 20px;
+}
+
+[data-environment="desktop"] div.Philadelphia\.Web\.ModalDialogFormCanvas > div[data-form] > div[data-formActions] {
+    padding: 9px 4px;
+}
 
 
 
 
 
 
+
+
+
+/****************************************************
+ *
+ * Philadelphia.Web.AnchorBasedActionView
+ *
+ ***************************************************/
+.Philadelphia\.Web\.AnchorBasedActionView.enabled {
+    cursor: pointer;
+    text-decoration: none;
+}
+
+.Philadelphia\.Web\.AnchorBasedActionView:not(.enabled) {
+    cursor: default;
+}
+
+.Philadelphia\.Web\.AnchorBasedActionView > div {
+    color: #5570ff;
+    font-weight: bolder;
+    font-size: 16px;
+    text-decoration: none;
+}
+
+
+
+
+
+
+
+
+
+
+/****************************************************
+ *
+ * Philadelphia.Web.InputTypeButtonActionView
+ *
+ ***************************************************/
+.Philadelphia\.Web\.InputTypeButtonActionView {
+    user-select: none;
+    -moz-user-select: none;
+    -o-user-select: none;
+    -webkit-user-select: none;
+    white-space: nowrap; /* so that buttons are not wrapped when there's not enough space'*/
+    display: inline-block;
+    border-radius: 5px;
+}
+
+.Philadelphia\.Web\.InputTypeButtonActionView > span {
+    font-size: 13px;
+    display: inline-block;
+}
+
+.Philadelphia\.Web\.InputTypeButtonActionView.usesFontBtn > span {
+    padding: 5px 15px 6px 15px;
+}
+
+.Philadelphia\.Web\.InputTypeButtonActionView.usesFontBtnLabelLess > span:nth-child(1) {
+    padding: 7px 10px 7px 10px;
+}
+
+.Philadelphia\.Web\.InputTypeButtonActionView:not(.running):not(.usesFontBtn) > span:nth-child(2):not(:empty) {
+    padding: 5px 15px 3px 15px;
+}
+
+.Philadelphia\.Web\.InputTypeButtonActionView.running > span:nth-child(2):not(:empty) {
+    padding: 5px 15px 3px 0;
+    text-align: center;
+    vertical-align: middle;
+    min-height: 18px;
+}
+
+.Philadelphia\.Web\.InputTypeButtonActionView.enabled {
+    background: #fff;
+    background-image: linear-gradient(to bottom, #fff, #ddd);
+    box-shadow: 0 1px 3px #666666;
+    color: #000000;
+    border: 0.5px solid #d4d4d4;
+    cursor: pointer;
+}
+
+.Philadelphia\.Web\.InputTypeButtonActionView.refreshButton {
+    display: flex;
+    align-items: center;
+}
+
+.Philadelphia\.Web\.InputTypeButtonActionView.refreshButton >  span:nth-child(1) {
+    padding-left: 8px;
+}
+
+.Philadelphia\.Web\.InputTypeButtonActionView.refreshButton >  span:nth-child(2) {
+    padding-right: 6px;
+}
+
+/*emphasize default form button*/
+.Philadelphia\.Web\.InputTypeButtonActionView.enabled[data-defaultaction] {
+    border-width: 1px;
+    border-color: #414141;
+}
+
+.Philadelphia\.Web\.InputTypeButtonActionView.enabled:focus,
+.Philadelphia\.Web\.InputTypeButtonActionView:not(.enabled):focus {
+    outline: none;
+    border-color: black;
+}
+
+.Philadelphia\.Web\.InputTypeButtonActionView.enabled:hover {
+    background: #ededed;
+    background-image: linear-gradient(to bottom, #ededed, #9e9e9e);
+    text-decoration: none;
+}
+
+.Philadelphia\.Web\.InputTypeButtonActionView:not(.enabled) {
+    background: #ebebeb;
+    background-image: linear-gradient(to bottom, #ebebeb, #d1d1d1);
+    text-shadow: 1px 1px 0px #d6d6d6;
+    color: #8f8f8f;
+    border: solid #4d4d4d 0.5px;
+    cursor: not-allowed;
+}
+
+.Philadelphia\.Web\.InputTypeButtonActionView:not(.enabled) > span {
+    text-shadow: 1px 1px 0px #d6d6d6;
+    color: #8f8f8f;
+}
+
+.Philadelphia\.Web\.InputTypeButtonActionView:not(.enabled):hover {
+    text-decoration: none;
+}
+
+.Philadelphia\.Web\.InputTypeButtonActionView:before {
+    display: inline-block;
+}
+
+.Philadelphia\.Web\.InputTypeButtonActionView.failed::before {
+    font-family: FontAwesomeSolid;
+    content: ""; /*IconTimesCircle*/
+    color: #f00000;
+}
+
+.Philadelphia\.Web\.InputTypeButtonActionView.enabled.pressed {
+    background-image: linear-gradient(to bottom, #d1d1d1, #ebebeb);
+    color: #f7f7f7;
+    box-shadow: inset 1px 1px 1px #000;
+}
+
+.Philadelphia\.Web\.InputTypeButtonActionView.running::before {
+    font-family: FontAwesomeSolid;
+    content: ""; /*IconSpinner*/
+    animation: throbberSpin 1.0s linear infinite;
+    color: #000;
+
+    /*following properties are to avoid rotation around 'something' that is not a center of the glyph */
+    font-size: 14px;
+    display: inline-block;
+    width: 15px;
+    height: 15px;
+    text-align: center;
+    vertical-align: middle;
+    padding-top: 2px;
+    padding-left: 0px;
+    padding-right: 0;
+}
+
+.Philadelphia\.Web\.InputTypeButtonActionView.datagridAction,
+.Philadelphia\.Web\.InputTypeButtonActionView.enabled.datagridAction {
+    padding: 0 8px 0 8px;
+
+    vertical-align: middle;
+    display: flex;
+    justify-content: center;
+    height: 26px;
+}
+
+.Philadelphia\.Web\.InputTypeButtonActionView.datagridAction,
+.Philadelphia\.Web\.InputTypeButtonActionView.enabled.datagridAction {
+    padding: 0 8px 0 8px;
+    vertical-align: middle;
+    display: flex;
+    justify-content: center;
+    height: 26px;
+}
+
+.Philadelphia\.Web\.InputTypeButtonActionView.datagridAction img {
+    width: 18px;
+    height: 18px;
+    max-width: 18px;
+    max-height: 18px;
+    vertical-align: middle;
+    align-self: center;
+}
+
+.Philadelphia\.Web\.ActionButtonsMenuBarView > div.body > .Philadelphia\.Web\.InputTypeButtonActionView {
+    font-size: 20px;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+/****************************************************
+ *
+ * Philadelphia.Web.HtmlTableBasedTableView
+ *
+ ***************************************************/
 div.Philadelphia\.Web\.HtmlTableBasedTableView {
     position: relative;
 }
@@ -711,6 +940,7 @@ table.Philadelphia\.Web\.HtmlTableBasedTableView th {
     white-space: nowrap;
 }
 
+/* TODO rework it */
 table.Philadelphia\.Web\.HtmlTableBasedTableView > tbody > tr > td > .Philadelphia\.Web\.InputView.selectionHndlr {
     text-align: center; /*select row checkbox in row selector column*/
 }
@@ -840,321 +1070,6 @@ table.Philadelphia\.Web\.HtmlTableBasedTableView td:last-child {
     border-right: 1px solid #ddd;
 }
 
-.Philadelphia\.Web\.InputView > .inputContainer > input {
-    background-repeat: no-repeat;
-    background-position-y: 100%;
-    background-size: contain;
-    box-sizing: border-box; /* otherwise width 100% overflows table's cell*/
-
-    border-style: solid; /* style that matches textarea */
-    border-width: 1px;
-    border-color: #949494;
-}
-
-.Philadelphia\.Web\.InputView:not(.isClearable):not(.searchBox) > .inputContainer > input,
-.Philadelphia\.Web\.InputView.isClearable.isEmpty:not(.searchBox) > .inputContainer > input {
-    background-position-x: 100%; /*no need to account for clear action*/
-}
-
-.Philadelphia\.Web\.InputView.searchBox > .inputContainer > input,
-.Philadelphia\.Web\.InputView.searchBox > .inputContainer > input {
-    background-position-x: 0; /*no need to account for clear action*/
-}
-
-.Philadelphia\.Web\.InputView.isClearable:not(.isEmpty):not(.searchBox) > .inputContainer > input {
-    background-position-x: calc(100% - 14px); /*needs to account for clear action*/
-}
-
-.Philadelphia\.Web\.InputView > .inputContainer > input[readonly] {
-    background-color: #d4d0c8;
-}
-
-/*input[number] in chrome has focus/active only spinner (with different size than FF)*/
-@media screen and (-webkit-min-device-pixel-ratio: 0) {
-    .Philadelphia\.Web\.InputView > .inputContainer > input[type=number]:focus,
-    .Philadelphia\.Web\.InputView > .inputContainer > input[type=number]:hover {
-        background-position-x: calc(100% - 10px);
-    }
-}
-
-/*for spinner*/
-*:not(.Philadelphia\.Web\.DateTimeInputView) > input[type=number] {
-    min-height: 30px;
-    font-size: 20px;
-}
-
-/*input[number] in FF has always active spinner with different size than Chrome*/
-@-moz-document url-prefix() {
-    .Philadelphia\.Web\.InputView > .inputContainer > input[type=number] {
-        background-position-x: calc(100% - 18px);
-    }
-}
-
-/*input[number] in Chrome&FF has spinner*/
-
-.Philadelphia\.Web\.InputView.userSuccess > .inputContainer > input {
-    background-image: url('Success.png');
-}
-.Philadelphia\.Web\.InputView.userError > .inputContainer > input {
-    background-image: url('Error.png');
-}
-.Philadelphia\.Web\.InputView.programmaticSuccess {
-}
-.Philadelphia\.Web\.InputView.programmaticError > .inputContainer > input {
-    background-image: url('Error.png');
-}
-
-.Philadelphia\.Web\.InputView.validating > .inputContainer > input {
-    background-image: url('spin32.gif');
-}
-
-
-
-
-.Philadelphia\.Web\.TextAreaView > .inputContainer > textarea {
-    background-repeat: no-repeat;
-    background-position-x: 100%;
-    background-position-y: 50%;
-    background-size: 18px; /* should be 'contain' if smaller than image and 'auto' otherwise BUT other inputsare smaller*/
-    min-height: 32px; /*so that 'contain' is not needed*/
-    box-sizing: border-box; /* otherwise width 100% overflows table's cell*/
-}
-
-.Philadelphia\.Web\.TextAreaView.userSuccess > .inputContainer > textarea {
-    background-image: url('Success.png');
-}
-.Philadelphia\.Web\.TextAreaView.userError > .inputContainer > textarea {
-    background-image: url('Error.png');
-}
-.Philadelphia\.Web\.TextAreaView.programmaticSuccess {
-}
-.Philadelphia\.Web\.TextAreaView.programmaticError > .inputContainer > textarea {
-    background-image: url('Error.png');
-}
-
-.Philadelphia\.Web\.TextAreaView.validating > .inputContainer > textarea {
-    background-image: url('spin32.gif');
-}
-
-.Philadelphia\.Web\.DropDownSelectBox > .inputContainer > select {
-    background-repeat: no-repeat;
-    background-position-x: calc(100% - 18px);
-    background-position-y: 100%;
-    background-size: contain;
-    box-sizing: border-box; /* otherwise width 100% overflows table's cell*/
-    padding-right: 18px; /*so that background image doesn't overlap with select's value*/
-}
-
-.Philadelphia\.Web\.DropDownSelectBox.userSuccess > .inputContainer > select {
-    background-image: url('Success.png');
-}
-
-.Philadelphia\.Web\.DropDownSelectBox.programmaticError > .inputContainer > select {
-    background-image: url('Error.png');
-}
-
-.Philadelphia\.Web\.DropDownSelectBox.userError > .inputContainer > select {
-    background-image: url('Error.png');
-}
-
-.Philadelphia\.Web\.InputView > .inputContainer,
-.Philadelphia\.Web\.TextAreaView > .inputContainer,
-.Philadelphia\.Web\.DropDownSelectBox > .inputContainer {
-    position: relative; /*otherwise tableLike popup formats itself against beginning of table instead of input or textversion*/
-}
-
-.Philadelphia\.Web\.InputView.clickToEditable.viewing > .inputContainer > input,
-.Philadelphia\.Web\.TextAreaView.clickToEditable.viewing > .inputContainer > textarea,
-.Philadelphia\.Web\.DropDownSelectBox.clickToEditable.viewing > .inputContainer > select {
-    display: none;
-}
-
-.Philadelphia\.Web\.InputView.clickToEditable.viewing > .inputContainer > .textVersion,
-.Philadelphia\.Web\.TextAreaView.clickToEditable.viewing > .inputContainer > .textVersion,
-.Philadelphia\.Web\.DropDownSelectBox.clickToEditable.viewing > .inputContainer > .textVersion {
-    display: inline-block; /*so that empty text version still respects min-width*/
-    min-width: 120px;
-    text-align: center;
-    cursor: pointer;
-    border-bottom: dashed 1px #08c;
-}
-
-.Philadelphia\.Web\.InputView.clickToEditable.viewing > .inputContainer > .textVersion:empty:before,
-.Philadelphia\.Web\.TextAreaView.clickToEditable.viewing > .inputContainer > .textVersion:empty:before,
-.Philadelphia\.Web\.DropDownSelectBox.clickToEditable.viewing > .inputContainer > .textVersion:empty:before {
-    content: "\200b"; /*=NBSP with zero width so that empty span preserves height; thanks http://stackoverflow.com/questions/14217902/how-to-set-empty-span-height-equal-to-default-line-height */
-}
-
-.Philadelphia\.Web\.InputView.clickToEditable.editing > .inputContainer > .textVersion,
-.Philadelphia\.Web\.TextAreaView.clickToEditable.editing > .inputContainer > .textVersion,
-.Philadelphia\.Web\.DropDownSelectBox.clickToEditable.editing > .inputContainer > .textVersion {
-    display: none;
-}
-
-.Philadelphia\.Web\.InputTypeButtonActionView {
-    user-select: none;
-    -moz-user-select: none;
-    -o-user-select: none;
-    -webkit-user-select: none;
-    white-space: nowrap; /* so that buttons are not wrapped when there's not enough space'*/
-    display: inline-block;
-    border-radius: 5px;
-}
-
-.Philadelphia\.Web\.InputTypeButtonActionView > span {
-    font-size: 13px;
-    display: inline-block;
-}
-
-.Philadelphia\.Web\.InputTypeButtonActionView.usesFontBtn > span {
-    padding: 5px 15px 6px 15px;
-}
-
-.Philadelphia\.Web\.InputTypeButtonActionView.usesFontBtnLabelLess > span:nth-child(1) {
-    padding: 7px 10px 7px 10px;
-}
-
-.Philadelphia\.Web\.InputTypeButtonActionView:not(.running):not(.usesFontBtn) > span:nth-child(2):not(:empty) {
-    padding: 5px 15px 3px 15px;
-}
-
-.Philadelphia\.Web\.InputTypeButtonActionView.running > span:nth-child(2):not(:empty) {
-    padding: 5px 15px 3px 0;
-    text-align: center;
-    vertical-align: middle;
-    min-height: 18px;
-}
-
-.Philadelphia\.Web\.InputTypeButtonActionView.enabled {
-    background: #fff;
-    background-image: linear-gradient(to bottom, #fff, #ddd);
-    box-shadow: 0 1px 3px #666666;
-    color: #000000;
-    border: 0.5px solid #d4d4d4;
-    cursor: pointer;
-}
-
-.Philadelphia\.Web\.InputTypeButtonActionView.refreshButton {
-    display: flex;
-    align-items: center;
-}
-
-.Philadelphia\.Web\.InputTypeButtonActionView.refreshButton >  span:nth-child(1) {
-    padding-left: 8px;
-}
-
-.Philadelphia\.Web\.InputTypeButtonActionView.refreshButton >  span:nth-child(2) {
-    padding-right: 6px;
-}
-
-/*emphasize default form button*/
-.Philadelphia\.Web\.InputTypeButtonActionView.enabled[data-defaultaction] {
-    border-width: 1px;
-    border-color: #414141;
-}
-
-.Philadelphia\.Web\.InputTypeButtonActionView.enabled:focus,
-.Philadelphia\.Web\.InputTypeButtonActionView:not(.enabled):focus {
-    outline: none;
-    border-color: black;
-}
-
-
-.Philadelphia\.Web\.InputTypeButtonActionView.enabled:hover {
-    background: #ededed;
-    background-image: linear-gradient(to bottom, #ededed, #9e9e9e);
-    text-decoration: none;
-}
-
-.Philadelphia\.Web\.InputTypeButtonActionView:not(.enabled) {
-    background: #ebebeb;
-    background-image: linear-gradient(to bottom, #ebebeb, #d1d1d1);
-    text-shadow: 1px 1px 0px #d6d6d6;
-    color: #8f8f8f;
-    border: solid #4d4d4d 0.5px;
-    cursor: not-allowed;
-}
-
-.Philadelphia\.Web\.InputTypeButtonActionView:not(.enabled) > span {
-    text-shadow: 1px 1px 0px #d6d6d6;
-    color: #8f8f8f;
-}
-
-.Philadelphia\.Web\.InputTypeButtonActionView:not(.enabled):hover {
-    text-decoration: none;
-}
-
-.Philadelphia\.Web\.InputTypeButtonActionView:before {
-    display: inline-block;
-}
-
-.Philadelphia\.Web\.InputTypeButtonActionView.failed::before {
-    font-family: FontAwesomeSolid;
-    content: ""; /*IconTimesCircle*/
-    color: #f00000;
-}
-
-.Philadelphia\.Web\.InputTypeButtonActionView.enabled.pressed {
-    background-image: linear-gradient(to bottom, #d1d1d1, #ebebeb);
-    color: #f7f7f7;
-    box-shadow: inset 1px 1px 1px #000;
-}
-
-@keyframes throbberSpin { 100% { transform: rotate(360deg); } }
-
-.Philadelphia\.Web\.InputTypeButtonActionView.running::before {
-    font-family: FontAwesomeSolid;
-    content: ""; /*IconSpinner*/
-    animation: throbberSpin 1.0s linear infinite;
-    color: #000;
-
-    /*following properties are to avoid rotation around 'something' that is not a center of the glyph */
-    font-size: 14px;
-    display: inline-block;
-    width: 15px;
-    height: 15px;
-    text-align: center;
-    vertical-align: middle;
-    padding-top: 2px;
-    padding-left: 0px;
-    padding-right: 0;
-}
-
-.tooltipContainer {
-    position: relative;
-}
-
-.tooltip {
-    position: absolute;
-    left: 0;
-    top: 0;
-    display: table-cell;
-
-    white-space: pre;
-    margin-left: 5px;
-    padding: 3px;
-    background-color: #fff;
-    border: 1px solid #f00;
-    border-radius: 8px;
-    box-shadow: 0 0 4px 2px rgba(130, 0, 0, 0.5);
-    color: #f00;
-    z-index: 2;
-}
-
-.tooltip.active {
-    opacity: 1;
-    transition: opacity 300ms;
-}
-
-.tooltip.inactive {
-    opacity: 0;
-    transition: opacity 1000ms;
-}
-
-.tooltip.disabled {
-    display: none;
-}
-
 /* default pointer cursor instead of (disabled anyway) text select */
 table.Philadelphia\.Web\.HtmlTableBasedTableView th[data-sort="4"] {
     cursor: default;
@@ -1172,11 +1087,6 @@ table.Philadelphia\.Web\.HtmlTableBasedTableView th > span[data-sort] {
     max-width: 20px;
     width: 20px;
 }
-
-
-
-
-
 
 table.Philadelphia\.Web\.HtmlTableBasedTableView > thead > tr > th:not(.withGrouping) > .filterMainContainer .groupRemove {
     display: none;
@@ -1270,14 +1180,6 @@ table.Philadelphia\.Web\.HtmlTableBasedTableView.isResizing > thead.active > tr 
     border: 0.5px solid #909090;
 }
 
-
-
-
-
-
-
-
-
 /* unspecified sorting order more subtle */
 table.Philadelphia\.Web\.HtmlTableBasedTableView th span[data-sort="1"] {
     opacity: 0.15;
@@ -1341,34 +1243,257 @@ table.Philadelphia\.Web\.HtmlTableBasedTableView th {
     -webkit-user-select: none;
 }
 
-/* hover percentage in center of throbber */
-.remoteActionsCallerPercentage {
-    position: absolute;
-    text-align: center;
-    width: 100%;
-    left: 0;
-    top: 37px;
+
+
+
+
+
+
+
+
+
+/****************************************************
+ *
+ * Philadelphia.Web.InputView 
+ *
+ ***************************************************/
+.Philadelphia\.Web\.InputView > .inputContainer > input {
+    background-repeat: no-repeat;
+    background-position-y: 100%;
+    background-size: contain;
+    box-sizing: border-box; /* otherwise width 100% overflows table's cell*/
+
+    border-style: solid; /* style that matches textarea */
+    border-width: 1px;
+    border-color: #949494;
 }
 
-/* hover percentage in center of throbber */
-.remoteActionsParentContainer {
-    display: flex;
-    align-items: center;
-    flex-direction: column;
+.Philadelphia\.Web\.InputView:not(.isClearable):not(.searchBox) > .inputContainer > input,
+.Philadelphia\.Web\.InputView.isClearable.isEmpty:not(.searchBox) > .inputContainer > input {
+    background-position-x: 100%; /*no need to account for clear action*/
 }
 
-/* shrink container to fit content */
-.remoteActionsDirectContainer {
+.Philadelphia\.Web\.InputView.searchBox > .inputContainer > input,
+.Philadelphia\.Web\.InputView.searchBox > .inputContainer > input {
+    background-position-x: 0; /*no need to account for clear action*/
+}
+
+.Philadelphia\.Web\.InputView.isClearable:not(.isEmpty):not(.searchBox) > .inputContainer > input {
+    background-position-x: calc(100% - 14px); /*needs to account for clear action*/
+}
+
+.Philadelphia\.Web\.InputView > .inputContainer > input[readonly] {
+    background-color: #d4d0c8;
+}
+
+/*input[number] in chrome has focus/active only spinner (with different size than FF)*/
+@media screen and (-webkit-min-device-pixel-ratio: 0) {
+    .Philadelphia\.Web\.InputView > .inputContainer > input[type=number]:focus,
+    .Philadelphia\.Web\.InputView > .inputContainer > input[type=number]:hover {
+        background-position-x: calc(100% - 10px);
+    }
+}
+
+/*for spinner*/
+/* TODO rework into InputView selector */
+*:not(.Philadelphia\.Web\.DateTimeInputView) > input[type=number] {
+    min-height: 30px;
+    font-size: 20px;
+}
+
+/*input[number] in FF has always active spinner with different size than Chrome*/
+@-moz-document url-prefix() {
+    .Philadelphia\.Web\.InputView > .inputContainer > input[type=number] {
+        background-position-x: calc(100% - 18px);
+    }
+}
+
+/*input[number] in Chrome&FF has spinner*/
+.Philadelphia\.Web\.InputView.userSuccess > .inputContainer > input {
+    background-image: url('Success.png');
+}
+.Philadelphia\.Web\.InputView.userError > .inputContainer > input {
+    background-image: url('Error.png');
+}
+.Philadelphia\.Web\.InputView.programmaticSuccess {
+}
+.Philadelphia\.Web\.InputView.programmaticError > .inputContainer > input {
+    background-image: url('Error.png');
+}
+
+.Philadelphia\.Web\.InputView.validating > .inputContainer > input {
+    background-image: url('spin32.gif');
+}
+
+.Philadelphia\.Web\.InputView.searchBox > .inputContainer > input {
+    background-position-x: 0;
+    padding-left: 25px;
+    background-image: url('Search.png');
+    height: 27px;
+    background-color: #ffffcc;
+    transition: background-color 0.5s;
+}
+
+.Philadelphia\.Web\.InputView.searchBox > .inputContainer > input:focus {
+    background-color: #ffff4d;
+    transition: background-color 0.5s;
+}
+
+.Philadelphia\.Web\.InputView.isClearable > .inputContainer > .clearContainer {
     position: relative;
-    float: left;
 }
 
-.remoteActionsCallerError {
-    max-height: 150px;
-    max-width: 350px;
-    overflow: auto;
+.Philadelphia\.Web\.InputView.isEmpty > .inputContainer > .clearContainer,
+.Philadelphia\.Web\.InputView.clickToEditable.viewing > .inputContainer > .clearContainer {
+    display: none;
 }
 
+.Philadelphia\.Web\.InputView > .inputContainer > .clearContainer:after {
+    position: absolute;
+    font-family: FontAwesomeSolid;
+    content: ""; /*IconTimes*/
+    top: 1px;
+    left: -14px;
+    cursor: pointer;
+}
+
+.Philadelphia\.Web\.InputView > .inputContainer > .clearContainer:hover:after {
+    font-size: 18px;
+    left: -16px;
+    top: -2px;
+}
+
+
+
+
+
+
+
+
+
+/****************************************************
+ *
+ * Philadelphia.Web.TextAreaView
+ *
+ ***************************************************/
+.Philadelphia\.Web\.TextAreaView > .inputContainer > textarea {
+    background-repeat: no-repeat;
+    background-position-x: 100%;
+    background-position-y: 50%;
+    background-size: 18px; /* should be 'contain' if smaller than image and 'auto' otherwise BUT other inputsare smaller*/
+    min-height: 32px; /*so that 'contain' is not needed*/
+    box-sizing: border-box; /* otherwise width 100% overflows table's cell*/
+}
+
+.Philadelphia\.Web\.TextAreaView.userSuccess > .inputContainer > textarea {
+    background-image: url('Success.png');
+}
+.Philadelphia\.Web\.TextAreaView.userError > .inputContainer > textarea {
+    background-image: url('Error.png');
+}
+.Philadelphia\.Web\.TextAreaView.programmaticSuccess {
+}
+.Philadelphia\.Web\.TextAreaView.programmaticError > .inputContainer > textarea {
+    background-image: url('Error.png');
+}
+
+.Philadelphia\.Web\.TextAreaView.validating > .inputContainer > textarea {
+    background-image: url('spin32.gif');
+}
+
+
+
+
+
+
+
+
+
+
+/****************************************************
+ *
+ * Philadelphia.Web.DropDownSelectBox
+ *
+ ***************************************************/
+.Philadelphia\.Web\.DropDownSelectBox > .inputContainer > select {
+    background-repeat: no-repeat;
+    background-position-x: calc(100% - 18px);
+    background-position-y: 100%;
+    background-size: contain;
+    box-sizing: border-box; /* otherwise width 100% overflows table's cell*/
+    padding-right: 18px; /*so that background image doesn't overlap with select's value*/
+}
+
+.Philadelphia\.Web\.DropDownSelectBox.userSuccess > .inputContainer > select {
+    background-image: url('Success.png');
+}
+
+.Philadelphia\.Web\.DropDownSelectBox.programmaticError > .inputContainer > select {
+    background-image: url('Error.png');
+}
+
+.Philadelphia\.Web\.DropDownSelectBox.userError > .inputContainer > select {
+    background-image: url('Error.png');
+}
+
+/* TODO split into proper places */
+.Philadelphia\.Web\.InputView > .inputContainer,
+.Philadelphia\.Web\.TextAreaView > .inputContainer,
+.Philadelphia\.Web\.DropDownSelectBox > .inputContainer {
+    position: relative; /*otherwise tableLike popup formats itself against beginning of table instead of input or textversion*/
+}
+
+/* TODO split into proper places */
+.Philadelphia\.Web\.InputView.clickToEditable.viewing > .inputContainer > input,
+.Philadelphia\.Web\.TextAreaView.clickToEditable.viewing > .inputContainer > textarea,
+.Philadelphia\.Web\.DropDownSelectBox.clickToEditable.viewing > .inputContainer > select {
+    display: none;
+}
+
+/* TODO split into proper places */
+.Philadelphia\.Web\.InputView.clickToEditable.viewing > .inputContainer > .textVersion,
+.Philadelphia\.Web\.TextAreaView.clickToEditable.viewing > .inputContainer > .textVersion,
+.Philadelphia\.Web\.DropDownSelectBox.clickToEditable.viewing > .inputContainer > .textVersion {
+    display: inline-block; /*so that empty text version still respects min-width*/
+    min-width: 120px;
+    text-align: center;
+    cursor: pointer;
+    border-bottom: dashed 1px #08c;
+}
+
+/* TODO split into proper places */
+.Philadelphia\.Web\.InputView.clickToEditable.viewing > .inputContainer > .textVersion:empty:before,
+.Philadelphia\.Web\.TextAreaView.clickToEditable.viewing > .inputContainer > .textVersion:empty:before,
+.Philadelphia\.Web\.DropDownSelectBox.clickToEditable.viewing > .inputContainer > .textVersion:empty:before {
+    content: "\200b"; /*=NBSP with zero width so that empty span preserves height; thanks http://stackoverflow.com/questions/14217902/how-to-set-empty-span-height-equal-to-default-line-height */
+}
+
+/* TODO split into proper places */
+.Philadelphia\.Web\.InputView.clickToEditable.editing > .inputContainer > .textVersion,
+.Philadelphia\.Web\.TextAreaView.clickToEditable.editing > .inputContainer > .textVersion,
+.Philadelphia\.Web\.DropDownSelectBox.clickToEditable.editing > .inputContainer > .textVersion {
+    display: none;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+/****************************************************
+ *
+ * Philadelphia.Web.TwoHorizontalPanelsWithResizer
+ * and
+ * Philadelphia.Web.TwoVerticalPanelsWithResizer
+ *
+ ***************************************************/
 .Philadelphia\.Web\.TwoHorizontalPanelsWithResizer,
 .Philadelphia\.Web\.TwoVerticalPanelsWithResizer {
     display: flex;
@@ -1434,105 +1559,20 @@ table.Philadelphia\.Web\.HtmlTableBasedTableView th {
     overflow-y: auto;
 }
 
-.anchorWithFontIcon:not(.headerClose) {
-    color: #fff;
-    font-size: 15px;
-    padding-left: 4px;
-    width: 16px;
-    height: 16px;
-    max-height: 20px;
-}
-
-.anchorWithFontIcon.enabled:not(.headerClose):not(.running) {
-    cursor: pointer;
-}
-
-.anchorWithFontIcon:not(.headerClose):not(.running):not(.failed) {
-    color: white;
-}
-
-.anchorWithFontIcon:not(.headerClose):not(.running):not(.enabled) {
-    color: #a2a2a2;
-}
-
-.anchorWithFontIcon.enabled:not(.headerClose):not(.running) {
-    text-shadow: 1px 1px 1px #e8ebff, -1px -1px 1px #e8ebff, -1px 1px 1px #e8ebff, 1px -1px 1px #e8ebff;
-    color: #001dff;
-}
-
-.anchorWithFontIcon.running:not(.headerClose)::before {
-    animation: throbberSpin 1.0s linear infinite;
-    content: "";
-    display: inline-block;
-    color: black;
-    visibility: visible;
-}
-
-.anchorWithFontIcon.running:not(.headerClose) {
-    visibility: hidden; /*otherwise original icon is beneath the spinner*/
-}
-
-.anchorWithFontIcon[data-errors-tooltip]:not(.headerClose):not(.running) {
-    text-shadow: 1px 1px 1px #ffa0a0, -1px -1px 1px #ffa0a0, -1px 1px 1px #ffa0a0, 1px -1px 1px #ffa0a0;
-}
-.anchorWithFontIcon.enabled:not(.headerClose):not(.running):hover {
-    text-shadow: 2px 2px 3px #e8ebff, -2px -2px 3px #e8ebff, -2px 2px 3px #e8ebff, 2px -2px 3px #e8ebff;
-    font-weight: bolder;
-}
-.anchorWithFontIcon[data-errors-tooltip]:not(.headerClose):not(.running):hover {
-    text-shadow: 2px 2px 3px #ffa0a0, -2px -2px 3px #ffa0a0, -2px 2px 3px #ffa0a0, 2px -2px 3px #ffa0a0;
-    font-weight: bolder;
-}
 
 
-.Philadelphia\.Web\.InputView.searchBox > .inputContainer > input {
-    background-position-x: 0;
-    padding-left: 25px;
-    background-image: url('Search.png');
-    height: 27px;
-    background-color: #ffffcc;
-    transition: background-color 0.5s;
-}
 
-.Philadelphia\.Web\.InputView.searchBox > .inputContainer > input:focus {
-    background-color: #ffff4d;
-    transition: background-color 0.5s;
-}
 
-.Philadelphia\.Web\.InputView.isClearable > .inputContainer > .clearContainer {
-    position: relative;
-}
 
-.Philadelphia\.Web\.InputView.isEmpty > .inputContainer > .clearContainer,
-.Philadelphia\.Web\.InputView.clickToEditable.viewing > .inputContainer > .clearContainer {
-    display: none;
-}
 
-.Philadelphia\.Web\.InputView > .inputContainer > .clearContainer:after {
-    position: absolute;
-    font-family: FontAwesomeSolid;
-    content: ""; /*IconTimes*/
-    top: 1px;
-    left: -14px;
-    cursor: pointer;
-}
 
-.Philadelphia\.Web\.InputView > .inputContainer > .clearContainer:hover:after {
-    font-size: 18px;
-    left: -16px;
-    top: -2px;
-}
 
-.Philadelphia\.Web\.SingleChoiceDropDown .popup {
-    box-shadow: 30px 8px 20px -20px rgba(0, 0, 0, 0.25),
-    -30px 8px 20px -20px rgba(0, 0, 0, 0.25),
-    0 20px 20px 0 rgba(0, 0, 0, 0.25);
-    z-index: 2;
-    position: absolute;
-    background-color: #ffffff; /*so that popup is not semi transparent*/
-    top: 20px; /*put it directly under input*/
-}
 
+/****************************************************
+ *
+ * Philadelphia.Web.HorizontalTabbedView
+ *
+ ***************************************************/
 .Philadelphia\.Web\.HorizontalTabbedView {
     display: flex;
     flex-direction: column;
@@ -1580,18 +1620,6 @@ table.Philadelphia\.Web\.HtmlTableBasedTableView th {
     color: #000;
 }
 
-.Philadelphia\.Web\.HorizontalTabbedView > .tabHandleContainer > .tabHandle > .Philadelphia\.Web\.ValidationIndicatorView.failed:after {
-    color: #e90000;
-    font-size: 15px;
-    opacity: 0.25;
-}
-
-.Philadelphia\.Web\.HorizontalTabbedView > .tabHandleContainer > .tabHandle.active > .Philadelphia\.Web\.ValidationIndicatorView.failed:after {
-    color: #e90000;
-    font-size: 15px;
-    opacity: 1;
-}
-
 .Philadelphia\.Web\.HorizontalTabbedView > .tabHandleContainer > .tabHandle.active > .tabLabel {
     font-weight: bold; /*label only, without icon otherwise exclamation mark becomes too slim*/
 }
@@ -1619,58 +1647,20 @@ table.Philadelphia\.Web\.HtmlTableBasedTableView th {
     /*overflow: auto; disabled because popups in tabs are truncated*/
 }
 
-.Philadelphia\.Web\.ValidationIndicatorView {
-    width: 13px;
-}
 
-.Philadelphia\.Web\.ValidationIndicatorView.failed:after {
-    font-family: FontAwesomeSolid;
-    content: ""; /*IconExclamationCircle*/
-}
 
-.tableLike {
-    display: table;
-}
 
-.tableLike > * {
-    display: table-row;
-}
 
-.tableLike > * > *{
-    display: table-cell;
-}
 
-.tableLike > * > *:nth-child(1) {
-    text-align: right;
-    vertical-align: middle;
-    padding-right: 5px; /*needed for second col (padding 2nd col causes overflow with width 100% )*/
-}
 
-.tableLike > * > *:nth-child(2) {
-    max-width: 50vw;
-    white-space: nowrap;
-}
 
-.tableLike > * > *:nth-child(2) select  ,
-.tableLike > * > *:nth-child(2) textarea ,
-.tableLike > * > *:nth-child(2) input[type='text'],
-.tableLike > * > *:nth-child(2) input[type='password'] {
-    min-width: 100%; /*so that dots are in full line*/
-}
 
-.tableLike > * > *:nth-child(2) .textVersion {
-    overflow: hidden;
-    width: 100%; /*so that dots are in full line*/
-    box-sizing: border-box; /* otherwise width 100% overflows table's cell*/
 
-    text-overflow: ellipsis; /*those two are needed to nicely truncate with three dots*/
-    white-space: nowrap;
-}
-
-label {
-    white-space: nowrap; /*so that it is not wrapped by space calculating horizontal splitter*/
-}
-
+/****************************************************
+ *
+ * Philadelphia.Web.MultipleChoiceDropDown
+ *
+ ***************************************************/
 .Philadelphia\.Web\.MultipleChoiceDropDown > .valueContainer {
     border: 1px solid black;
     background-color: #fcfcfc;
@@ -1748,19 +1738,6 @@ label {
     background-image: url('spin32.gif');
 }
 
-.Philadelphia\.Web\.ActionButtonsMenuBarView {
-    padding-top: 8px;
-    padding-bottom: 8px;
-}
-
-.Philadelphia\.Web\.ActionButtonsMenuBarView > div.body > .Philadelphia\.Web\.InputTypeButtonActionView {
-    font-size: 20px;
-}
-
-.Philadelphia\.Web\.ActionsBarMenuFormView {
-    display: flex;
-    flex-direction: column;
-}
 
 
 
@@ -1769,10 +1746,11 @@ label {
 
 
 
-
-
-
-
+/****************************************************
+ *
+ * Philadelphia.Web.UploadView
+ *
+ ***************************************************/
 body[data-dragging] .Philadelphia\.Web\.UploadView {
     position: relative; /*otherwise tableLike causes dropzone to be relative to whole screen*/
     display: inline-block;
@@ -1935,87 +1913,32 @@ body[data-dragging] .Philadelphia\.Web\.UploadView > div:nth-child(1) {
 .Philadelphia\.Web\.UploadView[mode='ThumbnailGrid'] > div:nth-child(3) > div.items > *[data-status='Failed'] > a > img,
 .Philadelphia\.Web\.UploadView[mode='ThumbnailGrid'] > div:nth-child(3) > div.items > *[data-status='Failed'] > a > *:not(img) {
     border: 1px solid red;
-
-}
-
-.glass {
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    display: flex;
-    position: fixed;
-    z-index: 2;
-    justify-content: center;
-    align-items: center;
-    background-color: rgba(1, 1, 1, 0.1);
-}
-
-.lightBox {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background-color: #f3f3f3;
-    position: relative;
-}
-
-.lightBox.loading > .throbber {
-    animation: throbberSpin 1.0s linear infinite;
-    font-size: 30px;
-}
-
-.lightBox.loaded > .throbber {
-    display: none;
-}
-
-.lightBox > .close {
-    font-size: 20px;
-    position: absolute;
-    top: 0;
-    right: 0;
-    padding: 3px 5px 5px 5px;
-    background-color: #e4e4e4;
-    transition: 0.2s background-color,0.2s color;
-    cursor: pointer;
-}
-
-.lightBox > .close:hover {
-    font-size: 25px;
-    padding: 0px 3px 3px 3px;
-    background-color: #c3c3c3;
-}
-
-.lightBox > .openInNewTab {
-    display: none;
-    color:  black;
-    background-color: white;
-    padding: 5px;
-    cursor: pointer;
-}
-
-.lightBox.loaded:hover > .openInNewTab {
-    position: absolute;
-    display: inline-block;
-    font-size: 25px;
 }
 
 
 
 
-.Philadelphia\.Web\.RadioBasedSingleChoice.tableLike {
-    display: grid;
-    grid-template-columns: auto auto;
-    user-select: none;
-}
 
-.Philadelphia\.Web\.RadioBasedSingleChoice.tableLike > * {
-    cursor: pointer;
-}
 
-.Philadelphia\.Web\.RadioBasedSingleChoice.tableLike > *:nth-child(2n+1) {
-    justify-self: end;
-}
 
+
+
+
+
+
+
+
+
+
+/****************************************************
+ * Date(time)-picker-or-entry
+ *
+ * Philadelphia.Web.DateTimePickerView
+ * Philadelphia.Web.DateTimeRangeView
+ * Philadelphia.Web.DateTimeInputView
+ * Philadelphia.Web.MaskedNumberInputView
+ *
+ ***************************************************/
 .Philadelphia\.Web\.DateTimePickerView > .PopupLocation_Bottom {
     display: flex;
     flex-direction: column;
@@ -2322,20 +2245,20 @@ body[data-dragging] .Philadelphia\.Web\.UploadView > div:nth-child(1) {
     background-image: url('Success.png');
 }
 
-.Philadelphia\.Web\.FramelessPopupProvider {
-    position: relative;
-}
 
-.Philadelphia\.Web\.FramelessPopupProvider > .popupContainer > .popup {
-    position: absolute;
-    background-color: #ffffff;
-    left: 0;
-    top: 100%;
-    z-index: 2;
-    border: 0.5px solid #cccccc;
-    box-shadow: 0 10px 22px 3px rgba(0, 0, 0, 0.25);
-}
 
+
+
+
+
+
+
+
+/****************************************************
+ *
+ * Philadelphia.Web.AutocompleteDropdown
+ *
+ ***************************************************/
 .Philadelphia\.Web\.AutocompleteDropdown {
     position: relative;
 }
@@ -2396,6 +2319,356 @@ body[data-dragging] .Philadelphia\.Web\.UploadView > div:nth-child(1) {
 
 .Philadelphia\.Web\.AutocompleteDropdown > div:empty {
     display: none;
+}
+
+
+
+
+
+
+
+
+
+
+
+/****************************************************
+ *
+ * Philadelphia.Web.RadioBasedSingleChoice
+ *
+ ***************************************************/
+.Philadelphia\.Web\.RadioBasedSingleChoice.tableLike {
+    display: grid;
+    grid-template-columns: auto auto;
+    user-select: none;
+}
+
+.Philadelphia\.Web\.RadioBasedSingleChoice.tableLike > * {
+    cursor: pointer;
+}
+
+.Philadelphia\.Web\.RadioBasedSingleChoice.tableLike > *:nth-child(2n+1) {
+    justify-self: end;
+}
+
+
+
+
+
+
+
+
+
+
+
+/****************************************************
+ *
+ * Philadelphia.Web.ValidationIndicatorView
+ *
+ ***************************************************/
+.Philadelphia\.Web\.ValidationIndicatorView {
+    width: 13px;
+}
+
+.Philadelphia\.Web\.ValidationIndicatorView.failed:after {
+    font-family: FontAwesomeSolid;
+    content: ""; /*IconExclamationCircle*/
+}
+
+.Philadelphia\.Web\.HorizontalTabbedView > .tabHandleContainer > .tabHandle > .Philadelphia\.Web\.ValidationIndicatorView.failed:after {
+    color: #e90000;
+    font-size: 15px;
+    opacity: 0.25;
+}
+
+.Philadelphia\.Web\.HorizontalTabbedView > .tabHandleContainer > .tabHandle.active > .Philadelphia\.Web\.ValidationIndicatorView.failed:after {
+    color: #e90000;
+    font-size: 15px;
+    opacity: 1;
+}
+
+
+
+
+
+
+
+/****************************************************
+ *
+ * Philadelphia.Web.FramelessPopupProvider
+ *
+ ***************************************************/
+.Philadelphia\.Web\.FramelessPopupProvider {
+    position: relative;
+}
+
+.Philadelphia\.Web\.FramelessPopupProvider > .popupContainer > .popup {
+    position: absolute;
+    background-color: #ffffff;
+    left: 0;
+    top: 100%;
+    z-index: 2;
+    border: 0.5px solid #cccccc;
+    box-shadow: 0 10px 22px 3px rgba(0, 0, 0, 0.25);
+}
+
+
+
+
+
+
+
+
+/****************************************************
+ *
+ * small ones
+ *
+ ***************************************************/
+.Philadelphia\.Web\.SingleChoiceDropDown .popup {
+    box-shadow: 30px 8px 20px -20px rgba(0, 0, 0, 0.25),
+    -30px 8px 20px -20px rgba(0, 0, 0, 0.25),
+    0 20px 20px 0 rgba(0, 0, 0, 0.25);
+    z-index: 2;
+    position: absolute;
+    background-color: #ffffff; /*so that popup is not semi transparent*/
+    top: 20px; /*put it directly under input*/
+}
+
+.Philadelphia\.Web\.ActionButtonsMenuBarView {
+    padding-top: 8px;
+    padding-bottom: 8px;
+}
+
+.Philadelphia\.Web\.ActionsBarMenuFormView {
+    display: flex;
+    flex-direction: column;
+}
+
+
+
+
+
+
+
+
+
+/* !!!!!!!!
+   !!!!!!!! TODO stuff to rework follows until end of the file 
+   !!!!!!!! */
+.tooltipContainer {
+    position: relative;
+}
+
+.tooltip {
+    position: absolute;
+    left: 0;
+    top: 0;
+    display: table-cell;
+
+    white-space: pre;
+    margin-left: 5px;
+    padding: 3px;
+    background-color: #fff;
+    border: 1px solid #f00;
+    border-radius: 8px;
+    box-shadow: 0 0 4px 2px rgba(130, 0, 0, 0.5);
+    color: #f00;
+    z-index: 2;
+}
+
+.tooltip.active {
+    opacity: 1;
+    transition: opacity 300ms;
+}
+
+.tooltip.inactive {
+    opacity: 0;
+    transition: opacity 1000ms;
+}
+
+.tooltip.disabled {
+    display: none;
+}
+
+/* hover percentage in center of throbber */
+.remoteActionsCallerPercentage {
+    position: absolute;
+    text-align: center;
+    width: 100%;
+    left: 0;
+    top: 37px;
+}
+
+/* hover percentage in center of throbber */
+.remoteActionsParentContainer {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+}
+
+/* shrink container to fit content */
+.remoteActionsDirectContainer {
+    position: relative;
+    float: left;
+}
+
+.remoteActionsCallerError {
+    max-height: 150px;
+    max-width: 350px;
+    overflow: auto;
+}
+
+.anchorWithFontIcon:not(.headerClose) {
+    color: #fff;
+    font-size: 15px;
+    padding-left: 4px;
+    width: 16px;
+    height: 16px;
+    max-height: 20px;
+}
+
+.anchorWithFontIcon.enabled:not(.headerClose):not(.running) {
+    cursor: pointer;
+}
+
+.anchorWithFontIcon:not(.headerClose):not(.running):not(.failed) {
+    color: white;
+}
+
+.anchorWithFontIcon:not(.headerClose):not(.running):not(.enabled) {
+    color: #a2a2a2;
+}
+
+.anchorWithFontIcon.enabled:not(.headerClose):not(.running) {
+    text-shadow: 1px 1px 1px #e8ebff, -1px -1px 1px #e8ebff, -1px 1px 1px #e8ebff, 1px -1px 1px #e8ebff;
+    color: #001dff;
+}
+
+.anchorWithFontIcon.running:not(.headerClose)::before {
+    animation: throbberSpin 1.0s linear infinite;
+    content: "";
+    display: inline-block;
+    color: black;
+    visibility: visible;
+}
+
+.anchorWithFontIcon.running:not(.headerClose) {
+    visibility: hidden; /*otherwise original icon is beneath the spinner*/
+}
+
+.anchorWithFontIcon[data-errors-tooltip]:not(.headerClose):not(.running) {
+    text-shadow: 1px 1px 1px #ffa0a0, -1px -1px 1px #ffa0a0, -1px 1px 1px #ffa0a0, 1px -1px 1px #ffa0a0;
+}
+.anchorWithFontIcon.enabled:not(.headerClose):not(.running):hover {
+    text-shadow: 2px 2px 3px #e8ebff, -2px -2px 3px #e8ebff, -2px 2px 3px #e8ebff, 2px -2px 3px #e8ebff;
+    font-weight: bolder;
+}
+.anchorWithFontIcon[data-errors-tooltip]:not(.headerClose):not(.running):hover {
+    text-shadow: 2px 2px 3px #ffa0a0, -2px -2px 3px #ffa0a0, -2px 2px 3px #ffa0a0, 2px -2px 3px #ffa0a0;
+    font-weight: bolder;
+}
+
+.tableLike {
+    display: table;
+}
+
+.tableLike > * {
+    display: table-row;
+}
+
+.tableLike > * > *{
+    display: table-cell;
+}
+
+.tableLike > * > *:nth-child(1) {
+    text-align: right;
+    vertical-align: middle;
+    padding-right: 5px; /*needed for second col (padding 2nd col causes overflow with width 100% )*/
+}
+
+.tableLike > * > *:nth-child(2) {
+    max-width: 50vw;
+    white-space: nowrap;
+}
+
+.tableLike > * > *:nth-child(2) select  ,
+.tableLike > * > *:nth-child(2) textarea ,
+.tableLike > * > *:nth-child(2) input[type='text'],
+.tableLike > * > *:nth-child(2) input[type='password'] {
+    min-width: 100%; /*so that dots are in full line*/
+}
+
+.tableLike > * > *:nth-child(2) .textVersion {
+    overflow: hidden;
+    width: 100%; /*so that dots are in full line*/
+    box-sizing: border-box; /* otherwise width 100% overflows table's cell*/
+
+    text-overflow: ellipsis; /*those two are needed to nicely truncate with three dots*/
+    white-space: nowrap;
+}
+
+label {
+    white-space: nowrap; /*so that it is not wrapped by space calculating horizontal splitter*/
+}
+
+.glass {
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    position: fixed;
+    z-index: 2;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(1, 1, 1, 0.1);
+}
+
+.lightBox {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #f3f3f3;
+    position: relative;
+}
+
+.lightBox.loading > .throbber {
+    animation: throbberSpin 1.0s linear infinite;
+    font-size: 30px;
+}
+
+.lightBox.loaded > .throbber {
+    display: none;
+}
+
+.lightBox > .close {
+    font-size: 20px;
+    position: absolute;
+    top: 0;
+    right: 0;
+    padding: 3px 5px 5px 5px;
+    background-color: #e4e4e4;
+    transition: 0.2s background-color,0.2s color;
+    cursor: pointer;
+}
+
+.lightBox > .close:hover {
+    font-size: 25px;
+    padding: 0px 3px 3px 3px;
+    background-color: #c3c3c3;
+}
+
+.lightBox > .openInNewTab {
+    display: none;
+    color:  black;
+    background-color: white;
+    padding: 5px;
+    cursor: pointer;
+}
+
+.lightBox.loaded:hover > .openInNewTab {
+    position: absolute;
+    display: inline-block;
+    font-size: 25px;
 }
 
 .notRendered {

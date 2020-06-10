@@ -70,7 +70,6 @@ namespace Philadelphia.Web {
         public const string AttrDataMouseEventRecipient = "data-mouseevent";
         public const string AttrDataResizeRecipient = "data-resizeevent";
         public const string AttrDataMenuItemId = "data-menuitemid";
-        public const string AttrDataInnerHtml = "data-innerText";
         public const string AttrDataSortOrder = "data-sort";
         
         public const string AttrAlignToRight = "data-alignToRight";
