@@ -30,6 +30,18 @@ namespace Philadelphia.Web {
         public static extern object CallSelf(this object self);
         
         [Template("{self:raw}.{method:raw}({args:raw})")]
-        public static extern object CallMethod(this object self, string method, params object[] args);
+        public static extern object CallMethodArray(this object self, string method, params object[] args);
+
+        [Template("{self:raw}.{method:raw}({*args})")]
+        public static extern object CallMethodPlain(this object self, string method, params object[] args);
+
+        [Template("{method:raw}({*args})")]
+        public static extern object CallGlobalMethodPlain(string method, params object[] args);
+        
+        [Template("true")]
+        public static readonly object True;
+
+        [Template("false")]
+        public static readonly object False;
     }
 }

@@ -7,11 +7,9 @@ namespace Philadelphia.Web {
     public static class Toolkit {
         public static bool ClickingOutsideOfDialogDismissesIt { get; set; } 
         public static LayoutModeType DefaultLayoutMode { get; set; } = LayoutModeType.TitleExtra_Body_Actions;
-        public static Func<IHtmlFormCanvas,ITitleFormCanvasStrategy> BaseFormCanvasTitleStrategy  { get; set; } 
-            = x => new RegularDomElementTitleFormCanvasStrategy(x);
-
+        public static Func<IHtmlFormCanvas,ITitleFormCanvasStrategy> BaseFormCanvasTitleStrategy  { get; set; }
         public static Func<IActionView<HTMLElement>> BaseFormCanvasExitButtonBuilderOrNull { get; set; } 
-            = DefaultExitButtonBuilder;
+            
         public static Func<LabelDescr,IActionView<HTMLElement>> DefaultActionBuilder { get; set; } = 
             x => new InputTypeButtonActionView(x);
             
@@ -79,6 +77,29 @@ namespace Philadelphia.Web {
 
                 Logger.Debug(typeof(Toolkit), "Document dragleave {0}", ev.Target);
             };
+            
+            switch (env) {
+                case EnvironmentType.Desktop:
+                    BaseFormCanvasTitleStrategy = x => new RegularDomElementTitleFormCanvasStrategy(x);
+                    BaseFormCanvasExitButtonBuilderOrNull = DefaultExitButtonBuilder;
+                    ClickingOutsideOfDialogDismissesIt = false;
+                    break;
+                
+                case EnvironmentType.IndustrialAndroidWebApp:
+                    BaseFormCanvasTitleStrategy = x => new BodyBasedPropagatesToAppBatTitleFormCanvasStrategy(x);
+                    BaseFormCanvasExitButtonBuilderOrNull = null;
+                    ClickingOutsideOfDialogDismissesIt = true;
+                
+                    IawAppApi.SetOnBackPressed(() => {
+                        Logger.Debug(typeof(Toolkit), "backbutton pressed");
+                        var consumed = DocumentUtil.TryCloseTopMostForm();
+                        Logger.Debug(typeof(Toolkit), "backbutton consumed?={0}", consumed);
+                        return consumed;
+                    });
+                    break;
+                
+                default: throw new Exception("unsupported environment");
+            }
         }
 
         public static FormRenderer DefaultFormRenderer() =>

@@ -93,12 +93,10 @@ namespace Philadelphia.Web {
             Enabled = true; //initialize css class
 
             _a.OnClick += ev => {
+                ev.PreventDefault();
+
                 if (ev.HasHtmlTarget() && !ShouldTriggerOnTarget(ev.HtmlTarget())) {
                     return;
-                }
-
-                if (_a.Href == "#" || !Enabled) {
-                    ev.PreventDefault();
                 }
                 
                 if (!Enabled || State.Type == ActionViewStateType.OperationRunning) {

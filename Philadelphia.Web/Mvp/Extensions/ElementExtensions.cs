@@ -31,13 +31,13 @@ namespace Philadelphia.Web {
 
             var createTextRange = BridgeObjectUtil.GetFieldValue(self, "createTextRange");
             if (BridgeObjectUtil.HasFieldOrMethod(self,"select")) {
-                BridgeObjectUtil.CallMethod(self, "select");    
+                BridgeObjectUtil.CallMethodPlain(self, "select");    
             }
             
             if (Script.TypeOf(createTextRange) != "undefined") {
                 var range = BridgeObjectUtil.CallSelf(createTextRange);
-                BridgeObjectUtil.CallMethod(range, "collapse", false);
-                BridgeObjectUtil.CallMethod(range, "select");
+                BridgeObjectUtil.CallMethodPlain(range, "collapse", false);
+                BridgeObjectUtil.CallMethodPlain(range, "select");
             }
         }
 
