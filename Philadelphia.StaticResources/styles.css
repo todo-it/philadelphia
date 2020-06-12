@@ -46,9 +46,7 @@ textarea[readonly] {
 }
 
 [data-environment="iawapp"] div[data-formActions] {
-    justify-content: flex-end;
-    padding-right: 10px;
-    padding-bottom: 10px;
+    flex-direction: row-reverse;
 }
 
 @keyframes throbberSpin { 100% { transform: rotate(360deg); } }
@@ -595,6 +593,10 @@ div.Philadelphia\.Web\.ModalDialogFormCanvas > div[data-form][data-closeable="1"
 
 div.Philadelphia\.Web\.ModalDialogFormCanvas > div[data-form] > div[data-formActions] {
     display: flex;
+}
+
+[data-environment="iawapp"] div.Philadelphia\.Web\.ModalDialogFormCanvas > div[data-form] > div[data-formActions] > * {
+    padding: 10px;
 }
 
 [data-environment="iawapp"] div.Philadelphia\.Web\.ModalDialogFormCanvas > div[data-form] > div[data-formHeader],
