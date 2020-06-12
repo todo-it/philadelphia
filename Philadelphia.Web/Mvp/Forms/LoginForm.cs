@@ -5,9 +5,9 @@ using Bridge.Html5;
 using Philadelphia.Common;
 
 namespace Philadelphia.Web {
-    public class LoginForm : IForm<HTMLElement,LoginForm,CompletedOrCanceled> {
+    public class LoginForm<UserT> : IForm<HTMLElement,LoginForm<UserT>,CompletedOrCanceled> {
         public string LoggedUserName { get; private set; }
-        public event Action<LoginForm,CompletedOrCanceled> Ended;
+        public event Action<LoginForm<UserT>,CompletedOrCanceled> Ended;
         public Func<string> TitleProvider {get; set;}
         public string Title => 
             TitleProvider != null ? TitleProvider?.Invoke() : I18n.Translate("Logging to system");
@@ -15,10 +15,10 @@ namespace Philadelphia.Web {
         public IFormView<HTMLElement> View { get; }
         public string ErrorMessageOrNull { get; private set;}
 
-        public LoginForm(Func<string,string,Task<string>> service, Action<string> storeCsrfToken) : 
-            this(new LoginFormView(), service, storeCsrfToken) {}
+        public LoginForm(Func<string,string,Task<Tuple<string,UserT>>> service, Action<string, UserT> storeResult) : 
+            this(new LoginFormView(), service, storeResult) {}
 
-        public LoginForm(LoginFormView view, Func<string,string,Task<string>> service, Action<string> storeCsrfToken) {
+        public LoginForm(LoginFormView view, Func<string,string,Task<Tuple<string,UserT>>> service, Action<string,UserT> storeResult) {
             View = view;
 
             var login = new LocalValue<string>("", "");
@@ -41,7 +41,7 @@ namespace Philadelphia.Web {
             var attemptLogin = RemoteActionBuilder.Build(view.AttemptLogin, 
                 () => service(login.Value, passwd.Value),
                 x => {
-                    storeCsrfToken(x);
+                    storeResult(x.Item1, x.Item2);
                     LoggedUserName = login.Value;
                     ErrorMessageOrNull = null;
                     Ended?.Invoke(this, CompletedOrCanceled.Completed);

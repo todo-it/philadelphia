@@ -7,23 +7,23 @@ using Bridge.Html5;
 using Philadelphia.Common;
 
 namespace Philadelphia.Web {
-    public class AuthenticationThenMainMenuFlow<TUser> : IFlow<HTMLElement> {
-        private readonly Func<TUser,Func<IFormRenderer<HTMLElement>>,IEnumerable<MenuItemUserModel>> _menuItemsProvider;
+    public class AuthenticationThenMainMenuFlow<UserT> : IFlow<HTMLElement> {
+        private readonly Func<UserT,Func<IFormRenderer<HTMLElement>>,IEnumerable<MenuItemUserModel>> _menuItemsProvider;
         private readonly RemoteActionsCallerForm _fetchUser;
-        private readonly LoginForm _loginForm;
+        private readonly LoginForm<UserT> _loginForm;
         private readonly MenuForm _mainMenuForm;
         private readonly HorizontalLinksMenuFormView _mainMenuFormView;
         private readonly InformationalMessageForm _authProblemMsg;
         private readonly RemoteActionsCallerForm _runLogout;
         private readonly ConfirmMessageForm _logoutConfirm;
         private IFormRenderer<HTMLElement> _baseRenderer;
-        private TUser _currentUserOrNull;
+        private UserT _currentUserOrNull;
 
         public AuthenticationThenMainMenuFlow(
-                Func<Task<Tuple<string,TUser>>> fetchCsrfAndUserOrNull, 
-                Func<string,string,Task<string>> loginByUserAndPasswd,
+                Func<Task<Tuple<string,UserT>>> fetchCsrfAndUserOrNull, 
+                Func<string,string,Task<Tuple<string, UserT>>> loginByUserAndPasswdGettingCsrfAndUser,
                 Func<Task<Unit>> logoutOper,
-                Func<TUser,Func<IFormRenderer<HTMLElement>>,IEnumerable<MenuItemUserModel>> menuItemsProvider,
+                Func<UserT,Func<IFormRenderer<HTMLElement>>,IEnumerable<MenuItemUserModel>> menuItemsProvider,
                 Func<MenuItemModel,Tuple<HTMLElement,Action<string>>> customItemBuilder = null,
                 Func<string> programNameProvider = null) {
 
@@ -32,10 +32,13 @@ namespace Philadelphia.Web {
             _fetchUser = new RemoteActionsCallerForm(new RemoteActionsCallerFormView(), x => 
                 x.Add(fetchCsrfAndUserOrNull, y => {
                     StoreCsrf(y?.Item1);
-                    _currentUserOrNull = y != null ? y.Item2 : default(TUser);
+                    _currentUserOrNull = y != null ? y.Item2 : default(UserT);
                 }));
 
-            _loginForm = new LoginForm(loginByUserAndPasswd, StoreCsrf);
+            _loginForm = new LoginForm<UserT>(loginByUserAndPasswdGettingCsrfAndUser, (csrfToken, curUser) => {
+                StoreCsrf(csrfToken);
+                _currentUserOrNull = curUser;
+            });
             if (programNameProvider != null) {
                 _loginForm.TitleProvider = () => programNameProvider();
             }
@@ -48,9 +51,7 @@ namespace Philadelphia.Web {
                 I18n.Translate("Are you sure you want to log out?"), I18n.Translate("Logging out"));
         }
 
-        private void StoreCsrf(string token) {
-            Toolkit.CsrfToken = token;
-        }
+        private void StoreCsrf(string token) => Toolkit.CsrfToken = token;
 
         public void Run(IFormRenderer<HTMLElement> renderer, Action atExit) {
             _baseRenderer = renderer;
@@ -82,6 +83,8 @@ namespace Philadelphia.Web {
                             renderer.AddPopup(_loginForm);
                             break;
                         }
+
+                        //user is logged in -> continue
                         PopulateMenuItems();
                         renderer.ReplaceMaster(_mainMenuForm);
                         atExit();
@@ -99,7 +102,11 @@ namespace Philadelphia.Web {
                 switch (outcome) {
                     case CompletedOrCanceled.Completed:
                         renderer.Remove(x);
-                        renderer.AddPopup(_fetchUser);
+
+                        //user is logged in -> continue
+                        PopulateMenuItems();
+                        renderer.ReplaceMaster(_mainMenuForm);
+                        atExit();
                         break;
 
                     case CompletedOrCanceled.Canceled:
