@@ -31,19 +31,21 @@ namespace Philadelphia.Web {
 
     public class ConfirmMessageFormView : IFormView<HTMLElement> {
         public LabellessReadOnlyView Message { get; }
-        public InputTypeButtonActionView Confirm { get; }
-        public InputTypeButtonActionView Cancel { get; }
-        
+        public IActionView<HTMLElement> Confirm { get; }
+        public IActionView<HTMLElement> Cancel { get; }
         public ConfirmLabels LabelsType {get; set; }
 
         public ConfirmMessageFormView(
-                TextType inputType = TextType.TreatAsText, ConfirmLabels type = ConfirmLabels.ConfirmCancel) {
+                TextType inputType = TextType.TreatAsText, ConfirmLabels type = ConfirmLabels.ConfirmCancel,
+                Func<LabelDescr, IActionView<HTMLElement>> customActionBuilder = null) {
 
             LabelsType = type;
             Message = new LabellessReadOnlyView("div", inputType);
-            Confirm = new InputTypeButtonActionView(LabelsType.GetConfirmLabel())
+            Confirm = (customActionBuilder ?? Toolkit.DefaultActionBuilder)
+                .Invoke(new LabelDescr{Label = LabelsType.GetConfirmLabel()})
                 .With(x => x.MarkAsFormsDefaultButton());
-            Cancel = new InputTypeButtonActionView(LabelsType.GetCancelLabel());
+            Cancel = (customActionBuilder ?? Toolkit.DefaultActionBuilder)
+                .Invoke(new LabelDescr{Label = LabelsType.GetCancelLabel()});
         }
 
         public RenderElem<HTMLElement>[] Render(HTMLElement _) {
