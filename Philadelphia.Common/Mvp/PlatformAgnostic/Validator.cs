@@ -53,9 +53,9 @@ namespace Philadelphia.Common {
             return (x, errors) => errors.IfTrueAdd(min.CompareTo(x) >= 0, msg);
         }
 
-        public static Validate<string> LimitSize(int length) {
-            return (v, errors) => errors.IfTrueAdd(v != null && v.Length > length, 
-                string.Format(I18n.Translate("Field is too long by {0} chars"), v?.Length - length));
+        public static Validate<string> LimitSize(int length, string customerErrorMsg0 = null) {
+            return (v, errors) => errors.IfTrueAdd(v != null && v.Length > length,
+                string.Format(customerErrorMsg0 ?? I18n.Translate("Field is too long by {0} chars"), v?.Length - length));
         }
         
         public static void CannotBePastDate(DateTime? x, ISet<string> errors){
