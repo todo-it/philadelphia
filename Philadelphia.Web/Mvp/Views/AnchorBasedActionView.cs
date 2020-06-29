@@ -108,5 +108,9 @@ namespace Philadelphia.Web {
                 Triggered?.Invoke();
             };
         }
+        
+        public static implicit operator RenderElem<HTMLElement>(AnchorBasedActionView inp) {
+            return RenderElem<HTMLElement>.Create(inp);
+        }
     }
 }
