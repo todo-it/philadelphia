@@ -661,13 +661,15 @@ div.Philadelphia\.Web\.ModalDialogFormCanvas > div[data-form] > div[data-formAct
     -o-user-select: none;
     -webkit-user-select: none;
     white-space: nowrap; /* so that buttons are not wrapped when there's not enough space'*/
-    display: inline-block;
+    display: flex;
+
     border-radius: 5px;
 }
 
 .Philadelphia\.Web\.InputTypeButtonActionView > span {
     font-size: 13px;
     display: inline-block;
+    align-self: center;
 }
 
 .Philadelphia\.Web\.InputTypeButtonActionView.usesFontBtn > span {
