@@ -25,7 +25,8 @@ namespace Philadelphia.Web {
                 Func<Task<Unit>> logoutOper,
                 Func<UserT,Func<IFormRenderer<HTMLElement>>,IEnumerable<MenuItemUserModel>> menuItemsProvider,
                 Func<MenuItemModel,Tuple<HTMLElement,Action<string>>> customItemBuilder = null,
-                Func<string> programNameProvider = null) {
+                Func<string> programNameProvider = null,
+                Func<LabelDescr,IActionView<HTMLElement>> customActionBuilder = null) {
 
             _menuItemsProvider = menuItemsProvider;
             
@@ -35,7 +36,8 @@ namespace Philadelphia.Web {
                     _currentUserOrNull = y != null ? y.Item2 : default(UserT);
                 }));
 
-            _loginForm = new LoginForm<UserT>(loginByUserAndPasswdGettingCsrfAndUser, (csrfToken, curUser) => {
+            var loginFormView = new LoginFormView(customActionBuilder);
+            _loginForm = new LoginForm<UserT>(loginFormView, loginByUserAndPasswdGettingCsrfAndUser, (csrfToken, curUser) => {
                 StoreCsrf(csrfToken);
                 _currentUserOrNull = curUser;
             });
