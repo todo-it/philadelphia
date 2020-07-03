@@ -4,7 +4,8 @@ using Philadelphia.Common;
 namespace Philadelphia.Web {
     public class LoginFormView : IFormView<HTMLElement> {
         public InputView Login { get; } = new InputView(I18n.Translate("Username"))
-            .With(x => x.InputWidget.Name = "username"); //to make autocomplete work better
+            .With(x => x.InputWidget.Name = "username")
+            .With(x => x.InputWidget.SetAttribute("autocapitalize", "none")); //to make autocomplete work better
         public InputView Password { get; } = new InputView(I18n.Translate("Password"), InputView.TypePassword)
             .With(x => x.InputWidget.Name = "password"); //to make autocomplete work better
         public InputTypeButtonActionView AttemptLogin { get; } 
