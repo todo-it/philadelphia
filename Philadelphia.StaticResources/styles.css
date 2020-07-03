@@ -625,9 +625,12 @@ div.Philadelphia\.Web\.ModalDialogFormCanvas > div[data-form] > div[data-formAct
  * Philadelphia.Web.AnchorBasedActionView
  *
  ***************************************************/
+.Philadelphia\.Web\.AnchorBasedActionView {
+    text-decoration: none;
+}
+
 .Philadelphia\.Web\.AnchorBasedActionView.enabled {
     cursor: pointer;
-    text-decoration: none;
 }
 
 .Philadelphia\.Web\.AnchorBasedActionView:not(.enabled) {
