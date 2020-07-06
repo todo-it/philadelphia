@@ -524,6 +524,7 @@ namespace Philadelphia.Web {
         private readonly FileNameUploadViewAction _fileNameAction;
         private readonly ThumbnailUploadViewAction _thumbnailAction;
 
+        public HTMLDivElement Label => _lbl;
         public HTMLElement Widget => _container;
         public int FileNameMaxVisibleLength {get; set; } = 30;
         public ShortenFileNamePolicy FileNameShortening {get; set; } = ShortenFileNamePolicy.Middle;

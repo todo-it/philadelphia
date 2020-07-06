@@ -65,7 +65,7 @@ namespace Philadelphia.Web {
         }
 
         public AnchorBasedActionView(string textContent = null, string title = null)
-            : this(new LabelDescr {Label = textContent}, title) { }
+            : this(new LabelDescr {Label = textContent ?? ""}, title) { }
 
         public AnchorBasedActionView(LabelDescr lbl, string title = null) {
             if (lbl.Label == null && lbl.PreLabelIcon == null) {

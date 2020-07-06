@@ -9,11 +9,12 @@ namespace Philadelphia.Web {
         
         public InformationalMessageFormView(
                 TextType inputType = TextType.TreatAsText, 
+                string customOkLabel = null,
                 Func<LabelDescr,IActionView<HTMLElement>> customActionBuilder = null) {
             
             Message = new LabellessReadOnlyView("div", inputType);
             Confirm = (customActionBuilder ?? Toolkit.DefaultActionBuilder)
-                .Invoke(new LabelDescr {Label = I18n.Translate("OK")})
+                .Invoke(new LabelDescr {Label = customOkLabel ?? I18n.Translate("OK")})
                 .With(x => x.MarkAsFormsDefaultButton());
         }
 
