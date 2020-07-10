@@ -5,19 +5,24 @@ using Philadelphia.Common;
 
 namespace Philadelphia.Web {
     public class InformationalMessageForm : IForm<HTMLElement,InformationalMessageForm,Unit> {
+        private readonly bool _cancellable;
         public event Action<InformationalMessageForm,Unit> Ended;
         
         private readonly LocalValue<string> _message;
         public string Title { get; private set; }
         public IFormView<HTMLElement> View { get; }
 
-        public ExternalEventsHandlers ExternalEventsHandlers => ExternalEventsHandlers.Create(() => Ended?.Invoke(this, Unit.Instance));
+        public ExternalEventsHandlers ExternalEventsHandlers => 
+            _cancellable 
+            ? ExternalEventsHandlers.Create(() => Ended?.Invoke(this, Unit.Instance))
+            : ExternalEventsHandlers.Ignore;
         
         public InformationalMessageForm(string messageOrNull = null, string titleOrNull = null, TextType textType = TextType.TreatAsText) 
             : this(new InformationalMessageFormView(textType), messageOrNull, titleOrNull) {
         }
 
-        public InformationalMessageForm(InformationalMessageFormView view, string messageOrNull = null, string titleOrNull = null) {			
+        public InformationalMessageForm(InformationalMessageFormView view, string messageOrNull = null, string titleOrNull = null, bool cancellable = true) {
+            _cancellable = cancellable;
             Title = titleOrNull ?? I18n.Translate("Confirmation");
             View = view;
 
