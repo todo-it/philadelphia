@@ -14,7 +14,7 @@ namespace Philadelphia.Testing.DotNetCore.Selenium {
 
         public static XPathBuilder Dialog(string title) {
             return new XPathBuilder(
-                $"//div[@data-formview]//div[@class='headerTitle' and text() = '{title}']",
+                $"//div[@data-form='']//div[@class='headerTitle' and text() = '{title}']",
                 true);
         }
         
@@ -32,7 +32,7 @@ namespace Philadelphia.Testing.DotNetCore.Selenium {
             }
 
             if (_dialogAsRoot) {
-                _elems.Add("../../div[@class='actions']");
+                _elems.Add("../../div[@data-formActions='']");
             }
             _elems.Add(
                 $"/span[contains(@class, 'Philadelphia.Web.InputTypeButtonActionView'){(!enabled ? "" : " and contains(@class, 'enabled')")}]/span[text()='{title}']");
@@ -58,7 +58,7 @@ namespace Philadelphia.Testing.DotNetCore.Selenium {
             if (!_dialogAsRoot) {
                 throw new Exception("may only be invoked for dialogs");
             }
-            _elems.Add("../../div[@class='body']");
+            _elems.Add("../../div[@data-formBody='']");
             _elems.Add(xpath);
             
             IsClosed = true;
