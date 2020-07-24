@@ -4,11 +4,17 @@ using Philadelphia.Common;
 
 namespace Philadelphia.Web {
     public class FormRenderer : IFormRenderer<HTMLElement> {
-        private IView<HTMLElement> _masterView;
         private readonly IFormCanvas<HTMLElement> _masterCanvas;
         private readonly PopupImplementation _popups;
         private readonly FormRenderer _parent;
-        private IFormView<HTMLElement> _currentMaster;
+        
+        private IView<HTMLElement> _masterAdaptedView;
+        private IFormView<HTMLElement> _masterFormView;
+        private IBareForm<HTMLElement> _masterForm;
+
+        public IBareForm<HTMLElement> Master => _masterForm;
+        public IBareForm<HTMLElement> TopMostPopup => 
+            _parent != null ? _parent.TopMostPopup : _popups.MaybeTopMostPopup?.Form;
 
         public FormRenderer(IFormCanvas<HTMLElement> masterCanvas, IProvider<IFormCanvas<HTMLElement>> popupCanvasProvider, FormRenderer parentRenderer = null) {
             _masterCanvas = masterCanvas;
@@ -27,8 +33,8 @@ namespace Philadelphia.Web {
             }
         }
 
-        private IFormCanvas<HTMLElement> MaybeGetTopMostDialog() => 
-            _parent != null ? _parent.MaybeGetTopMostDialog() : _popups.MaybeGetTopMostDialog();
+        private PopupInfo MaybeGetTopMostDialog() => 
+            _parent != null ? _parent.MaybeGetTopMostDialog() : _popups.MaybeTopMostPopup;
 
         private void RemovePopupImpl(IBareForm<HTMLElement> frm) {
             if (_parent != null) {
@@ -64,12 +70,12 @@ namespace Philadelphia.Web {
 
             if (frmCnvOrNull != null) {
                 Logger.Debug(GetType(),"TryPutFocusOnTopMostForm() will use dialog");
-                TryPutFocusOnForm(frmCnvOrNull);
+                TryPutFocusOnForm(frmCnvOrNull.Canvas);
                 return;
                 
             } 
             
-            if (_currentMaster != null) {
+            if (_masterFormView != null) {
                 Logger.Debug(GetType(),"TryPutFocusOnTopMostForm() will use master");
                 TryPutFocusOnForm(_masterCanvas);
                 return;
@@ -79,19 +85,20 @@ namespace Philadelphia.Web {
         }
 
         public void ClearMaster() {
-            Logger.Debug(GetType(),"ClearMaster() _currentMaster={0} _masterView={1}", _currentMaster, _masterView);
+            Logger.Debug(GetType(),"ClearMaster() _masterFormView={0} _masterAdaptedView={1}", _masterFormView, _masterAdaptedView);
             
-            if (_masterView != null) {
+            if (_masterAdaptedView != null) {
                 _masterCanvas.Hide();
-                _masterView = null;
+                _masterAdaptedView = null;
             }
 
-            if (_currentMaster == null) {
+            if (_masterFormView == null) {
                 return;
             }
             
             _masterCanvas.Unrender();
-            _currentMaster = null;
+            _masterFormView = null;
+            _masterForm = null;
         }
 
         public void ReplaceMasterWithAdapter(IView<HTMLElement> newItem) {
@@ -99,18 +106,21 @@ namespace Philadelphia.Web {
             ClearMaster();
 			
             _masterCanvas.RenderAdapter(newItem);
-            _masterView = newItem;
+            _masterAdaptedView = newItem;
         }
 
         public void ReplaceMaster(IBareForm<HTMLElement> newForm) {
-            var isSame = newForm.View == _currentMaster;
+            var isSame = newForm.View == _masterFormView;
             Logger.Debug(GetType(),"ReplaceMaster() with {0}. Same as now?{0}", newForm, isSame);
             
             ClearMaster();
 			
             _masterCanvas.RenderForm(
                 newForm, 
-                () => _currentMaster = newForm.View);
+                () => {
+                    _masterFormView = newForm.View;
+                    _masterForm = newForm;
+                });
             _masterCanvas.Title = newForm.Title;
 
             //don't steal focus from popup (if any) 
@@ -122,10 +132,10 @@ namespace Philadelphia.Web {
         }
 
         public void Remove(IBareForm<HTMLElement> frm) {
-            Logger.Debug(GetType(), "Remove() form={0} _currentMaster={1} isMaster?={2}", 
-                frm, _currentMaster, frm.View == _currentMaster);
+            Logger.Debug(GetType(), "Remove() form={0} _masterFormView={1} isMaster?={2}", 
+                frm, _masterFormView, frm.View == _masterFormView);
 
-            if (frm.View == _currentMaster) {
+            if (frm.View == _masterFormView) {
                 ClearMaster();
                 //if there's popup it keeps focus
                 return;
