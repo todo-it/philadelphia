@@ -56,8 +56,11 @@ namespace ControlledByTests.Domain {
             public static readonly Scenario<decimal> Decimal = 
                 new Scenario<decimal>("13.3", 13.3M, 2.4M);
 
-            public static readonly Scenario<DateTime> DateTime =
-                new Scenario<DateTime>("2001-02-03 04:05:06", new DateTime(2001, 2, 3, 4, 5, 6), new DateTime(2001, 1, 1, 1, 1, 1));
+            public static readonly Scenario<DateTime> DateTimeUTC =
+                new Scenario<DateTime>("2001-02-03T04:05:06Z", new DateTime(2001, 2, 3, 4, 5, 6, DateTimeKind.Utc), new DateTime(2001, 1, 1, 1, 1, 1));
+
+            public static readonly Scenario<DateTime> DateTimeLocal =
+                new Scenario<DateTime>("2001-02-03 04:05:06", new DateTime(2001, 2, 3, 4, 5, 6, DateTimeKind.Local), new DateTime(2001, 1, 1, 1, 1, 1));
 
             public static DateTime MidDate(DateTime x1, DateTime x2) {
                 var diff = x2 - x1;

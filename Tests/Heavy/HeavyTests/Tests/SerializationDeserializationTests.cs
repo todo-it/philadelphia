@@ -48,10 +48,10 @@ namespace HeavyTests.Tests {
         public void TestDateTimeUtc() {
             TestSerialization(
                 MagicsForTests.ClientSideFlows.SerializationTest_DateTimeUtc,
-                ServiceCall.OfMethod((ISerDeserService x) => x.ProcessDateTime(MagicsForTests.Serialization.DateTime.DefaultClientVal, true)),
+                ServiceCall.OfMethod((ISerDeserService x) => x.ProcessDateTime(MagicsForTests.Serialization.DateTimeUTC.DefaultClientVal, true)),
                 MagicsForTests.Serialization.MidDate(
-                    MagicsForTests.Serialization.DateTime.DefaultClientVal,
-                    MagicsForTests.Serialization.DateTime.ServerAdd).ToStringYyyyMmDdHhMm());
+                    MagicsForTests.Serialization.DateTimeUTC.DefaultClientVal,
+                    MagicsForTests.Serialization.DateTimeUTC.ServerAdd).ToStringYyyyMmDdHhMm());
         }
 
         [Fact]
@@ -61,17 +61,17 @@ namespace HeavyTests.Tests {
                 (assert, server, browser) => {
                     var tzOffset =
                         Convert.ToInt32(
-                        browser.ExecuteScript(
-                            $"return new Date(new Date('{MagicsForTests.Serialization.DateTime.DefaultTypedVal}').toUTCString()).getTimezoneOffset() + ''"
-                        ));
+                            browser.ExecuteScript(
+                                $"return new Date(new Date('{MagicsForTests.Serialization.DateTimeLocal.DefaultTypedVal}').toUTCString()).getTimezoneOffset() + ''"
+                            ));
                     var receivedByServer =
-                        MagicsForTests.Serialization.DateTime.DefaultClientVal.AddMinutes(tzOffset);
+                        MagicsForTests.Serialization.DateTimeLocal.DefaultClientVal.AddMinutes(tzOffset);
 
                     return (
                         ServiceCall.OfMethod((ISerDeserService x) => x.ProcessDateTime(receivedByServer, false)),
                         MagicsForTests.Serialization.MidDate(
                             receivedByServer,
-                            MagicsForTests.Serialization.DateTime.ServerAdd).ToStringYyyyMmDdHhMm());
+                            MagicsForTests.Serialization.DateTimeLocal.ServerAdd).ToStringYyyyMmDdHhMm());
                 });
         }
 

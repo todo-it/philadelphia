@@ -194,7 +194,7 @@ namespace ControlledByTests.Client {
 
                 case MagicsForTests.ClientSideFlows.SerializationTest_DateTimeUtc: 
                     RunSerializationTestFlow(
-                        MagicsForTests.Serialization.DateTime.DefaultTypedVal,
+                        MagicsForTests.Serialization.DateTimeUTC.DefaultTypedVal,
                         s => Convert.ToDateTime(s),
                         d => d.ToStringYyyyMmDdHhMm(),
                         val => di
@@ -204,7 +204,7 @@ namespace ControlledByTests.Client {
                     
                 case MagicsForTests.ClientSideFlows.SerializationTest_DateTimeLocal: 
                     RunSerializationTestFlow(
-                        MagicsForTests.Serialization.DateTime.DefaultTypedVal,
+                        MagicsForTests.Serialization.DateTimeLocal.DefaultTypedVal,
                         s => Convert.ToDateTime(s),
                         d => d.ToStringYyyyMmDdHhMm(),
                         val => di

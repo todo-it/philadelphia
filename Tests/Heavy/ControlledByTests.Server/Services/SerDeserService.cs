@@ -22,7 +22,8 @@ namespace ControlledByTests.Server.Services {
             _trace.RegisterServiceInvocation(typeof(ISerDeserService), nameof(ProcessDateTime), v, isUtc);
 
             //adds to make sure that server's value was actually seen by client
-            return Task.FromResult(MagicsForTests.Serialization.MidDate(v, MagicsForTests.Serialization.DateTime.ServerAdd));
+            var v2 = isUtc ? MagicsForTests.Serialization.DateTimeUTC.ServerAdd : MagicsForTests.Serialization.DateTimeLocal.ServerAdd;
+            return Task.FromResult(MagicsForTests.Serialization.MidDate(v, v2));
         }
 
         public Task<string> ProcessString(string v) {
