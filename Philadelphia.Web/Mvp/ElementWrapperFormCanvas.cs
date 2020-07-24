@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Bridge.Html5;
 using Philadelphia.Common;
 // ReSharper disable InconsistentNaming
@@ -147,6 +148,9 @@ namespace Philadelphia.Web {
         public FormDescr AsFormDescr() => BuildFormFromElement(ContainerElement);
         
         public static FormDescr BuildFormFromElement(HTMLElement el) =>
-            new FormDescr(el, el.Children[0], el.Children[1]);
+            new FormDescr(
+                el, 
+                el.Children.First(x => x.HasAttribute(Magics.AttrDataFormBody)), 
+                el.Children.First(x => x.HasAttribute(Magics.AttrDataFormActions)));
     }
 }
