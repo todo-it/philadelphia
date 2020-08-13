@@ -21,7 +21,7 @@ namespace Philadelphia.Demo.Client {
 
         public DataboundDatagridItemEditorForm(ISomeService someService) {
             _view = new DataboundDatagridItemEditorFormView();
-            var fld = RemoteFieldBuilder<SomeDto>.For(someService.Modify, () => _someDtoId);
+            var fld = RemoteFieldBuilder<SomeDto,int>.For(someService.Modify, () => _someDtoId);
             
             _someText = fld.Build(x => x.SomeText, _view.SomeText, Validator.IsNotNullRef);
             _someNumber = fld.BuildInt(x => x.SomeNumber, _view.SomeNumber, Validator.MustBePositive);

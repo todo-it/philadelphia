@@ -10,12 +10,12 @@ namespace Philadelphia.Web {
     /// Helper class to create instances of <see cref="FixedIdUpdateServiceMethodCaller{ContT}"/> bound to services compatible 
     /// with <see cref="FixedIdUpdateServiceMethodCaller{ContT}"/>
     /// </summary>
-    public class RemoteFieldBuilder<ContT> where ContT : new() {
-        private readonly FixedIdUpdateServiceMethodCaller<ContT> _caller;
+    public class RemoteFieldBuilder<ContT,IdT> where ContT : new() {
+        private readonly FixedIdUpdateServiceMethodCaller<ContT, IdT> _caller;
         private readonly Action<ContT,string> _postOperationConsumerOrNull;
 
         public RemoteFieldBuilder(
-            FixedIdUpdateServiceMethodCaller<ContT> caller,
+            FixedIdUpdateServiceMethodCaller<ContT, IdT> caller,
             Action<ContT,string> postOperationConsumerOrNull) {
 
             _caller = caller;
@@ -235,13 +235,13 @@ namespace Philadelphia.Web {
                 postOperationConsumerOrNull: _postOperationConsumerOrNull);
         }
         
-        public static RemoteFieldBuilder<ContT> For(
-                Func<int,string,string, Task<ContT>> saveOper, 
-                Func<int> idProvider,
+        public static RemoteFieldBuilder<ContT,IdT> For(
+                Func<IdT,string,string, Task<ContT>> saveOper, 
+                Func<IdT> idProvider,
                 Action<ContT,string> postOperationConsumerOrNull = null)  {
 
-            return new RemoteFieldBuilder<ContT>(
-                new FixedIdUpdateServiceMethodCaller<ContT>(saveOper, idProvider),
+            return new RemoteFieldBuilder<ContT, IdT>(
+                new FixedIdUpdateServiceMethodCaller<ContT, IdT>(saveOper, idProvider),
                 postOperationConsumerOrNull);
         }
     }

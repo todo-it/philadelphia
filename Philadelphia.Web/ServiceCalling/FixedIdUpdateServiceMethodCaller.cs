@@ -13,11 +13,11 @@ namespace Philadelphia.Web {
     /// It does it so by means of LinqExpression extracting field to be mutated.
     /// To be used on single entity forms
     /// </summary>
-    public class FixedIdUpdateServiceMethodCaller<ContT> {
-        private readonly Func<int> _idProvider;
-        private readonly Func<int, string, string, Task<ContT>> _saveOperation;
+    public class FixedIdUpdateServiceMethodCaller<ContT, IdT> {
+        private readonly Func<IdT> _idProvider;
+        private readonly Func<IdT, string, string, Task<ContT>> _saveOperation;
 
-        public FixedIdUpdateServiceMethodCaller(Func<int, string, string, Task<ContT>> saveOperation, Func<int> idProvider) {
+        public FixedIdUpdateServiceMethodCaller(Func<IdT, string, string, Task<ContT>> saveOperation, Func<IdT> idProvider) {
             _saveOperation = saveOperation;
             _idProvider = idProvider;
         }
