@@ -2,13 +2,13 @@
 
 ![logo](Docs/logo_small.png)
 
-## What is it?
+## What is this?
 Philadelphia Toolkit is an integrated [aspnet core](https://dotnet.github.io/) and [Bridge.NET](https://bridge.net) cross platform toolkit for building type safe web applications in C#. 
 
 ## Tell me more
-On the server side it is possible to use other dotnet languages (fact: most of our server side code is written in F#). Code may be shared between server and client (i.e.  service contracts, DTOs etc). We strives for code brevity without sacrificing ability to structure code which is essential to build rich client webapps. On one hand it eliminates need to explicitly invoke JSON serialization/deserialization code on both server and client.  
+On the server side it is possible to use other dotnet languages (fact: most of our server side code is written in F#). Code may be shared between server and client (i.e.  service contracts, DTOs etc). We strive to keep code concise yet without sacrificing possibility to structure code when it grows. One of the benefits provided by toolkit is that eliminates the need to explicitly invoke JSON serialization/deserialization code (both on server side and client side).
 
-Extensive widgets collection: it provides widgets primarily targeting desktop browsers as its origin lays in [LOB apps](https://en.wikipedia.org/wiki/Line_of_business). Toolkit as such doesn't limit its application to desktops - one may target mobile browsers as well. Until now we didn't need to target mobile devices seriously thus such CSS utilizing media queries is mostly absent.  
+Extensive widgets collection: it provides widgets primarily targeting **desktop browsers** as its origin lays in [LOB apps](https://en.wikipedia.org/wiki/Line_of_business). We recently added support for **mobile browsers** by supporting [Industrial Android WebApp Host](https://github.com/d-p-y/industrial-android-webapp-host) which is webview with additional APIs for photo taking and QR scanning.
 
 Server-sent events - it makes development of services utilizing this tech easy by handling low level concerns away (serialization, deserialization, subscription, canceling subscription, timeouts). 
 
@@ -17,9 +17,11 @@ Why calling it *toolkit* instead of *framework*? *Toolkit* assumes that we are h
 ## Live demo
 See [Philadelphia.Demo project](http://philadelphia.westeurope.cloudapp.azure.com/) hosted live on Linux within Docker. Please note that this is cheapest Linux machine available so it is likely that significant demand may cause it to be unavailable due to *hug of death*.
 
+If you open it with browser it assumes desktop mode. If you open it with [Industrial Android WebApp Host](https://github.com/d-p-y/industrial-android-webapp-host) it assumes mobile browser.
+
 ## Installation
 
-Technically speaking you only need [dotnet core SDK](https://dotnet.github.io/) v2.1 or later installed and dotnet framework 4.5.1 (under Linux you need [recent Mono](https://www.mono-project.com/download/stable/)). Why both? Because as of now for compilation of ([Bridge v17.4.0](https://github.com/bridgedotnet/Bridge/issues/3184)) you need 'full dotnet framework'. For runtime it only needs dotnet core.
+Technically speaking you only need [dotnet core SDK](https://dotnet.github.io/) v2.1 or later installed and dotnet framework 4.5.1 (under Linux you need [recent Mono](https://www.mono-project.com/download/stable/)). Why both? Because as of now for compilation of ([Bridge v17.10.1](https://github.com/bridgedotnet/Bridge/issues/3184)) you need 'full dotnet framework'. For runtime it only needs dotnet core.
 
 Install nuget template package:  
 ```dotnet new -i Philadelphia.Template``` 
@@ -83,7 +85,7 @@ namespace PhiladelphiaPowered.Client {
             = new InputTypeButtonActionView("Info popup");
         public InputTypeButtonActionView ReplaceMaster {get; } 
             = new InputTypeButtonActionView("Replace master");
-        public IView<HTMLElement>[] Actions => ActionsBuilder.For(ShowInfo,ReplaceMaster); //shorter than explict array
+        public IView<HTMLElement>[] Actions => ActionsBuilder.For(ShowInfo,ReplaceMaster); //shorter than explicit array
 
         public RenderElem<HTMLElement>[] Render(HTMLElement parentContainer) {
             return new RenderElem<HTMLElement>[] {"this is main form body<br>using <i>some</i> html tags"};
@@ -247,6 +249,10 @@ Notice how form title is placed differently without you doing anything. Same for
  ```public ExternalEventsHandlers ExternalEventsHandlers => ExternalEventsHandlers.Ignore;```
 
 ... then those different dismiss form actions will disappear ('X' in dialog or 'door exit' in frameless).
+
+## Example - scanning QRs and taking photos
+
+**TODO** prepare example based on demo code
 
 ## Example - calling server
 
