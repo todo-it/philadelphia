@@ -7,7 +7,10 @@ namespace Philadelphia.Web {
     public static class HtmlBodyExtensions {
         public static List<FormDescr> GetAllForms(this HTMLBodyElement _) =>
             FormDescr.FormsTypes
-                .SelectMany(x => Document.GetElementsByClassName(x.Item1.FullNameWithoutGenerics()).Select(FormDescr.CreateFrom))
+                .SelectMany(x => 
+                    Document.GetElementsByClassName(x.Item1.FullNameWithoutGenerics())
+                        .Where(y => x.Item2(y))
+                        .Select(FormDescr.CreateFrom))
                 .ToList();
 
         public static FormDescr GetActiveFormOrNull(this HTMLBodyElement body) => body.GetAllForms().LastOrDefault(x => x.IsShown);

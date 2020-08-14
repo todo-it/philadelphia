@@ -122,6 +122,11 @@ namespace Philadelphia.Web {
         public void Focus() => AsFormDescr().FindAndFocusOnFirstItem();
         public FormDescr AsFormDescr() => BuildFormFromElement(ContainerElement);
 
+        public static bool ContainsForm(HTMLElement el) {
+            //glass is parent
+            return el.Children[0].GetBoolAttribute(Magics.AttrDataFormIsShown) == true;
+        }
+
         public static FormDescr BuildFormFromElement(HTMLElement el) {
             var shouldBeDialog = el.Children[0]; //glass is parent
             return new FormDescr(

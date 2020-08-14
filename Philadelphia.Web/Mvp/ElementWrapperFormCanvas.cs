@@ -146,7 +146,8 @@ namespace Philadelphia.Web {
 
         public void Focus() => AsFormDescr().FindAndFocusOnFirstItem();
         public FormDescr AsFormDescr() => BuildFormFromElement(ContainerElement);
-        
+        public static bool ContainsForm(HTMLElement el) => el.GetBoolAttribute(Magics.AttrDataFormIsShown) == true;
+            
         public static FormDescr BuildFormFromElement(HTMLElement el) =>
             new FormDescr(
                 el, 

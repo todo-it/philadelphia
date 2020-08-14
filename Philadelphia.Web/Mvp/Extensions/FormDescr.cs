@@ -7,10 +7,17 @@ using Philadelphia.Common;
 namespace Philadelphia.Web {
     public class FormDescr {
         //TODO consider adding API to be able to register custom IFormCanvas 
-        public static IEnumerable<Tuple<Type,Func<HTMLElement,FormDescr>>> FormsTypes = new List<Tuple<Type,Func<HTMLElement,FormDescr>>> {
-            Tuple.Create<Type,Func<HTMLElement,FormDescr>>(typeof(ElementWrapperFormCanvas), ElementWrapperFormCanvas.BuildFormFromElement),
-            Tuple.Create<Type,Func<HTMLElement,FormDescr>>(typeof(ModalDialogFormCanvas), ModalDialogFormCanvas.BuildFormFromElement)
-        };
+        public static IEnumerable<Tuple<Type,Func<HTMLElement,bool>,Func<HTMLElement,FormDescr>>> FormsTypes = 
+            new List<Tuple<Type,Func<HTMLElement,bool>,Func<HTMLElement,FormDescr>>> {
+                Tuple.Create<Type,Func<HTMLElement,bool>,Func<HTMLElement,FormDescr>>(
+                    typeof(ElementWrapperFormCanvas), 
+                    ElementWrapperFormCanvas.ContainsForm, 
+                    ElementWrapperFormCanvas.BuildFormFromElement),
+                Tuple.Create<Type,Func<HTMLElement,bool>,Func<HTMLElement,FormDescr>>(
+                    typeof(ModalDialogFormCanvas), 
+                    ModalDialogFormCanvas.ContainsForm, 
+                    ModalDialogFormCanvas.BuildFormFromElement)
+            };
 
         public HTMLElement FormContainerElement { get; }
         public HTMLElement BodyContainerElement { get; }
@@ -28,7 +35,7 @@ namespace Philadelphia.Web {
         public bool IsShown => FormContainerElement.GetBoolAttribute(Magics.AttrDataFormIsShown) == true;
         
         public HTMLElement DefaultButtonOrNull => ActionsContainerElement.Children.FirstOrDefault(x => x.HasAttribute(Magics.AttrDataFormDefaultAction));
-        
+
         public bool FindAndFocusOnFirstItem() {
             var isSuccess = BodyContainerElement.TraverseUntilFirst(el => {
                 if (el.TagName != "INPUT" && el.TagName != "TEXTAREA" && el.TagName != "SELECT") {
@@ -56,7 +63,8 @@ namespace Philadelphia.Web {
         public static FormDescr GetFormContainerOrNull(HTMLElement formContainer) =>
             FormsTypes
                 .Where(x => formContainer.ClassList.Contains(x.Item1.FullNameWithoutGenerics()))
-                .Select(x => x.Item2(formContainer))
+                .Where(x => x.Item2(formContainer))
+                .Select(x => x.Item3(formContainer))
                 .FirstOrDefault();
         
         public static FormDescr CreateFrom(HTMLElement formContainer) => 
