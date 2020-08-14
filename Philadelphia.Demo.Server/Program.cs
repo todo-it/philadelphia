@@ -29,6 +29,8 @@ namespace Philadelphia.Demo.Server {
                 var destLogDir = 
                     Configuration.getConfigVarOrDefault(Path.Combine(dllsLoc, "log"), "LOG_DIR");
 
+                Directory.CreateDirectory(destLogDir);
+
                 string LogFileNameProvider() => 
                     Path.Combine(destLogDir, $"{n:yyyy-MM-dd_HH-mm-ss}.txt");
 
