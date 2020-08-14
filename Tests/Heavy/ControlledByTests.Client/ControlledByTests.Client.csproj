@@ -70,7 +70,7 @@
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\Philadelphia.Common\Philadelphia.Common.AsBridgeDotNet.csproj">
+    <ProjectReference Include="..\..\..\Philadelphia.Common.AsBridgeDotNet\Philadelphia.Common.AsBridgeDotNet.csproj">
       <Project>{9c31d343-8d00-4520-8d74-afbe7e69555d}</Project>
       <Name>Philadelphia.Common.AsBridgeDotNet</Name>
     </ProjectReference>

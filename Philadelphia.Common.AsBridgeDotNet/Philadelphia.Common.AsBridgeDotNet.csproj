@@ -1,0 +1,457 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{9C31D343-8D00-4520-8D74-AFBE7E69555D}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Philadelphia.Common.AsBridgeDotNet</RootNamespace>
+    <AssemblyName>Philadelphia.Common.AsBridgeDotNet</AssemblyName>
+    <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <NoStdLib>true</NoStdLib>
+  </PropertyGroup>
+  <PropertyGroup>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <NoStdLib>true</NoStdLib>
+  </PropertyGroup>
+  <!-- redirects start -->
+  <ItemGroup>
+    <None Include="..\Philadelphia.Common\Bridge\bridge.json">
+      <Link>Bridge\bridge.json</Link>
+    </None>
+    <Compile Include="..\Philadelphia.Common\Collections\FilterableSortableObservableCollection.cs">
+      <Link>Collections\FilterableSortableObservableCollection.cs</Link>
+    </Compile>
+    <Compile Include="..\Philadelphia.Common\Collections\IFilterableCollection.cs">
+      <Link>Collections\IFilterableCollection.cs</Link>
+    </Compile>
+    <Compile Include="..\Philadelphia.Common\Collections\IObservableCollection.cs">
+      <Link>Collections\IObservableCollection.cs</Link>
+    </Compile>
+    <Compile Include="..\Philadelphia.Common\Collections\IOrderByCollector.cs">
+      <Link>Collections\IOrderByCollector.cs</Link>
+    </Compile>
+    <Compile Include="..\Philadelphia.Common\Collections\IRandomAccessCollection.cs">
+      <Link>Collections\IRandomAccessCollection.cs</Link>
+    </Compile>
+    <Compile Include="..\Philadelphia.Common\Collections\ISortableCollection.cs">
+      <Link>Collections\ISortableCollection.cs</Link>
+    </Compile>
+    <Compile Include="..\Philadelphia.Common\Collections\IWhereCollector.cs">
+      <Link>Collections\IWhereCollector.cs</Link>
+    </Compile>
+    <Compile Include="..\Philadelphia.Common\Collections\LinkedList.cs">
+      <Link>Collections\LinkedList.cs</Link>
+    </Compile>
+    <Compile Include="..\Philadelphia.Common\Collections\ObservableCollectionExtensions.cs">
+      <Link>Collections\ObservableCollectionExtensions.cs</Link>
+    </Compile>
+    <Compile Include="..\Philadelphia.Common\Collections\PassToLinqOrderByCollector.cs">
+      <Link>Collections\PassToLinqOrderByCollector.cs</Link>
+    </Compile>
+    <Compile Include="..\Philadelphia.Common\Collections\PassToLinqWhereCollector.cs">
+      <Link>Collections\PassToLinqWhereCollector.cs</Link>
+    </Compile>
+    <Compile Include="..\Philadelphia.Common\DependencyInjection\IDiContainer.cs">
+      <Link>DependencyInjection\IDiContainer.cs</Link>
+    </Compile>
+    <Compile Include="..\Philadelphia.Common\DependencyInjection\IDiInstaller.cs">
+      <Link>DependencyInjection\IDiInstaller.cs</Link>
+    </Compile>
+    <Compile Include="..\Philadelphia.Common\DependencyInjection\IDiRegisterOnlyContainer.cs">
+      <Link>DependencyInjection\IDiRegisterOnlyContainer.cs</Link>
+    </Compile>
+    <Compile Include="..\Philadelphia.Common\DependencyInjection\IDiResolveReleaseOnlyContainer.cs">
+      <Link>DependencyInjection\IDiResolveReleaseOnlyContainer.cs</Link>
+    </Compile>
+    <Compile Include="..\Philadelphia.Common\DependencyInjection\LifeStyle.cs">
+      <Link>DependencyInjection\LifeStyle.cs</Link>
+    </Compile>
+    <Compile Include="..\Philadelphia.Common\DependencyInjection\PhillyContainer.cs">
+      <Link>DependencyInjection\PhillyContainer.cs</Link>
+    </Compile>
+    <Compile Include="..\Philadelphia.Common\Extensions\ArrayExtensions.cs">
+      <Link>Extensions\ArrayExtensions.cs</Link>
+    </Compile>
+    <Compile Include="..\Philadelphia.Common\Extensions\DateTimeExtensions.cs">
+      <Link>Extensions\DateTimeExtensions.cs</Link>
+    </Compile>
+    <Compile Include="..\Philadelphia.Common\Extensions\DictionaryExtensions.cs">
+      <Link>Extensions\DictionaryExtensions.cs</Link>
+    </Compile>
+    <Compile Include="..\Philadelphia.Common\Extensions\DoubleExtensions.cs">
+      <Link>Extensions\DoubleExtensions.cs</Link>
+    </Compile>
+    <Compile Include="..\Philadelphia.Common\Extensions\EnumerableExtensions.cs">
+      <Link>Extensions\EnumerableExtensions.cs</Link>
+    </Compile>
+    <Compile Include="..\Philadelphia.Common\Extensions\EnumeratorExtensions.cs">
+      <Link>Extensions\EnumeratorExtensions.cs</Link>
+    </Compile>
+    <Compile Include="..\Philadelphia.Common\Extensions\EnumExtensions.cs">
+      <Link>Extensions\EnumExtensions.cs</Link>
+    </Compile>
+    <Compile Include="..\Philadelphia.Common\Extensions\ListExtensions.cs">
+      <Link>Extensions\ListExtensions.cs</Link>
+    </Compile>
+    <Compile Include="..\Philadelphia.Common\Extensions\ObjectExtensions.cs">
+      <Link>Extensions\ObjectExtensions.cs</Link>
+    </Compile>
+    <Compile Include="..\Philadelphia.Common\Extensions\SetExtensions.cs">
+      <Link>Extensions\SetExtensions.cs</Link>
+    </Compile>
+    <Compile Include="..\Philadelphia.Common\Extensions\StringExtensions.cs">
+      <Link>Extensions\StringExtensions.cs</Link>
+    </Compile>
+    <Compile Include="..\Philadelphia.Common\Extensions\TypeExtensions.cs">
+      <Link>Extensions\TypeExtensions.cs</Link>
+    </Compile>
+    <Compile Include="..\Philadelphia.Common\I18n\BoolFormat.cs">
+      <Link>I18n\BoolFormat.cs</Link>
+    </Compile>
+    <Compile Include="..\Philadelphia.Common\I18n\DateTimeFormat.cs">
+      <Link>I18n\DateTimeFormat.cs</Link>
+    </Compile>
+    <Compile Include="..\Philadelphia.Common\I18n\DateTimeFormatExtensions.cs">
+      <Link>I18n\DateTimeFormatExtensions.cs</Link>
+    </Compile>
+    <Compile Include="..\Philadelphia.Common\I18n\DecimalFormat.cs">
+      <Link>I18n\DecimalFormat.cs</Link>
+    </Compile>
+    <Compile Include="..\Philadelphia.Common\I18n\I18n.cs">
+      <Link>I18n\I18n.cs</Link>
+    </Compile>
+    <Compile Include="..\Philadelphia.Common\I18n\I18nImpl.cs">
+      <Link>I18n\I18nImpl.cs</Link>
+    </Compile>
+    <Compile Include="..\Philadelphia.Common\I18n\ICurrentCultureSwitchedListener.cs">
+      <Link>I18n\ICurrentCultureSwitchedListener.cs</Link>
+    </Compile>
+    <Compile Include="..\Philadelphia.Common\I18n\ILocalizationImpl.cs">
+      <Link>I18n\ILocalizationImpl.cs</Link>
+    </Compile>
+    <Compile Include="..\Philadelphia.Common\I18n\ITranslationProvider.cs">
+      <Link>I18n\ITranslationProvider.cs</Link>
+    </Compile>
+    <Compile Include="..\Philadelphia.Common\I18n\LocalizationUtil.cs">
+      <Link>I18n\LocalizationUtil.cs</Link>
+    </Compile>
+    <Compile Include="..\Philadelphia.Common\I18n\NoTranslationI18n.cs">
+      <Link>I18n\NoTranslationI18n.cs</Link>
+    </Compile>
+    <Compile Include="..\Philadelphia.Common\I18n\ToStringLocalization.cs">
+      <Link>I18n\ToStringLocalization.cs</Link>
+    </Compile>
+    <Compile Include="..\Philadelphia.Common\I18n\TranslationItem.cs">
+      <Link>I18n\TranslationItem.cs</Link>
+    </Compile>
+    <Compile Include="..\Philadelphia.Common\I18n\TranslationRoot.cs">
+      <Link>I18n\TranslationRoot.cs</Link>
+    </Compile>
+    <Compile Include="..\Philadelphia.Common\I18n\TranslationWithFallbackI18n.cs">
+      <Link>I18n\TranslationWithFallbackI18n.cs</Link>
+    </Compile>
+    <Compile Include="..\Philadelphia.Common\IdGeneration\DefaultUniqueIdGenerator.cs">
+      <Link>IdGeneration\DefaultUniqueIdGenerator.cs</Link>
+    </Compile>
+    <Compile Include="..\Philadelphia.Common\IdGeneration\IUniqueIdGenerator.cs">
+      <Link>IdGeneration\IUniqueIdGenerator.cs</Link>
+    </Compile>
+    <Compile Include="..\Philadelphia.Common\IdGeneration\IUniqueIdGeneratorImplementation.cs">
+      <Link>IdGeneration\IUniqueIdGeneratorImplementation.cs</Link>
+    </Compile>
+    <Compile Include="..\Philadelphia.Common\Logging\ConsoleWritelineLoggerImplementation.cs">
+      <Link>Logging\ConsoleWritelineLoggerImplementation.cs</Link>
+    </Compile>
+    <Compile Include="..\Philadelphia.Common\Logging\ILoggerImplementation.cs">
+      <Link>Logging\ILoggerImplementation.cs</Link>
+    </Compile>
+    <Compile Include="..\Philadelphia.Common\Logging\Logger.cs">
+      <Link>Logging\Logger.cs</Link>
+    </Compile>
+    <Compile Include="..\Philadelphia.Common\Logging\NullLoggerImplementation.cs">
+      <Link>Logging\NullLoggerImplementation.cs</Link>
+    </Compile>
+    <Compile Include="..\Philadelphia.Common\Model\ClientConnectionInfo.cs">
+      <Link>Model\ClientConnectionInfo.cs</Link>
+    </Compile>
+    <Compile Include="..\Philadelphia.Common\Model\CompletedOrCanceled.cs">
+      <Link>Model\CompletedOrCanceled.cs</Link>
+    </Compile>
+    <Compile Include="..\Philadelphia.Common\Model\Cookie.cs">
+      <Link>Model\Cookie.cs</Link>
+    </Compile>
+    <Compile Include="..\Philadelphia.Common\Model\DateTimeElement.cs">
+      <Link>Model\DateTimeElement.cs</Link>
+    </Compile>
+    <Compile Include="..\Philadelphia.Common\Model\DecimalWithPrecision.cs">
+      <Link>Model\DecimalWithPrecision.cs</Link>
+    </Compile>
+    <Compile Include="..\Philadelphia.Common\Model\FactoryMethodProvider.cs">
+      <Link>Model\FactoryMethodProvider.cs</Link>
+    </Compile>
+    <Compile Include="..\Philadelphia.Common\Model\FileModel.cs">
+      <Link>Model\FileModel.cs</Link>
+    </Compile>
+    <Compile Include="..\Philadelphia.Common\Model\FileUploadOperation.cs">
+      <Link>Model\FileUploadOperation.cs</Link>
+    </Compile>
+    <Compile Include="..\Philadelphia.Common\Model\IDateTimeBuilder.cs">
+      <Link>Model\IDateTimeBuilder.cs</Link>
+    </Compile>
+    <Compile Include="..\Philadelphia.Common\Model\IProvider.cs">
+      <Link>Model\IProvider.cs</Link>
+    </Compile>
+    <Compile Include="..\Philadelphia.Common\Model\Magics.cs">
+      <Link>Model\Magics.cs</Link>
+    </Compile>
+    <Compile Include="..\Philadelphia.Common\Model\Optional.cs">
+      <Link>Model\Optional.cs</Link>
+    </Compile>
+    <Compile Include="..\Philadelphia.Common\Model\RemoteFileId.cs">
+      <Link>Model\RemoteFileId.cs</Link>
+    </Compile>
+    <Compile Include="..\Philadelphia.Common\Model\Unit.cs">
+      <Link>Model\Unit.cs</Link>
+    </Compile>
+    <Compile Include="..\Philadelphia.Common\Model\UploadInfo.cs">
+      <Link>Model\UploadInfo.cs</Link>
+    </Compile>
+    <Compile Include="..\Philadelphia.Common\Mvp\ActionViewState.cs">
+      <Link>Mvp\ActionViewState.cs</Link>
+    </Compile>
+    <Compile Include="..\Philadelphia.Common\Mvp\ActionViewStateType.cs">
+      <Link>Mvp\ActionViewStateType.cs</Link>
+    </Compile>
+    <Compile Include="..\Philadelphia.Common\Mvp\DataGrid\DatagridCell.cs">
+      <Link>Mvp\DataGrid\DatagridCell.cs</Link>
+    </Compile>
+    <Compile Include="..\Philadelphia.Common\Mvp\DataGrid\DatagridContent.cs">
+      <Link>Mvp\DataGrid\DatagridContent.cs</Link>
+    </Compile>
+    <Compile Include="..\Philadelphia.Common\Mvp\ExecOnUiThread.cs">
+      <Link>Mvp\ExecOnUiThread.cs</Link>
+    </Compile>
+    <Compile Include="..\Philadelphia.Common\Mvp\Extensions\ActionModelExtensions.cs">
+      <Link>Mvp\Extensions\ActionModelExtensions.cs</Link>
+    </Compile>
+    <Compile Include="..\Philadelphia.Common\Mvp\Extensions\ActionViewExtensions.cs">
+      <Link>Mvp\Extensions\ActionViewExtensions.cs</Link>
+    </Compile>
+    <Compile Include="..\Philadelphia.Common\Mvp\Extensions\ReadWriteValueExtensions.cs">
+      <Link>Mvp\Extensions\ReadWriteValueExtensions.cs</Link>
+    </Compile>
+    <Compile Include="..\Philadelphia.Common\Mvp\Extensions\ValueViewExtensions.cs">
+      <Link>Mvp\Extensions\ValueViewExtensions.cs</Link>
+    </Compile>
+    <Compile Include="..\Philadelphia.Common\Mvp\ExternalEventsHandlers.cs">
+      <Link>Mvp\ExternalEventsHandlers.cs</Link>
+    </Compile>
+    <Compile Include="..\Philadelphia.Common\Mvp\IActionModel.cs">
+      <Link>Mvp\IActionModel.cs</Link>
+    </Compile>
+    <Compile Include="..\Philadelphia.Common\Mvp\IActionView.cs">
+      <Link>Mvp\IActionView.cs</Link>
+    </Compile>
+    <Compile Include="..\Philadelphia.Common\Mvp\IBareForm.cs">
+      <Link>Mvp\IBareForm.cs</Link>
+    </Compile>
+    <Compile Include="..\Philadelphia.Common\Mvp\IBeforeChangeCapableValueView.cs">
+      <Link>Mvp\IBeforeChangeCapableValueView.cs</Link>
+    </Compile>
+    <Compile Include="..\Philadelphia.Common\Mvp\IByKeyValueAccessor.cs">
+      <Link>Mvp\IByKeyValueAccessor.cs</Link>
+    </Compile>
+    <Compile Include="..\Philadelphia.Common\Mvp\IFlow.cs">
+      <Link>Mvp\IFlow.cs</Link>
+    </Compile>
+    <Compile Include="..\Philadelphia.Common\Mvp\IForm.cs">
+      <Link>Mvp\IForm.cs</Link>
+    </Compile>
+    <Compile Include="..\Philadelphia.Common\Mvp\IFormCanvas.cs">
+      <Link>Mvp\IFormCanvas.cs</Link>
+    </Compile>
+    <Compile Include="..\Philadelphia.Common\Mvp\IFormRenderer.cs">
+      <Link>Mvp\IFormRenderer.cs</Link>
+    </Compile>
+    <Compile Include="..\Philadelphia.Common\Mvp\IFormView.cs">
+      <Link>Mvp\IFormView.cs</Link>
+    </Compile>
+    <Compile Include="..\Philadelphia.Common\Mvp\IHasFixedPermittedValues.cs">
+      <Link>Mvp\IHasFixedPermittedValues.cs</Link>
+    </Compile>
+    <Compile Include="..\Philadelphia.Common\Mvp\IOnShownNeedingForm.cs">
+      <Link>Mvp\IOnShownNeedingForm.cs</Link>
+    </Compile>
+    <Compile Include="..\Philadelphia.Common\Mvp\IReadOnlyValue.cs">
+      <Link>Mvp\IReadOnlyValue.cs</Link>
+    </Compile>
+    <Compile Include="..\Philadelphia.Common\Mvp\IReadOnlyValueView.cs">
+      <Link>Mvp\IReadOnlyValueView.cs</Link>
+    </Compile>
+    <Compile Include="..\Philadelphia.Common\Mvp\IReadWriteValue.cs">
+      <Link>Mvp\IReadWriteValue.cs</Link>
+    </Compile>
+    <Compile Include="..\Philadelphia.Common\Mvp\IReadWriteValueView.cs">
+      <Link>Mvp\IReadWriteValueView.cs</Link>
+    </Compile>
+    <Compile Include="..\Philadelphia.Common\Mvp\IRestrictedMultipleReadWriteValueView.cs">
+      <Link>Mvp\IRestrictedMultipleReadWriteValueView.cs</Link>
+    </Compile>
+    <Compile Include="..\Philadelphia.Common\Mvp\IRestrictedSingleReadWriteValueView.cs">
+      <Link>Mvp\IRestrictedSingleReadWriteValueView.cs</Link>
+    </Compile>
+    <Compile Include="..\Philadelphia.Common\Mvp\IToggleableEnablement.cs">
+      <Link>Mvp\IToggleableEnablement.cs</Link>
+    </Compile>
+    <Compile Include="..\Philadelphia.Common\Mvp\IView.cs">
+      <Link>Mvp\IView.cs</Link>
+    </Compile>
+    <Compile Include="..\Philadelphia.Common\Mvp\PlatformAgnostic\AdaptedLocalValue.cs">
+      <Link>Mvp\PlatformAgnostic\AdaptedLocalValue.cs</Link>
+    </Compile>
+    <Compile Include="..\Philadelphia.Common\Mvp\PlatformAgnostic\AdaptedRemoteValueMutator.cs">
+      <Link>Mvp\PlatformAgnostic\AdaptedRemoteValueMutator.cs</Link>
+    </Compile>
+    <Compile Include="..\Philadelphia.Common\Mvp\PlatformAgnostic\AggregatedErrorsValue.cs">
+      <Link>Mvp\PlatformAgnostic\AggregatedErrorsValue.cs</Link>
+    </Compile>
+    <Compile Include="..\Philadelphia.Common\Mvp\PlatformAgnostic\ClassFieldRemoteMutator.cs">
+      <Link>Mvp\PlatformAgnostic\ClassFieldRemoteMutator.cs</Link>
+    </Compile>
+    <Compile Include="..\Philadelphia.Common\Mvp\PlatformAgnostic\ComputedValueOnDependancyChanged.cs">
+      <Link>Mvp\PlatformAgnostic\ComputedValueOnDependancyChanged.cs</Link>
+    </Compile>
+    <Compile Include="..\Philadelphia.Common\Mvp\PlatformAgnostic\DerivedValue.cs">
+      <Link>Mvp\PlatformAgnostic\DerivedValue.cs</Link>
+    </Compile>
+    <Compile Include="..\Philadelphia.Common\Mvp\PlatformAgnostic\LocalActionBuilder.cs">
+      <Link>Mvp\PlatformAgnostic\LocalActionBuilder.cs</Link>
+    </Compile>
+    <Compile Include="..\Philadelphia.Common\Mvp\PlatformAgnostic\LocalActionModel.cs">
+      <Link>Mvp\PlatformAgnostic\LocalActionModel.cs</Link>
+    </Compile>
+    <Compile Include="..\Philadelphia.Common\Mvp\PlatformAgnostic\LocalValue.cs">
+      <Link>Mvp\PlatformAgnostic\LocalValue.cs</Link>
+    </Compile>
+    <Compile Include="..\Philadelphia.Common\Mvp\PlatformAgnostic\Menu\MenuItemModel.cs">
+      <Link>Mvp\PlatformAgnostic\Menu\MenuItemModel.cs</Link>
+    </Compile>
+    <Compile Include="..\Philadelphia.Common\Mvp\PlatformAgnostic\Menu\MenuItemUserModel.cs">
+      <Link>Mvp\PlatformAgnostic\Menu\MenuItemUserModel.cs</Link>
+    </Compile>
+    <Compile Include="..\Philadelphia.Common\Mvp\PlatformAgnostic\Menu\MenuModel.cs">
+      <Link>Mvp\PlatformAgnostic\Menu\MenuModel.cs</Link>
+    </Compile>
+    <Compile Include="..\Philadelphia.Common\Mvp\PlatformAgnostic\OperationBatchBuilder.cs">
+      <Link>Mvp\PlatformAgnostic\OperationBatchBuilder.cs</Link>
+    </Compile>
+    <Compile Include="..\Philadelphia.Common\Mvp\PlatformAgnostic\RemoteActionBuilder.cs">
+      <Link>Mvp\PlatformAgnostic\RemoteActionBuilder.cs</Link>
+    </Compile>
+    <Compile Include="..\Philadelphia.Common\Mvp\PlatformAgnostic\RemoteActionModel.cs">
+      <Link>Mvp\PlatformAgnostic\RemoteActionModel.cs</Link>
+    </Compile>
+    <Compile Include="..\Philadelphia.Common\Mvp\PlatformAgnostic\RemoteValue.cs">
+      <Link>Mvp\PlatformAgnostic\RemoteValue.cs</Link>
+    </Compile>
+    <Compile Include="..\Philadelphia.Common\Mvp\PlatformAgnostic\RemoteValueAccessor.cs">
+      <Link>Mvp\PlatformAgnostic\RemoteValueAccessor.cs</Link>
+    </Compile>
+    <Compile Include="..\Philadelphia.Common\Mvp\PlatformAgnostic\Validator.cs">
+      <Link>Mvp\PlatformAgnostic\Validator.cs</Link>
+    </Compile>
+    <Compile Include="..\Philadelphia.Common\Mvp\RenderElem.cs">
+      <Link>Mvp\RenderElem.cs</Link>
+    </Compile>
+    <Compile Include="..\Philadelphia.Common\Mvp\ResultHolder.cs">
+      <Link>Mvp\ResultHolder.cs</Link>
+    </Compile>
+    <Compile Include="..\Philadelphia.Common\Properties\AssemblyInfo.cs">
+      <Link>Properties\AssemblyInfo.cs</Link>
+    </Compile>
+    <Compile Include="..\Philadelphia.Common\ServiceCalling\HttpService.cs">
+      <Link>ServiceCalling\HttpService.cs</Link>
+    </Compile>
+    <Compile Include="..\Philadelphia.Common\ServiceCalling\IHttpRequester.cs">
+      <Link>ServiceCalling\IHttpRequester.cs</Link>
+    </Compile>
+    <Compile Include="..\Philadelphia.Common\Subscribeable\IHasSubscribeable.cs">
+      <Link>Subscribeable\IHasSubscribeable.cs</Link>
+    </Compile>
+    <Compile Include="..\Philadelphia.Common\Subscribeable\ISubscribeable.cs">
+      <Link>Subscribeable\ISubscribeable.cs</Link>
+    </Compile>
+    <Compile Include="..\Philadelphia.Common\Subscribeable\ITypedSubscribeable.cs">
+      <Link>Subscribeable\ITypedSubscribeable.cs</Link>
+    </Compile>
+    <Compile Include="..\Philadelphia.Common\Subscribeable\Subscribeable.cs">
+      <Link>Subscribeable\Subscribeable.cs</Link>
+    </Compile>
+    <Compile Include="..\Philadelphia.Common\Utils\Base64Util.cs">
+      <Link>Utils\Base64Util.cs</Link>
+    </Compile>
+    <Compile Include="..\Philadelphia.Common\Utils\Disposable.cs">
+      <Link>Utils\Disposable.cs</Link>
+    </Compile>
+    <Compile Include="..\Philadelphia.Common\Utils\LambdaUtil.cs">
+      <Link>Utils\LambdaUtil.cs</Link>
+    </Compile>
+    <Compile Include="..\Philadelphia.Common\Utils\MimeUtil.cs">
+      <Link>Utils\MimeUtil.cs</Link>
+    </Compile>
+    <Compile Include="..\Philadelphia.Common\Utils\NameOfUtil.cs">
+      <Link>Utils\NameOfUtil.cs</Link>
+    </Compile>
+    <Compile Include="..\Philadelphia.Common\Utils\ObjectUtil.cs">
+      <Link>Utils\ObjectUtil.cs</Link>
+    </Compile>
+    <None Include="sync.sh" />
+  </ItemGroup>
+  <!-- redirects end -->
+  <ItemGroup>
+    <Reference Include="Bridge, Version=17.10.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Bridge.Core.17.10.1\lib\net40\Bridge.dll</HintPath>
+    </Reference>
+    <Reference Include="Bridge.Html5, Version=17.10.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Bridge.Html5.17.10.0\lib\net40\Bridge.Html5.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="..\packages\Bridge.Min.17.10.1\build\Bridge.Min.targets" Condition="Exists('..\packages\Bridge.Min.17.10.1\build\Bridge.Min.targets')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\packages\Bridge.Min.17.10.1\build\Bridge.Min.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Bridge.Min.17.10.1\build\Bridge.Min.targets'))" />
+  </Target>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

@@ -27,7 +27,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Philadelphia.Web", "Philade
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Philadelphia.Demo.Client", "Philadelphia.Demo.Client\Philadelphia.Demo.Client.csproj", "{668CC9CC-D0C5-4521-9388-A3AFE85BD1F3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Philadelphia.Common.AsBridgeDotNet", "Philadelphia.Common\Philadelphia.Common.AsBridgeDotNet.csproj", "{9C31D343-8D00-4520-8D74-AFBE7E69555D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Philadelphia.Common.AsBridgeDotNet", "Philadelphia.Common.AsBridgeDotNet\Philadelphia.Common.AsBridgeDotNet.csproj", "{9C31D343-8D00-4520-8D74-AFBE7E69555D}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "BridgeDotNet", "BridgeDotNet", "{F4049AF4-2F1C-461B-99E9-EC9F96D4B6B2}"
 EndProject
