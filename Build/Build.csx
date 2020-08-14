@@ -71,14 +71,22 @@ Executor ex;
 
     Executor.AssureEmptyDir(Path.Combine(projDir, "bin"));
 	Executor.AssureEmptyDir(Path.Combine(projDir, "obj"));
-    ex.Exe(msbuild, "Philadelphia.Common.AsBridgeDotNet.csproj /target:clean");
-    ex.Exe(msbuild, "Philadelphia.Common.AsBridgeDotNet.csproj /p:Configuration=Release /target:build");
-    ex.Exe(nuget, "pack Philadelphia.Common.AsBridgeDotNet.nuspec");
-    ex.MoveFileBetweenDirs($"Philadelphia.Common.AsBridgeDotNet.{version}.nupkg", projDir, outputDir);
 
     ex.Exe("dotnet", "pack Philadelphia.Common.csproj -c Release");
     ex.MoveFileBetweenDirs($"Philadelphia.Common.{version}.nupkg", 
         Path.Combine(projDir, "bin/Release"), outputDir);
+}
+
+{
+    var projDir = Path.Combine(slnDir, "Philadelphia.Common.AsBridgeDotNet");
+    ex = Executor.WithinDir(projDir);
+
+    Executor.AssureEmptyDir(Path.Combine(projDir, "bin"));
+	Executor.AssureEmptyDir(Path.Combine(projDir, "obj"));
+    ex.Exe(msbuild, "Philadelphia.Common.AsBridgeDotNet.csproj /target:clean");
+    ex.Exe(msbuild, "Philadelphia.Common.AsBridgeDotNet.csproj /p:Configuration=Release /target:build");
+    ex.Exe(nuget, "pack Philadelphia.Common.AsBridgeDotNet.nuspec");
+    ex.MoveFileBetweenDirs($"Philadelphia.Common.AsBridgeDotNet.{version}.nupkg", projDir, outputDir);    
 }
 
 {
