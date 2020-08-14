@@ -23,6 +23,6 @@ tr.testOutcomeSuccess {
     background-color: darksalmon;
 }
 
-.Philadelphia\.Web\.InputTypeButtonActionView {
+[data-environment="iawapp"] .Philadelphia\.Web\.InputTypeButtonActionView {
     min-height: 1.3cm; /*sausage fingers mode*/
 }
