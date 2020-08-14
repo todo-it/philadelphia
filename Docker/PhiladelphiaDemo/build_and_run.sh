@@ -24,7 +24,7 @@ if [ -d "../../packages" ]; then
     cp ../../Philadelphia.StaticResources/*.png binaries/Philadelphia.StaticResources/ || exit 1
     cp ../../Philadelphia.StaticResources/*.gif binaries/Philadelphia.StaticResources/ || exit 1
     cp ../../Philadelphia.StaticResources/*.css binaries/Philadelphia.StaticResources/ || exit 1
-    cp ../../Philadelphia.StaticResources/*.woff binaries/Philadelphia.StaticResources/ || exit 1
+    cp ../../Philadelphia.StaticResources/*.woff2 binaries/Philadelphia.StaticResources/ || exit 1
 
     mkdir -p binaries/Philadelphia.Demo.Client/Bridge/output || exit 1
     cp ../../Philadelphia.Demo.Client/Bridge/output/*.js binaries/Philadelphia.Demo.Client/Bridge/output/ || exit 1
