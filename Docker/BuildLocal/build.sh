@@ -21,4 +21,9 @@ CONTAINER_ID=$(docker create \
 echo -n $CONTAINER_ID > CONTAINER_ID
 
 echo "starting container"
-exec docker start --interactive $CONTAINER_ID || exit 1
+
+# no idea why stdout is not visible in 'Console Out' in Jenkins (it is visible in regular shell). Hence workaround is applied
+docker start --interactive --attach $CONTAINER_ID
+ERR=$?
+docker logs $CONTAINER_ID
+exit $ERR

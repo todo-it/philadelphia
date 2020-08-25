@@ -31,8 +31,9 @@ RUN apt-get -y install git
 #cleanup
 RUN apt-get clean
 
-RUN echo "#!/bin/bash" > /run.sh && \
-	echo "cd /build/Build/ && ~/.dotnet/tools/dotnet-script --no-cache --verbosity i Build.csx" >> /run.sh && \
-	chmod a+x /run.sh
+RUN echo "#!/bin/bash" > /run.sh
+RUN echo "echo \"starting dotnet-script\"" >> /run.sh
+RUN echo "cd /build/Build/ && exec ~/.dotnet/tools/dotnet-script --no-cache --verbosity i Build.csx 2>&1" >> /run.sh
+RUN chmod a+x /run.sh
 
 ENTRYPOINT ["/run.sh"]
