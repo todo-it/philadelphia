@@ -16,12 +16,15 @@ RUN chown root:root /etc/apt/trusted.gpg.d/microsoft.asc.gpg
 RUN chown root:root /etc/apt/sources.list.d/microsoft-prod.list
 RUN apt-get install apt-transport-https
 RUN apt-get update
-RUN apt-get -y install dotnet-sdk-2.2
+RUN apt-get -y install dotnet-sdk-3.1
+RUN apt-get -y install dotnet-runtime-2.2
 
 RUN apt-get clean
-ADD binaries /philadelphia/
+ADD philadelphia.tar.gz /philadelphia/
 EXPOSE 8090
 ADD run.sh /
+RUN mkdir -p /philadelphia/Philadelphia.Demo.Server/bin/Debug/netcoreapp3.1/log
+RUN chmod a+rwx /philadelphia/Philadelphia.Demo.Server/bin/Debug/netcoreapp3.1/log
 RUN chmod a+x /run.sh && dos2unix /run.sh
 RUN rm /etc/localtime && ln -s /usr/share/zoneinfo/Europe/Warsaw /etc/localtime
 RUN useradd philadelphia

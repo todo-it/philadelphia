@@ -1,49 +1,20 @@
 #!/bin/bash
 
+MASTERLOC="../../_output/philadelphia.tar.gz"
+LOCALLOC="./philadelphia.tar.gz"
+
+if [ -f "${LOCALLOC}" ];
+then
+    rm "${LOCALLOC}"
+fi
+
+ln "${MASTERLOC}" "${LOCALLOC}" || exit 1
+
 # it builds and runs Docker container from already built binaries
 
+DOTNETCOREVERSION="3.1"
+
 CURDIR=`pwd`
-
-ISWINDOWS=`uname -o`
-
-if [ "$ISWINDOWS" = "Msys" ];
-then
-	eval "$(docker-machine env --shell=bash default)"
-fi
-
-if [ -d "../../packages" ]; then
-    echo "preparing binaries"
-
-    rm -rf binaries || exit 1
-
-    mkdir -p binaries/Philadelphia.Demo.Server/bin/Debug/netcoreapp2.2 || exit 1
-    cp -r ../../Philadelphia.Demo.Server/bin/Debug/netcoreapp2.2/publish/* binaries/Philadelphia.Demo.Server/bin/Debug/netcoreapp2.2/ || exit 1
-    cp ../../Philadelphia.Demo.Server/*.json binaries/Philadelphia.Demo.Server/ || exit 1
-
-    mkdir -p binaries/Philadelphia.StaticResources || exit 1
-    cp ../../Philadelphia.StaticResources/*.png binaries/Philadelphia.StaticResources/ || exit 1
-    cp ../../Philadelphia.StaticResources/*.gif binaries/Philadelphia.StaticResources/ || exit 1
-    cp ../../Philadelphia.StaticResources/*.css binaries/Philadelphia.StaticResources/ || exit 1
-    cp ../../Philadelphia.StaticResources/*.woff2 binaries/Philadelphia.StaticResources/ || exit 1
-
-    mkdir -p binaries/Philadelphia.Demo.Client/Bridge/output || exit 1
-    cp ../../Philadelphia.Demo.Client/Bridge/output/*.js binaries/Philadelphia.Demo.Client/Bridge/output/ || exit 1
-    cp ../../Philadelphia.Demo.Client/*.css binaries/Philadelphia.Demo.Client/ || exit 1
-    cp ../../Philadelphia.Demo.Client/*.html binaries/Philadelphia.Demo.Client/ || exit 1
-    cp ../../Philadelphia.Demo.Client/*.ico binaries/Philadelphia.Demo.Client/ || exit 1
-    
-    mkdir -p binaries/Philadelphia.Demo.Client/ImagesForUploadDemo/Full || exit 1
-    cp ../../Philadelphia.Demo.Client/ImagesForUploadDemo/Full/* binaries/Philadelphia.Demo.Client/ImagesForUploadDemo/Full/ || exit 1
-    
-    mkdir -p binaries/Philadelphia.Demo.Client/ImagesForUploadDemo/Thumb || exit 1
-    cp ../../Philadelphia.Demo.Client/ImagesForUploadDemo/Thumb/* binaries/Philadelphia.Demo.Client/ImagesForUploadDemo/Thumb/ || exit 1
-        
-fi
-
-if [ "$1" == "buildonly" ]; then
-    exit
-fi
-
 
 echo "building image"
 docker build -t="todoit/philadelphia-demo-server" . || exit 1
@@ -56,11 +27,12 @@ then
 	docker rm $CONTAINER_ID
 fi
 
+#	-v ${CURDIR}/log:/philadelphia/Philadelphia.Demo.Server/bin/Debug/netcoreapp${DOTNETCOREVERSION}/log 
+
 echo "building container"
 CONTAINER_ID=$(docker create \
 	--cap-drop=all \
 	-v /tmp:/data \
-	-v ${CURDIR}/log:/philadelphia/Philadelphia.Demo.Server/bin/Debug/netcoreapp2.2/log \
 	-e TRANSLATION_FILE="../../../translation_pl-PL.json" \
 	-e LOCAL_TIMEZONE_ID="Europe/Warsaw" \
 	-e TOKENS_DIRECTORY="/data" \
@@ -73,4 +45,3 @@ echo -n $CONTAINER_ID > CONTAINER_ID
 
 echo "starting container"
 exec docker start $1 $CONTAINER_ID || exit 1
-
