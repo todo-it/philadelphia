@@ -20,7 +20,7 @@ RUN mv prod.list /etc/apt/sources.list.d/microsoft-prod.list
 RUN chown root:root /etc/apt/trusted.gpg.d/microsoft.asc.gpg
 RUN chown root:root /etc/apt/sources.list.d/microsoft-prod.list
 RUN apt-get install apt-transport-https
-RUN apt-get update && apt-get -y install dotnet-sdk-3.0
+RUN apt-get update && apt-get -y install dotnet-sdk-3.1
 
 # from https://github.com/filipw/dotnet-script
 RUN dotnet tool install -g dotnet-script

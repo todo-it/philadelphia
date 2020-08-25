@@ -1,4 +1,4 @@
-#! "netcoreapp3.0"
+#! "netcoreapp3.1"
 
 //uses: https://github.com/filipw/dotnet-script
 //to install: dotnet tool install -g dotnet-script
