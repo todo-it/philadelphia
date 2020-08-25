@@ -1,4 +1,4 @@
-!/bin/bash
+#!/bin/bash
 
 export DOTNET_CLI_TELEMETRY_OPTOUT=1
 export USE_FANCY_CONNECTION_ID=false

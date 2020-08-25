@@ -33,7 +33,7 @@ RUN apt-get clean
 
 RUN echo "#!/bin/bash" > /run.sh
 RUN echo "echo \"starting dotnet-script\"" >> /run.sh
-RUN echo "cd /build/Build/ && exec ~/.dotnet/tools/dotnet-script --no-cache --verbosity i Build.csx 2>&1" >> /run.sh
+RUN echo "cd /build/Build/ && ~/.dotnet/tools/dotnet-script --no-cache --verbosity i Build.csx && exec ./build_demo_archive.sh" >> /run.sh
 RUN chmod a+x /run.sh
 
 ENTRYPOINT ["/run.sh"]
