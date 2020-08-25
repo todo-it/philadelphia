@@ -18,8 +18,8 @@ scp *.sh Dockerfile ${SSHUSER}@${SSHHOST}:~/ && \
     ssh ${SSHUSER}@${SSHHOST} "./build_and_run.sh" || \
     exit 1
 
-echo "waiting for start"
-sleep 5
+echo "waiting for start (cheap vm safety)"
+sleep 20
 
 echo "validating if server started"
 wget -O/dev/null -q http://${SSHHOST} || exit 1
