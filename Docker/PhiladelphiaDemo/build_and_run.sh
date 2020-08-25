@@ -3,12 +3,18 @@
 MASTERLOC="../../_output/philadelphia.tar.gz"
 LOCALLOC="./philadelphia.tar.gz"
 
-if [ -f "${LOCALLOC}" ];
+# update if possible
+if [ -f "${LOCALLOC}" ] && [ -f "${MASTERLOC}" ];
 then
     rm "${LOCALLOC}"
+    cp "${MASTERLOC}" "${LOCALLOC}" || exit 1
 fi
 
-ln "${MASTERLOC}" "${LOCALLOC}" || exit 1
+# initialize if needed
+if [ ! -f "${LOCALLOC}" ] && [ -f "${MASTERLOC}" ];
+then
+    cp "${MASTERLOC}" "${LOCALLOC}" || exit 1
+fi
 
 # it builds and runs Docker container from already built binaries
 
