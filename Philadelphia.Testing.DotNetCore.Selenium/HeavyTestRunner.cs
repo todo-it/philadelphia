@@ -26,7 +26,7 @@ namespace Philadelphia.Testing.DotNetCore.Selenium {
                     _logger, 
                     _codec,
                     MaxWaitForCmdReply,
-                    "../../../../ControlledByTests.Server/bin/Debug/netcoreapp2.2",
+                    "../../../../ControlledByTests.Server/bin/Debug/netcoreapp3.1",
                     "dotnet", 
                     "ControlledByTests.Server.dll")) {
                 
