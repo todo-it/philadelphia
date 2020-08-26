@@ -61,6 +61,8 @@ cp ../Philadelphia.Demo.Client/ImagesForUploadDemo/Full/* ${BINARIESDIR}/Philade
 mkdir -p ${BINARIESDIR}/Philadelphia.Demo.Client/ImagesForUploadDemo/Thumb || exit 1
 cp ../Philadelphia.Demo.Client/ImagesForUploadDemo/Thumb/* ${BINARIESDIR}/Philadelphia.Demo.Client/ImagesForUploadDemo/Thumb/ || exit 1
 
+echo "{\"sha\":\"$(git rev-parse HEAD)\",\"committedAt\":\"$(git show -s --format=%ci)\",\"compiledAt\":\"$(date '+%F %T %z' )\"}" > ${BINARIESDIR}/version.json
+
 echo "binaries ready for archiving"
 
 tar cvfz $FILE -C "${BINARIESDIR}" . || exit 1

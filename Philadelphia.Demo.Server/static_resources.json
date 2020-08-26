@@ -15,6 +15,11 @@
         "MimeType": "text/html"
     },
     {
+        "Url": "/version/",
+        "FileSystemPath": "../version.json",
+        "MimeType": "application/json"
+    },
+    {
         "Url": "/styles-adjustments.css",
         "FileSystemPath": "../Philadelphia.Demo.Client/styles-adjustments.css",
         "MimeType": "text/css"

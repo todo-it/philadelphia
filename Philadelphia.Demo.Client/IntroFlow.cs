@@ -9,16 +9,20 @@ namespace Philadelphia.Demo.Client {
         private readonly bool _skipWelcome;
         private readonly InformationalMessageForm _introduction;
 
-        public IntroFlow(bool skipWelcome) {
+        public IntroFlow(VersionInfo version, bool skipWelcome) {
             _skipWelcome = skipWelcome;
             _introduction = new InformationalMessageForm(
-                @"This is Philadelphia Toolkit Demo App!<br>
+                $@"This is Philadelphia Toolkit Demo App!<br>
                 Click OK and then use top menu for further demos<br><br>
                 <span class='grayedOut'>
                     Notice that when you resize browser then forms stays centered. <br>
                     You can also drag this dialog freely<br>
                     Press enter to automatically activate default form button in this topmost dialog.
-                </span>", 
+                </span><br><br>
+                    Version information:<br>
+                    gitSha1: {version?.sha}<br>
+                    gitCommittedAt: {version?.committedAt}<br>
+                    compiledAt: {version?.compiledAt}", 
                 "Welcome",
                 TextType.TreatAsHtml);
         }

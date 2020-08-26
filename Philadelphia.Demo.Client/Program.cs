@@ -9,6 +9,12 @@ using Philadelphia.Demo.SharedModel;
 using Philadelphia.Web;
 
 namespace Philadelphia.Demo.Client {
+    public class VersionInfo {
+        public string sha;
+        public string committedAt;
+        public string compiledAt;
+    }
+
     public enum MenuItems {
         DataInput,
         QrCodeScanner,
@@ -108,15 +114,34 @@ namespace Philadelphia.Demo.Client {
             _renderer = Toolkit.DefaultFormRenderer();
         }
 
+        private async Task<VersionInfo> GetVersion() {
+            try {
+                return await _di.Resolve<IHttpRequester>()
+                    .RunHttpRequest("version", "", y => JSON.Parse<VersionInfo>(y), (string) null);
+            } catch (Exception) {
+                return null;
+            }
+        }
+
         private void OnReadyDesktop() {
             Document.Title = "Philadelphia Toolkit Demo App";
+            VersionInfo versionInfo = null;
             
-            new IntroFlow(Document.URL.Contains("skipWelcome")).Run(
-                _renderer, 
-                //when IntroFlow ends start MainMenuFlow
-                //in this simplistic demo it is impossible to quit MainMenuFlow
-                () => _di.Resolve<MainMenuFlow>().Run(_renderer) 
-            );
+            var getVersion = new RemoteActionsCallerForm(x => x.Add(
+                () => GetVersion(), 
+                y => versionInfo = y));
+
+            getVersion.Ended += (x, _) => {
+                _renderer.Remove(x);
+                new IntroFlow(versionInfo, Document.URL.Contains("skipWelcome")).Run(
+                    _renderer, 
+                    //when IntroFlow ends start MainMenuFlow
+                    //in this simplistic demo it is impossible to quit MainMenuFlow
+                    () => _di.Resolve<MainMenuFlow>().Run(_renderer) 
+                );
+            }; 
+            
+            _renderer.AddPopup(getVersion);
         }
 
         private void OnReadyIAWApp() {
