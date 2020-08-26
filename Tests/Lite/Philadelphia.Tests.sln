@@ -23,7 +23,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "BridgeDotNet", "BridgeDotNe
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DotNetCore", "DotNetCore", "{FFC0F9FF-7334-4439-8764-5BF38B97BD8B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Philadelphia.Common.AsBridgeDotNet", "..\..\Philadelphia.Common\Philadelphia.Common.AsBridgeDotNet.csproj", "{9C31D343-8D00-4520-8D74-AFBE7E69555D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Philadelphia.Common.AsBridgeDotNet", "..\..\Philadelphia.Common.AsBridgeDotNet\Philadelphia.Common.AsBridgeDotNet.csproj", "{9C31D343-8D00-4520-8D74-AFBE7E69555D}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Philadelphia.Web", "..\..\Philadelphia.Web\Philadelphia.Web.csproj", "{04AA0E1E-E264-495B-A057-A56634D885EC}"
 EndProject
