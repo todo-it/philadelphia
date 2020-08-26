@@ -15,7 +15,7 @@ Server-sent events - it makes development of services utilizing this tech easy b
 Why calling it *toolkit* instead of *framework*? *Toolkit* assumes that we are helping build tools instead of confining people in 'one true rigid and opinionated' limitations of *framework*.
 
 ## Live demo
-See [Philadelphia.Demo project](http://philadelphia.westeurope.cloudapp.azure.com/) hosted live on Linux within Docker. Please note that this is cheapest Linux machine available so it is likely that significant demand may cause it to be unavailable due to *hug of death*.
+See [Philadelphia.Demo project](http://philadelphiademo.todoit.pl/) hosted live on Linux within Docker. Please note that this is cheapest Linux machine available so it is likely that significant demand may cause it to be unavailable due to *hug of death*.
 
 If you open it with browser it assumes desktop mode. If you open it with [Industrial Android WebApp Host](https://github.com/d-p-y/industrial-android-webapp-host) it assumes mobile browser.
 
