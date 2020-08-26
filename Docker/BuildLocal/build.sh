@@ -1,7 +1,10 @@
 #!/bin/bash
 
 echo "building image"
-docker build -t="todoit/philadelphia-build" . || exit 1
+docker build \
+	--build-arg "RUN_UID=$(id -u)" \
+	--build-arg "RUN_GID=$(id -g)" \
+	-t="todoit/philadelphia-build" . || exit 1
 
 if [ -f ./CONTAINER_ID ];
 then
@@ -14,6 +17,9 @@ fi
 echo "building container"
 
 CONTAINER_ID=$(docker create \
+	-e "RUN_UID=$(id -u)" \
+	-e "RUN_GID=$(id -g)" \
+	--user "$(id -u):$(id -g)" \
 	-v `pwd`/../..:/build \
 	--name philadelphia-build -t -i todoit/philadelphia-build) \
 	|| exit 1

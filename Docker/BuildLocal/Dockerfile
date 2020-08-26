@@ -22,8 +22,6 @@ RUN chown root:root /etc/apt/sources.list.d/microsoft-prod.list
 RUN apt-get install apt-transport-https
 RUN apt-get update && apt-get -y install dotnet-sdk-3.1
 
-# from https://github.com/filipw/dotnet-script
-RUN dotnet tool install -g dotnet-script
 
 # needed for Build.csx version number fallback
 RUN apt-get -y install git
@@ -31,9 +29,28 @@ RUN apt-get -y install git
 #cleanup
 RUN apt-get clean
 
-RUN echo "#!/bin/bash" > /run.sh
+ARG RUN_UID
+ENV RUN_UID=$RUN_UID
+
+ARG RUN_GID
+ENV RUN_GID=$RUN_GID
+
+RUN echo "using uid=$RUN_UID gid=$RUN_GID"
+RUN groupadd --gid $RUN_GID buildergroup
+RUN useradd --uid $RUN_UID --gid $RUN_GID builder
+
+RUN touch /run.sh
+RUN chown builder /run.sh
+RUN chmod a+x /run.sh
+RUN mkdir -p /home/builder
+RUN chown builder /home/builder
+USER builder
+
+# from https://github.com/filipw/dotnet-script
+RUN dotnet tool install -g dotnet-script
+
+RUN echo "#!/bin/bash" >> /run.sh
 RUN echo "echo \"starting dotnet-script\"" >> /run.sh
 RUN echo "cd /build/Build/ && ~/.dotnet/tools/dotnet-script --no-cache --verbosity i Build.csx && ./build_demo_archive.sh && exec ./build_tests.sh" >> /run.sh
-RUN chmod a+x /run.sh
 
 ENTRYPOINT ["/run.sh"]
