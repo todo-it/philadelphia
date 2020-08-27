@@ -106,6 +106,7 @@ module Exts =
         }
 
 type BaseStartup(
+                lifeStyleCtn:LifeStyleContainer,
                 additionalConfigureServices:Action<IServiceCollection>, 
                 assemblies:IEnumerable<Assembly>, sett:ServerSettings) =
 
@@ -669,7 +670,7 @@ type BaseStartup(
     member __.ConfigureServices
         (services: IServiceCollection, 
          [<Optional;DefaultParameterValue(null)>]?lifetimeFilter:ILifetimeFilter) =
-        let di = ServiceCollectionAdapterAsDiContainer(services) :> IDiRegisterOnlyContainer
+        let di = ServiceCollectionAdapterAsDiContainer(services, lifeStyleCtn) :> IDiRegisterOnlyContainer
              
         do 
             if sett.ResponseCompression <> Compression.Disabled

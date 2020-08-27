@@ -2,6 +2,8 @@
 
 namespace Philadelphia.Common {
     public interface IDiRegisterOnlyContainer {
+        void SetDefaultLifeStyle(LifeStyle style);
+
         /// <param name="style">null style means: use container's default LifeStyle</param>
         void RegisterFactoryMethod(Type key, Func<IDiResolveReleaseOnlyContainer, object> factoryMethod, LifeStyle? style = null);
 

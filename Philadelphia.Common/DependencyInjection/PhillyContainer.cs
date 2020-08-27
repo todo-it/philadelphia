@@ -39,7 +39,7 @@ namespace Philadelphia.Common {
             }
         }
 
-        private readonly LifeStyle? _defaultLifeStyle;
+        private LifeStyle? _defaultLifeStyle;
         private readonly Dictionary<Type, List<Implementation>> _implementations;
         private readonly ResolvingInfo _resolvingInfo;
 
@@ -48,6 +48,8 @@ namespace Philadelphia.Common {
             _implementations = implementations;
             _resolvingInfo = resolvingInfo;
         }
+
+        public void SetDefaultLifeStyle(LifeStyle style) => _defaultLifeStyle = style;
 
         public PhillyContainer(LifeStyle? defaultLifeStyle = null) 
             : this(defaultLifeStyle, new Dictionary<Type,List<Implementation>>(), ResolvingInfo.Empty) {}

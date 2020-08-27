@@ -48,8 +48,10 @@ namespace ControlledByTests.Server {
     public class Startup {
         private readonly BaseStartup _baseStartup;
         private readonly ConsoleBasedControllerAsLifeTimeFilter _ltFilter;
-
+        private readonly LifeStyleContainer _lsc = new LifeStyleContainer();
+        
         public Startup() {
+            _lsc.set(LifeStyle.Transient); //least surprising
             var assemblies = new [] {
                 typeof(Startup).Assembly,
                 typeof(ControlledByTests.Domain.Dummy).Assembly };
@@ -62,6 +64,7 @@ namespace ControlledByTests.Server {
             
             Logger.ConfigureImplementation(new ForwardToServerControllerLoggerImplementation(_ltFilter));
             _baseStartup = new BaseStartup(
+                _lsc,
                 _ => {}, 
                 assemblies,
                 ServerSettings.CreateDefault()
@@ -69,7 +72,7 @@ namespace ControlledByTests.Server {
         }
 
         public void ConfigureServices(IServiceCollection services) {
-            var di = new ServiceCollectionAdapterAsDiContainer(services);
+            var di = new ServiceCollectionAdapterAsDiContainer(services, _lsc);
 
             di.RegisterInstance<IRegisterServiceInvocation>(_ltFilter, LifeStyle.Singleton);
 

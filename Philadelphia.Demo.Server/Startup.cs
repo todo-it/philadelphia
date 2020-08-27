@@ -42,8 +42,10 @@ namespace Philadelphia.Demo.Server {
     
     public class Startup {
         private readonly BaseStartup _baseStartup;
-
+        private readonly LifeStyleContainer _lsc = new LifeStyleContainer();
+        
         public Startup() {
+            _lsc.set(LifeStyle.Transient); //least surprising
             var dllsLoc = System.IO.Path.GetDirectoryName(typeof(Startup).Assembly.Location);
             var assemblies = new [] {
                 typeof(Startup).Assembly,
@@ -51,6 +53,7 @@ namespace Philadelphia.Demo.Server {
                 typeof(ServicesImpl.Dummy).Assembly };
 
             _baseStartup = new BaseStartup(
+                _lsc,
                 _ => {}, 
                 assemblies,
                 ServerSettings.CreateDefault());
