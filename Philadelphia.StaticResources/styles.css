@@ -754,6 +754,7 @@ div.Philadelphia\.Web\.ModalDialogFormCanvas > div[data-form] > div[data-formAct
 
 .Philadelphia\.Web\.InputTypeButtonActionView:before {
     display: inline-block;
+    align-self: center;
 }
 
 .Philadelphia\.Web\.InputTypeButtonActionView.failed::before {
