@@ -17,6 +17,6 @@
     <file src="*.png" target="content" />
     <file src="*.gif" target="content" />
     <file src="*.css" target="content" />
-    <file src="*.woff" target="content" />
+    <file src="*.woff2" target="content" />
   </files>
 </package>
