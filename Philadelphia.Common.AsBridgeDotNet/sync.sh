@@ -1,6 +1,12 @@
 #!/bin/bash
 
 #
+# NOTE
+#    Make sure within wsl you run dos2unix on both *.sh files in this directory. 
+#    Failing to do so will get you a confusing errors:  
+#       $'\r': command not found
+
+#
 # # README
 #
 # # What is this script's purpose?

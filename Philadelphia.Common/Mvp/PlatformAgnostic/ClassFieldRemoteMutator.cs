@@ -47,15 +47,10 @@ namespace Philadelphia.Common {
                 Action<ContT,string> postOperationConsumerOrNull = null) {
 
             Value = initialValue;
-		    
-            var member = getRemoteField.Body as MemberExpression;
-
-            if (member == null) {
-                throw new ArgumentException("getField expression is not of expected type MemberExpression");
-            }
-            var prop = member.Member as PropertyInfo;
+            
+            var prop = ExpressionUtil.ExtractField(getRemoteField) as PropertyInfo;
             if (prop == null) {
-                throw new ArgumentException("member.Member is not of expected type PropertyInfo");
+                throw new ArgumentException("getRemoteField's Member is not of expected 'PropertyInfo' type");
             }
             _getter = prop.GetValue;
             _setter = prop.SetValue;

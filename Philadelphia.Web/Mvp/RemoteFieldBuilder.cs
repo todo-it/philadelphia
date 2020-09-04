@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Linq.Expressions;
-using System.Text.RegularExpressions;
 using System.Threading.Tasks;
-using Bridge.Html5;
 using Philadelphia.Common;
 
 namespace Philadelphia.Web {
@@ -22,14 +20,6 @@ namespace Philadelphia.Web {
             _postOperationConsumerOrNull = postOperationConsumerOrNull;
         }
         
-        private string GetFieldName<DataT>(Expression<Func<ContT,DataT>> getField) {
-            var member = getField.Body as MemberExpression;
-
-            if (member == null) {
-                throw new ArgumentException("getField expression is not of expected type MemberExpression");
-            }
-            return member.Member.Name;
-        }
         
         /// <summary>note: null value is represented by DateTime.MinValue.
         /// If you want to disallow it check for it in validator</summary>
@@ -41,7 +31,7 @@ namespace Philadelphia.Web {
                 getRemoteField,
                 x => x ?? DateTime.MinValue,
                 x => (DateTime?)x,
-                x => _caller.SaveField(GetFieldName(getRemoteField), x),
+                x => _caller.SaveField(ExpressionUtil.ExtractFieldName(getRemoteField), x),
                 x => {
                     validators.ForEach(y => x.AddValidatorAndRevalidate(y));
                     view.BindReadWriteAndInitialize(x);
@@ -129,7 +119,7 @@ namespace Philadelphia.Web {
                 getField,
                 x => x,
                 x => x,
-                x => _caller.SaveField(GetFieldName(getField), x),
+                x => _caller.SaveField(ExpressionUtil.ExtractFieldName(getField), x),
                 x => view.BindReadOnlyAndInitialize(x, convertFromDomain),
                 postOperationConsumerOrNull: _postOperationConsumerOrNull);
         }
@@ -143,7 +133,7 @@ namespace Philadelphia.Web {
                 getField,
                 x => x,
                 x => x,
-                x => _caller.SaveField(GetFieldName(getField), x),
+                x => _caller.SaveField(ExpressionUtil.ExtractFieldName(getField), x),
                 x => {
                     validators.ForEach(y => x.AddValidatorAndRevalidate(y));
                     view.BindReadWriteAndInitialize(x, convertFromDomain, convertToDomain);
@@ -160,7 +150,7 @@ namespace Philadelphia.Web {
                 getField,
                 x => x,
                 x => x,
-                x => _caller.SaveField(GetFieldName(getField), x),
+                x => _caller.SaveField(ExpressionUtil.ExtractFieldName(getField), x),
                 x => {
                     validators.ForEach(y => x.AddValidatorAndRevalidate(y));
                     view.BindReadOnlyAndInitialize(x, convertFromDomain);
@@ -176,7 +166,7 @@ namespace Philadelphia.Web {
                 getField,
                 x => x,
                 x => x,
-                x => _caller.SaveField(GetFieldName(getField), x),
+                x => _caller.SaveField(ExpressionUtil.ExtractFieldName(getField), x),
                 x => {
                     validators.ForEach(y => x.AddValidatorAndRevalidate(y));
                     view.BindReadOnlyAndInitialize(x);
@@ -193,7 +183,7 @@ namespace Philadelphia.Web {
                 getRemoteField,
                 toRemoteType,
                 toLocalType,
-                x => _caller.SaveField(GetFieldName(getRemoteField), x),
+                x => _caller.SaveField(ExpressionUtil.ExtractFieldName(getRemoteField), x),
                 x => {
                     validators.ForEach(y => x.AddValidatorAndRevalidate(y));
                     view.BindReadWriteAndInitialize(x);
@@ -211,7 +201,7 @@ namespace Philadelphia.Web {
                 getRemoteField,
                 toRemoteType,
                 toLocalType,
-                x => _caller.SaveField(GetFieldName(getRemoteField), x),
+                x => _caller.SaveField(ExpressionUtil.ExtractFieldName(getRemoteField), x),
                 x => {
                     validators.ForEach(y => x.AddValidatorAndRevalidate(y));
                     view.BindReadWriteAndInitialize(x);
@@ -227,7 +217,7 @@ namespace Philadelphia.Web {
                 getField,
                 x => x,
                 x => x,
-                x => _caller.SaveField(GetFieldName(getField), x),
+                x => _caller.SaveField(ExpressionUtil.ExtractFieldName(getField), x),
                 x => {
                     validators.ForEach(y => x.AddValidatorAndRevalidate(y));
                     view.BindReadWriteAndInitialize(x);

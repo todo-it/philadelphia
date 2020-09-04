@@ -2,6 +2,7 @@
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Bridge.Html5;
+using Philadelphia.Common;
 
 namespace Philadelphia.Web {
     /// <summary>
@@ -23,14 +24,7 @@ namespace Philadelphia.Web {
             Expression<Func<ContT,DataT>> getField) {
 
             _saveOperation = saveOperation;
-
-            var member = getField.Body as MemberExpression;
-
-            if (member == null) {
-                throw new ArgumentException("getField expression is not of expected type MemberExpression");
-            }
-
-            _propertyName = member.Member.Name;
+            _propertyName = ExpressionUtil.ExtractFieldName(getField);
         }
         
         public Task<ContT> SaveField(int entityId, DataT value) {
