@@ -1,15 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Reflection;
-using System.Threading.Tasks;
+﻿using System.IO;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
 using Philadelphia.ServerSideUtils;
 using Philadelphia.Common;
 using Philadelphia.Server.Common;
@@ -18,8 +11,12 @@ using Philadelphia.Server.ForAspNetCore;
 namespace PhiladelphiaPowered.Server {
     public class Startup {
         private readonly BaseStartup _baseStartup;
+        private readonly LifeStyleContainer _lsc;
 
         public Startup() {
+            _lsc = new LifeStyleContainer();
+            _lsc.set(LifeStyle.Transient);
+            
             var assemblies = new [] {
                 typeof(Startup).Assembly,
                 typeof(PhiladelphiaPowered.Domain.Dummy).Assembly,
@@ -32,6 +29,7 @@ namespace PhiladelphiaPowered.Server {
             
             Logger.ConfigureImplementation(new ConsoleWritelineLoggerImplementation());
             _baseStartup = new BaseStartup(
+                _lsc,
                 _ => {}, 
                 assemblies,
                 ServerSettings.CreateDefault()
