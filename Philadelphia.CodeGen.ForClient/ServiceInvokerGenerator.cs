@@ -24,7 +24,7 @@ namespace Philadelphia.CodeGen.ForClient {
 
         private static string ServiceProxyName(Type srv) => $"WebClient{srv.Name.TrimStart('I')}";
 
-        private static string GenerateDependencyInjection<T>(System.Reflection.Assembly assembly) {
+        private static string GenerateDependencyInjection<T>(IReadOnlyCollection<Assembly> assemblies) {
             var result = new StringBuilder();
             result.Append(@"
     public class Services {
@@ -32,8 +32,8 @@ namespace Philadelphia.CodeGen.ForClient {
 ");
                 
             var services = 
-                assembly
-                    .GetTypes()
+                assemblies
+                    .SelectMany(x => x.GetTypes())
                     .Where(y => 
                         y.IsInterface && 
                         y.GetCustomAttributes(typeof(T), false).Any() )
@@ -99,12 +99,12 @@ $"            container.RegisterAlias<{srv.FullName}, {ServiceProxyName(srv)}>(P
             return result.ToString();
         }
         
-        private static string GenerateUploadDownloadProxies<AttrT>(Assembly assembly) {
+        private static string GenerateUploadDownloadProxies<AttrT>(IReadOnlyCollection<Assembly> assemblies) {
             var result = new StringBuilder();
                 
             var services = 
-                assembly
-                    .GetTypes()
+                assemblies
+                    .SelectMany(x => x.GetTypes())
                     .Where(y => 
                         y.IsInterface && 
                         y.GetCustomAttributes(typeof(AttrT), false).Any() )
@@ -113,7 +113,6 @@ $"            container.RegisterAlias<{srv.FullName}, {ServiceProxyName(srv)}>(P
             foreach (var srv in services) {			
                 var getterAndSetter = new Dictionary<string,UploadDownloadHandlerDto>();
                 
-
                 foreach (var method in srv.GetMethods().OrderBy(x => x.Name)) {	
                     UploadDownloadHandlerDto info;
                     string fldName = null;
@@ -202,12 +201,14 @@ $"            container.RegisterAlias<{srv.FullName}, {ServiceProxyName(srv)}>(P
             return result.ToString();
         }
 
-        private static string GenerateRegularProxies<AttrT,FileT>(Assembly assembly, Trace trace) {
+        private static string GenerateRegularProxies<AttrT,FileT>(
+                IReadOnlyCollection<Assembly> assemblies, Trace trace) {
+            
             var result = new StringBuilder();
             trace("Looking for services");
             var services = 
-                assembly
-                    .GetTypes()
+                assemblies
+                    .SelectMany(x => x.GetTypes())
                     .Where(y => 
                         y.IsInterface && 
                         y.GetCustomAttributes(typeof(AttrT), false).Any() )
@@ -350,11 +351,11 @@ $@"
             return result.ToString();
         }
         
-        private static string GenerateProxies<AttrT,FileT>(Assembly assembly, Trace trace) {
+        private static string GenerateProxies<AttrT,FileT>(IReadOnlyCollection<Assembly> assemblies, Trace trace) {
             return 
-                GenerateRegularProxies<AttrT,FileT>(assembly, trace) + 
+                GenerateRegularProxies<AttrT,FileT>(assemblies, trace) + 
                 "\n" +
-                GenerateUploadDownloadProxies<AttrT>(assembly);
+                GenerateUploadDownloadProxies<AttrT>(assemblies);
         }
         
         private static bool IsFilterMethod(MethodInfo method) {
@@ -363,11 +364,11 @@ $@"
                 method.GetParameters().Length == 1;
         }
 
-        private static string GenerateServerSideEventsSubscribents<AttrT>(Assembly assembly) {
+        private static string GenerateServerSideEventsSubscribents<AttrT>(IReadOnlyCollection<Assembly> assemblies) {
             var result = new StringBuilder();
             var services = 
-                assembly
-                    .GetTypes()
+                assemblies
+                    .SelectMany(x => x.GetTypes())
                     .Where(y => 
                         y.IsInterface && 
                         y.GetCustomAttributes(typeof(AttrT), false).Any() )
@@ -389,20 +390,27 @@ $@"
         }
 
         public static void GenerateCode(
-            string outputCsFilePath, 
-            Assembly serviceDeclarationAssembly, 
-            string generatedClassesNamespace,
-            Trace trace = null) {
+                string outputCsFilePath, IReadOnlyCollection<Assembly> serviceDeclarationAssemblies, 
+                string generatedClassesNamespace, Trace trace = null) {
+            
             trace = trace ?? (x => { });
             File.WriteAllText(outputCsFilePath, $@"
 using Philadelphia.Common;
 
 namespace {generatedClassesNamespace} {{
-{GenerateProxies<Philadelphia.Common.HttpService,Philadelphia.Common.FileModel>(serviceDeclarationAssembly, trace)}
-{GenerateServerSideEventsSubscribents<Philadelphia.Common.HttpService>(serviceDeclarationAssembly)}
-{GenerateDependencyInjection<Philadelphia.Common.HttpService>(serviceDeclarationAssembly)}
+{GenerateProxies<HttpService,FileModel>(serviceDeclarationAssemblies, trace)}
+{GenerateServerSideEventsSubscribents<HttpService>(serviceDeclarationAssemblies)}
+{GenerateDependencyInjection<HttpService>(serviceDeclarationAssemblies)}
 }}
 ");
         }
+
+        public static void GenerateCode(
+            string outputCsFilePath,
+            Assembly serviceDeclarationAssembly,
+            string generatedClassesNamespace,
+            Trace trace = null) =>
+            GenerateCode(
+                outputCsFilePath, new[] {serviceDeclarationAssembly}, generatedClassesNamespace, trace);
     }
 }
