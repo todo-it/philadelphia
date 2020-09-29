@@ -8,8 +8,8 @@
 //  dotnet script init
 //  ...that creates json files so that you can 'open folder' in VS Code
 
-#r "nuget: Philadelphia.Common, 0.20.8.1"
-#r "nuget: Philadelphia.CodeGen.ForClient, 0.20.8.1"
+#r "nuget: Philadelphia.Common, 0.20.9.1"
+#r "nuget: Philadelphia.CodeGen.ForClient, 0.20.9.1"
 //for local template development instead those two lines above use: 
 //#r "../../../Philadelphia.Common/bin/Debug/netcoreapp2.2/Philadelphia.Common.dll"
 //#r "../../../Philadelphia.CodeGen.ForClient/bin/Debug/netcoreapp2.2/Philadelphia.CodeGen.ForClient.dll"
