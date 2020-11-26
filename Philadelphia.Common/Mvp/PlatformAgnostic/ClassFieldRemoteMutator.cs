@@ -92,6 +92,9 @@ namespace Philadelphia.Common {
             Validate?.Invoke(input, _errors);
         }
         
+        /// <summary>needed as Philadelphia.Common.ReadWriteValueExtensions Revalidate causes remote call</summary>
+        public void Revalidate(bool isUserChange = false, object sender = null) => RecalculateErrors(Value);
+        
         public void Reset(bool isUserChange, object sender) {            
             sender = sender ?? this;
             var newValue = _invalidValue;
