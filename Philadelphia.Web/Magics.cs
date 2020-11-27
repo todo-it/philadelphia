@@ -121,8 +121,10 @@ namespace Philadelphia.Web {
 
         public const string CssClassIcon = "icon";
         
-        public const string CssClassFontAwesomeBasedButton = "usesFontBtn";
-        public const string CssClassFontAwesomeBasedButtonLabelLess = "usesFontBtnLabelLess";
+        public const string CssClassHasIconAndLabel = "hasIconAndLabel";
+        public const string CssClassHasIconWithoutLabel = "hasIconWithoutLabel";
+        public const string CssClassHasNoIconHasLabel = "withoutIconWithLabel";
+        public const string CssClassOrderIsIconThenLabel = "orderIsIconThenLabel";
         
         public const string CssClassFilterRemove = "filterRemove";
         public const string CssClassFilterable = "filterable";

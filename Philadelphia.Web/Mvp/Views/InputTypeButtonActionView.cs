@@ -165,14 +165,12 @@ namespace Philadelphia.Web {
                 IconFontType font, string labelContent, string icon, LeftOrRight loc = LeftOrRight.Left) {
 
             var res = new InputTypeButtonActionView(labelContent, Tuple.Create(font, icon), loc);
-            res.Widget.AddClasses(Magics.CssClassFontAwesomeBasedButton, font.ToCssClassName());
             return res;
         }
 
         [Obsolete("use constructor accepting LabelDescr parameter")]
         public static InputTypeButtonActionView CreateFontAwesomeIconedButtonLabelless(IconFontType font, string icon) {
-            var res = new InputTypeButtonActionView("", Tuple.Create(font, icon));
-            res.Widget.AddClasses(Magics.CssClassFontAwesomeBasedButtonLabelLess, font.ToCssClassName());
+            var res = new InputTypeButtonActionView(null, Tuple.Create(font, icon));
             return res;
         }
 
@@ -193,31 +191,43 @@ namespace Philadelphia.Web {
         }
 
         /// <summary>returns element AND action to set should-open-in-new-tab?</summary>
-        private static Tuple<HTMLElement,Action<bool>,HTMLElement,HTMLElement> CreateElement(string labelContent, Tuple<IconFontType, string> preLabel = null, LeftOrRight loc = LeftOrRight.Left) {
+        private static Tuple<HTMLElement,Action<bool>,HTMLElement,HTMLElement> CreateElement(
+                string labelContent, Tuple<IconFontType, string> preLabel = null, LeftOrRight loc = LeftOrRight.Left) {
+
+            var hasIcon = false;
+            var hasLabel = false;
+            
             var preLblEl = new HTMLElement(ElementType.Span);
             if (preLabel != null) {
                 preLblEl.TextContent = preLabel.Item2;
-                preLblEl.AddClasses(preLabel.Item1.ToCssClassName());    
+                preLblEl.AddClasses(preLabel.Item1.ToCssClassName());
+                hasIcon = true;
             }
             
-            var properLabel = new HTMLElement(ElementType.Span) {TextContent = labelContent ?? ""};
+            var properLabel = new HTMLElement(ElementType.Span);
+            if (!string.IsNullOrEmpty(labelContent)) {
+                properLabel.TextContent = labelContent;
+                hasLabel = true;
+            }
 
-            var result = new HTMLElement(ElementType.Span) {
-                ClassName = typeof(InputTypeButtonActionView).FullName};
+            var result = new HTMLElement(ElementType.Span);
+            
+            result.AppendChild(preLblEl);
+            result.AppendChild(properLabel);
+            
             result.SetAttribute("tabindex", "0");
+            
+            result.AddClasses(typeof(InputTypeButtonActionView).FullName);
+            if (loc == LeftOrRight.Left) {
+                result.AddClasses(Magics.CssClassOrderIsIconThenLabel);
+            }
 
-            switch (loc) {
-                case LeftOrRight.Left:
-                    result.AppendChild(preLblEl);
-                    result.AppendChild(properLabel);
-                    break;
-
-                case LeftOrRight.Right:
-                    result.AppendChild(properLabel);
-                    result.AppendChild(preLblEl);
-                    break;
-
-                default: throw new Exception("unsupported LeftOrRight");
+            if (hasIcon && hasLabel) {
+                result.AddClasses(Magics.CssClassHasIconAndLabel);
+            } else if (hasIcon) { //labelless
+                result.AddClasses(Magics.CssClassHasIconWithoutLabel);
+            } else { //label only
+                result.AddClasses(Magics.CssClassHasNoIconHasLabel);
             }
 
             return Tuple.Create<HTMLElement,Action<bool>,HTMLElement,HTMLElement>(result, x => {

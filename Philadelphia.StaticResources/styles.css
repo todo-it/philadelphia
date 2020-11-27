@@ -653,6 +653,7 @@ div.Philadelphia\.Web\.ModalDialogFormCanvas > div[data-form] > div[data-formAct
 
 
 
+
 /****************************************************
  *
  * Philadelphia.Web.InputTypeButtonActionView
@@ -675,15 +676,40 @@ div.Philadelphia\.Web\.ModalDialogFormCanvas > div[data-form] > div[data-formAct
     align-self: center;
 }
 
-.Philadelphia\.Web\.InputTypeButtonActionView.usesFontBtn > span {
-    padding: 5px 15px 6px 15px;
+
+.Philadelphia\.Web\.InputTypeButtonActionView:not(.orderIsIconThenLabel) > span:nth-child(1) {
+    order: 2;
 }
 
-.Philadelphia\.Web\.InputTypeButtonActionView.usesFontBtnLabelLess > span:nth-child(1) {
+.Philadelphia\.Web\.InputTypeButtonActionView:not(.orderIsIconThenLabel) > span:nth-child(2) {
+    order: 1;
+}
+
+
+
+.Philadelphia\.Web\.InputTypeButtonActionView.hasIconAndLabel.orderIsIconThenLabel > span:nth-child(1) {
+    padding: 5px 15px 6px 10px;
+}
+
+.Philadelphia\.Web\.InputTypeButtonActionView.hasIconAndLabel.orderIsIconThenLabel > span:nth-child(2) {
+    padding: 5px 10px 6px 0;
+}
+
+.Philadelphia\.Web\.InputTypeButtonActionView.hasIconAndLabel:not(.orderIsIconThenLabel) > span:nth-child(1) {
+    padding: 5px 15px 6px 0;
+}
+
+.Philadelphia\.Web\.InputTypeButtonActionView.hasIconAndLabel:not(.orderIsIconThenLabel) > span:nth-child(2) {
+    padding: 5px 10px 6px 10px;
+}
+
+
+
+.Philadelphia\.Web\.InputTypeButtonActionView.hasIconWithoutLabel > span:nth-child(1) {
     padding: 7px 10px 7px 10px;
 }
 
-.Philadelphia\.Web\.InputTypeButtonActionView:not(.running):not(.usesFontBtn) > span:nth-child(2):not(:empty) {
+.Philadelphia\.Web\.InputTypeButtonActionView:not(.running):not(.hasIconAndLabel) > span:nth-child(2):not(:empty) {
     padding: 5px 15px 3px 15px;
 }
 
@@ -782,9 +808,7 @@ div.Philadelphia\.Web\.ModalDialogFormCanvas > div[data-form] > div[data-formAct
     height: 15px;
     text-align: center;
     vertical-align: middle;
-    padding-top: 2px;
-    padding-left: 0px;
-    padding-right: 0;
+    padding: 0 3px 0 3px;
 }
 
 .Philadelphia\.Web\.InputTypeButtonActionView.datagridAction,
