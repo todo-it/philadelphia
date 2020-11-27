@@ -144,6 +144,7 @@ namespace Philadelphia.Web {
                         break; 
 
                     case OpenImagesMethod.InlineInNewTab:
+                        widget.OnClickPreventsDefault = false;
                         widget.Target = "_blank";
                         widget.Href = _parent.BuildHref(forFile, DownloadMethod.Inline);
                         break;
@@ -151,12 +152,13 @@ namespace Philadelphia.Web {
                     case OpenImagesMethod.Lightbox:
                         if (isInitial) {
                             widget.ShouldTriggerOnTarget = x => {
-                                var firstChild = widget.Widget.Children[0];
-                                var firstChildIsImg = firstChild.TagName == "IMG";
-                                return x == widget.Widget || firstChildIsImg && firstChild == x;
+                                var res = x.IsElementOrItsDescendant(widget.Widget);
+                                Logger.Debug(GetType(), "click was meaningful?="+res);
+                                return res;
                             };
 
                             widget.Triggered += () => { 
+                                Logger.Debug(GetType(), "invoking lightBoxManager from onclick");
                                 new LightBoxManager(x => _parent.BuildHref(forFile, DownloadMethod.Inline))
                                     .Start(widget, forFile);
                             };
@@ -237,13 +239,15 @@ namespace Philadelphia.Web {
                         break;
 
                     case OpenImagesMethod.InlineInNewTab:
+                        widget.OnClickPreventsDefault = false;
                         widget.Target = "_blank";
                         widget.Href = _parent.BuildHref(forFile, DownloadMethod.Inline);
                         break;
 
                     case OpenImagesMethod.Lightbox:
-                        widget.ShouldTriggerOnTarget = x => x == widget.Widget;
+                        widget.ShouldTriggerOnTarget = x => x.IsElementOrItsDescendant(widget.Widget);
                         widget.Triggered += () => { 
+                            Logger.Debug(GetType(), "invoking lightBoxManager from view");
                             new LightBoxManager(x => _parent.BuildHref(forFile, DownloadMethod.Inline))
                                 .Start(widget, forFile);
                         };

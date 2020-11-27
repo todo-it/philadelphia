@@ -56,7 +56,8 @@ namespace Philadelphia.Web {
             openInNewTab.AddClasses(
                 IconFontType.FontAwesomeSolid.ToCssClassName(), Magics.CssClassLightBoxOpenInNewTab);
             lightboxCnt.AppendChild(openInNewTab);
-
+            openInNewTab.OnClick += ev => ev.StopPropagation(); //just follow the link (don't let bubbled handlers prevent it) 
+            
             glass.OnClick += ev => {
                 if (ev.HtmlTarget() != glass) {
                     return;
