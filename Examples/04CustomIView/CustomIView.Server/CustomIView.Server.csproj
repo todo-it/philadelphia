@@ -6,10 +6,10 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.App" />
-    <PackageReference Include="Philadelphia.Common" Version="0.20.9.1" />
-    <PackageReference Include="Philadelphia.Server.Common" Version="0.20.9.1" />
-    <PackageReference Include="Philadelphia.ServerSideUtils" Version="0.20.9.1" />
-    <PackageReference Include="Philadelphia.Server.ForAspNetCore" Version="0.20.9.1" />
+    <PackageReference Include="Philadelphia.Common" Version="0.20.11.1" />
+    <PackageReference Include="Philadelphia.Server.Common" Version="0.20.11.1" />
+    <PackageReference Include="Philadelphia.ServerSideUtils" Version="0.20.11.1" />
+    <PackageReference Include="Philadelphia.Server.ForAspNetCore" Version="0.20.11.1" />
   </ItemGroup>
 
   <ItemGroup>

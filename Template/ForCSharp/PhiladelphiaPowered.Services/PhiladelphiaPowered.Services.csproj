@@ -6,8 +6,8 @@
 
   <ItemGroup>
     <PackageReference Include="Newtonsoft.Json" Version="11.0.2" />
-    <PackageReference Include="Philadelphia.Common" Version="0.20.9.1" />
-    <PackageReference Include="Philadelphia.Server.Common" Version="0.20.9.1" />
+    <PackageReference Include="Philadelphia.Common" Version="0.20.11.1" />
+    <PackageReference Include="Philadelphia.Server.Common" Version="0.20.11.1" />
   </ItemGroup>
 
   <ItemGroup>
