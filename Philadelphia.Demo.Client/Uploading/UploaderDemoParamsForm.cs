@@ -21,7 +21,7 @@ namespace Philadelphia.Demo.Client {
 
             
             var fileNameLen = LocalValueFieldBuilder.BuildNullableInt(
-                20, _view.MaxFileNameLength, Validator.MustBePositive<int>());
+                14, _view.MaxFileNameLength, Validator.MustBePositive<int>());
             var itemOpeningMethod = LocalValueFieldBuilder.Build(
                 OpenImagesMethod.Lightbox, _view.ItemOpeningMethod, Validator.IsNotNull);
             
