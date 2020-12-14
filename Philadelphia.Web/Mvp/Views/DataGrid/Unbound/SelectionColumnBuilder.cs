@@ -48,9 +48,12 @@ namespace Philadelphia.Web {
                         IsGroupingActive = () => false
                     }),
                 new SelectedItemsListener<RecordT>(model),
-                () => {
-                    return new InputCheckboxView("")
-                        .With(x => x.Widget.ClassList.Add(Magics.CssClassIsSelectionHandler) );
+                m => {
+                    var v = new InputCheckboxView("");
+                    v.Widget.ClassList.Add(Magics.CssClassIsSelectionHandler);
+                    
+                    v.BindReadWriteAndInitialize(m);
+                    return v;
                 }, 
                 new List<Validate<bool>>(),
                 (x,toBeSelected) => {

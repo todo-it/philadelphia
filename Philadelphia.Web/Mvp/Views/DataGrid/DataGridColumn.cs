@@ -15,7 +15,7 @@ namespace Philadelphia.Web {
         private readonly Func<RecordT, DataT> _getValue;
         private readonly List<Validate<DataT>> _validators;
         private readonly ITypedSubscribeable<RecordT> _itemObserverOrNull;
-        private readonly Func<IReadWriteValueView<HTMLElement,DataT>> _buildEditorOrNull;
+        private readonly Func<IReadWriteValue<DataT>,IView<HTMLElement>> _buildEditorOrNull;
         private readonly Action<RecordT, DataT> _setValueOrNull;
         private readonly IDictionary<RecordT,Action> _subscriptions = new Dictionary<RecordT, Action>();
         
@@ -64,7 +64,7 @@ namespace Philadelphia.Web {
                 Action<DataT,ICellValueExporter> exporter,
                 Func<ITransformationMediator,Tuple<HTMLElement,DataGridColumnControllerResult<DataT>>> transformation,
                 ITypedSubscribeable<RecordT> itemObserverOrNull,
-                Func<IReadWriteValueView<HTMLElement,DataT>> buildEditorOrNull,
+                Func<IReadWriteValue<DataT>,IView<HTMLElement>> buildEditorOrNull,
                 IEnumerable<Validate<DataT>> validators,
                 Action<RecordT,DataT> setValueOrNull,
                 Func<int, DataT, Task<RecordT>> saveOperationOrNull,
@@ -215,12 +215,12 @@ namespace Philadelphia.Web {
 
                 model.Reset(false, this);
             }
-            
-            var view = _buildEditorOrNull();
+
+            IView<HTMLElement> view = null; 
             
             try {
                 model.RemoteCallingEnabled = false;
-                view.BindReadWriteAndInitialize(model);    
+                view = _buildEditorOrNull(model);
             } finally {
                 model.RemoteCallingEnabled = true;
             }
@@ -244,8 +244,7 @@ namespace Philadelphia.Web {
                 model.Reset(false, this);
             }
 
-            var view = _buildEditorOrNull();
-            view.BindReadWriteAndInitialize(model);    
+            var view = _buildEditorOrNull(model);
             
             SubscribeToPropertyChanges(model, item);
             

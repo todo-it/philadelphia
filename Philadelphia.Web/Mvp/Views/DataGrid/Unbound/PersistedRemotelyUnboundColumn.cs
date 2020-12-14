@@ -7,10 +7,11 @@ using Philadelphia.Common;
 namespace Philadelphia.Web {
     public class PersistedRemotelyUnboundColumn<RecordT,DataT> where RecordT : new() {
         public EditableUnboundColumn<RecordT,DataT> Editable {get; }
-        public Func<IReadWriteValueView<HTMLElement,DataT>> BuildEditor { get; }
+        public Func<IReadWriteValue<DataT>,IView<HTMLElement>> BuildEditor { get; }
+        
         public IEnumerable<Validate<DataT>> Validators { get; }
         public Action<RecordT, DataT> SetValue { get; }
-
+        
         public PersistedRemotelyUnboundColumn(
                 EditableUnboundColumn<RecordT,DataT> editable,
                 Func<IReadWriteValueView<HTMLElement,DataT>> buildEditor,
@@ -18,9 +19,27 @@ namespace Philadelphia.Web {
                 params Validate<DataT>[] validators) {
 
             Editable = editable;
-            BuildEditor = buildEditor;
             SetValue = setValue;
             Validators = validators;
+
+            BuildEditor = m => {
+                var result = buildEditor();
+                result.BindReadWriteAndInitialize(m);
+                return result;
+            };
+        }
+
+        public PersistedRemotelyUnboundColumn(
+                EditableUnboundColumn<RecordT,DataT> editable,
+                IConvertingEditor<DataT> editorBuilder,
+                Action<RecordT, DataT> setValue,
+                params Validate<DataT>[] validators) {
+
+            Editable = editable;
+            SetValue = setValue;
+            Validators = validators;
+            
+            BuildEditor = editorBuilder.Build;
         }
 
         public BuildableUnboundColumn<RecordT,DataT> NonPersisted() {

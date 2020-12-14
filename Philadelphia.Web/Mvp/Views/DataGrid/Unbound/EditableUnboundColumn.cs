@@ -20,7 +20,8 @@ namespace Philadelphia.Web {
         }
 
         public PersistedRemotelyUnboundColumn<RecordT,DataT> NonEditable() {
-            return new PersistedRemotelyUnboundColumn<RecordT,DataT>(this, null, null);
+            Func<IReadWriteValueView<HTMLElement, DataT>> buildEditor = null; //to help choose overload
+            return new PersistedRemotelyUnboundColumn<RecordT,DataT>(this, buildEditor, null);
         }
         
         public PersistedRemotelyUnboundColumn<RecordT,DataT> Editable(
@@ -32,7 +33,17 @@ namespace Philadelphia.Web {
                 this, buildEditor, setValue,
                 validators);
         }
-        
+
+        public PersistedRemotelyUnboundColumn<RecordT,DataT> Editable(
+            IConvertingEditor<DataT> editorBuilder,
+            Action<RecordT,DataT> setValue,
+            params Validate<DataT>[] validators) {
+
+            return new PersistedRemotelyUnboundColumn<RecordT,DataT>(
+                this, editorBuilder, setValue,
+                validators);
+        }
+
         public IDataGridColumn<RecordT> Build() {
             return NonEditable().NonPersisted().Build();
         }
