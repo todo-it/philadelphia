@@ -100,6 +100,18 @@ namespace Philadelphia.Web {
             return Build(getField, view, x => I18n.Localize(x));
         }
         
+        public ClassFieldRemoteMutator<int?,int?,ContT> BuildNullableInt(
+                Expression<Func<ContT,int?>> getField, InputView view,
+                params Validate<int?>[] validators) {
+
+            view.RaisesChangedOnKeyPressed = false;
+
+            return Build(getField, view,
+                x => x.HasValue ? I18n.Localize(x.Value) : "",
+                x => x != "" ? I18n.ParseInt(x) : (int?)null,
+                validators);
+        }
+
         public ClassFieldRemoteMutator<int?,int?,ContT> BuildNullableIntBasedSelectDropdown<WidgetT>(
                 Expression<Func<ContT,int?>> getField, IReadWriteValueView<WidgetT,Tuple<string,string>> view,
                 params Validate<int?>[] validators) {
