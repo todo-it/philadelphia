@@ -31,6 +31,13 @@ namespace Philadelphia.Web {
             return self.Transformable(x => DataGridColumnController.ForInt(x, additionalGrouperOrAggr));
         }
         
+        public static TransformableUnboundColumnBuilder<RecordT,int?> TransformableDefault<RecordT>(
+            this ValueContainingUnboundColumnBuilder<RecordT,int?> self,
+            params GrouperDefOrAggregatorDef<int?>[] additionalGrouperOrAggr) where RecordT : new() {
+            
+            return self.Transformable(x => DataGridColumnController.ForNullableInt(x, additionalGrouperOrAggr));
+        }
+        
         public static TransformableUnboundColumnBuilder<RecordT,decimal> TransformableDefault<RecordT>(
                 this ValueContainingUnboundColumnBuilder<RecordT,decimal> self, DecimalFormat format,
                 params GrouperDefOrAggregatorDef<decimal>[] additionalGrouperOrAggr) where RecordT : new() {

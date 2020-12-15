@@ -8,7 +8,7 @@ namespace Philadelphia.Web {
         
             return self.WithValue(
                 valueProvider, 
-                x => x.HasValue ? I18n.Localize(x.Value, format) : I18n.Translate("(unknown)"), 
+                x => x.HasValue ? I18n.Localize(x.Value, format) : I18n.Translate("(empty)"), 
                 (val,exp) => {
                     if (val.HasValue) {
                         exp.Export(val.Value);
@@ -23,7 +23,7 @@ namespace Philadelphia.Web {
         
             return self.WithValue(
                 valueProvider, 
-                x => x.HasValue ? I18n.Localize(x.Value, format) : I18n.Translate("(unknown)"), 
+                x => x.HasValue ? I18n.Localize(x.Value, format) : I18n.Translate("(empty)"), 
                 (val,exp) => {
                     if (val.HasValue) {
                         exp.Export(val.Value);
@@ -59,6 +59,21 @@ namespace Philadelphia.Web {
             this BaseUnboundColumnBuilder<RecordT> self, Func<RecordT,int> valueProvider) where RecordT : new() {
         
             return self.WithValue(valueProvider, I18n.Localize, (val,exp) => exp.Export(val));
+        }
+        
+        public static ValueContainingUnboundColumnBuilder<RecordT,int?> WithValueLocalized<RecordT>(
+            this BaseUnboundColumnBuilder<RecordT> self, Func<RecordT,int?> valueProvider) where RecordT : new() {
+        
+            return self.WithValue(
+                valueProvider, 
+                x => x.HasValue ? I18n.Localize(x.Value) : I18n.Translate("(empty)"), 
+                (val,exp) => {
+                    if (val.HasValue) {
+                        exp.Export(val.Value);
+                    } else {
+                        exp.Export("");
+                    }
+                });
         }
 
         public static ValueContainingUnboundColumnBuilder<RecordT,bool> WithValueLocalized<RecordT>(

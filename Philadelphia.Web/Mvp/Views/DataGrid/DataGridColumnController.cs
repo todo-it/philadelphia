@@ -451,6 +451,57 @@ namespace Philadelphia.Web {
             );
         }
         
+        public static Tuple<HTMLElement,DataGridColumnControllerResult<int?>> ForNullableInt(
+                    ITransformationMediator listener,
+                    params GrouperDefOrAggregatorDef<int?>[] additionalGrouperOrAggr) {
+            
+            var groupEverythingAsOneGroupLabel = GroupEverythingAsOneGroupLabel;
+            var sumAggregatorLabel = SumAggregatorLabel;
+
+            return Create(
+                listener,
+                new [] {
+                    new FilterDef<int?>(
+                        I18n.Translate("equals"), 
+                        (filterParam, x) => x.HasValue && x == filterParam),
+                    new FilterDef<int?>(
+                        I18n.Translate("doesn't equal"), 
+                        (filterParam, x) => x.HasValue && x != filterParam),
+                    new FilterDef<int?>(
+                        I18n.Translate("is bigger than"), 
+                        (filterParam, x) => x.HasValue && x > filterParam),
+                    new FilterDef<int?>(
+                        I18n.Translate("is smaller than"), 
+                        (filterParam, x) => x.HasValue && x < filterParam)
+                },
+                new List<AggregatorDef<int?>> {
+                    new AggregatorDef<int?>(sumAggregatorLabel, x => I18n.Localize(x.Sum().GetValueOrDefault())), 
+                    new AggregatorDef<int?>(I18n.Translate("Count"), x => I18n.Localize(x.Count())), 
+                    new AggregatorDef<int?>(I18n.Translate("Average"), 
+                        x => I18n.Localize((decimal)x.Average().GetValueOrDefault(), DecimalFormat.AsNumber)), 
+                }.Concat(additionalGrouperOrAggr.Where(x => x.Aggregator != null).Select(x => x.Aggregator)),
+                new List<GrouperDef<int?>> {
+                    new GrouperDef<int?>(groupEverythingAsOneGroupLabel, 
+                        RecordGroupingUtil.GroupAllRecordsAsOneGroup),
+                    new GrouperDef<int?>(I18n.Translate("unique value"), 
+                        x => RecordGroupingUtil.GroupRecordsByKey(x, 
+                            y => ObjectUtil.MapNullAs(y, (int z) => z.ToString(), I18n.Translate("(empty)")),
+                            y => y.KeyData.ToString()))
+                }.Concat(additionalGrouperOrAggr.Where(x => x.Grouper != null).Select(x => x.Grouper)),
+                x => {
+                    var val = new InputView("");
+                    val.PlaceHolder = I18n.Translate("Filter value");
+                    val.BindReadWriteAndInitialize(x,
+                        y => !y.HasValue ? "" : I18n.Localize(y.Value), 
+                        y => string.IsNullOrEmpty(y) ? (int?)null : I18n.ParseInt(y));
+                    return val;
+                },
+                default(int),
+                default(int),
+                Comparer<int?>.Default
+            );
+        }
+        
         public static Tuple<HTMLElement,DataGridColumnControllerResult<bool>> ForBool(
                     ITransformationMediator listener,
                     params GrouperDefOrAggregatorDef<bool>[] additionalGrouperOrAggr) {
