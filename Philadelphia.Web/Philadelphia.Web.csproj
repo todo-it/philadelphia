@@ -89,6 +89,7 @@
     <Compile Include="Mvp\Views\AutocompleteDropdown.cs" />
     <Compile Include="Mvp\Views\DataGrid\Unbound\ConvertingEditor.cs" />
     <Compile Include="Mvp\Views\DataGrid\Unbound\IConvertingEditor.cs" />
+    <Compile Include="Mvp\Views\FlexSpacer.cs" />
     <Compile Include="Mvp\Views\LabelDescr.cs" />
     <Compile Include="Mvp\Views\MultipleChoiceDropDown.cs" />
     <Compile Include="Mvp\Views\RadioBasedSingleChoice.cs" />
