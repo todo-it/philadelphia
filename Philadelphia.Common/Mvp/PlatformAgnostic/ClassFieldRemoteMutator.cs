@@ -184,9 +184,12 @@ namespace Philadelphia.Common {
         }
         
         public async Task InitializeInitialValue(LocalT value) {
-            RemoteCallingEnabled = false;
-            await DoChange(value, false, this, false);
-            RemoteCallingEnabled = true;
+            try {
+                RemoteCallingEnabled = false;
+                await DoChange(value, false, this, false);
+            } finally {
+                RemoteCallingEnabled = true;    
+            }
         }
 
         public override string ToString() {
