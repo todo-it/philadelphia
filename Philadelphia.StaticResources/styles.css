@@ -2016,6 +2016,21 @@ body[data-dragging] .Philadelphia\.Web\.UploadView > div:nth-child(1) {
     box-shadow: 0 0 25px 7px #9d9d9d;
 }
 
+
+
+/*readonly support*/
+.Philadelphia\.Web\.DateTimeInputView[data-readonly],
+.Philadelphia\.Web\.DateTimeInputView[data-readonly] input {
+    background-color: #D4D0C8;
+}
+
+.Philadelphia\.Web\.DateTimeInputView[data-readonly] > div .upArrow::before,
+.Philadelphia\.Web\.DateTimeInputView[data-readonly] > div .downArrow::before {
+    color: #D4D0C8;
+}
+
+
+
 .Philadelphia\.Web\.DateTimePickerView > div > .popupContainer > .daysOfMonth > .yearAndMonthChoice > div:first-child,
 .Philadelphia\.Web\.DateTimeRangeView > div > .popupContainer > .popups > .daysOfMonth > .yearAndMonthChoice > div:first-child {
     font-weight: bold;

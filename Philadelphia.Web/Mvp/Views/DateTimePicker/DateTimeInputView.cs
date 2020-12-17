@@ -22,6 +22,12 @@ namespace Philadelphia.Web {
         public bool Enabled {
             get => _yearInput.Enabled;
             set {
+                if (value) {
+                    _inputsContainer.RemoveAttribute(Magics.AttrDataReadOnly);
+                } else {
+                    _inputsContainer.SetValuelessAttribute(Magics.AttrDataReadOnly);    
+                }
+                
                 _yearInput.Enabled = value;
                 _monthInput.Enabled = value;
                 _dayInput.Enabled = value;
