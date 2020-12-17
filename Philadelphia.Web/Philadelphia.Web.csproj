@@ -93,6 +93,11 @@
     <Compile Include="Mvp\Views\LabelDescr.cs" />
     <Compile Include="Mvp\Views\MultipleChoiceDropDown.cs" />
     <Compile Include="Mvp\Views\RadioBasedSingleChoice.cs" />
+    <Compile Include="Mvp\Views\SseSyncView\ConnectionReadyStateExtensions.cs" />
+    <Compile Include="Mvp\Views\SseSyncView\SyncModel.cs" />
+    <Compile Include="Mvp\Views\SseSyncView\SyncState.cs" />
+    <Compile Include="Mvp\Views\SseSyncView\SyncView.cs" />
+    <Compile Include="Mvp\Views\SseSyncView\SyncViewExtensions.cs" />
     <Compile Include="ServerSentEvents\ServerSentEventsSubscriber.cs" />
     <Compile Include="Util\BridgeObjectUtil.cs" />
     <Compile Include="Mvp\Flows\AuthenticationThenMainMenuFlow.cs" />
