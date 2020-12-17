@@ -85,6 +85,7 @@
     <Compile Include="Mvp\ModalDialogFormCanvas.cs" />
     <Compile Include="Mvp\PopupImplementation.cs" />
     <Compile Include="Mvp\RegularDomElementTitleFormCanvasStrategy.cs" />
+    <Compile Include="Mvp\ValidatorWeb.cs" />
     <Compile Include="Mvp\Views\AutocompleteDropdown.cs" />
     <Compile Include="Mvp\Views\DataGrid\Unbound\ConvertingEditor.cs" />
     <Compile Include="Mvp\Views\DataGrid\Unbound\IConvertingEditor.cs" />
