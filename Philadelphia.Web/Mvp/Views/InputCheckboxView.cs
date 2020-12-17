@@ -14,5 +14,11 @@ namespace Philadelphia.Web {
                 x => x.Checked,
                 (x,v) => x.Checked = v,
                 label) {}
+        
+        public void SetAsInputThenLabel() {
+            Widget.Style.Display = Display.Flex;
+            Widget.Style.AlignItems = "center";
+            Widget.Children[0].Style.Order = "2";
+        }
     }
 }
