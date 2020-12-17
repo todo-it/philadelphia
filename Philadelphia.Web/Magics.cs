@@ -22,7 +22,8 @@ namespace Philadelphia.Web {
         public const int KeyCodeBackspace = 8;
         public const int KeyCodeTab = 9;
         public const int KeyCodeShift = 16;
-        
+        public const int KeyCodeCtrl = 17;
+        public const int KeyCodeAlt = 18;
         public const int KeyCodeEscape = 27;
         public const int KeyCodeEnter = 13;
         public const int KeyCodeArrowLeft = 37;

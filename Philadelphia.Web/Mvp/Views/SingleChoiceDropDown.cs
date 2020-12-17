@@ -91,6 +91,12 @@ namespace Philadelphia.Web {
                 var changed = false;
 
                 switch (ev.KeyCode) {
+                    case Magics.KeyCodeAlt:
+                    case Magics.KeyCodeCtrl:
+                    case Magics.KeyCodeShift:
+                        Logger.Debug(GetType(), "modifier key doesn't modify input");
+                        break;
+                    
                     case Magics.KeyCodeArrowDown:
                         ShowPopupIfPossible();
                         _arrowNavigation = true;
@@ -150,7 +156,8 @@ namespace Philadelphia.Web {
                         _ignoreShowOnBlur = true;
                         break; //just loosing focus
 
-                    default: 
+                    default:
+                        Logger.Debug(GetType(), "clearing selection");
                         _model.Selected.Replace();
                         break;
                 }
