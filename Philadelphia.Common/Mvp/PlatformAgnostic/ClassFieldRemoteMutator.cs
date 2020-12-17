@@ -95,20 +95,22 @@ namespace Philadelphia.Common {
         /// <summary>needed as Philadelphia.Common.ReadWriteValueExtensions Revalidate causes remote call</summary>
         public void Revalidate(bool isUserChange = false, object sender = null) => RecalculateErrors(Value);
         
-        public void Reset(bool isUserChange, object sender) {            
+        private void ResetImpl(bool isUserChange, object sender, LocalT newValue) {            
             sender = sender ?? this;
-            var newValue = _invalidValue;
             var oldValue = Value;
             
             RecalculateErrors(newValue); //may be rejected by validation BUT yet still errors should be calculated
             Value = newValue;
 
-            Logger.Debug(GetType(), "DoChange OldValue={0} NewValue={1} Errors={2} Sender={3} _pendingRemoteCalls={4}", 
+            Logger.Debug(GetType(), "ResetImpl OldValue={0} NewValue={1} Errors={2} Sender={3} _pendingRemoteCalls={4}", 
                 oldValue, newValue, Errors.PrettyToString(), sender, _pendingRemoteCalls);
 
             Changed?.Invoke(sender, oldValue, newValue, Errors, isUserChange);
         }
         
+        public void Reset(bool isUserChange, object sender) => ResetImpl(isUserChange, sender, _invalidValue);
+        public void Reset(LocalT toValue, bool isUserChange, object sender) => ResetImpl(isUserChange, sender, toValue);
+
         public async Task<Unit> DoChange(
                 LocalT newValue, bool isUserChange, object sender = null, 
                 bool mayBeRejectedByValidation = true) {
