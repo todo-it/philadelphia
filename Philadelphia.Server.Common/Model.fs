@@ -3,6 +3,7 @@
 open System
 open System.Collections.Generic
 open System.Linq
+open System.Runtime.CompilerServices
 open Philadelphia.Common
 open System.Reflection
 open System.Threading.Tasks
@@ -49,6 +50,10 @@ type ConnectionAction private (reply:FilterReply option, connectionCtx:Connectio
     static member CreateFilteredOut(reply) = ConnectionAction(Some reply, null)
     static member CreateNonFiltered(connCtx) = ConnectionAction(None, connCtx)
 
+type FSharpAsyncUtil() =
+    static member FromResult x = async { return x }
+    static member FromUnitResult() = async { return () }
+
 ///for handling AOP aspects such as blocking, replacing connections, dbtransactions, auditing, logging etc
 [<AllowNullLiteral>]
 type ILifetimeFilter =
@@ -56,23 +61,23 @@ type ILifetimeFilter =
 
     ///maybe replace service call(filter it out). Returns Task instead of Async to be C# friendly
     abstract member OnConnectionBeforeHandler : 
-        di:IDiResolveReleaseOnlyContainer * url:string * serviceInstance:obj * m:MethodInfo * parameters:obj[] * ResourceType->Task<ConnectionAction>
+        di:IDiResolveReleaseOnlyContainer * url:string * serviceInstance:obj * m:MethodInfo * parameters:obj[] * ResourceType-> Async<ConnectionAction>
     
     ///not invoked for static resources.
     ///not invoked when OnConnectionBeforeHandler returned filter. 
     ///null Exception means success.
-    abstract member OnConnectionAfterHandler : connectionCtx:ConnectionCtx * di:IDiResolveReleaseOnlyContainer * exOrNull:Exception->Task
+    abstract member OnConnectionAfterHandler : connectionCtx:ConnectionCtx * di:IDiResolveReleaseOnlyContainer * exOrNull:Exception-> Async<unit>
 
 type NullLifetimeFilter() =
     interface ILifetimeFilter with
         member __.OnServerStarted di = Task.CompletedTask
 
-        member __.OnConnectionBeforeHandler(di, url, serviceInstance, m, prms, resType) = 
-            null
-            |> ConnectionAction.CreateNonFiltered
-            |> System.Threading.Tasks.Task.FromResult
-
-        member __.OnConnectionAfterHandler(connCtx, di, exOrNull) = Task.CompletedTask
+        member __.OnConnectionBeforeHandler(di, url, serviceInstance, m, prms, resType) =
+            async {
+                return null |> ConnectionAction.CreateNonFiltered    
+            }
+            
+        member __.OnConnectionAfterHandler(connCtx, di, exOrNull) = async { return () }
     static member val Instance = NullLifetimeFilter() :> ILifetimeFilter
 
 type ContractToImplementation(contract, implementation) =

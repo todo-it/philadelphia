@@ -4,6 +4,7 @@ using System.Linq;
 using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.FSharp.Control;
 using Philadelphia.Common;
 using Philadelphia.Server.Common;
 using Philadelphia.ServerSideUtils;
@@ -94,7 +95,7 @@ namespace ControlledByTests.Server {
             return Task.CompletedTask;
         }
  
-        public Task<ConnectionAction> OnConnectionBeforeHandler(
+        public FSharpAsync<ConnectionAction> OnConnectionBeforeHandler(
                 IDiResolveReleaseOnlyContainer di, string url, object serviceInstanceOrNull, 
                 MethodInfo methodOrNull, object[] parms, ResourceType res) {
  
@@ -114,7 +115,7 @@ namespace ControlledByTests.Server {
                 Guid = guid };
             SendFilterInvocation(ctx);
 
-            return Task.FromResult(ConnectionAction.CreateNonFiltered(ctx));
+            return FSharpAsyncUtil.FromResult(ConnectionAction.CreateNonFiltered(ctx));
         }
 
         private static Type FindServiceInterfaceType(object instance) {
@@ -124,7 +125,7 @@ namespace ControlledByTests.Server {
                 .First(x => x.CustomAttributes.Any(y => y.AttributeType == typeof(HttpService)));
         }
 
-        public Task OnConnectionAfterHandler(
+        public FSharpAsync<Microsoft.FSharp.Core.Unit> OnConnectionAfterHandler(
                 object rawConnCtx, IDiResolveReleaseOnlyContainer di, Exception exOrNull) {
 
             var connCtx = (FilterInvocation)rawConnCtx;
@@ -134,7 +135,7 @@ namespace ControlledByTests.Server {
 
             SendFilterInvocation(connCtx);
 
-            return Task.CompletedTask;
+            return FSharpAsyncUtil.FromUnitResult();
         }
     }
 }

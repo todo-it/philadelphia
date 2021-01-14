@@ -198,8 +198,7 @@ module ServerPushReg =
                     let! lifetimeFilterRes =
                         lifetimeFilter.OnConnectionBeforeHandler(
                             di, url, serviceInst, method, [| ctx |], ResourceType.ServerSentEventListener)
-                        |> Async.AwaitTask
-
+                        
                     return
                         match lifetimeFilterRes.MaybeFiltered with
                         |Some reply -> LifestyleFilteredResult.Rejected reply
@@ -209,11 +208,9 @@ module ServerPushReg =
                                 filter :?> System.Func<'TMsg,bool>
                     
                             let onDispose = async {
-                                do!
+                                return!
                                     lifetimeFilter.OnConnectionAfterHandler(
-                                        lifetimeFilterRes.ConnectionCtx, di, null)
-                                    |> Async.AwaitTask 
-                                return ()}
+                                        lifetimeFilterRes.ConnectionCtx, di, null) }
 
                             LifestyleFilteredResult.Accepted(logicalFilterFac, onDispose) })
                 Send = (fun (x:'TMsg) -> 
@@ -351,8 +348,7 @@ module Services =
 
             let! lifetimeFilterRes =
                 connFilter.OnConnectionBeforeHandler(di, url, serviceImpl, m, x, ResourceType.RegularPostService)
-                |> Async.AwaitTask
-
+                
             return
                 match lifetimeFilterRes.MaybeFiltered with
                 |Some filterReply -> 
@@ -379,18 +375,12 @@ module Services =
                             match invoked with
                             |Choice1Of2(succ) -> 
                                 async {
-                                    let! _ =
-                                        connFilter.OnConnectionAfterHandler(connCtx, di, null)
-                                        |> Async.AwaitTask
-
+                                    do! connFilter.OnConnectionAfterHandler(connCtx, di, null)
                                     return Result.Ok succ
                                 }
                             |Choice2Of2(ex) ->
                                 async {
-                                    let! _ =
-                                        connFilter.OnConnectionAfterHandler(connCtx, di, ex)
-                                        |> Async.AwaitTask
-
+                                    do! connFilter.OnConnectionAfterHandler(connCtx, di, ex)
                                     return Result.Error ex
                                 }
                     } 

@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.FSharp.Control;
 using Microsoft.FSharp.Core;
 using Philadelphia.Common;
 using Philadelphia.Demo.SharedModel;
@@ -24,19 +25,19 @@ namespace Philadelphia.Demo.Server {
             return Task.CompletedTask;
         }
 
-        public Task<ConnectionAction> OnConnectionBeforeHandler(
+        public FSharpAsync<ConnectionAction> OnConnectionBeforeHandler(
                 IDiResolveReleaseOnlyContainer di, string url, object serviceInstance, 
                 MethodInfo method, object[] prms, ResourceType res) {
 
             var ci = di.Resolve<ClientConnectionInfo>();
             var guid = Guid.NewGuid().ToString();
             Logger.Debug(typeof(LifeTimeFilter), $"OnConnectionBeforeHandler() ip={ci.ClientIpAddress} guid={guid} url={url} resourceType={res.ToString()} serviceImpl={serviceInstance} method={method} prms={prms}");
-            return Task.FromResult(ConnectionAction.CreateNonFiltered(guid));
+            return FSharpAsyncUtil.FromResult(ConnectionAction.CreateNonFiltered(guid));
         }
 
-        public Task OnConnectionAfterHandler(object connCtx, IDiResolveReleaseOnlyContainer obj0, Exception exOrNull) {
+        public FSharpAsync<Microsoft.FSharp.Core.Unit> OnConnectionAfterHandler(object connCtx, IDiResolveReleaseOnlyContainer obj0, Exception exOrNull) {
             Logger.Debug(typeof(LifeTimeFilter), $"OnConnectionAfterServiceHandler() guid={connCtx} success?={exOrNull == null} errorDetails={exOrNull}");
-            return Task.CompletedTask;
+            return FSharpAsyncUtil.FromUnitResult();
         }
     }
     

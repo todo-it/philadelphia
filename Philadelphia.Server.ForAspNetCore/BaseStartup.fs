@@ -549,8 +549,7 @@ type BaseStartup(
             async {
                 let! connAct =
                     lifetimeFilter.OnConnectionBeforeHandler(di, pth, null, null, Array.empty, ResourceType.StaticResource)
-                    |> Async.AwaitTask
-
+                    
                 let sender =
                     match connAct.MaybeFiltered with
                     |Some filtered -> 
@@ -641,8 +640,7 @@ type BaseStartup(
                 let! filterReply =
                     lifetimeFilter.OnConnectionBeforeHandler(
                         di, pth, null, null, Array.empty, ResourceType.Unsupported)
-                    |> Async.AwaitTask
-
+                    
                 sprintf "unsupported path %s" pth |> log
                 ctx.Response.StatusCode <- 400
                 
