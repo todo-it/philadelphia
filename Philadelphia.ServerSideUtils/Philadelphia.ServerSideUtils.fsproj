@@ -17,6 +17,9 @@
     <Compile Include="IDiRegisterOnlyContainer.fs" />
     <Compile Include="OperatingSystem.fs" />
     <Compile Include="Configuration.fs" />
+    <Compile Include="ContextBasedI18nImpl.fs" />
+    <Compile Include="AsyncBasedStorage.fs" />
+    <Compile Include="CustomStorageI18nImpl.fs" />
     <Compile Include="AsyncLocalBasedI18nImpl.fs" />
   </ItemGroup>
 

@@ -2,57 +2,26 @@
 
 open Philadelphia.Common
 open System.Text.RegularExpressions
+open ContextBasedI18nImpl
+open Philadelphia.ServerSideUtils.AsyncBasedStorage
 
 ///Language-switching in runtime TranslationImplementation
+///warning, it is prone to gotcha https://stackoverflow.com/questions/37306203/how-to-make-asynclocal-flow-to-siblings
 type Implementation(translations:ITranslationProvider[]) =
-    static let _store = System.Threading.AsyncLocal<string>()
-
-    let defaultCulture =
-        translations 
-        |> Seq.tryPick (fun x -> if x.IsDefault then Some x else None)
-        |> function 
-        |Some x -> x.CultureName
-        |None -> 
-            Logger.Info(
-                typeof<Implementation>, 
-                sprintf "have %d translations but none of them is default - using English" translations.Length)
-            "en-US"
-
-    let langToMessageToTranslation = 
-        // review: could use F# Map
-        let res = System.Collections.Generic.Dictionary<_, _>()
-
-        translations
-        |> Seq.iter (fun x ->
-            res.Add(
-                x.CultureName, 
-                x.Items |> Seq.map (fun x -> x.M, x.T) |> DictionaryExtensions.Create))
-        res
-            
-    let getCurrentLanguage () = 
-        let curLang = _store.Value
-
-        if curLang = null then defaultCulture else curLang
+    let storage = AsyncBasedStorage() :> ICurrentLanguageStorage 
         
-    let setCurrentLanguage newLang = _store.Value <- newLang
-                    
-    let translate msg lang = 
-        match langToMessageToTranslation.TryGetValue(lang) with
-        |true,transl -> 
-            match transl.TryGetValue(msg) with
-            |true,x -> x
-            |_ -> msg
-        |_ -> msg
-
+    let defaultCulture = calculateDefaultCulture translations
+    let translations = buildLangToMessageToTranslation translations
+    
     interface ICurrentCultureSwitchedListener with
-        member __.OnSwitchedTo inp = setCurrentLanguage inp
+        member __.OnSwitchedTo inp = storage.setLangCode inp
 
     interface I18nImpl with    
         member __.Translate msg = 
-            translate msg (getCurrentLanguage ())
+            translate translations msg (getCurrentLanguage defaultCulture storage)
             
         member __.TranslateForLang (msg,lang) = 
-            translate msg lang   
+            translate translations msg lang
 
 let loadTranslationForLang (json:Json.ICodec) fullPath lang isDefault =
     do 
