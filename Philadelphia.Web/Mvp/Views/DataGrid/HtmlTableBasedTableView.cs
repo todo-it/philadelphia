@@ -624,7 +624,20 @@ namespace Philadelphia.Web {
             );
             BodyRowCount++;
         }
+        
+        public void RowCssClassesReplaceWith(int rowIndex, IEnumerable<string> classes) {
+            var cl = _tbody.GetChildAtOrNull(
+                rowIndex
+                + 1 //leading row
+            ).ClassList;
 
+            while (cl.Length > 0) {
+                cl.Remove(cl[0]);
+            }
+
+            classes.ForEach(x => cl.Add(x));
+        }
+        
         public void RowCssClassAdd(int rowIndex, string className) {
             _tbody.GetChildAtOrNull(
                 rowIndex

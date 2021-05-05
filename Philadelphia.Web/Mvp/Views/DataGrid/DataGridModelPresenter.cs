@@ -6,6 +6,10 @@ using Bridge.Html5;
 using Philadelphia.Common;
 
 namespace Philadelphia.Web {
+    public static class MaybeSingletonColl {
+        public static IEnumerable<T> OfNullable<T>(T itm) => itm == null ? new T[0] : new T[] {itm};
+    }
+
     public class DataGridModelPresenter<RecordT> {
         private readonly DataGridModel<RecordT> _model; 
         private readonly ITableView _view;
@@ -34,33 +38,13 @@ namespace Philadelphia.Web {
                 _model.Items);
 
             _model.Activated.Changed += (_, oldValue, newValue, ___, ____) => {
-                var idx = oldValue == null ? -1 : _visRows.GetRowIndexOf(oldValue);
-                if (idx >= 0) {
-                    _view.RowCssClassRemove(idx, Magics.CssClassRowActivated);
-                }
-                
-                idx = newValue == null ? -1 : _visRows.GetRowIndexOf(newValue);
-                if (idx >= 0) {
-                    _view.RowCssClassAdd(idx, Magics.CssClassRowActivated);
-                }
+                RefreshRowCssClass(oldValue);
+                RefreshRowCssClass(newValue);
             };
 
             _model.Selected.Changed += (at, inserted, removed) => {
-                removed.ForEach(x => {
-                    var idx = _visRows.GetRowIndexOf(x);
-
-                    if (idx >= 0) {
-                        _view.RowCssClassRemove(idx, Magics.CssClassRowSelected);
-                    }
-                });
-
-                inserted.ForEach(x => {
-                    var idx = _visRows.GetRowIndexOf(x);
-
-                    if (idx >= 0) {
-                        _view.RowCssClassAdd(idx, Magics.CssClassRowSelected);
-                    }
-                });
+                removed.ForEach(x => RefreshRowCssClass(x));
+                inserted.ForEach(x => RefreshRowCssClass(x));
             };
         }
 
@@ -83,15 +67,36 @@ namespace Philadelphia.Web {
             return _model.CustomRowCssClassOrNull?.Invoke(inp);
         }
 
-        private void SetRowCssClassIfNeeded(RecordT inp, int pos) {
-            var cl = GetRowCssClassOrNull(inp);
-            if (cl == null) {
+        private string GetCssRowClassOrNull(RecordT itm) {
+            if (itm.Equals(_model.Activated.Value)) {
+                return Magics.CssClassRowActivated;
+            }
+
+            if (_model.Selected.Contains(itm)) {
+                return Magics.CssClassRowSelected;
+            }
+            
+            return GetRowCssClassOrNull(itm);
+        }
+
+        private void SetRowCssClass(int visIdx, RecordT itm) {
+            var cssClassOrNull = GetCssRowClassOrNull(itm);
+            
+            _view.RowCssClassesReplaceWith(
+                visIdx, 
+                MaybeSingletonColl.OfNullable(cssClassOrNull));
+        }
+
+        public void RefreshRowCssClass(RecordT itm) {
+            var visIdx = _visRows.GetRowIndexOf(itm);
+
+            if (visIdx < 0) {
                 return;
             }
 
-            _view.RowCssClassAdd(pos, cl);
+            SetRowCssClass(visIdx, itm);
         }
-
+        
         private double ComputeMaxVisibleRows() {
             return Math.Ceiling(_view.BodyVisibleSpace / RowHeightPx);
         }
@@ -144,11 +149,7 @@ namespace Philadelphia.Web {
             var pos = _view.BodyRowCount;
             _view.InsertBodyRow(pos, elems);
 
-            if (_model.Selected.Contains(item)) {
-                _view.RowCssClassAdd(pos, Magics.CssClassRowSelected);    
-            } else {
-                SetRowCssClassIfNeeded(item, pos);
-            }
+            SetRowCssClass(pos, item);
         }
         
         private void InsertGroupTrailer(int pos, GroupDescr grp) {
@@ -162,11 +163,7 @@ namespace Philadelphia.Web {
             var elems = BuildRow(item);
             _view.InsertBodyRow(pos, elems);
 
-            if (_model.Selected.Contains(item)) {
-                _view.RowCssClassAdd(pos, Magics.CssClassRowSelected);    
-            } else {
-                SetRowCssClassIfNeeded(item, pos);
-            }
+            SetRowCssClass(pos, item);
         }
 
         private void DeleteAllBodyRows() {

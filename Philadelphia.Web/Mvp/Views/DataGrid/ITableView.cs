@@ -64,6 +64,7 @@ namespace Philadelphia.Web {
 
         void SetColumnWidth(int colIdx, double newSizePx);
         void SetColumnOrder(int colIdx, SortOrder order);
+        void RowCssClassesReplaceWith(int rowIndex, IEnumerable<string> classes);
         void RowCssClassAdd(int rowIndex, string className);
         void RowCssClassRemove(int rowIndex, string className);
     }
