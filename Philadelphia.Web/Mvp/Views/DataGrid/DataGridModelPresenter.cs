@@ -545,14 +545,18 @@ namespace Philadelphia.Web {
             _view.FilterRows += (type, newValue) => _model.ChangeGlobalFilterToContainsCaseInsensitive(type, newValue ?? "");
             _view.Export += holder => holder.Value = ExportDataGrid();
 
-            _view.RowSelected += (tbodyRowIdx, mode) => {
-                Logger.Debug(GetType(), "selection maybe changing to {0} using mode {1}", tbodyRowIdx, mode);
+            _view.RowSelected += async (tbodyRowIdx, mode) => {
+                Logger.Debug(GetType(), "selection maybe changing to {0} using mode {1} and implicitly clearing activated row", tbodyRowIdx, mode);
                 
                 var itm = ConvertVisualIdxToPhysicalItem(tbodyRowIdx);
 
                 if (!itm.HasValue) {
                     Logger.Debug(GetType(), "selection not changing as non-physical-record was selected");
                     return;
+                }
+
+                if (_model.Activated.Value != null) {
+                    await _model.Activated.DoChange(default(RecordT), false, this, false);
                 }
 
                 switch (mode) {

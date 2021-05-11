@@ -941,12 +941,10 @@ table.Philadelphia\.Web\.HtmlTableBasedTableView tbody:not(.firstRowIsOdd) tr.se
 }
 
 /*below firstRowIsOdd is needed to make selector as specific as it is for even/odd coloring*/
-/* disabled because there's no easy unactivate so row stays activated
 table.Philadelphia\.Web\.HtmlTableBasedTableView tbody.firstRowIsOdd tr.activatedRow,
 table.Philadelphia\.Web\.HtmlTableBasedTableView tbody:not(.firstRowIsOdd) tr.activatedRow {
     background-color: #fcffb2;
 }
-*/
 
 /* filter row: hidden style */
 table.Philadelphia\.Web\.HtmlTableBasedTableView thead.inactive tr:nth-child(2) {
