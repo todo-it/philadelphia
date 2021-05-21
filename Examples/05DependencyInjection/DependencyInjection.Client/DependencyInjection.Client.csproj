@@ -64,11 +64,11 @@
     <Reference Include="Newtonsoft.Json, Version=1.11.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Bridge.Newtonsoft.Json.1.11.0\lib\net40\Newtonsoft.Json.dll</HintPath>
     </Reference>
-    <Reference Include="Philadelphia.Common.AsBridgeDotNet, Version=0.21.1.1, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Philadelphia.Common.AsBridgeDotNet.0.21.1.1\lib\net451\Philadelphia.Common.AsBridgeDotNet.dll</HintPath>
+    <Reference Include="Philadelphia.Common.AsBridgeDotNet, Version=0.21.5.1, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Philadelphia.Common.AsBridgeDotNet.0.21.5.1\lib\net451\Philadelphia.Common.AsBridgeDotNet.dll</HintPath>
     </Reference>
-    <Reference Include="Philadelphia.Web, Version=0.21.1.1, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Philadelphia.Web.0.21.1.1\lib\net451\Philadelphia.Web.dll</HintPath>
+    <Reference Include="Philadelphia.Web, Version=0.21.5.1, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Philadelphia.Web.0.21.5.1\lib\net451\Philadelphia.Web.dll</HintPath>
     </Reference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
