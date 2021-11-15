@@ -353,14 +353,14 @@ namespace Philadelphia.Web {
         }
         
         public static string GroupEverythingAsOneGroupLabel => I18n.Translate("one group");
+        public static string UniqueValueGroupLabel = I18n.Translate("unique value");
         public static string SumAggregatorLabel => I18n.Translate("Sum");
+        public static string CountAggregatorLabel => I18n.Translate("Count");
 
         public static Tuple<HTMLElement,DataGridColumnControllerResult<string>> ForString(
                     ITransformationMediator listener,
                     params GrouperDefOrAggregatorDef<string>[] additionalGrouperOrAggr) {
             
-            var groupEverythingAsOneGroupLabel = GroupEverythingAsOneGroupLabel;
-
             return Create(
                 listener,
                 new [] {
@@ -384,12 +384,12 @@ namespace Philadelphia.Web {
                         (filterParam, x) => (x ?? "").EndsWithCaseInsensitive(filterParam ?? ""))
                 },
                 new List<AggregatorDef<string>> {
-                    new AggregatorDef<string>(I18n.Translate("Count"), x => I18n.Localize(x.Count()))
+                    new AggregatorDef<string>(CountAggregatorLabel, x => I18n.Localize(x.Count()))
                 }.Concat(additionalGrouperOrAggr.Where(x => x.Aggregator != null).Select(x => x.Aggregator)),
                 new List<GrouperDef<string>> {
-                    new GrouperDef<string>(groupEverythingAsOneGroupLabel, 
+                    new GrouperDef<string>(GroupEverythingAsOneGroupLabel, 
                         RecordGroupingUtil.GroupAllRecordsAsOneGroup),
-                    new GrouperDef<string>(I18n.Translate("unique value"), 
+                    new GrouperDef<string>(UniqueValueGroupLabel, 
                         x => RecordGroupingUtil.GroupRecordsByKey(x, y => y, y => y.KeyData.ToString()))
                 }.Concat(additionalGrouperOrAggr.Where(x => x.Grouper != null).Select(x => x.Grouper)),
                 x => {
@@ -408,9 +408,6 @@ namespace Philadelphia.Web {
                     ITransformationMediator listener,
                     params GrouperDefOrAggregatorDef<int>[] additionalGrouperOrAggr) {
             
-            var groupEverythingAsOneGroupLabel = GroupEverythingAsOneGroupLabel;
-            var sumAggregatorLabel = SumAggregatorLabel;
-
             return Create(
                 listener,
                 new [] {
@@ -428,15 +425,15 @@ namespace Philadelphia.Web {
                         (filterParam, x) => x < filterParam)
                 },
                 new List<AggregatorDef<int>> {
-                    new AggregatorDef<int>(sumAggregatorLabel, x => I18n.Localize(x.Sum())), 
-                    new AggregatorDef<int>(I18n.Translate("Count"), x => I18n.Localize(x.Count())), 
+                    new AggregatorDef<int>(SumAggregatorLabel, x => I18n.Localize(x.Sum())), 
+                    new AggregatorDef<int>(CountAggregatorLabel, x => I18n.Localize(x.Count())), 
                     new AggregatorDef<int>(I18n.Translate("Average"), 
                         x => I18n.Localize((decimal)x.Average(), DecimalFormat.AsNumber)), 
                 }.Concat(additionalGrouperOrAggr.Where(x => x.Aggregator != null).Select(x => x.Aggregator)),
                 new List<GrouperDef<int>> {
-                    new GrouperDef<int>(groupEverythingAsOneGroupLabel, 
+                    new GrouperDef<int>(GroupEverythingAsOneGroupLabel, 
                         RecordGroupingUtil.GroupAllRecordsAsOneGroup),
-                    new GrouperDef<int>(I18n.Translate("unique value"), 
+                    new GrouperDef<int>(UniqueValueGroupLabel, 
                         x => RecordGroupingUtil.GroupRecordsByKey(x, y => y, y => y.KeyData.ToString()))
                 }.Concat(additionalGrouperOrAggr.Where(x => x.Grouper != null).Select(x => x.Grouper)),
                 x => {
@@ -455,9 +452,6 @@ namespace Philadelphia.Web {
                     ITransformationMediator listener,
                     params GrouperDefOrAggregatorDef<int?>[] additionalGrouperOrAggr) {
             
-            var groupEverythingAsOneGroupLabel = GroupEverythingAsOneGroupLabel;
-            var sumAggregatorLabel = SumAggregatorLabel;
-
             return Create(
                 listener,
                 new [] {
@@ -475,15 +469,15 @@ namespace Philadelphia.Web {
                         (filterParam, x) => x.HasValue && x < filterParam)
                 },
                 new List<AggregatorDef<int?>> {
-                    new AggregatorDef<int?>(sumAggregatorLabel, x => I18n.Localize(x.Sum().GetValueOrDefault())), 
-                    new AggregatorDef<int?>(I18n.Translate("Count"), x => I18n.Localize(x.Count())), 
+                    new AggregatorDef<int?>(SumAggregatorLabel, x => I18n.Localize(x.Sum().GetValueOrDefault())), 
+                    new AggregatorDef<int?>(CountAggregatorLabel, x => I18n.Localize(x.Count())), 
                     new AggregatorDef<int?>(I18n.Translate("Average"), 
                         x => I18n.Localize((decimal)x.Average().GetValueOrDefault(), DecimalFormat.AsNumber)), 
                 }.Concat(additionalGrouperOrAggr.Where(x => x.Aggregator != null).Select(x => x.Aggregator)),
                 new List<GrouperDef<int?>> {
-                    new GrouperDef<int?>(groupEverythingAsOneGroupLabel, 
+                    new GrouperDef<int?>(GroupEverythingAsOneGroupLabel, 
                         RecordGroupingUtil.GroupAllRecordsAsOneGroup),
-                    new GrouperDef<int?>(I18n.Translate("unique value"), 
+                    new GrouperDef<int?>(UniqueValueGroupLabel, 
                         x => RecordGroupingUtil.GroupRecordsByKey(x, 
                             y => ObjectUtil.MapNullAs(y, (int z) => z.ToString(), I18n.Translate("(empty)")),
                             y => y.KeyData.ToString()))
@@ -506,8 +500,6 @@ namespace Philadelphia.Web {
                     ITransformationMediator listener,
                     params GrouperDefOrAggregatorDef<bool>[] additionalGrouperOrAggr) {
 
-            var groupEverythingAsOneGroupLabel = GroupEverythingAsOneGroupLabel;
-            
             return Create(
                 listener,
                 new [] {
@@ -519,14 +511,14 @@ namespace Philadelphia.Web {
                         (_, x) => !x)
                 },
                 new List<AggregatorDef<bool>> {
-                    new AggregatorDef<bool>(I18n.Translate("Count"), x => I18n.Localize(x.Count())), 
+                    new AggregatorDef<bool>(CountAggregatorLabel, x => I18n.Localize(x.Count())), 
                     new AggregatorDef<bool>(I18n.Translate("Count ☑"), x => I18n.Localize(x.Count(y => y))), 
                     new AggregatorDef<bool>(I18n.Translate("Count ☐"), x => I18n.Localize(x.Count(y => !y))),
                 }.Concat(additionalGrouperOrAggr.Where(x => x.Aggregator != null).Select(x => x.Aggregator)),
                 new List<GrouperDef<bool>> {
-                    new GrouperDef<bool>(groupEverythingAsOneGroupLabel, 
+                    new GrouperDef<bool>(GroupEverythingAsOneGroupLabel, 
                         RecordGroupingUtil.GroupAllRecordsAsOneGroup),
-                    new GrouperDef<bool>(I18n.Translate("unique value"), 
+                    new GrouperDef<bool>(UniqueValueGroupLabel, 
                         x => RecordGroupingUtil.GroupRecordsByKey(x, y => y, y => y.KeyData.ToString()))
                 }.Concat(additionalGrouperOrAggr.Where(x => x.Grouper != null).Select(x => x.Grouper)),
                 x => {
@@ -545,10 +537,8 @@ namespace Philadelphia.Web {
                     ITransformationMediator listener,
                     params GrouperDefOrAggregatorDef<decimal?>[] additionalGrouperOrAggr) {
 
-            var EmptyLabel = I18n.Translate("(empty)");            
-            var groupEverythingAsOneGroupLabel = GroupEverythingAsOneGroupLabel;
-            var sumAggregatorLabel = SumAggregatorLabel;
-
+            var EmptyLabel = I18n.Translate("(empty)");
+         
             return Create(
                 listener,
                 new [] {
@@ -566,16 +556,16 @@ namespace Philadelphia.Web {
                         (filterParam, x) => x.HasValue && x < filterParam)
                 },
                 new List<AggregatorDef<decimal?>> {
-                    new AggregatorDef<decimal?>(sumAggregatorLabel, x => 
+                    new AggregatorDef<decimal?>(SumAggregatorLabel, x => 
                         I18n.Localize(x.Sum().GetValueOrDefault(), DecimalFormat.AsNumber)), 
-                    new AggregatorDef<decimal?>(I18n.Translate("Count"), x => I18n.Localize(x.Count())), 
+                    new AggregatorDef<decimal?>(CountAggregatorLabel, x => I18n.Localize(x.Count())), 
                     new AggregatorDef<decimal?>(I18n.Translate("Average"), 
                         x => I18n.Localize(x.Average().GetValueOrDefault(), DecimalFormat.AsNumber)), 
                 }.Concat(additionalGrouperOrAggr.Where(x => x.Aggregator != null).Select(x => x.Aggregator)),
                 new List<GrouperDef<decimal?>> {
-                    new GrouperDef<decimal?>(groupEverythingAsOneGroupLabel, 
+                    new GrouperDef<decimal?>(GroupEverythingAsOneGroupLabel, 
                         RecordGroupingUtil.GroupAllRecordsAsOneGroup),
-                    new GrouperDef<decimal?>(I18n.Translate("unique value"), 
+                    new GrouperDef<decimal?>(UniqueValueGroupLabel, 
                         x => RecordGroupingUtil.GroupRecordsByKey(x, 
                             y => ObjectUtil.MapNullAs(y, (decimal z) => z.ToString(), EmptyLabel), 
                             y => y.KeyData.ToString()))
@@ -599,9 +589,6 @@ namespace Philadelphia.Web {
                     ITransformationMediator listener,
                     params GrouperDefOrAggregatorDef<decimal>[] additionalGrouperOrAggr) {
             
-            var groupEverythingAsOneGroupLabel = GroupEverythingAsOneGroupLabel;
-            var sumAggregatorLabel = SumAggregatorLabel;
-
             return Create(
                 listener,
                 new [] {
@@ -619,16 +606,16 @@ namespace Philadelphia.Web {
                         (filterParam, x) => x < filterParam)
                 },
                 new List<AggregatorDef<decimal>> {
-                    new AggregatorDef<decimal>(sumAggregatorLabel, x => 
+                    new AggregatorDef<decimal>(SumAggregatorLabel, x => 
                         I18n.Localize(x.Sum(), DecimalFormat.AsNumber)), 
-                    new AggregatorDef<decimal>(I18n.Translate("Count"), x => I18n.Localize(x.Count())), 
+                    new AggregatorDef<decimal>(CountAggregatorLabel, x => I18n.Localize(x.Count())), 
                     new AggregatorDef<decimal>(I18n.Translate("Average"), 
                         x => I18n.Localize(x.Average(), DecimalFormat.AsNumber)), 
                 }.Concat(additionalGrouperOrAggr.Where(x => x.Aggregator != null).Select(x => x.Aggregator)),
                 new List<GrouperDef<decimal>> {
-                    new GrouperDef<decimal>(groupEverythingAsOneGroupLabel, 
+                    new GrouperDef<decimal>(GroupEverythingAsOneGroupLabel, 
                         RecordGroupingUtil.GroupAllRecordsAsOneGroup),
-                    new GrouperDef<decimal>(I18n.Translate("unique value"), 
+                    new GrouperDef<decimal>(UniqueValueGroupLabel, 
                         x => RecordGroupingUtil.GroupRecordsByKey(x, y => y, y => y.KeyData.ToString()))
                 }.Concat(additionalGrouperOrAggr.Where(x => x.Grouper != null).Select(x => x.Grouper)),
                 x => {
@@ -649,9 +636,6 @@ namespace Philadelphia.Web {
                     ITransformationMediator listener,
                     params GrouperDefOrAggregatorDef<DecimalWithPrecision>[] additionalGrouperOrAggr) {
             
-            var groupEverythingAsOneGroupLabel = GroupEverythingAsOneGroupLabel;
-            var sumAggregatorLabel = SumAggregatorLabel;
-
             return Create(
                 listener,
                 new [] {
@@ -675,14 +659,14 @@ namespace Philadelphia.Web {
                         (filterParam, x) => DecimalWithPrecision.ComparatorImpl(x, filterParam) < 0)
                 },
                 new List<AggregatorDef<DecimalWithPrecision>> {
-                    new AggregatorDef<DecimalWithPrecision>(sumAggregatorLabel, x => {
+                    new AggregatorDef<DecimalWithPrecision>(SumAggregatorLabel, x => {
                         var lst = x.Where(y => y != null).ToList();
                         var p = lst.Any() ? lst[0].Precision : 0;
                         return I18n.Localize(
                             lst.Aggregate(0m, (y,z) => y + z.RoundedValue), 
                             DecimalFormatExtensions.GetWithPrecision(p));
                     }), 
-                    new AggregatorDef<DecimalWithPrecision>(I18n.Translate("Count"), 
+                    new AggregatorDef<DecimalWithPrecision>(CountAggregatorLabel, 
                         x => I18n.Localize(x.Count())), 
                     new AggregatorDef<DecimalWithPrecision>(I18n.Translate("Average"), x => {
                         var lst = x.Where(y => y != null).ToList();
@@ -693,9 +677,9 @@ namespace Philadelphia.Web {
                     }), 
                 }.Concat(additionalGrouperOrAggr.Where(x => x.Aggregator != null).Select(x => x.Aggregator)),
                 new List<GrouperDef<DecimalWithPrecision>> {
-                    new GrouperDef<DecimalWithPrecision>(groupEverythingAsOneGroupLabel, 
+                    new GrouperDef<DecimalWithPrecision>(GroupEverythingAsOneGroupLabel, 
                         RecordGroupingUtil.GroupAllRecordsAsOneGroup),
-                    new GrouperDef<DecimalWithPrecision>(I18n.Translate("unique value"), 
+                    new GrouperDef<DecimalWithPrecision>(UniqueValueGroupLabel, 
                         x => RecordGroupingUtil.GroupRecordsByKey(x, y => y, y => y.KeyData.ToString()))
                 }.Concat(additionalGrouperOrAggr.Where(x => x.Grouper != null).Select(x => x.Grouper)),
                 x => {
@@ -745,7 +729,7 @@ namespace Philadelphia.Web {
                         (filterParam, x) => x < filterParam)
                 },
                 new List<AggregatorDef<DateTime>> {
-                    new AggregatorDef<DateTime>(I18n.Translate("Count"), x => I18n.Localize(x.Count()))
+                    new AggregatorDef<DateTime>(CountAggregatorLabel, x => I18n.Localize(x.Count()))
                 }.Concat(additionalGrouperOrAggr.Where(x => x.Aggregator != null).Select(x => x.Aggregator)),
                 new List<GrouperDef<DateTime>> {
                     new GrouperDef<DateTime>(groupEverythingAsOneGroupLabel,
@@ -800,7 +784,7 @@ namespace Philadelphia.Web {
                         (filterParam, x) => x.HasValue && x < filterParam)
                 },
                 new List<AggregatorDef<DateTime?>> {
-                    new AggregatorDef<DateTime?>(I18n.Translate("Count"), x => I18n.Localize(x.Count()))
+                    new AggregatorDef<DateTime?>(CountAggregatorLabel, x => I18n.Localize(x.Count()))
                 }.Concat(additionalGrouperOrAggr.Where(x => x.Aggregator != null).Select(x => x.Aggregator)),
                 new List<GrouperDef<DateTime?>> {
                     new GrouperDef<DateTime?>(groupEverythingAsOneGroupLabel,
@@ -839,8 +823,6 @@ namespace Philadelphia.Web {
                     ITransformationMediator listener,
                     params GrouperDefOrAggregatorDef<string>[] additionalGrouperOrAggr) {
 
-             var groupEverythingAsOneGroupLabel = GroupEverythingAsOneGroupLabel;
-
              return Create(
                 textValueProvider,
                 listener,
@@ -865,12 +847,12 @@ namespace Philadelphia.Web {
                         (filterParam, x) => (x ?? "").EndsWithCaseInsensitive(filterParam ?? ""))
                 },
                 new List<AggregatorDef<string>> {
-                    new AggregatorDef<string>(I18n.Translate("Count"), x => I18n.Localize(x.Count()))
+                    new AggregatorDef<string>(CountAggregatorLabel, x => I18n.Localize(x.Count()))
                 }.Concat(additionalGrouperOrAggr.Where(x => x.Aggregator != null).Select(x => x.Aggregator)),
                 new List<GrouperDef<string>> {
-                    new GrouperDef<string>(groupEverythingAsOneGroupLabel, 
+                    new GrouperDef<string>(GroupEverythingAsOneGroupLabel, 
                         RecordGroupingUtil.GroupAllRecordsAsOneGroup),
-                    new GrouperDef<string>(I18n.Translate("unique value"), 
+                    new GrouperDef<string>(UniqueValueGroupLabel, 
                         x => RecordGroupingUtil.GroupRecordsByKey(x, y => y, y => y.KeyData.ToString()))
                 }.Concat(additionalGrouperOrAggr.Where(x => x.Grouper != null).Select(x => x.Grouper)),
                 x => {
