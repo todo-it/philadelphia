@@ -743,11 +743,21 @@ namespace Philadelphia.Web {
             _columnMessagePassing[column].ProgrammaticGroupingChangedHandler(groupFuncLabel);
             RebuildGroups(RebuildGroupsReason.ProgrammaticGroupingChange);
         }
+        
+        public void DisableGrouping(IDataGridColumn<RecordT> column) {
+            _columnMessagePassing.Remove(column);
+            RebuildGroups(RebuildGroupsReason.ProgrammaticGroupingChange);
+        }
 
         public void InitAggregation(params Tuple<IDataGridColumn<RecordT>,string>[] columnToAggregationLabel) {
             columnToAggregationLabel.ForEach(
                 x => _columnMessagePassing[x.Item1].ProgrammaticAggregationChangedHandler(x.Item2));
 
+            RebuildGroups(RebuildGroupsReason.ProgrammaticAggregationChange);
+        }
+        
+        public void DisableAggregation(params IDataGridColumn<RecordT>[] columns) {
+            columns.ForEach(x => _columnMessagePassing.Remove(x));
             RebuildGroups(RebuildGroupsReason.ProgrammaticAggregationChange);
         }
     }
