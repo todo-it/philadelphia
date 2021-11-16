@@ -26,7 +26,8 @@ namespace Philadelphia.Web {
         private readonly InputView _filter;
         private T _value;
         private bool _popupShown, _valueIsBeingSet, _isEnabled = true, _arrowNavigation,_ignoreShowOnBlur;
-        
+        public Action<DataGridModel<T>,FilterRowsAction,string> FilterStrategy {get; set; } = 
+            (mdl,fra,fltr) => mdl.ChangeGlobalFilterToBeginsWithOrAnyWordBeginsCaseInsensitive(fra, fltr);
 
         public IEnumerable<T> PermittedValues { set => _model.Items.Replace(value); }
         public HTMLElement Widget => _filter.Widget;
@@ -176,10 +177,11 @@ namespace Philadelphia.Web {
                     return;
                 }
 
-                _model.ChangeGlobalFilterToBeginsWithOrAnyWordBeginsCaseInsensitive(
+                FilterStrategy(
+                    _model,
                     string.IsNullOrEmpty(newValue) ? FilterRowsAction.Remove : FilterRowsAction.Change, 
                     newValue ?? "");
-
+                
                 if (string.IsNullOrEmpty(newValue)) {
                     //most likely used 'clear' action
                     _model.Selected.Clear(); //event will be handled elsewhere

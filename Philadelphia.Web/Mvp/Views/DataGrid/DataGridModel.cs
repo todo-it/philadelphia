@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 using Philadelphia.Common;
 using Bridge.Html5;
 
@@ -111,6 +112,7 @@ namespace Philadelphia.Web {
             return result;
         }
 
+        //single column match
         public void ChangeGlobalFilter(FilterRowsAction type, Func<IDataGridColumn<RecordT>,RecordT,bool> matches) {
             ChangeGlobalFilter(collector => {
                 switch (type) {
@@ -120,6 +122,27 @@ namespace Philadelphia.Web {
                         collector.AddWhereRule(
                             record => Columns.FirstOrDefault(col => matches(col, record)),
                             found => found != null
+                        );
+                        break;
+                    default:
+                        Logger.Error(GetType(), "Unknown FilterRowsAction in OnGlobalFilterChanged()");
+                        throw new Exception("Unknown FilterRowsAction");
+                }
+            });
+        }
+
+        //multi column match
+        public void ChangeGlobalFilter(
+                FilterRowsAction type, Func<IRandomAccessCollection<IDataGridColumn<RecordT>>,RecordT,bool> matches) {
+            
+            ChangeGlobalFilter(collector => {
+                switch (type) {
+                    case FilterRowsAction.Remove:
+                        break;
+                    case FilterRowsAction.Change:
+                        collector.AddWhereRule(
+                            record => matches(Columns, record),
+                            found => found
                         );
                         break;
                     default:
@@ -148,6 +171,26 @@ namespace Philadelphia.Web {
                         itm.Split(WhiteSpaceToSplitOn)
                             .Any(wrd => wrd.StartsWith(newValue));
             });
+        }
+
+        public void ChangeGlobalFilterToAllPhrasesContainedInSomeColumnCaseInsensitive(FilterRowsAction type, string userFilterInput) {
+            var phrases = new Regex(@"\w+")
+                .Matches(userFilterInput.ToLower())
+                .Cast<Match>()
+                .Where(x => x.Success)
+                .Select(x => x.Value)
+                .ToArray();
+                
+            ChangeGlobalFilter(type,
+                (richCols, record) => {
+                    var cols = richCols
+                        .Select(col => (col.TextValueFor(record) ?? "")
+                        .ToLower())
+                        .ToArray();
+                    
+                    return phrases.All(phrase => 
+                        cols.Any(colTxt => colTxt.Contains(phrase)));
+                });
         }
     }
 }
