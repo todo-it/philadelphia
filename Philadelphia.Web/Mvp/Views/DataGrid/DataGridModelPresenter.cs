@@ -744,10 +744,7 @@ namespace Philadelphia.Web {
             RebuildGroups(RebuildGroupsReason.ProgrammaticGroupingChange);
         }
         
-        public void DisableGrouping(IDataGridColumn<RecordT> column) {
-            _columnMessagePassing.Remove(column);
-            RebuildGroups(RebuildGroupsReason.ProgrammaticGroupingChange);
-        }
+        public void DisableGrouping(IDataGridColumn<RecordT> column) => InitGrouping(column, null);
 
         public void InitAggregation(params Tuple<IDataGridColumn<RecordT>,string>[] columnToAggregationLabel) {
             columnToAggregationLabel.ForEach(
@@ -756,9 +753,7 @@ namespace Philadelphia.Web {
             RebuildGroups(RebuildGroupsReason.ProgrammaticAggregationChange);
         }
         
-        public void DisableAggregation(params IDataGridColumn<RecordT>[] columns) {
-            columns.ForEach(x => _columnMessagePassing.Remove(x));
-            RebuildGroups(RebuildGroupsReason.ProgrammaticAggregationChange);
-        }
+        public void DisableAggregation(params IDataGridColumn<RecordT>[] columns) => 
+            InitAggregation(columns.Select(c => Tuple.Create(c, (string)null)).ToArray());
     }
 }
