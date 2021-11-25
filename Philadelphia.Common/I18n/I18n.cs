@@ -69,6 +69,10 @@ namespace Philadelphia.Common {
 
         public static string Translate(string input) => 
             TranslInstance.Translate(input);
+        
+        /// <summary>to make OldSchool-I18 ignore given invocation</summary>
+        public static string TranslateNoExtraction(string input) => 
+            TranslInstance.Translate(input);
 
         public static string TranslateForLang(string input, CultureInfo lang) => 
             TranslInstance.TranslateForLang(input, lang.Name);

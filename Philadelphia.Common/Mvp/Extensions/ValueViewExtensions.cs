@@ -9,7 +9,7 @@ namespace Philadelphia.Common {
                 return ResultHolder<ToT>.CreateSuccess(toInvoke(arg));
             } catch (Exception ex) {
                 Logger.Debug(typeof(ValueViewExtensions), "RunConvertingExceptionToFailure got exception {0}", ex);
-                return ResultHolder<ToT>.CreateFailure(I18n.Translate(ex.Message), ex);
+                return ResultHolder<ToT>.CreateFailure(I18n.TranslateNoExtraction(ex.Message), ex);
             }
         }
 			
