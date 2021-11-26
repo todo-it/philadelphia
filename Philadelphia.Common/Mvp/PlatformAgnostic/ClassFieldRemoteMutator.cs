@@ -22,6 +22,7 @@ namespace Philadelphia.Common {
         private ContT _currentTarget;
         private readonly LocalT _invalidValue;
         private readonly Action<ContT, string> _postOperationConsumerOrNull;
+        private readonly bool _postOperationInvokeBeforeChanged;
         private readonly Func<LocalT, RemT> _localToRemote;
         private readonly Func<RemT, LocalT> _remoteToLocal;
         private readonly Func<RemT,Task<ContT>> _saveOperation;
@@ -44,7 +45,8 @@ namespace Philadelphia.Common {
                 Action<ClassFieldRemoteMutator<LocalT,RemT,ContT>> initialization, 
                 LocalT initialValue = default(LocalT),
                 LocalT invalidValue = default(LocalT),
-                Action<ContT,string> postOperationConsumerOrNull = null) {
+                Action<ContT,string> postOperationConsumerOrNull = null,
+                bool postOperationInvokeBeforeChanged = true) {
 
             Value = initialValue;
             
@@ -61,6 +63,7 @@ namespace Philadelphia.Common {
             _saveOperation = saveOperation;
             _invalidValue = invalidValue;
             _postOperationConsumerOrNull = postOperationConsumerOrNull;
+            _postOperationInvokeBeforeChanged = postOperationInvokeBeforeChanged;
 
             if (initialization != null) {
                 RemoteCallingEnabled = false;
@@ -137,7 +140,9 @@ namespace Philadelphia.Common {
                     if (RemoteCallingEnabled) {
                         isSaveCalled = true;
                         factSaved = await _saveOperation(_localToRemote(newValue));
-                        _postOperationConsumerOrNull?.Invoke(factSaved, _fieldName);
+                        if (_postOperationInvokeBeforeChanged) {
+                            _postOperationConsumerOrNull?.Invoke(factSaved, _fieldName);    
+                        }
                     }
 					
                     Value = newValue;
@@ -180,6 +185,10 @@ namespace Philadelphia.Common {
 
             if (shouldPropagate && _pendingRemoteCalls <= 0) {
                 Changed?.Invoke(sender, oldValue, newValue, Errors, isUserChange);    
+            }
+            
+            if (isSaveCalled && !_postOperationInvokeBeforeChanged) {
+                _postOperationConsumerOrNull?.Invoke(factSaved, _fieldName);    
             }
             
             return Unit.Instance;

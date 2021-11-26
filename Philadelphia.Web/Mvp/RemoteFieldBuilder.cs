@@ -11,12 +11,15 @@ namespace Philadelphia.Web {
     public class RemoteFieldBuilder<ContT,IdT> where ContT : new() {
         private readonly FixedIdUpdateServiceMethodCaller<ContT, IdT> _caller;
         private readonly Action<ContT,string> _postOperationConsumerOrNull;
+        private readonly bool _postOperationInvokeBeforeChanged;
 
         public RemoteFieldBuilder(
-            FixedIdUpdateServiceMethodCaller<ContT, IdT> caller,
-            Action<ContT,string> postOperationConsumerOrNull) {
+                FixedIdUpdateServiceMethodCaller<ContT, IdT> caller,
+                Action<ContT,string> postOperationConsumerOrNull,
+                bool postOperationInvokeBeforeChanged) {
 
             _caller = caller;
+            _postOperationInvokeBeforeChanged = postOperationInvokeBeforeChanged;
             _postOperationConsumerOrNull = postOperationConsumerOrNull;
         }
         
@@ -36,7 +39,8 @@ namespace Philadelphia.Web {
                     validators.ForEach(y => x.AddValidatorAndRevalidate(y));
                     view.BindReadWriteAndInitialize(x);
                 },
-                postOperationConsumerOrNull: _postOperationConsumerOrNull);
+                postOperationConsumerOrNull: _postOperationConsumerOrNull,
+                postOperationInvokeBeforeChanged:_postOperationInvokeBeforeChanged);
         }
 
         public ClassFieldRemoteMutator<DateTime?,DateTime?,ContT> BuildDateTimePickerNullable(
@@ -133,7 +137,8 @@ namespace Philadelphia.Web {
                 x => x,
                 x => _caller.SaveField(ExpressionUtil.ExtractFieldName(getField), x),
                 x => view.BindReadOnlyAndInitialize(x, convertFromDomain),
-                postOperationConsumerOrNull: _postOperationConsumerOrNull);
+                postOperationConsumerOrNull: _postOperationConsumerOrNull,
+                postOperationInvokeBeforeChanged:_postOperationInvokeBeforeChanged);
         }
         
         public ClassFieldRemoteMutator<ModelT,ModelT,ContT> Build<WidgetT,ModelT,ViewT>(
@@ -150,7 +155,8 @@ namespace Philadelphia.Web {
                     validators.ForEach(y => x.AddValidatorAndRevalidate(y));
                     view.BindReadWriteAndInitialize(x, convertFromDomain, convertToDomain);
                 },
-                postOperationConsumerOrNull: _postOperationConsumerOrNull);
+                postOperationConsumerOrNull: _postOperationConsumerOrNull,
+                postOperationInvokeBeforeChanged:_postOperationInvokeBeforeChanged);
         }
 
         public ClassFieldRemoteMutator<ModelT,ModelT,ContT> Build<WidgetT,ModelT,ViewT>(
@@ -167,7 +173,8 @@ namespace Philadelphia.Web {
                     validators.ForEach(y => x.AddValidatorAndRevalidate(y));
                     view.BindReadOnlyAndInitialize(x, convertFromDomain);
                 },
-                postOperationConsumerOrNull: _postOperationConsumerOrNull);
+                postOperationConsumerOrNull: _postOperationConsumerOrNull,
+                postOperationInvokeBeforeChanged:_postOperationInvokeBeforeChanged);
         }
         
         public ClassFieldRemoteMutator<ModelT,ModelT,ContT> Build<WidgetT,ModelT>(
@@ -183,7 +190,8 @@ namespace Philadelphia.Web {
                     validators.ForEach(y => x.AddValidatorAndRevalidate(y));
                     view.BindReadOnlyAndInitialize(x);
                 },
-                postOperationConsumerOrNull: _postOperationConsumerOrNull);
+                postOperationConsumerOrNull: _postOperationConsumerOrNull,
+                postOperationInvokeBeforeChanged:_postOperationInvokeBeforeChanged);
         }
 
         public ClassFieldRemoteMutator<LocalT,RemT,ContT> BuildSingleChoiceDropDown<WidgetT,LocalT,RemT>(
@@ -200,7 +208,8 @@ namespace Philadelphia.Web {
                     validators.ForEach(y => x.AddValidatorAndRevalidate(y));
                     view.BindReadWriteAndInitialize(x);
                 },
-                postOperationConsumerOrNull: _postOperationConsumerOrNull);
+                postOperationConsumerOrNull: _postOperationConsumerOrNull,
+                postOperationInvokeBeforeChanged:_postOperationInvokeBeforeChanged);
         }
 
         public ClassFieldRemoteMutator<LocalCollT,RemT,ContT> BuildMultiChoiceDropDown<WidgetT,LocalCollT,RemT>(
@@ -218,7 +227,8 @@ namespace Philadelphia.Web {
                     validators.ForEach(y => x.AddValidatorAndRevalidate(y));
                     view.BindReadWriteAndInitialize(x);
                 },
-                postOperationConsumerOrNull: _postOperationConsumerOrNull);
+                postOperationConsumerOrNull: _postOperationConsumerOrNull,
+                postOperationInvokeBeforeChanged:_postOperationInvokeBeforeChanged);
         }
 
         public ClassFieldRemoteMutator<DataT,DataT,ContT> Build<WidgetT,DataT>(
@@ -234,17 +244,24 @@ namespace Philadelphia.Web {
                     validators.ForEach(y => x.AddValidatorAndRevalidate(y));
                     view.BindReadWriteAndInitialize(x);
                 },
-                postOperationConsumerOrNull: _postOperationConsumerOrNull);
+                postOperationConsumerOrNull: _postOperationConsumerOrNull,
+                postOperationInvokeBeforeChanged:_postOperationInvokeBeforeChanged);
         }
         
+        /// <param name="postOperationInvokeBeforeChanged">
+        /// 'true' means invoke postOperationInvokeBeforeChanged immediately after save operation invocation returns (before Changed event is invoked);
+        /// 'false' means invoke postOperationInvokeBeforeChanged after Changed event was invoked
+        /// </param>
         public static RemoteFieldBuilder<ContT,IdT> For(
                 Func<IdT,string,string, Task<ContT>> saveOper, 
                 Func<IdT> idProvider,
-                Action<ContT,string> postOperationConsumerOrNull = null)  {
+                Action<ContT,string> postOperationConsumerOrNull = null,
+                bool postOperationInvokeBeforeChanged = true)  {
 
             return new RemoteFieldBuilder<ContT, IdT>(
                 new FixedIdUpdateServiceMethodCaller<ContT, IdT>(saveOper, idProvider),
-                postOperationConsumerOrNull);
+                postOperationConsumerOrNull,
+                postOperationInvokeBeforeChanged);
         }
     }
 }
