@@ -82,18 +82,25 @@ namespace Philadelphia.Web {
             MakeItDraggable(_header);
         }
 
-        private void OnUserClose() => _onUserClose?.Invoke();
+        private void OnUserCloseNonProgrammatic(Event ev) {
+            if (_clickingOnGlassDismissesDialog && ev.HtmlTarget() == _modalGlass ||
+                    ev.HtmlTarget().IsElementOrItsDescendant(_userClose.Widget)) {
+                _onUserClose?.Invoke();    
+            }
+        }
         
+        private void OnUserCloseProgrammatic() => _onUserClose?.Invoke();
+
         public void Show() {
             if (Document.Body.Contains(_modalGlass)) {
                 Logger.Error(GetType(), "cannot show already shown dialog");
                 return;
             }
             
-            _dialog.AddEventListener(Magics.ProgramaticCloseFormEventName, OnUserClose);
-            _userClose.Widget.AddEventListener(EventType.Click, OnUserClose);
+            _dialog.AddEventListener(Magics.ProgramaticCloseFormEventName, OnUserCloseProgrammatic);
+            _userClose.Widget.AddEventListener(EventType.Click, OnUserCloseNonProgrammatic);
             if (_clickingOnGlassDismissesDialog) {
-                _modalGlass.AddEventListener(EventType.Click, OnUserClose);
+                _modalGlass.AddEventListener(EventType.Click, OnUserCloseNonProgrammatic);
             }
 
             _dialog.SetBoolAttribute(Magics.AttrDataFormIsCloseable, _onUserClose != null);
@@ -108,10 +115,10 @@ namespace Philadelphia.Web {
             }
             
             if (_clickingOnGlassDismissesDialog) {
-                _modalGlass.RemoveEventListener(EventType.Click, OnUserClose);
+                _modalGlass.RemoveEventListener(EventType.Click, OnUserCloseNonProgrammatic);
             }
-            _userClose.Widget.RemoveEventListener(EventType.Click, OnUserClose);
-            _dialog.RemoveEventListener(Magics.ProgramaticCloseFormEventName, OnUserClose);
+            _userClose.Widget.RemoveEventListener(EventType.Click, OnUserCloseNonProgrammatic);
+            _dialog.RemoveEventListener(Magics.ProgramaticCloseFormEventName, OnUserCloseProgrammatic);
 
             _dialog.SetBoolAttribute(Magics.AttrDataFormIsCloseable, false);
             IsShown = false;

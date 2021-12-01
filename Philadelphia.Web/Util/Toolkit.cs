@@ -15,7 +15,8 @@ namespace Philadelphia.Web {
             
         public static void InitializeToolkit(
                 ILoggerImplementation customLogger = null, 
-                Func<DatagridContent,Task<FileModel>> spreadsheetBuilder = null) {
+                Func<DatagridContent,Task<FileModel>> spreadsheetBuilder = null,
+                bool? clickingOutsideOfDialogDismissesIt = null) {
 
             ExecOnUiThread.SetImplementation(
                 async x => {
@@ -82,13 +83,13 @@ namespace Philadelphia.Web {
                 case EnvironmentType.Desktop:
                     BaseFormCanvasTitleStrategy = x => new RegularDomElementTitleFormCanvasStrategy(x);
                     BaseFormCanvasExitButtonBuilderOrNull = DefaultExitButtonBuilder;
-                    ClickingOutsideOfDialogDismissesIt = false;
+                    ClickingOutsideOfDialogDismissesIt = clickingOutsideOfDialogDismissesIt ?? false;
                     break;
                 
                 case EnvironmentType.IndustrialAndroidWebApp:
                     BaseFormCanvasTitleStrategy = x => new BodyBasedPropagatesToAppBatTitleFormCanvasStrategy(x);
                     BaseFormCanvasExitButtonBuilderOrNull = null;
-                    ClickingOutsideOfDialogDismissesIt = true;
+                    ClickingOutsideOfDialogDismissesIt = clickingOutsideOfDialogDismissesIt ?? true;
                 
                     IawAppApi.SetOnBackPressed(() => {
                         Logger.Debug(typeof(Toolkit), "backbutton pressed");
