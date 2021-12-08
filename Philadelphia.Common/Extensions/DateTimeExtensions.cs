@@ -2,6 +2,9 @@
 
 namespace Philadelphia.Common {
     public static class DateTimeExtensions {
+        public static string ToStringYyyyMm(this DateTime inp) => $"{inp.Year:0000}-{inp.Month:00}";
+        public static string ToStringYyyyMmDd(this DateTime inp) => $"{inp.Year:0000}-{inp.Month:00}-{inp.Day:00}";
+
         public static string ToStringYyyyMmDdHhMm(this DateTime inp) {
             return string.Format("{0:0000}-{1:00}-{2:00} {3:00}:{4:00}", inp.Year, inp.Month, inp.Day, inp.Hour, inp.Minute);
         }
